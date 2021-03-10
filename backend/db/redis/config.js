@@ -11,4 +11,6 @@ module.exports = function connetRedis() {
     console.log('Redis connection error');
     console.error(error);
   });
+
+  return client;
 }
