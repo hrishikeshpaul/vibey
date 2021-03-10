@@ -13,7 +13,7 @@ const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth').app;
+const authRouter = require('./routes/auth').default.app;
 
 const app = express();
 

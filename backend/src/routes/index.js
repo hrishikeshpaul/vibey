@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const spotifyApi = require('./auth').spotifyApi;
+const spotifyApi = require('./auth').default.spotifyApi;
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -15,7 +15,8 @@ router.get('/me', async (req, res, next) => {
       res.send(body)
     })
     .catch((error) => {
-      res.status(error.body.error.status).send(error)
+      console.log(error)
+      res.send(error)
     })
 }); 
 
