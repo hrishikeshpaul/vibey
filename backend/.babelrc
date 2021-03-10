@@ -1,5 +1,4 @@
-{
-  "presets": [
-      "@babel/preset-env"
-  ]
+// package.json
+{  
+    "presets": ["@babel/preset-env"]
 }

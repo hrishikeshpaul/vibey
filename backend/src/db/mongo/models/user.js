@@ -1,23 +1,34 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
 
 const UserSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true
+  display_name: {
+    type: String
   },
   email: {
     type: String,
+    unique: true,
     required: true
+  },
+  href: {
+    type: String
+  },
+  uri: {
+    type: String
+  },
+  image: {
+    type: String
   },
   createdAt: {
     type: Date,
     default: Date.now()
   },
   likes: [{
-    type: ObjectId,
-    ref: 'User'
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   }]
 });
 
-// export model user with UserSchema
-module.exports = mongoose.model("User", UserSchema);
+// export model user with UserSche
+module.exports = mongoose.model("user", UserSchema);

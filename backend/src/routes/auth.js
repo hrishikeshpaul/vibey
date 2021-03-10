@@ -1,43 +1,58 @@
 
 import { generateRandomString, scopes, STATE_KEY } from "../static/const";
 import { initSpotifyApi } from "../common/spotify";
-
+const User = require("../db/mongo/models/user")
 const app = require('express')();
 const spotifyApi = new initSpotifyApi();
 
+/**
+ * Get authorization code from Spotify by 
+ * using the Client ID and Secret
+ * 
+ * Redirects to call back which then gets the access token and refresh token
+ */
 app.get('/login', (_, res) => {
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
-  
   res.redirect(authorizeURL);
 });
 
-app.get('/callback', (req, res) => {
+/**
+ * Requests Spotify for access token and refresh token
+ * Sets the session
+ * 
+ */
+app.get('/callback', async (req, res) => {
   const { code, state } = req.query;
   const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
   if (state === null || state !== storedState) {
     res.redirect('http://localhost:5555/error?msg=state_mismatch');
   } else {
-    res.clearCookie(STATE_KEY);
-    spotifyApi.authorizationCodeGrant(code).then(data => {
-      const { expires_in, access_token, refresh_token } = data.body;
-
+    try {
+      const data = await spotifyApi.authorizationCodeGrant(code);
+      const { access_token, refresh_token } = data.body;
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
-      
       req.session.access_token = access_token;
       req.session.refresh_token = refresh_token;
 
-      // we can also pass the token to the browser to make requests from there
-      res.redirect(`http://localhost:5555/me`);
-    }).catch(err => {
-      res.send(err)
-    });
+      const user = await spotifyApi.getMe();
+      const userObj = {
+        display_name: user.body.display_name,
+        email: user.body.email,
+        href: user.body.href,
+        uri: user.body.uri,
+        image: user.body.images.length > 0 ? user.body.images[0].url : null
+      }
+      const savedUser = await new User(userObj).save();
+      res.send(savedUser)
+    } catch(err) {
+        res.send(err)
+    }
   }
 });
-
 
 export default {
   app,
