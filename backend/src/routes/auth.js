@@ -2,6 +2,7 @@ import { generateRandomString, scopes, STATE_KEY } from "../static/const";
 import { spotifyApi } from "../common/spotify";
 const User = require("../db/mongo/models/user")
 import { app } from '../common/app';
+import { setSession } from "../common/auth";
 
 /**
  * Get authorization code from Spotify by 
@@ -31,6 +32,7 @@ app.get('/callback', async (req, res) => {
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
       const { access_token, refresh_token } = data.body;
+
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
       req.session.access_token = access_token;
@@ -44,13 +46,14 @@ app.get('/callback', async (req, res) => {
         uri: user.body.uri,
         image: user.body.images.length > 0 ? user.body.images[0].url : null
       }
-      const savedUser = await User.findOne({email: userObj.email});
-      if(!savedUser) {
-        const newUser = await new User(userObj).save();
-        res.send(newUser).end();
-      } else {
-        res.send(savedUser)
+
+      let loggedUser = await User.findOne({email: userObj.email});
+      if(!loggedUser) {
+        loggedUser = await new User(userObj).save();
       }
+      setSession(req, access_token, refresh_token, loggedUser.id);
+      res.send(loggedUser)
+
     } catch(err) {
         res.send(err)
     }

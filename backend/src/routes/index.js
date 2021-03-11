@@ -1,13 +1,12 @@
 import { app } from '../common/app';
 import { spotifyApi } from "../common/spotify";
-
-const User = require("../db/mongo/models/user")
+import { isLoggedIn } from "../middlewares/auth";
 
 app.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-app.get('/me', async (req, res, next) => {
+app.get('/me',  isLoggedIn, async (req, res, next) => {
   spotifyApi.getMe()
     .then(({ body }) => {
       res.send(body)
