@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import plus from 'assets/icons/plus.svg';
 import './icon.scss';
 
@@ -12,7 +12,7 @@ const getIcon = (iconName: string) => {
   }
 }
 
-export const Icon = (props: React.PropsWithChildren<IconProps>) => {
+export const Icon = (props: PropsWithChildren<IconProps>) => {
   const { icon } = props;
   return (
     <img className="icon" src={getIcon(icon)} alt={icon.toString()}/>
