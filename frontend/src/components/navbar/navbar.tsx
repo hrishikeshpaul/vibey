@@ -1,8 +1,8 @@
-import React from 'react';
-import './navbar.scss';
-import { Icon } from '../icon/icon';
+import React from 'react'
+import './navbar.scss'
+import { Icon } from '../icon/icon'
 
-function Navbar() {
+const Navbar = () => {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center py-3">
@@ -21,4 +21,4 @@ function Navbar() {
   )
 }
 
-export default Navbar;
+export default Navbar

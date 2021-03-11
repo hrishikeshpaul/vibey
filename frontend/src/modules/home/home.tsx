@@ -1,8 +1,8 @@
-import React from 'react';
-import './home.scss';
-import Navbar from 'components/navbar/navbar';
+import React from 'react'
+import './home.scss'
+import Navbar from 'components/navbar/navbar'
 
-function Home() {
+const Home = () => {
   return (
     <div>
       <Navbar />
@@ -19,4 +19,4 @@ function Home() {
   )
 }
 
-export default Home;
+export default Home
