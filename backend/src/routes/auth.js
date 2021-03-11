@@ -1,4 +1,3 @@
-
 import { generateRandomString, scopes, STATE_KEY } from "../static/const";
 import { initSpotifyApi } from "../common/spotify";
 const User = require("../db/mongo/models/user")
@@ -20,8 +19,8 @@ app.get('/login', (_, res) => {
 
 /**
  * Requests Spotify for access token and refresh token
- * Sets the session
- * 
+ * Sets the session and the user in the database
+ * Returns the new user or an error
  */
 app.get('/callback', async (req, res) => {
   const { code, state } = req.query;
@@ -46,8 +45,13 @@ app.get('/callback', async (req, res) => {
         uri: user.body.uri,
         image: user.body.images.length > 0 ? user.body.images[0].url : null
       }
-      const savedUser = await new User(userObj).save();
-      res.send(savedUser)
+      const savedUser = await User.findOne({email: userObj.email});
+      if(!savedUser) {
+        const newUser = await new User(userObj).save();
+        res.send(newUser).end();
+      } else {
+        res.send(savedUser)
+      }
     } catch(err) {
         res.send(err)
     }

@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const spotifyApi = require('./auth').default.spotifyApi;
+const User = require("../db/mongo/models/user")
 
+router.get('/hi', (req, res)=> {
+  User.find({}, (err, users) => {
+    res.send(users)
+  })
+})
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
