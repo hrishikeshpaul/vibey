@@ -1,8 +1,7 @@
 import { generateRandomString, scopes, STATE_KEY } from "../static/const";
-import { initSpotifyApi } from "../common/spotify";
+import { spotifyApi } from "../common/spotify";
 const User = require("../db/mongo/models/user")
-const app = require('express')();
-const spotifyApi = new initSpotifyApi();
+import { app } from '../common/app';
 
 /**
  * Get authorization code from Spotify by 
@@ -58,7 +57,4 @@ app.get('/callback', async (req, res) => {
   }
 });
 
-export default {
-  app,
-  spotifyApi
-};
+module.exports = app;

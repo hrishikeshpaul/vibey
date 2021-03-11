@@ -1,19 +1,18 @@
 require('dotenv').config();
 require('./db/mongo/config')();
 
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const cors = require('cors');
-const session = require('express-session');
-const redisClient = require('./db/redis/config')();
-const redisStore = require('connect-redis')(session);
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser')
+import express from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cors from 'cors';
+import session from 'express-session';
+import { redisClient, redisStore } from "./db/redis/config";
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth').default.app;
+const indexRouter  = require('./routes/index');
+const usersRouter  = require('./routes/users');
+const authRouter   = require('./routes/auth');
 
 const app = express();
 

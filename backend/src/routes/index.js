@@ -1,21 +1,13 @@
-const express = require('express');
-const router = express.Router();
+import { app } from '../common/app';
+import { spotifyApi } from "../common/spotify";
 
-const spotifyApi = require('./auth').default.spotifyApi;
 const User = require("../db/mongo/models/user")
 
-router.get('/hi', (req, res)=> {
-  User.find({}, (err, users) => {
-    res.send(users)
-  })
-})
-router.get('/', function(req, res, next) {
+app.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/me', async (req, res, next) => {
-  spotifyApi.setAccessToken(req.session.access_token);
-  spotifyApi.setRefreshToken(req.session.refresh_token);
+app.get('/me', async (req, res, next) => {
   spotifyApi.getMe()
     .then(({ body }) => {
       res.send(body)
@@ -26,7 +18,7 @@ router.get('/me', async (req, res, next) => {
     })
 }); 
 
-router.get('/getPlaylist', (req, res, next) => {
+app.get('/getPlaylist', (req, res, next) => {
   spotifyApi.getUserPlaylists('nutkesh')
   .then(function(data) {
     res.send(data)
@@ -35,8 +27,8 @@ router.get('/getPlaylist', (req, res, next) => {
   });
 })
 
-router.get('/error', (req, res) => {
+app.get('/error', (req, res) => {
   res.send(req.query)
 })
 
-module.exports = router;
+module.exports = app;
