@@ -70,6 +70,7 @@ app.get("/callback", async (req, res) => {
 app.get("/logout", async (req, res) => {
   req.session.destroy(function () {
     spotifyApi.setAccessToken("");
+    spotifyApi.setRefreshToken("");
     res.redirect("http://localhost:5555/");
   });
 });
