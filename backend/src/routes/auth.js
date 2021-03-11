@@ -5,29 +5,28 @@ import { app } from "../common/app";
 import { setSession } from "../common/auth";
 
 /**
- * Get authorization code from Spotify by
+ * If user isn't active in Redis, get authorization code from Spotify by
  * using the Client ID and Secret
  *
  * Redirects to call back which then gets the access token and refresh token
+ *
+ *
  */
 app.get("/login", (req, res) => {
-  if (req.session === null) {
-    console.log("no session");
-  } else {
-    console.log("session active");
-    console.log("session: ", req.session);
-  }
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
-  const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
-  res.redirect(authorizeURL);
+
+  if (!req.session.user) {
+    res.redirect(spotifyApi.createAuthorizeURL(scopes, state, true));
+  } else {
+    res.redirect(spotifyApi.createAuthorizeURL(scopes, state));
+  }
 });
 
 /**
  * Requests Spotify for access token and refresh token
  * Sets the session and the user in the database
  * Returns the new user or an error
->>>>>>> 74d621cb606deac111f443e2e66c6b207af4f6a0
  */
 app.get("/callback", async (req, res) => {
   const { code, state } = req.query;
@@ -67,8 +66,7 @@ app.get("/callback", async (req, res) => {
 });
 
 /**
- * Destroys the current session (redirects, so a new session is created
- *    but missing access token and refresh token)
+ * Destroys the current session
  * TODO: reset spotifyApi state
  * Redirects to home page, where a new session is created (new session lacks tokens)
  *
