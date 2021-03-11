@@ -3,6 +3,7 @@ import { spotifyApi } from "../common/spotify";
 const User = require("../db/mongo/models/user");
 import { app } from "../common/app";
 import { setSession } from "../common/auth";
+import { checkLogin } from "../middlewares/auth";
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
@@ -12,15 +13,10 @@ import { setSession } from "../common/auth";
  *
  *
  */
-app.get("/login", (req, res) => {
+app.get("/login", checkLogin, (req, res) => {
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
-
-  if (!req.session.user) {
-    res.redirect(spotifyApi.createAuthorizeURL(scopes, state, true));
-  } else {
-    res.redirect(spotifyApi.createAuthorizeURL(scopes, state));
-  }
+  res.redirect(spotifyApi.createAuthorizeURL(scopes, state, true));
 });
 
 /**
@@ -67,12 +63,13 @@ app.get("/callback", async (req, res) => {
 
 /**
  * Destroys the current session
- * TODO: reset spotifyApi state
+ *
  * Redirects to home page, where a new session is created (new session lacks tokens)
  *
  */
 app.get("/logout", async (req, res) => {
   req.session.destroy(function () {
+    spotifyApi.setAccessToken("");
     res.redirect("http://localhost:5555/");
   });
 });

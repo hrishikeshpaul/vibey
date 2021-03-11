@@ -29,22 +29,6 @@ app.get("/getPlaylist", (req, res, next) => {
   );
 });
 
-app.get("/test-session", async (req, res) => {
-  if (!req.session.access_token) {
-    if (!req.session.user) {
-      res.send("doesnt contain token or user");
-    } else {
-      res.send("session doesn't contain access token but has user");
-    }
-  } else {
-    if (!req.session.user) {
-      res.send("contains token but not user");
-    } else {
-      res.send("contains token AND user");
-    }
-  }
-});
-
 app.get("/error", (req, res) => {
   res.send(req.query);
 });
