@@ -1,5 +1,13 @@
+@import 'assets/stylesheets/colors';
+
 .nav-items {
   .label {
-    margin-right: 1.25rem;
+    margin-right: 1.75rem;
+    cursor: pointer;
+    transition: 0.25s color;
+    
+    &:hover {
+      color: $primary;
+    }
   }
 }
