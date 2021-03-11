@@ -1,8 +1,8 @@
 import { generateRandomString, scopes, STATE_KEY } from "../static/const";
-import { initSpotifyApi } from "../common/spotify";
+import { spotifyApi } from "../common/spotify";
 const User = require("../db/mongo/models/user");
-const app = require("express")();
-const spotifyApi = new initSpotifyApi();
+import { app } from "../common/app";
+import { setSession } from "../common/auth";
 
 /**
  * Get authorization code from Spotify by
@@ -25,8 +25,9 @@ app.get("/login", (req, res) => {
 
 /**
  * Requests Spotify for access token and refresh token
- * Sets the session
- *
+ * Sets the session and the user in the database
+ * Returns the new user or an error
+>>>>>>> 74d621cb606deac111f443e2e66c6b207af4f6a0
  */
 app.get("/callback", async (req, res) => {
   const { code, state } = req.query;
@@ -38,6 +39,7 @@ app.get("/callback", async (req, res) => {
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
       const { access_token, refresh_token } = data.body;
+
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
       req.session.access_token = access_token;
@@ -51,9 +53,13 @@ app.get("/callback", async (req, res) => {
         uri: user.body.uri,
         image: user.body.images.length > 0 ? user.body.images[0].url : null,
       };
-      // Seems like this following code should only run if user doesn't already exist
-      const savedUser = await new User(userObj).save();
-      res.send(savedUser);
+
+      let loggedUser = await User.findOne({ email: userObj.email });
+      if (!loggedUser) {
+        loggedUser = await new User(userObj).save();
+      }
+      setSession(req, access_token, refresh_token, loggedUser.id);
+      res.send(loggedUser);
     } catch (err) {
       res.send(err);
     }
@@ -73,7 +79,4 @@ app.get("/logout", async (req, res) => {
   });
 });
 
-export default {
-  app,
-  spotifyApi,
-};
+module.exports = app;

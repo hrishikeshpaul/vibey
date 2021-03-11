@@ -1,6 +1,9 @@
-const redis = require("redis");
+import redis from 'redis';
+import connectRedis from 'connect-redis';
+import session from 'express-session';
 
-module.exports = function connetRedis() {
+
+const initRedis = _ => {
   const client = redis.createClient();
 
   client.on('connect', function() {
@@ -14,3 +17,6 @@ module.exports = function connetRedis() {
 
   return client;
 }
+
+export const redisClient = initRedis();
+export const redisStore = connectRedis(session);
