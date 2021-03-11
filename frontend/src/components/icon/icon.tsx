@@ -7,7 +7,6 @@ type IconProps = {
 }
 
 const getIcon = (iconName: string) => {
-  console.log('here', iconName)
   switch(iconName) {
     case 'plus': return plus; 
   }
