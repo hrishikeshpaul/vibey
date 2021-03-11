@@ -2,9 +2,11 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-
 const UserSchema = mongoose.Schema({
   display_name: {
+    type: String
+  },
+  username: {
     type: String
   },
   email: {
@@ -31,5 +33,4 @@ const UserSchema = mongoose.Schema({
   }]
 });
 
-// export model user with UserSche
 module.exports = mongoose.model("user", UserSchema);

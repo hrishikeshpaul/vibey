@@ -44,7 +44,8 @@ app.get('/callback', async (req, res) => {
         email: user.body.email,
         href: user.body.href,
         uri: user.body.uri,
-        image: user.body.images.length > 0 ? user.body.images[0].url : null
+        image: user.body.images.length > 0 ? user.body.images[0].url : null,
+        username: user.body.id
       }
 
       let loggedUser = await User.findOne({email: userObj.email});
