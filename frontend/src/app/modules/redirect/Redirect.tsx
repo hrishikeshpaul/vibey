@@ -1,15 +1,10 @@
 import React, { useEffect } from "react";
 import { getQueryParams } from "app/hooks/useQuery";
 import { useDispatch } from "react-redux";
-// useSelector can be imported in the above module to access state from the app
 import { getAuthorization } from "app/store/user/userActions";
 
 const Redirect = (props: any) => {
   const dispatch = useDispatch();
-
-  // use the following code to access global state from components
-  // this example demonstrates accessing the auth reducer's state
-  // const authState = useSelector((state: RootStore) => state.auth);
 
   /*
    * useEffect on initial render only
