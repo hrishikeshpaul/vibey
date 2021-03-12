@@ -1,5 +1,10 @@
 export const GET_AUTH_SUCCESS = "GET_AUTH_SUCCESS";
 
+/*
+ * AuthData is interface for auth .get() call
+ * I assume this will be tweaked to include name and session information
+ *
+ */
 export interface AuthData {
   email: string;
   display_name: string;

@@ -3,6 +3,15 @@ import { GET_AUTH_SUCCESS, AuthDispatchTypes } from "./authActionTypes";
 
 import { authorize } from "app/services/auth.service";
 
+/*
+ * getAuthorization uses authorize() service
+ * authorizes state backend
+ * if success, returns user, user is set to state
+ * API_LOADING and API_FAILURE dispatches should likely be created
+ * Wondering where to store API_LOADING and API_FAILURE, apiReducer?
+ * string | undefined feels messy
+ *
+ */
 export const getAuthorization = (
   code: string | undefined,
   state: string | undefined
