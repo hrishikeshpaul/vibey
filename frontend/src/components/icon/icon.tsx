@@ -21,7 +21,7 @@ const makeStyles = (color = 'white', size = [1, 1]) => {
   return {
     color: color,
     height: `${size[1]}rem`,
-    width: `${size[1]}rem`
+    width: `${size[0]}rem`
   }
 }
 
