@@ -19,7 +19,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3001",
+    origin: process.env.NODE_ENV === "production" ? "" : process.env.DEV_URL,
   })
 );
 app.use(logger("dev"));
