@@ -11,8 +11,8 @@ const Navbar = () => {
           <div className="label">About Us</div>
           <div className="label">Contact</div>
           <div>
-            <button className="btn btn-primary text-white font-weight-normal">
-              <Icon icon={'plus'}></Icon> <span className="pl-2">Start listening</span>
+            <button className="btn btn-primary text-white font-weight-normal d-flex justify-content-center align-items-center">
+              <Icon icon="plus"></Icon> <span className="pl-2">Start listening</span>
             </button>
           </div>
         </div>

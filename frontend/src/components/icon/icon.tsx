@@ -1,20 +1,50 @@
-import React, { PropsWithChildren } from 'react'
-import plus from 'assets/icons/plus.svg'
-import './icon.scss'
+import React, { PropsWithChildren } from 'react';
+import {ReactComponent as Plus} from 'assets/icons/plus.svg';
+import './icon.scss';
 
+/**
+ * Prop types
+ */
 type IconProps = {
   icon: string;
+  color?: string;
+  size?: [number, number];
 }
 
-const getIcon = (iconName: string) => {
-  switch (iconName) {
-    case 'plus': return plus
+/**
+ * Returns the style object if the icon
+ * 
+ * @param color Color of the icon
+ * @param size [width, height] of icon
+ */
+const makeStyles = (color = 'white', size = [1, 1]) => {
+  return {
+    color: color,
+    height: `${size[1]}rem`,
+    width: `${size[1]}rem`
   }
 }
 
+/**
+ * Selects the icon based on the passed name
+ * 
+ * @param iconName Name of the icon (required)
+ * @param color Color of the icon
+ * @param size [width, height] of the icon
+ */
+const getIcon = (iconName: string, color?: string, size?: [number, number]) => {
+  switch (iconName) {
+    case 'plus': return <Plus className="icon" style={makeStyles(color, size)}></Plus>;
+  }
+
+  return null;
+}
+
 export const Icon = (props: PropsWithChildren<IconProps>) => {
-  const { icon } = props
+  const { icon, color, size } = props
   return (
-    <img className="icon" src={getIcon(icon)} alt={icon.toString()}/>
+    getIcon(icon, color, size)
   )
 }
+
+export default Icon;
