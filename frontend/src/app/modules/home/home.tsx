@@ -2,6 +2,7 @@ import React from "react";
 import "./home.scss";
 import Navbar from "app/components/navbar/navbar";
 import { login } from "app/services/auth.service";
+import Icon from 'app/components/icon/icon';
 
 const Home = () => {
   /*
@@ -29,11 +30,11 @@ const Home = () => {
           Vibe with people with the same taste in music.
         </div>
         <div className="mt-5">
-          <button
-            className="btn btn-lg btn-primary text-white font-weight-bold"
+          <button 
+            className="btn btn-lg btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center"
             onClick={handleSignIn}
-          >
-            Sign in via Spotify
+            >
+            <Icon icon="spotify" size={[1.5, 1.5]}></Icon> <span className="pl-3">Sign in via Spotify</span>
           </button>
         </div>
       </div>
