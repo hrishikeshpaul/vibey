@@ -1,3 +1,8 @@
-@import './assets/stylesheets/colors';
-@import './assets/stylesheets/font';
+@import 'assets/stylesheets/colors';
+@import 'assets/stylesheets/font';
+@import 'assets/stylesheets//button';
 @import "node_modules/bootstrap/scss/bootstrap";
+
+#root {
+  height: 100%;
+}
