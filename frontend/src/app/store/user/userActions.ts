@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { GET_AUTH_SUCCESS, AuthDispatchTypes } from "./authActionTypes";
+import { GET_AUTH_SUCCESS, UserDispatchTypes } from "./userActionTypes";
 
 import { authorize } from "app/services/auth.service";
 
@@ -15,7 +15,7 @@ import { authorize } from "app/services/auth.service";
 export const getAuthorization = (
   code: string | undefined,
   state: string | undefined
-) => async (dispatch: Dispatch<AuthDispatchTypes>) => {
+) => async (dispatch: Dispatch<UserDispatchTypes>) => {
   // dispatch({ type: API_LOADING })
 
   try {

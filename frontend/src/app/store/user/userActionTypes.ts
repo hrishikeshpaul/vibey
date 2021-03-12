@@ -5,7 +5,7 @@ export const GET_AUTH_SUCCESS = "GET_AUTH_SUCCESS";
  * I assume this will be tweaked to include name and session information
  *
  */
-export interface AuthData {
+export interface UserData {
   email: string;
   display_name: string;
   image: string;
@@ -13,7 +13,7 @@ export interface AuthData {
 }
 export interface GetAuthSuccess {
   type: typeof GET_AUTH_SUCCESS;
-  payload: AuthData;
+  payload: UserData;
 }
 
-export type AuthDispatchTypes = GetAuthSuccess;
+export type UserDispatchTypes = GetAuthSuccess;
