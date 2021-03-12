@@ -16,7 +16,7 @@ import { checkLogin } from "../middlewares/auth";
 app.get("/login", checkLogin, (req, res) => {
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
-  res.redirect(spotifyApi.createAuthorizeURL(scopes, state, true));
+  res.send(spotifyApi.createAuthorizeURL(scopes, state, true));
 });
 
 /**
@@ -24,15 +24,17 @@ app.get("/login", checkLogin, (req, res) => {
  * Sets the session and the user in the database
  * Returns the new user or an error
  */
-app.get("/callback", async (req, res) => {
+app.get("/authorize", async (req, res) => {
   const { code, state } = req.query;
   const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
   if (state === null || state !== storedState) {
     res.redirect("http://localhost:5555/error?msg=state_mismatch");
   } else {
+    console.log("reached here");
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
+      console.log("data", data);
       const { access_token, refresh_token } = data.body;
 
       spotifyApi.setAccessToken(access_token);
@@ -47,7 +49,7 @@ app.get("/callback", async (req, res) => {
         href: user.body.href,
         uri: user.body.uri,
         image: user.body.images.length > 0 ? user.body.images[0].url : null,
-        username: user.body.id
+        username: user.body.id,
       };
 
       let loggedUser = await User.findOne({ email: userObj.email });
