@@ -1,7 +1,15 @@
-import { GET_AUTH_SUCCESS, UserState } from "./userActionTypes";
+import {
+  GET_AUTH_SUCCESS,
+  UserState,
+  UserActionTypes,
+} from "./userActionTypes";
 
 const initialState: UserState = {
   user: {
+    id: "",
+    username: "",
+    href: "",
+    uri: "",
     email: "",
     display_name: "",
     image: "",
@@ -11,7 +19,7 @@ const initialState: UserState = {
 
 export const userReducer = (
   state: UserState = initialState,
-  action: any
+  action: UserActionTypes
 ): UserState => {
   switch (action.type) {
     case GET_AUTH_SUCCESS:

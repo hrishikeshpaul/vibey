@@ -1,19 +1,14 @@
 import React from "react";
 import "./home.scss";
 import Navbar from "app/components/navbar/navbar";
-import { login } from "app/services/auth.service";
+import { useDispatch } from "react-redux";
+import { getLoginRedirect } from "app/store/user/userActions";
 
 const Home = () => {
-  /*
-   * login callback returns res.data (query string)
-   * query string for forwarding to spotify login
-   * spotify returns us to Redirect component
-   */
+  const dispatch = useDispatch();
+
   const handleSignIn = async () => {
-    try {
-      const res = await login();
-      window.open(res.data, "_self");
-    } catch (err) {}
+    dispatch(getLoginRedirect());
   };
 
   return (
