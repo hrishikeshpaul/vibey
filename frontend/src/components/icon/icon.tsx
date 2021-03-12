@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import {ReactComponent as Plus} from 'assets/icons/plus.svg';
+import { ReactComponent as Plus } from 'assets/icons/plus.svg';
+import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
 import './icon.scss';
 
 /**
@@ -35,6 +36,7 @@ const makeStyles = (color = 'white', size = [1, 1]) => {
 const getIcon = (iconName: string, color?: string, size?: [number, number]) => {
   switch (iconName) {
     case 'plus': return <Plus style={makeStyles(color, size)}></Plus>;
+    case 'headphones': return <Headphones style={makeStyles(color, size)}></Headphones>;
   }
 
   return null;
