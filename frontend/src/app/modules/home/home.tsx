@@ -1,12 +1,21 @@
 import React from "react";
 import "./home.scss";
 import Navbar from "app/components/navbar/navbar";
+import { login } from "app/services/auth.service";
 
 const Home = () => {
+  /*
+   * login callback returns res.data (query string)
+   * query string for forwarding to spotify login
+   * spotify returns us to Redirect component
+   */
   const handleSignIn = async () => {
     try {
-    } catch (error) {}
-    window.open(res.data, "_self");
+      const res = await login();
+      window.open(res.data, "_self");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

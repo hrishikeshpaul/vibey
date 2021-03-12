@@ -20,7 +20,7 @@ const initialState: DefaultSessionState = {
   },
 };
 
-export const sessionReducer = (
+export const authReducer = (
   state: DefaultSessionState = initialState,
   action: any
 ): DefaultSessionState => {
