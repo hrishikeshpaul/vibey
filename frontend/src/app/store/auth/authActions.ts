@@ -3,9 +3,10 @@ import { GET_AUTH_SUCCESS, AuthDispatchTypes } from "./authActionTypes";
 
 import { authorize } from "app/services/auth.service";
 
-export const getAuthorization = (code: string, state: string) => async (
-  dispatch: Dispatch<AuthDispatchTypes>
-) => {
+export const getAuthorization = (
+  code: string | undefined,
+  state: string | undefined
+) => async (dispatch: Dispatch<AuthDispatchTypes>) => {
   // dispatch({ type: API_LOADING })
 
   try {

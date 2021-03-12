@@ -1,7 +1,8 @@
+import { GET_AUTH_SUCCESS } from "./authActionTypes";
 export interface UserData {
   email: string;
-  username: string;
-  firstName: string;
+  display_name: string;
+  image: string;
   likes: number[];
 }
 interface DefaultSessionState {
@@ -14,8 +15,8 @@ const initialState: DefaultSessionState = {
   session: null,
   user: {
     email: "",
-    username: "",
-    firstName: "",
+    display_name: "",
+    image: "",
     likes: [],
   },
 };
@@ -25,6 +26,11 @@ export const authReducer = (
   action: any
 ): DefaultSessionState => {
   switch (action.type) {
+    case GET_AUTH_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+      };
     default:
       return state;
   }
