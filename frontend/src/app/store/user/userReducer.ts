@@ -1,10 +1,6 @@
-import { GET_AUTH_SUCCESS, UserData } from "./userActionTypes";
+import { GET_AUTH_SUCCESS, UserState } from "./userActionTypes";
 
-interface DefaultUserState {
-  user: UserData;
-}
-
-const initialState: DefaultUserState = {
+const initialState: UserState = {
   user: {
     email: "",
     display_name: "",
@@ -14,9 +10,9 @@ const initialState: DefaultUserState = {
 };
 
 export const userReducer = (
-  state: DefaultUserState = initialState,
+  state: UserState = initialState,
   action: any
-): DefaultUserState => {
+): UserState => {
   switch (action.type) {
     case GET_AUTH_SUCCESS:
       return {

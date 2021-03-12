@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { getQueryParams } from "app/hooks/useQuery";
 import { useDispatch } from "react-redux";
 // useSelector can be imported in the above module to access state from the app
-import { getAuthorization } from "app/store/auth/authActions";
+import { getAuthorization } from "app/store/user/userActions";
 
 const Redirect = (props: any) => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const Redirect = (props: any) => {
         const [code, state] = [results.get("code"), results.get("state")];
         dispatch(getAuthorization(code, state));
       } catch (err) {
-        console.log(err);
+        // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don't need this catch?
       }
     };
     fetchData();

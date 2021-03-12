@@ -13,9 +13,7 @@ const Home = () => {
     try {
       const res = await login();
       window.open(res.data, "_self");
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (

@@ -31,10 +31,8 @@ app.get("/authorize", async (req, res) => {
   if (state === null || state !== storedState) {
     res.redirect("http://localhost:5555/error?msg=state_mismatch");
   } else {
-    console.log("reached here");
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
-      console.log("data", data);
       const { access_token, refresh_token } = data.body;
 
       spotifyApi.setAccessToken(access_token);
