@@ -3,6 +3,7 @@ import "./home.scss";
 import Navbar from "app/components/navbar/navbar";
 import { useDispatch } from "react-redux";
 import { getLoginRedirect } from "app/store/user/userActions";
+import Icon from "app/components/icon/icon";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,11 @@ const Home = () => {
         </div>
         <div className="mt-5">
           <button
-            className="btn btn-lg btn-primary text-white font-weight-bold"
+            className="btn btn-lg btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center"
             onClick={handleSignIn}
           >
-            Sign in via Spotify
+            <Icon icon="spotify" size={[1.5, 1.5]}></Icon>{" "}
+            <span className="pl-3">Sign in via Spotify</span>
           </button>
         </div>
       </div>
