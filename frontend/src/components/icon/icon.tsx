@@ -34,7 +34,7 @@ const makeStyles = (color = 'white', size = [1, 1]) => {
  */
 const getIcon = (iconName: string, color?: string, size?: [number, number]) => {
   switch (iconName) {
-    case 'plus': return <Plus className="icon" style={makeStyles(color, size)}></Plus>;
+    case 'plus': return <Plus style={makeStyles(color, size)}></Plus>;
   }
 
   return null;
