@@ -1,6 +1,6 @@
-import React from 'react'
-import './navbar.scss'
-import { Icon } from '../icon/icon'
+import React from 'react';
+import './navbar.scss';
+import { Icon } from 'app/components/icon/icon';
 
 const Navbar = () => {
   return (
