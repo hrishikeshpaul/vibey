@@ -1,7 +1,9 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './App.scss'
-import Home from './modules/home/home'
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Redirect from "app/modules/redirect/Redirect";
+
+import "./App.scss";
+import Home from "./modules/home/home";
 
 const App = () => {
   return (
@@ -9,12 +11,11 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
-          {/* <Route exact path="/foo" component={Foo} />
-              <Route exact path="/bar" component={Bar} /> */}
+          <Route path="/login" component={Redirect} />
         </Switch>
       </Router>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
