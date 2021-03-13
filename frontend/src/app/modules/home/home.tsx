@@ -1,25 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./home.scss";
 import Navbar from "app/components/navbar/navbar";
 import { useDispatch } from "react-redux";
 import { getLoginRedirect } from "app/store/user/userActions";
-import { BASE_URL } from "app/static/url";
 import Icon from "app/components/icon/icon";
-import io from "socket.io-client";
-
-let socket;
 
 const Home = () => {
   const dispatch = useDispatch();
-
-  /*
-   * On initial render, socket is established
-   * { transports: ["websocket"] } included due to CORS issue
-   *
-   */
-  useEffect(() => {
-    socket = io(BASE_URL, { transports: ["websocket"] });
-  }, []);
 
   /**
    * Calls an action to redirect to the Spotify Login
