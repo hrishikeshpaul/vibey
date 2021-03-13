@@ -18,10 +18,19 @@ app.set("port", port);
 /**
  * Create HTTP server.
  * Create io instance
+ * Having trouble migrating io to a different folder and getting it to work
  */
 
 var server = http.createServer(app);
 var io = require("socket.io")(server);
+
+io.on("connection", (socket) => {
+  console.log("new connection found!!!");
+
+  socket.on("disconnect", () => {
+    console.log("the connection disconnected!!");
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -88,5 +97,5 @@ function onListening() {
 }
 
 module.exports = {
-  io,
+  server,
 };
