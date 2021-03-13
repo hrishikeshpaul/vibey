@@ -1,18 +1,33 @@
-// var socket_io = require("socket.io");
-// var io = socket_io();
-// var socketApi = {};
-
-// socketApi.io = io;
-
-// io.on("connection", function (socket) {
-//   console.log("connected baybeeeee!");
-// });
-
-// module.exports = socketApi;
+/**
+ * make a room
+ * room contains array of users
+ *
+ *
+ */
 
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    console.log("we out here");
+    socket.on("join_room", function (room) {
+      try {
+        socket.join(room);
+        console.log("joined room: ", room);
+      } catch (err) {}
+    });
+    /**
+     * Join
+     * socket.join("some room");
+     */
+
+    /**
+     * Leave
+     * socket.leave("some room");
+     */
+
+    /**
+     * Broadcast to other members (except sender)
+     * io.to("some room").emit("some event");
+     */
+
     socket.on("disconnect", () => {
       console.log("disconnected");
     });
