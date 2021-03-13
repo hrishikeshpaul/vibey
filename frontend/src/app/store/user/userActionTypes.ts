@@ -1,26 +1,19 @@
 import { SystemActionTypes } from "app/store/system/systemActionTypes";
+import { UserData } from 'app/models/user.model';
+
 export const GET_AUTH_SUCCESS = "GET_AUTH_SUCCESS";
 
 export interface UserState {
+  /**
+   * Stores the user data in the state
+   */
   user: UserData;
 }
 
-/*
- * UserData is interface for auth .get() call
- * I assume this will be tweaked to include name and session information
- *
+/**
+ * Action called when the user sign in is successful
+ * Payload consists of the user data
  */
-export interface UserData {
-  id: string;
-  username: string;
-  href: string;
-  uri: string;
-  email: string;
-  display_name: string;
-  image: string;
-  likes: string[];
-}
-
 export interface GetAuthSuccess {
   type: typeof GET_AUTH_SUCCESS;
   payload: UserData;

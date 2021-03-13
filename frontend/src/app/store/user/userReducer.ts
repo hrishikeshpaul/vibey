@@ -4,6 +4,9 @@ import {
   UserActionTypes,
 } from "./userActionTypes";
 
+/**
+ * Initial values of the user state
+ */
 const initialState: UserState = {
   user: {
     id: "",

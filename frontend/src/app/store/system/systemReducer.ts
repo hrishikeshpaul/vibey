@@ -1,8 +1,11 @@
-import { SystemState, SystemActionTypes } from "./systemActionTypes";
+import { SystemState, SystemActionTypes, GET_API_FAILURE } from "./systemActionTypes";
 
+/**
+ * Initial values for the System State
+ */
 const initialState: SystemState = {
   isLoading: false,
-  error: "",
+  error: {},
 };
 
 export const systemReducer = (
@@ -10,7 +13,12 @@ export const systemReducer = (
   action: SystemActionTypes
 ): SystemState => {
   switch (action.type) {
+    case GET_API_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      }  
     default:
-      return state;
+      return state
   }
 };

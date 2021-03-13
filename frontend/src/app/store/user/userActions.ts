@@ -10,6 +10,7 @@ import {
 } from "app/store/system/systemActionTypes";
 import { login, authorize } from "app/services/auth.service";
 
+
 /*
  * Called from Home.tsx
  * login callback returns res.data (query string)
@@ -26,7 +27,7 @@ export const getLoginRedirect = () => async (
   } catch (err) {
     dispatch({
       type: GET_API_FAILURE,
-      payload: "error string",
+      payload: err,
     });
   }
 };
@@ -50,7 +51,7 @@ export const getAuthorization = (
     const res = await authorize(code, state);
     dispatch({
       type: GET_AUTH_SUCCESS,
-      payload: res.data,
+      payload: res.response.data,
     });
     dispatch({
       type: GET_API_SUCCESS,
@@ -58,7 +59,7 @@ export const getAuthorization = (
   } catch (err) {
     dispatch({
       type: GET_API_FAILURE,
-      payload: "error string",
+      payload: err.response.data,
     });
   }
 };

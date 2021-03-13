@@ -8,6 +8,9 @@ import Icon from "app/components/icon/icon";
 const Home = () => {
   const dispatch = useDispatch();
 
+  /**
+   * Calls an action to redirect to the Spotify Login
+   */
   const handleSignIn = async () => {
     dispatch(getLoginRedirect());
   };
