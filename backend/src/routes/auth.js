@@ -57,7 +57,7 @@ app.get("/authorize", async (req, res) => {
       setSession(req, access_token, refresh_token, loggedUser.id);
       res.send(loggedUser);
     } catch (err) {
-      res.send(err);
+      res.status(err.statusCode).send(err);
     }
   }
 });
