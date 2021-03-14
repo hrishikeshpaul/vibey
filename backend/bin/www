@@ -22,16 +22,6 @@ app.set("port", port);
 var server = http.createServer(app);
 
 /**
- * The following is done in order to separate io into its own module
- * Calls io connection 3 times on server start, unintended
- * Unsure best way to refactor this.
- *
- */
-
-var io = require("socket.io")(server);
-require("../src/common/rooms")(io);
-
-/**
  * Listen on provided port, on all network interfaces.
  */
 
