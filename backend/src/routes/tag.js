@@ -3,9 +3,15 @@ import { isLoggedIn } from "../middlewares/auth";
 var express = require("express");
 var router = express.Router();
 
-router.get("/", validateTagName, validateTagLength, function (req, res, next) {
-  const { name } = req.query.name;
-  res.status(201).json("hello");
-});
+router.get(
+  "/",
+  isLoggedIn,
+  validateTagName,
+  validateTagLength,
+  function (req, res, next) {
+    const { name } = req.query.name;
+    res.status(201).json("hello");
+  }
+);
 
 module.exports = router;
