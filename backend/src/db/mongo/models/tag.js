@@ -2,6 +2,15 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
+/**
+ * CONSIDERATION:
+ * minlength and maxlength for tag chars
+ * minlength and maxlength could be validated here at schema level
+ * this would make error handling more complicated
+ * moving validation into the relevant API call
+ *
+ */
+
 const TagSchema = mongoose.Schema({
   name: {
     type: String,
