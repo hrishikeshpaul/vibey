@@ -29,6 +29,7 @@ const TagSchema = mongoose.Schema({
   },
   score: {
     type: Number,
+    required: true,
   },
 });
 
