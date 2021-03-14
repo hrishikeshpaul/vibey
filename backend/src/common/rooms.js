@@ -7,12 +7,21 @@
 
 module.exports = function (io) {
   io.on("connection", (socket) => {
-    socket.on("join_room", function (room) {
-      try {
-        socket.join(room);
-        console.log("joined room: ", room);
-      } catch (err) {}
+    socket.on("disconnect", () => {
+      console.log(`disconnected: ${socket.id}`);
     });
+
+    socket.on("join", (room) => {
+      console.log(`Socket ${socket.id} joining ${room}`);
+      socket.join(room);
+    });
+
+    socket.on("chat", (data) => {
+      const { message, room } = data;
+      console.log(`msg: ${message}, room: ${room}`);
+      io.to(room).emit("chat", message);
+    });
+
     /**
      * Join
      * socket.join("some room");
