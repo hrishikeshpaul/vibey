@@ -14,6 +14,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const tagRouter = require("./routes/tag");
+const playlistsRouter = require("./routes/spotify/playlists");
 
 const app = express();
 
@@ -46,5 +47,6 @@ app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/tag", tagRouter);
+app.use("/api/spotify/playlists", playlistsRouter);
 
 module.exports = app;
