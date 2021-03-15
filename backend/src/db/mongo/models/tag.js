@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
-
 /**
  * CONSIDERATION:
  * minLength and maxLength validated in middleware
