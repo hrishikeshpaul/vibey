@@ -12,7 +12,7 @@ var router = express.Router();
  */
 router.get(
   "/",
-  isLoggedIn,
+  // isLoggedIn,
   validateTagName,
   validateTagLength,
   async function (req, res) {
@@ -33,6 +33,7 @@ router.get(
         res.status(200).json({ name: foundTag.name });
       }
     } catch (err) {
+      console.log("err: ", err);
       res.status(500).json(err);
     }
   }
