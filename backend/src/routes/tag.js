@@ -23,14 +23,14 @@ router.get(
 
       if (!foundTag) {
         foundTag = await new Tag({ name, score: 0 }).save();
-        res.status(201).json({ name: foundTag.name, score: foundTag.score });
+        res.status(201).json({ name: foundTag.name });
       } else {
         foundTag = await Tag.findOneAndUpdate(
           { name },
           { $set: { score: foundTag.score + 1 } },
           { new: true }
         );
-        res.status(200).json({ name: foundTag.name, score: foundTag.score });
+        res.status(200).json({ name: foundTag.name });
       }
     } catch (err) {
       res.status(500).json(err);
