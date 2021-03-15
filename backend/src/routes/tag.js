@@ -42,6 +42,7 @@ router.get(
  * Search for all tags for a specified query
  * If error finding in DB, return (500) Error finding results
  * If success, return (200) with results [{ name, score }, ... ], ordered by score descending
+ * limit 5 results
  * The second error handle may be unnecessary
  *
  */
@@ -58,7 +59,9 @@ router.get("/search", async (req, res) => {
           res.status(200).json(docs);
         }
       }
-    ).sort({ score: -1 });
+    )
+      .sort({ score: -1 })
+      .limit(5);
   } catch (err) {
     res.status(500).json({ error: "Internal server error" });
   }
