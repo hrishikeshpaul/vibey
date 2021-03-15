@@ -12,6 +12,11 @@ module.exports = function connectMongoDB() {
      *  see findAndModify(): https://mongoosejs.com/docs/deprecations.html
      */
     mongoose.set("useFindAndModify", false);
+    /**
+     * Resolves:
+     *  (node:31152) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+     */
+    mongoose.set("useCreateIndex", true);
   } catch (e) {
     console.log("MongoDB count not connect :(");
   }
