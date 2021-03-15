@@ -22,7 +22,7 @@ router.get(
       let foundTag = await Tag.findOne({ name });
 
       if (!foundTag) {
-        foundTag = await new Tag({ name: name, score: 0 }).save();
+        foundTag = await new Tag({ name: name, score: 1 }).save();
         res.status(201).json({ name: foundTag.name });
       } else {
         foundTag = await Tag.findOneAndUpdate(
