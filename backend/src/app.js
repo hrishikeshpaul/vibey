@@ -13,6 +13,7 @@ import bodyParser from "body-parser";
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+const tagRouter = require("./routes/tag");
 
 const app = express();
 
@@ -44,5 +45,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/tag", tagRouter);
 
 module.exports = app;
