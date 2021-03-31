@@ -1,20 +1,21 @@
+'use strict';
 
 const { app } = require('../lib/app');
-const { generateRandomString, scopes, STATE_KEY } = require("../static/const");
-const { spotifyApi } = require("../lib/spotify");
-const { User } = require("../db/mongo/models/user");
+const { generateRandomString, scopes, STATE_KEY } = require('../static/const');
+const { spotifyApi } = require('../lib/spotify');
+const { User } = require('../db/mongo/models/user');
 
-const { setSession } = require("../lib/auth");
-const { checkLogin } = require("../middlewares/auth");
+const { setSession } = require('../lib/auth');
+const { checkLogin } = require('../middlewares/auth');
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
  * using the Client ID and Secret
  * Redirects to call back which then gets the access token and refresh token
  */
-app.get("/login", checkLogin, (req, res) => {
+app.get('/login', checkLogin, (req, res) => {
 
-  console.log(spotifyApi)
+  console.log(spotifyApi);
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.send(spotifyApi.createAuthorizeURL(scopes, state, true));
@@ -25,12 +26,12 @@ app.get("/login", checkLogin, (req, res) => {
  * Sets the session and the user in the database
  * Returns the new user or an error
  */
-app.get("/authorize", async (req, res) => {
+app.get('/authorize', async(req, res) => {
   const { code, state } = req.query;
   const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect("http://localhost:5555/error?msg=state_mismatch");
+    res.redirect('http://localhost:5555/error?msg=state_mismatch');
   } else {
     try {
       const data = await spotifyApi.authorizationCodeGrant(code);
@@ -65,14 +66,15 @@ app.get("/authorize", async (req, res) => {
 
 /**
  * Destroys the current session
- * Redirects to home page, where a new session is created (new session lacks tokens)
+ * Redirects to home page, where a new session is
+ * created (new session lacks tokens)
  *
  */
-app.get("/logout", async (req, res) => {
-  req.session.destroy(function () {
-    spotifyApi.setAccessToken("");
-    spotifyApi.setRefreshToken("");
-    res.redirect("http://localhost:5555/");
+app.get('/logout', async(req, res) => {
+  req.session.destroy(function() {
+    spotifyApi.setAccessToken('');
+    spotifyApi.setRefreshToken('');
+    res.redirect('http://localhost:5555/');
   });
 });
 

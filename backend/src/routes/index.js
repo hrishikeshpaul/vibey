@@ -1,12 +1,14 @@
-const { app } = require('../lib/app');
-const { spotifyApi } = require("../lib/spotify");
-const { isLoggedIn } = require("../middlewares/auth");
+'use strict';
 
-app.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+const { app } = require('../lib/app');
+const { spotifyApi } = require('../lib/spotify');
+const { isLoggedIn } = require('../middlewares/auth');
+
+app.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
 });
 
-app.get("/me", isLoggedIn, async (req, res, next) => {
+app.get('/me', isLoggedIn, async(req, res, next) => {
   spotifyApi
     .getMe()
     .then(({ body }) => {
@@ -18,18 +20,18 @@ app.get("/me", isLoggedIn, async (req, res, next) => {
     });
 });
 
-app.get("/getPlaylist", (req, res, next) => {
-  spotifyApi.getUserPlaylists("nutkesh").then(
-    function (data) {
+app.get('/getPlaylist', (req, res, next) => {
+  spotifyApi.getUserPlaylists('nutkesh').then(
+    function(data) {
       res.send(data);
     },
-    function (err) {
+    function(err) {
       res.status(err.body.error.status).send(err);
-    }
+    },
   );
 });
 
-app.get("/error", (req, res) => {
+app.get('/error', (req, res) => {
   res.send(req.query);
 });
 

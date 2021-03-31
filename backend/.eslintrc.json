@@ -1,0 +1,13 @@
+{
+  "extends": "strongloop",
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "ecmaVersion": 2020
+  },
+  "rules": {
+    "new-cap": 0
+  },
+  "env": {
+      "es6": true
+  }
+}

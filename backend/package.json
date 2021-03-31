@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "start": "node src/server",
+    "dev": "nodemon src/server",
+    "pretest": "eslint --ignore-path .gitignore .",
+    "lint": "npm run pretest -- --fix"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -23,6 +25,8 @@
     "spotify-web-api-node": "^5.0.2"
   },
   "devDependencies": {
+    "eslint": "^7.23.0",
+    "eslint-config-strongloop": "^2.1.0",
     "nodemon": "^2.0.7"
   }
 }
