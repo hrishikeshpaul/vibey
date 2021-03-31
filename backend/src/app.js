@@ -1,29 +1,31 @@
-require("dotenv").config();
-require("./db/mongo/config")();
+'use strict';
 
-import express from "express";
-import path from "path";
-import logger from "morgan";
-import cors from "cors";
-import session from "express-session";
-import { redisClient, redisStore } from "./db/redis/config";
-import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
+require('dotenv').config();
+require('./db/mongo/config')();
 
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const authRouter = require("./routes/auth");
-const tagRouter = require("./routes/tag");
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cors = require('cors');
+const session = require('express-session');
+const { redisClient, redisStore } = require('./db/redis/config');
+const cookieParser = require('cookie-parser');
+
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const tagRouter = require('./routes/tag');
 
 const app = express();
 
 app.use(
   cors({
     credentials: true,
-    origin: process.env.NODE_ENV === "production" ? "" : process.env.DEV_URL,
-  })
+    origin: process.env.NODE_ENV === 'production' ? '' : process.env.DEV_URL,
+  }),
 );
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -31,20 +33,18 @@ app.use(cookieParser());
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    name: "vss",
+    name: 'vss',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 360000 },
     store: new redisStore({ client: redisClient, ttl: 3600 }),
-  })
+  }),
 );
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", indexRouter);
-app.use("/api/users", usersRouter);
-app.use("/api/auth", authRouter);
-app.use("/api/tag", tagRouter);
+app.use('/', indexRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/tag', tagRouter);
 
 module.exports = app;

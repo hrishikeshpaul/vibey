@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
+'use strict';
+
+const mongoose = require('mongoose');
 
 /**
  * CONSIDERATION:
@@ -14,13 +16,14 @@ const TagSchema = mongoose.Schema({
     /**
      * Testing for case-insensitive uniqueness
      * collation: treat different characters as the same character
-     *    locale: establishes that ENGLISH characters are considered to be the same
-     *    strength: 2 (1 and 2 indicate case-insensitive)
-     *    https://docs.mongodb.com/manual/core/index-case-insensitive/
+     * locale: establishes that ENGLISH characters are considered to
+     * be the same
+     * strength: 2 (1 and 2 indicate case-insensitive)
+     * https://docs.mongodb.com/manual/core/index-case-insensitive/
      */
     index: {
       unique: true,
-      collation: { locale: "en", strength: 2 },
+      collation: { locale: 'en', strength: 2 },
     },
   },
   score: {
@@ -29,4 +32,8 @@ const TagSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("tag", TagSchema);
+const Tag = mongoose.model('tag', TagSchema); ;
+
+module.exports = {
+  Tag,
+};

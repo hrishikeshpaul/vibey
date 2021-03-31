@@ -1,36 +1,40 @@
-import mongoose from 'mongoose';
+'use strict';
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
 const UserSchema = mongoose.Schema({
   display_name: {
-    type: String
+    type: String,
   },
   username: {
-    type: String
+    type: String,
   },
   email: {
     type: String,
     unique: true,
-    required: true
+    required: true,
   },
   href: {
-    type: String
+    type: String,
   },
   uri: {
-    type: String
+    type: String,
   },
   image: {
-    type: String
+    type: String,
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now(),
   },
   likes: [{
     type: Schema.Types.ObjectId,
-    ref: 'user'
-  }]
+    ref: 'user',
+  }],
 });
 
-module.exports = mongoose.model("user", UserSchema);
+const User = mongoose.model('user', UserSchema);
+module.exports = {
+  User,
+};

@@ -1,14 +1,21 @@
-export function isLoggedIn(req, res, next) {
+'use strict';
+
+const isLoggedIn = (req, res, next) => {
   if (req.session.user) {
     return next();
   } else {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: 'Unauthorized' });
   }
-}
+};
 
-export function checkLogin(req, res, next) {
+const checkLogin = (req, res, next) => {
   if (req.session.user) {
-    return res.redirect("/home");
+    return res.redirect('/home');
   }
   next();
-}
+};
+
+module.exports = {
+  isLoggedIn,
+  checkLogin,
+};
