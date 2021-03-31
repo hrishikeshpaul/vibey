@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 
 module.exports = function connectMongoDB() {
   try {
@@ -18,6 +18,7 @@ module.exports = function connectMongoDB() {
      */
     mongoose.set("useCreateIndex", true);
   } catch (e) {
+    console.log(e)
     console.log("MongoDB count not connect :(");
   }
 };

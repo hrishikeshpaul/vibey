@@ -1,6 +1,6 @@
-import { app } from "../common/app";
-import { spotifyApi } from "../common/spotify";
-import { isLoggedIn } from "../middlewares/auth";
+const { app } = require('../common/app');
+const { spotifyApi } = require("../common/spotify");
+const { isLoggedIn } = require("../middlewares/auth");
 
 app.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });

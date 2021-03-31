@@ -7,7 +7,7 @@
 /**
  * If not tag name, return 400
  */
-export function validateTagName(req, res, next) {
+const validateTagName = (req, res, next) => {
   if (req.query.name) {
     return next();
   } else {
@@ -18,10 +18,15 @@ export function validateTagName(req, res, next) {
 /**
  * Max tag length 20 characters.
  */
-export function validateTagLength(req, res, next) {
+const validateTagLength = (req, res, next) => {
   if (req.query.name.length < 13) {
     return next();
   } else {
     return res.status(400).json({ error: "Tag name exceeded maximum length" });
   }
+}
+
+module.exports = {
+  validateTagLength,
+  validateTagName
 }

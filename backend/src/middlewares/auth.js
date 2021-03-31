@@ -1,4 +1,4 @@
-export function isLoggedIn(req, res, next) {
+const isLoggedIn = (req, res, next) => {
   if (req.session.user) {
     return next();
   } else {
@@ -6,9 +6,14 @@ export function isLoggedIn(req, res, next) {
   }
 }
 
-export function checkLogin(req, res, next) {
+const checkLogin = (req, res, next) => {
   if (req.session.user) {
     return res.redirect("/home");
   }
   next();
+}
+
+module.exports = {
+  isLoggedIn,
+  checkLogin
 }

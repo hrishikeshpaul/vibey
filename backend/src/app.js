@@ -1,14 +1,13 @@
 require("dotenv").config();
 require("./db/mongo/config")();
 
-import express from "express";
-import path from "path";
-import logger from "morgan";
-import cors from "cors";
-import session from "express-session";
-import { redisClient, redisStore } from "./db/redis/config";
-import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cors = require('cors');
+const session = require('express-session');
+const { redisClient, redisStore } = require("./db/redis/config");
+const cookieParser = require('cookie-parser');
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -38,8 +37,6 @@ app.use(
     store: new redisStore({ client: redisClient, ttl: 3600 }),
   })
 );
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);

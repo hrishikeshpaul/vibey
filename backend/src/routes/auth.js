@@ -1,18 +1,20 @@
-import { generateRandomString, scopes, STATE_KEY } from "../static/const";
-import { spotifyApi } from "../common/spotify";
-const User = require("../db/mongo/models/user");
-import { app } from "../common/app";
-import { setSession } from "../common/auth";
-import { checkLogin } from "../middlewares/auth";
+
+const { app } = require('../common/app');
+const { generateRandomString, scopes, STATE_KEY } = require("../static/const");
+const { spotifyApi } = require("../common/spotify");
+const { User } = require("../db/mongo/models/user");
+
+const { setSession } = require("../common/auth");
+const { checkLogin } = require("../middlewares/auth");
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
  * using the Client ID and Secret
  * Redirects to call back which then gets the access token and refresh token
- *
- *
  */
 app.get("/login", checkLogin, (req, res) => {
+
+  console.log(spotifyApi)
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.send(spotifyApi.createAuthorizeURL(scopes, state, true));

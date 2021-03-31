@@ -1,18 +1,17 @@
-import { validateTagName, validateTagLength } from "../middlewares/tags";
-import { isLoggedIn } from "../middlewares/auth";
+const { app } = require('../common/app');
+const { validateTagName, validateTagLength } = require("../middlewares/tags");
+const { isLoggedIn } = require("../middlewares/auth");
 
-var Tag = require("../db/mongo/models/tag");
-var express = require("express");
-var router = express.Router();
+const { Tag } = require("../db/mongo/models/tag");
 
 /**
  * Get a particular tag
  * If tag doesn't exist, create and return tag
  * If tag exists, add to score and return updated tag
  */
-router.get(
+app.get(
   "/",
-  // isLoggedIn,
+  isLoggedIn,
   validateTagName,
   validateTagLength,
   async function (req, res) {
@@ -47,7 +46,7 @@ router.get(
  * The second error handle may be unnecessary
  *
  */
-router.get("/search", async (req, res) => {
+app.get("/search", async (req, res) => {
   const { str } = req.query;
   try {
     Tag.find(
@@ -68,4 +67,4 @@ router.get("/search", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = app;
