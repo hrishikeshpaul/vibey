@@ -1,4 +1,4 @@
-const { app } = require('../common/app');
+const { app } = require('../lib/app');
 const { validateTagName, validateTagLength } = require("../middlewares/tags");
 const { isLoggedIn } = require("../middlewares/auth");
 

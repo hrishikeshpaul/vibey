@@ -1,10 +1,10 @@
 
-const { app } = require('../common/app');
+const { app } = require('../lib/app');
 const { generateRandomString, scopes, STATE_KEY } = require("../static/const");
-const { spotifyApi } = require("../common/spotify");
+const { spotifyApi } = require("../lib/spotify");
 const { User } = require("../db/mongo/models/user");
 
-const { setSession } = require("../common/auth");
+const { setSession } = require("../lib/auth");
 const { checkLogin } = require("../middlewares/auth");
 
 /**

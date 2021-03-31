@@ -1,5 +1,5 @@
-const { app } = require('../common/app');
-const { spotifyApi } = require("../common/spotify");
+const { app } = require('../lib/app');
+const { spotifyApi } = require("../lib/spotify");
 const { isLoggedIn } = require("../middlewares/auth");
 
 app.get("/", function (req, res, next) {
