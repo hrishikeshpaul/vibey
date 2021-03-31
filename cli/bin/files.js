@@ -1,3 +1,7 @@
+/**
+ * Basic route file
+ * Imports the app by default and exports it
+ */
 const route = 
 `'use strict';
 const { app } = require('../lib/app');
@@ -10,7 +14,10 @@ const { app } = require('../lib/app');
 
 module.exports = app;
 `
-
+/**
+ * Basic middleware file
+ * Has a basic function
+ */
 const middleware = 
 `'use strict';
 
@@ -26,7 +33,10 @@ module.exports = {
   functionName
 };
 `
-
+/**
+ * Basic JS file.
+ * Used by static and lib files
+ */
 const static = 
 `'use strict';
 

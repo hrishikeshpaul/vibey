@@ -2,6 +2,10 @@ const fs = require('fs-extra');
 const findUp = require('find-up');
 const inquirer = require('inquirer');
 
+/**
+ * Set of input prompts for initializing
+ * cli.json
+ */
 const questions = [
   {
     type: 'input',
@@ -10,6 +14,9 @@ const questions = [
   },
 ]
 
+/**
+ * Input prompts and create cli.json
+ */
 const init = () => {
   inquirer.prompt(questions).then(answers => {
     for(let i in answers) {
@@ -27,12 +34,22 @@ const init = () => {
   })
 }
 
+/**
+ * Read cli.json file
+ * Return the contents of the file or null
+ */
 const read = () => {
   const configPath = findUp.sync(['cli.json']);
   const config = configPath ? JSON.parse(fs.readFileSync(configPath)) : null;
   return config;
 }
 
+/**
+ * Writes a file onto disk by taking specific params
+ * 
+ * @param { string } filePath path of file. appnds the root specified in cli.json
+ * @param { string } file type of type. eg. route, middleware etc
+ */
 const write = (filePath, file) => {
   const root = read().backendRoot;
 
