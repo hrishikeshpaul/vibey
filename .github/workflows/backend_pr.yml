@@ -7,8 +7,8 @@ on:
     paths:
       - 'backend/**'
 jobs:
-  install:
-    name: 'Install Dependencies'
+  tests:
+    name: 'PR'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,25 +28,6 @@ jobs:
       - name: Install Dependencies
         working-directory: ./backend
         run: npm install
-        
-  lint:
-    name: 'Lint Code'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [13.x]
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Lint Code
         working-directory: ./backend
         run: npm run lint
