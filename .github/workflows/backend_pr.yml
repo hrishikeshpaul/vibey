@@ -4,7 +4,6 @@ on:
   pull_request:
     paths:
       - 'backend/'
-  workflow_run:
 jobs:
   tests:
     name: 'PR'
