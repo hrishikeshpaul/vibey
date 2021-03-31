@@ -1,3 +1,6 @@
+/**
+ * Helper text
+ */
 const help = 
 `
 Usage: vibey <module> <command> <name>
