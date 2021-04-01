@@ -2,9 +2,10 @@ name: CLI Deploy
 
 on:
   push:
-    branches: [ cli ]
+    branches:
+      - "cli"
     paths:
-      - 'cli/**'
+      - "cli/**"
   workflow_dispatch:
   
 jobs:
