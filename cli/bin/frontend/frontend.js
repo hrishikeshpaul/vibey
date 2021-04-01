@@ -40,7 +40,7 @@ const frontendUtils = (options) => {
     
     case 'hook':
     case 'h':
-      write(`hooks/use${cName}.hook.ts`, hook, root);
+      write(`hooks/use${cName}.ts`, hook, root);
       break;
     
     case 'service':

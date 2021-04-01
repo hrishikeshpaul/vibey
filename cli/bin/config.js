@@ -42,7 +42,7 @@ const write = (filePath, file, root) => {
     if(err) {
       console.log(err);
     } else {
-      console.log(`Route created: ${root}/${filePath}`);
+      console.log(`File created: ${root}/${filePath}`);
     }
   })
 }

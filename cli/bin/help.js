@@ -21,7 +21,7 @@ Backend Commands:
 Frontend Commands:
   c, comp, component                create react component
   m, mod, module                    create react module
-  h, hook                           create react hook
+  h, hook                           create react hook. prefixes'use'
   s, svc, service                   create react service
   state                             create react state
 
