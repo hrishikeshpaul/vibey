@@ -17,7 +17,7 @@ if (args.length === 0) {
    * Show help if no arguments are provided
    */
   console.log(help);
-} else if (args[0] === 'init') {
+} else if (args[0] === 'init' || args[0] === 'i') {
   /**
    * Initialize the cli.json file
    */
@@ -43,13 +43,21 @@ if (args.length === 0) {
     /**
      * Backend module
      */
+    case 'backend':
+    case 'back':
+    case 'be':
     case 'b':
       backendUtils(args.slice(1, args.length)); break;
+
     /**
      * Frontend module
      */
+    case 'frontend':
+    case 'front':
+    case 'fe':
     case 'f':
       frontendUtils(args.slice(1, args.length)); break;
+
     /**
      * Default show help
      */

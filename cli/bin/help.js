@@ -6,17 +6,24 @@ const help =
 Usage: vibey <module> <command> <name>
 
 Modules:
-  b                   backend. create files on the backend
-  f                   frontend. create files on the fontend
+  b, be, back, backend              backend. create files on the backend
+  f, fe, front, frontend            frontend. create files on the fontend
 
-Commands:
-  init                contigure root directories
+Common Commands:
+  i, init                           contigure root directories
 
-  Backend Commands:
-    route               create router files
-    mid                 create middleware files
-    lib                 create library files
-    st                  create static files
+Backend Commands:
+  r, route                          create router files
+  m, mid, middle, middlware         create middleware files
+  l, lib                            create library files
+  s, st, stat, static               create static files
+
+Frontend Commands:
+  c, comp, component                create react component
+  m, mod, module                    create react module
+  h, hook                           create react hook
+  s, svc, service                   create react service
+  state                             create react state
 
 Example:
   vibey b route auth  - creates a file called auth.js in the routes folder

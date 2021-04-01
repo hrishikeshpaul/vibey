@@ -1,7 +1,19 @@
+/**
+ * Copyright statement
+ */
 const copyright = `/* Copyright (C) 2021 Vibey - All Rights Reserved */`;
 
+/**
+ * Capiralize the first letter for React
+ * 
+ * @param {string} name name of file
+ */
 const capitalize = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
+/**
+ * Create a react component
+ * @param {string} name name of file
+ */
 const component = (name) => {
   const cName = capitalize(name);
 
@@ -27,6 +39,10 @@ export default ${cName};
   )
 }
 
+/**
+ * Create a react module
+ * @param {string} name name of file
+ */
 const mod = (name) => {
   const cName = capitalize(name);
   return (`${copyright}
@@ -50,10 +66,16 @@ export default ${cName};
   ) 
 }
 
+/**
+ * Create an empty ts file as hook
+ */
 const hook = 
 `${copyright}
 `
 
+/**
+ * Create an empty ts file as service
+ */
 const service = 
 `${copyright}
 
@@ -66,6 +88,11 @@ const scss =
 `
 `
 
+/**
+ * Create action types for redux state
+ * 
+ * @param {string} name name of file
+ */
 const actionTypes = (name) => {
   const cName = capitalize(name);
 
@@ -80,6 +107,11 @@ export type ${cName}ActionTypes = null;
   )
 }
 
+/**
+ * Create reducer for redux state
+ * 
+ * @param {string} name name of file
+ */
 const reducer = (name) => {
   const cName = capitalize(name);
 
@@ -106,6 +138,11 @@ export const ${name}Reducer = (
   )
 }
 
+/**
+ * Create action for redux state
+ * 
+ * @param {string} name name of file
+ */
 const action = (name) => {
   return(`${copyright}
 

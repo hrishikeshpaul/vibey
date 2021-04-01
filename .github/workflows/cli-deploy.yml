@@ -3,7 +3,7 @@ name: CLI Deploy
 on:
   push:
     branches:
-      - "cli"
+      - "develop"
   workflow_dispatch:
   
 jobs:
