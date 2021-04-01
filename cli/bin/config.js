@@ -6,31 +6,18 @@ const inquirer = require('inquirer');
  * Set of input prompts for initializing
  * cli.json
  */
-const questions = [
-  {
-    type: 'input',
-    name: 'backendRoot',
-    message: "Root folder for backend? (default src)"
-  },
-]
+const dir = {
+  backendRoot: `${process.cwd()}/src`,
+  frontendRoot: `${process.cwd()}/src/app`,
+}
 
 /**
  * Input prompts and create cli.json
  */
 const init = () => {
-  inquirer.prompt(questions).then(answers => {
-    for(let i in answers) {
-      if(answers[i] === '') {
-        answers[i] = 'src';
-      } else {
-        answers[i] = `${process.cwd()}/${answers[i]}`
-      }
-    }
-
-    fs.writeFile('cli.json', JSON.stringify(answers, null, 2), () => {
-      console.log('You\'re all set! Below is your configuration,\n');
-      console.log(read());
-    })
+  fs.writeFile('cli.json', JSON.stringify(dir, null, 2), () => {
+    console.log('You\'re all set! Below is your configuration,\n');
+    console.log(read());
   })
 }
 
@@ -50,9 +37,7 @@ const read = () => {
  * @param { string } filePath path of file. appnds the root specified in cli.json
  * @param { string } file type of type. eg. route, middleware etc
  */
-const write = (filePath, file) => {
-  const root = read().backendRoot;
-
+const write = (filePath, file, root) => {
   fs.outputFile(`${root}/${filePath}`, file, (err) => {
     if(err) {
       console.log(err);
