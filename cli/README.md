@@ -1,3 +1,3 @@
 # vibey-cli
 
-Command Line Interface for Vibey
+Command Line Interface for Vibey 
