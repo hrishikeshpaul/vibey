@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - "cli"
-    paths:
-      - "cli/**"
   workflow_dispatch:
   
 jobs:
@@ -17,6 +15,7 @@ jobs:
       with:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
+        
     - name: Install Dependencies
       working-directory: ./cli
       run: npm install
