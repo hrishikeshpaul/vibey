@@ -1,11 +1,22 @@
 const { write, read } = require('../config');
 const { component, mod, scss, hook, service, actionTypes, reducer, action } = require('./files');
 
-const filterName = (name) => {
-  const splitName = name.split('/');
+/**
+ * Get the file name for a nested path
+ * 
+ * @param {string} path get path 
+ */
+const filterName = (path) => {
+  const splitName = path.split('/');
   return splitName[splitName.length - 1]
 }
 
+/**
+ * Switches between different types of arguments 
+ * Provides appropriate files for the argument
+ * 
+ * @param { array } options command line arguments
+ */
 const frontendUtils = (options) => {
   const [ type, file ] = [...options];
   const root = read().frontendRoot;
