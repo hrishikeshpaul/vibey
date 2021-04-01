@@ -2,7 +2,8 @@
 "use strict";
 
 const { init, read } = require('./config');
-const { backendUtils } = require('./backend');
+const { backendUtils } = require('./backend/backend');
+const { frontendUtils } = require('./frontend/frontend');
 const { help } = require('./help');
 
 /**
@@ -48,7 +49,7 @@ if (args.length === 0) {
      * Frontend module
      */
     case 'f':
-      console.log('Frontend'); break;
+      frontendUtils(args.slice(1, args.length)); break;
     /**
      * Default show help
      */
