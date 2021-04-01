@@ -4,6 +4,7 @@ import Redirect from "app/modules/redirect/Redirect";
 
 import "./App.scss";
 import Landing from "./modules/landing/landing";
+import Home from "./modules/home/home";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Landing} />
           <Route path="/login" component={Redirect} />
+          <Route path="/home" component={Home} />
         </Switch>
       </Router>
     </div>
