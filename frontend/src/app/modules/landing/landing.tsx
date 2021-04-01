@@ -1,11 +1,11 @@
 import React from "react";
-import "./home.scss";
+import "./landing.scss";
 import Navbar from "app/components/navbar/navbar";
 import { useDispatch } from "react-redux";
 import { getLoginRedirect } from "app/store/user/userActions";
 import Icon from "app/components/icon/icon";
 
-const Home = () => {
+const Landing = () => {
   const dispatch = useDispatch();
 
   /**
@@ -39,4 +39,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Landing;

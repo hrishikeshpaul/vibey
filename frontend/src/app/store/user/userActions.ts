@@ -49,14 +49,16 @@ export const getAuthorization = (
 
   try {
     const res = await authorize(code, state);
+    console.log(res)
     dispatch({
       type: GET_AUTH_SUCCESS,
-      payload: res.response.data,
+      payload: res.data,
     });
     dispatch({
       type: GET_API_SUCCESS,
     });
   } catch (err) {
+    console.log(err)
     dispatch({
       type: GET_API_FAILURE,
       payload: err.response.data,
