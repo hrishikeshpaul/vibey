@@ -17,6 +17,7 @@ const initialState: UserState = {
     display_name: "",
     image: "",
     likes: [],
+    token: ""
   },
 };
 

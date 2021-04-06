@@ -10,7 +10,6 @@ import {
 } from "app/store/system/systemActionTypes";
 import { login, authorize } from "app/services/auth.service";
 
-
 /*
  * Called from Home.tsx
  * login callback returns res.data (query string)
@@ -43,16 +42,21 @@ export const getLoginRedirect = () => async (
  */
 export const getAuthorization = (
   code: string | undefined,
-  state: string | undefined
+  state: string | undefined,
+  history: any
 ) => async (dispatch: Dispatch<UserActionTypes>) => {
   dispatch({ type: GET_API_START });
 
   try {
     const res = await authorize(code, state);
-    console.log(res)
+    const token = res.data.token;
+    localStorage.setItem('v-token', token ? token : '');
+    
+    history.push('/home');
+
     dispatch({
       type: GET_AUTH_SUCCESS,
-      payload: res.data,
+      payload: res.data.user,
     });
     dispatch({
       type: GET_API_SUCCESS,
@@ -61,7 +65,7 @@ export const getAuthorization = (
     console.log(err)
     dispatch({
       type: GET_API_FAILURE,
-      payload: err.response.data,
+      payload: err.data,
     });
   }
 };
