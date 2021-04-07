@@ -9,6 +9,11 @@ type PrivateRouteProps = {
   component: React.ElementType;
 };
 
+/**
+ * Private route to ensure that components are rendered if the user is
+ * logged in.
+ * Also dispatches an action to update the state if the user is loggedin
+ */
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
 }) => {
@@ -28,6 +33,10 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   );
 };
 
+/**
+ * Public route to ensure that if the user is logged in then route to home
+ * Dispatches an action to update the logged in state
+ */
 export const PublicRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
   ...rest
@@ -50,6 +59,9 @@ export const PublicRoute: React.FC<PrivateRouteProps> = ({
   );
 };
 
+/**
+ * Helper function to verify the JWT
+ */
 const checkJWT = () => {
   const token = localStorage.getItem('v-token');
   if(token === null || token === '') {
