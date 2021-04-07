@@ -2,6 +2,7 @@ import React from "react";
 import { RouteProps, Route, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { SET_USER_LOGIN } from "app/store/system/systemActionTypes";
+import { SET_USER } from "app/store/user/userActionTypes";
 
 type PrivateRouteProps = {
   path: RouteProps["path"];
@@ -18,16 +19,22 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
 }) => {
   const dispatch = useDispatch();
-
+  const loggedIn = checkJWT();
   dispatch({
     type: SET_USER_LOGIN,
-    payload: !!localStorage.getItem("v-token")
+    payload: loggedIn
   });
 
+  if(loggedIn) {
+    dispatch({
+      type: SET_USER,
+      payload: JSON.parse(localStorage.getItem('v-user') || '')
+    })
+  }
   return (
     <Route
       render={() =>
-        localStorage.getItem("v-token") ? <Component /> : <Redirect to="/" />
+        loggedIn ? <Component /> : <Redirect to="/" />
       }
     />
   );

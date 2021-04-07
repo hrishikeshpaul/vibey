@@ -42,3 +42,7 @@ export const checkLogin = async() => {
   // const res = axios.get()
   return true
 }
+
+export const logout = async() => {
+  
+}

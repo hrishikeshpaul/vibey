@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+
 import Redirect from "app/modules/redirect/Redirect";
 
 import "./App.scss";

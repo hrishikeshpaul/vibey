@@ -1,8 +1,15 @@
 import {
-  GET_AUTH_SUCCESS,
-  UserState,
+  SET_USER,
   UserActionTypes,
 } from "./userActionTypes";
+import { UserData } from "app/models/user.model";
+
+export interface UserState {
+  /**
+   * Stores the user data in the state
+   */
+  user: UserData;
+}
 
 /**
  * Initial values of the user state
@@ -17,7 +24,6 @@ const initialState: UserState = {
     display_name: "",
     image: "",
     likes: [],
-    token: ""
   },
 };
 
@@ -26,7 +32,7 @@ export const userReducer = (
   action: UserActionTypes
 ): UserState => {
   switch (action.type) {
-    case GET_AUTH_SUCCESS:
+    case SET_USER:
       return {
         ...state,
         user: action.payload,

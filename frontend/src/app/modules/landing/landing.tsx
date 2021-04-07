@@ -1,6 +1,6 @@
 import React from "react";
 import "./landing.scss";
-import Navbar from "app/components/navbar/navbar";
+import Navbar from "app/modules/navbar/navbar";
 import { useDispatch } from "react-redux";
 import { getLoginRedirect } from "app/store/user/userActions";
 import Icon from "app/components/icon/icon";

@@ -11,5 +11,4 @@ export interface UserData {
   display_name: string;
   image: string;
   likes: string[];
-  token: string;
 }

@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import {
-  GET_AUTH_SUCCESS,
+  SET_USER,
   UserActionTypes,
 } from "app/store/user/userActionTypes";
 import {
@@ -23,6 +23,7 @@ export const getLoginRedirect = () => async (
   try {
     const res = await login();
     window.open(res.data, "_self");
+    dispatch({ type: GET_API_SUCCESS });
   } catch (err) {
     dispatch({
       type: GET_API_FAILURE,
@@ -51,16 +52,16 @@ export const getAuthorization = (
     const res = await authorize(code, state);
     const token = res.data.token;
     localStorage.setItem('v-token', token ? token : '');
-    
-    history.push('/home');
+    localStorage.setItem('v-user', JSON.stringify(res.data.user));
 
     dispatch({
-      type: GET_AUTH_SUCCESS,
+      type: SET_USER,
       payload: res.data.user,
     });
     dispatch({
       type: GET_API_SUCCESS,
     });
+    history.push('/home');
   } catch (err) {
     console.log(err)
     dispatch({
@@ -69,3 +70,22 @@ export const getAuthorization = (
     });
   }
 };
+
+export const onLogout = (history: any) => (dispatch: Dispatch<UserActionTypes>) => {
+  localStorage.removeItem('v-token');
+  localStorage.removeItem('v-user');
+  dispatch({
+    type: SET_USER,
+    payload: {
+      id: "",
+      username: "",
+      href: "",
+      uri: "",
+      email: "",
+      display_name: "",
+      image: "",
+      likes: [],
+    }
+  })
+  history.push('/');
+}
