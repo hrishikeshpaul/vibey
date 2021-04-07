@@ -1,4 +1,4 @@
-import { SystemState, SystemActionTypes, GET_API_FAILURE } from "./systemActionTypes";
+import { SystemState, SystemActionTypes, GET_API_FAILURE, SET_USER_LOGIN } from "./systemActionTypes";
 
 /**
  * Initial values for the System State
@@ -6,6 +6,7 @@ import { SystemState, SystemActionTypes, GET_API_FAILURE } from "./systemActionT
 const initialState: SystemState = {
   isLoading: false,
   error: {},
+  isLoggedIn: false
 };
 
 export const systemReducer = (
@@ -17,7 +18,12 @@ export const systemReducer = (
       return {
         ...state,
         error: action.payload
-      }  
+      }
+    case SET_USER_LOGIN:
+      return {
+        ...state,
+        isLoggedIn: action.payload
+      }
     default:
       return state
   }

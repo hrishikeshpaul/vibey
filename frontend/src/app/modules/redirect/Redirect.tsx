@@ -5,7 +5,6 @@ import { getAuthorization } from "app/store/user/userActions";
 import { useHistory } from "react-router-dom";
 
 const Redirect = (props: any) => {
-  console.log('here?')
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -25,10 +24,8 @@ const Redirect = (props: any) => {
          * will look into that soon.
          *
          */
-        console.log(props)
         const results = getQueryParams(props.location.search);
         const [code, state] = [results.get("code"), results.get("state")];
-        console.log('here? EPQOIWEPOQWIEPOQIWEP')
         dispatch(getAuthorization(code, state, history));
       } catch (err) {
         console.log(err)

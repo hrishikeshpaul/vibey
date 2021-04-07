@@ -3,6 +3,7 @@ import { Error } from "app/models/system.model";
 export const GET_API_START = "GET_API_START";
 export const GET_API_FAILURE = "GET_API_FAILURE";
 export const GET_API_SUCCESS = "GET_API_SUCCESS";
+export const SET_USER_LOGIN = "SET_USER_LOGIN";
 
 export interface SystemState {
   /**
@@ -14,6 +15,10 @@ export interface SystemState {
    * Will need to change this to store the status code and message
    */
   error: Error;
+  /**
+   * Denotes if the user is logged in
+   */
+  isLoggedIn: boolean;
 }
 
 /**
@@ -38,4 +43,9 @@ export interface GetApiFailure {
   payload: Error;
 }
 
-export type SystemActionTypes = GetApiStart | GetApiSuccess | GetApiFailure;
+export interface SetUserLogin {
+  type: typeof SET_USER_LOGIN;
+  payload: boolean;
+}
+
+export type SystemActionTypes = GetApiStart | GetApiSuccess | GetApiFailure | SetUserLogin;
