@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ReactComponent as Plus } from 'assets/icons/plus.svg';
+import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
 import "./navbar.scss";
 import { Icon } from "app/components/icon/icon";
 import { UserData } from "app/models/user.model";
-import { Dropdown, Menu } from 'antd';
 import { useHistory } from "react-router-dom";
 import { onLogout } from "app/store/user/userActions";
 
@@ -13,7 +14,7 @@ const Navbar = () => {
   const history = useHistory();
 
   const isLoggedIn = useSelector((state: any) => {
-    return state.systemsystemState.isLoggedIn;
+    return state.system.isLoggedIn;
   });
 
   const userData: UserData = useSelector((state: any) => {
@@ -24,14 +25,6 @@ const Navbar = () => {
     dispatch(onLogout(history));
   }
 
-  const menu = (
-    <Menu>
-      <Menu.Item className="px-4" onClick={handleLogout}>
-        <div>Hello</div>
-      </Menu.Item>
-    </Menu>
-  )
-
   return (
     <div className="container text-white">
       
@@ -41,7 +34,7 @@ const Navbar = () => {
           <div className="d-flex align-items-center">
             <div className="mr-4">
               <button className="btn btn-md btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center">
-                <Icon icon="plus" size={[1, 1]}></Icon>{" "}
+                <Icon Component={Plus} size={[1, 1]}></Icon>{" "}
                 <span className="pl-2">Create Room</span>
               </button>
             </div>
@@ -63,7 +56,7 @@ const Navbar = () => {
             <div className="label">Contact</div>
             <div>
               <button className="btn btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center">
-                <Icon icon="headphones"></Icon>{" "}
+                <Icon Component={Headphones}></Icon>{" "}
                 <span className="pl-2">Start listening</span>
               </button>
             </div>
