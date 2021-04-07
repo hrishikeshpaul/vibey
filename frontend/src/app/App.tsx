@@ -2,12 +2,15 @@ import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Redirect from "app/modules/redirect/Redirect";
+import {ReactComponent as Loading} from 'assets/icons/loading.svg';
 
 import "./App.scss";
 import Landing from "./modules/landing/landing";
 import Home from "./modules/home/home";
 import { PrivateRoute, PublicRoute } from "./utils/PrivateRoute";
 import { Modal } from "react-bootstrap";
+import Icon from "./components/icon/icon";
+
 
 const App = () => {
   const isLoading = useSelector((state: any) => {
@@ -20,15 +23,14 @@ const App = () => {
         size="sm"
         animation={true}
         centered
-        show={false}
+        show={isLoading}
       >
-      
-        <Modal.Header className="bg-danger text-white text-center py-1">
-            <Modal.Title className="text-center">
-              <h5>Delete</h5>
-            </Modal.Title>
-          </Modal.Header>
+        <Modal.Body className="text-center p-4 bg-secondary text-white font-weight-bold">
+          <p className="mb-4">Loading...</p>
+          <Icon Component={Loading}  size={[3, 2]} color="#4aaeae"></Icon>
+        </Modal.Body>
       </Modal>
+
       <Router>
         <Switch>
           <PublicRoute path="/" component={Landing} exact />

@@ -7,6 +7,7 @@ import {
   GET_API_START,
   GET_API_FAILURE,
   GET_API_SUCCESS,
+  SET_USER_LOGIN,
 } from "app/store/system/systemActionTypes";
 import { login, authorize } from "app/services/auth.service";
 
@@ -74,6 +75,7 @@ export const getAuthorization = (
 export const onLogout = (history: any) => (dispatch: Dispatch<UserActionTypes>) => {
   localStorage.removeItem('v-token');
   localStorage.removeItem('v-user');
+  // make an api call here
   dispatch({
     type: SET_USER,
     payload: {
@@ -86,6 +88,10 @@ export const onLogout = (history: any) => (dispatch: Dispatch<UserActionTypes>) 
       image: "",
       likes: [],
     }
+  });
+  dispatch({
+    type: SET_USER_LOGIN,
+    payload: false
   })
   history.push('/');
 }

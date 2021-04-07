@@ -26,11 +26,10 @@ const makeStyles = (color = 'white', size = [1, 1]) => {
 
 export const Icon = (props: PropsWithChildren<IconProps>) => {
   const { color, size, Component } = props;
-
   return (
     <>
       {
-        Component !== undefined ? <Component style={makeStyles(color, size)}></Component> : ""
+        Component !== undefined ? <Component style={makeStyles(color, size)} fill={color || 'white'}></Component> : ""
       }
     </>
     
