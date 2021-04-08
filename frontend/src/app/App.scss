@@ -6,3 +6,16 @@
 #root {
   height: 100%;
 }
+
+
+
+.modal-content {
+  border-radius: 20px !important;
+
+  .close {
+    color: white;
+    &:hover {
+      color: #d5d5d5;
+    }
+  }
+}
