@@ -27,15 +27,15 @@ const frontendUtils = (options) => {
     case 'component':
     case 'comp':
     case 'c':
-      write(`components/${file}.tsx`, component(fileName), root);
-      write(`components/${file}.scss`, scss, root);
+      write(`components/${fileName}/${file}.tsx`, component(fileName), root);
+      write(`components/${fileName}/${file}.scss`, scss, root);
       break;
 
     case 'module':
     case 'mod':
     case 'm':
-      write(`modules/${file}.tsx`, mod(fileName), root);
-      write(`modules/${file}.scss`, scss, root);
+      write(`modules/${fileName}/${file}.tsx`, mod(fileName), root);
+      write(`modules/${fileName}/${file}.scss`, scss, root);
       break;
     
     case 'hook':
