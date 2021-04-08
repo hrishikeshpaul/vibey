@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { getQueryParams } from "app/hooks/useQuery";
 import { useDispatch } from "react-redux";
 import { getAuthorization } from "app/store/user/userActions";
+import { useHistory } from "react-router-dom";
 
 const Redirect = (props: any) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   /*
    * useEffect on initial render only
@@ -24,8 +26,9 @@ const Redirect = (props: any) => {
          */
         const results = getQueryParams(props.location.search);
         const [code, state] = [results.get("code"), results.get("state")];
-        dispatch(getAuthorization(code, state));
+        dispatch(getAuthorization(code, state, history));
       } catch (err) {
+        console.log(err)
         // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don't need this catch?
       }
     };

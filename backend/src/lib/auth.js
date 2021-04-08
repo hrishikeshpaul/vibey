@@ -1,14 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-
 const jwtSecret = process.env.JWT_SECRET;
-
-const setSession = (req, accessToken, refreshToken, user) => {
-  req.session.access_token = accessToken;
-  req.session.refresh_token = refreshToken;
-  req.session.user = user;
-};
 
 /**
  * Generates a JWWT token
@@ -25,13 +18,12 @@ const generateToken = (user) => {
 
   const options = {
     issuer: 'vibey',
-    expiredIn: '1h',
+    expiresIn: '1h',
   };
 
   return jwt.sign(payload, jwtSecret, options);
 };
 
 module.exports = {
-  setSession,
   generateToken,
 };
