@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { ReactComponent as Plus } from 'assets/icons/plus.svg';
 import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
 import "./navbar.scss";
 import { Icon } from "app/components/icon/icon";
 import { UserData } from "app/models/user.model";
-import { useHistory } from "react-router-dom";
-import { onLogout } from "app/store/user/userActions";
 import Profile from '../profile/profile';
 import { Modal } from "react-bootstrap";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
   const [ showProfile, toggleProfile ] = useState(false);
 
   const isLoggedIn = useSelector((state: any) => {
@@ -22,10 +18,6 @@ const Navbar = () => {
   const userData: UserData = useSelector((state: any) => {
     return state.user.user;
   });
-
-  const handleLogout = () => {
-    dispatch(onLogout(history));
-  }
 
   const handleProfile = () => {
     toggleProfile(!showProfile);
