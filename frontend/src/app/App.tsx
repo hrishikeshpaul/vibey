@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Redirect from "app/modules/redirect/Redirect";
 import {ReactComponent as Loading} from 'assets/icons/loading.svg';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 import "./App.scss";
 import Landing from "./modules/landing/landing";

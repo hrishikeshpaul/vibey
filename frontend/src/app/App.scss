@@ -7,10 +7,16 @@
   height: 100%;
 }
 
-
-
 .modal-content {
-  border-radius: 20px !important;
+  background-color: $secondary;
+  -webkit-border-radius: 20px !important;
+  -moz-border-radius: 20px !important;
+  border-radius: 20px !important; 
+
+  .modal-header {
+    border-top-right-radius: 20px !important;
+    border-top-left-radius: 20px !important;
+  }
 
   .close {
     color: white;
@@ -18,4 +24,8 @@
       color: #d5d5d5;
     }
   }
+}
+
+.rounded-lg {
+  border-radius: 10px !important;
 }

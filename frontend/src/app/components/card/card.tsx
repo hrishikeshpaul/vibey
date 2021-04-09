@@ -2,15 +2,18 @@
 
 import React, { PropsWithChildren } from 'react';
 import './card.scss'
+import { Room } from 'app/models/room.model';
 
 type CardProps = {
-  card: string;
+  room: Room;
 }
     
 const Card = (props: PropsWithChildren<CardProps>) => {
+  const { room } = props;
+
   return (
     <div>
-        
+        Hello
     </div>
   )
 }
