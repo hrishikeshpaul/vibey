@@ -22,7 +22,7 @@ const component = (name) => {
 import React, { PropsWithChildren } from 'react';
 import './${name}.scss'
 
-type ${cName}Props {
+type ${cName}Props = {
 
 }
     
