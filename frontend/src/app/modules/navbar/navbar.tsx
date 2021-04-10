@@ -15,11 +15,11 @@ import {
   PopoverBody,
   PopoverArrow,
 } from "@chakra-ui/react";
+import { Avatar } from "@chakra-ui/react"
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const [showProfile, toggleProfile] = useState(false);
-
+  
   const isLoggedIn = useSelector((state: any) => {
     return state.system.isLoggedIn;
   });
@@ -27,10 +27,6 @@ const Navbar = () => {
   const userData: UserData = useSelector((state: any) => {
     return state.user.user;
   });
-
-  const handleProfile = () => {
-    toggleProfile(!showProfile);
-  };
 
   const handleOpenCreateRoom = () => {
     dispatch({ type: SET_CREATE_ROOM_MODAL, payload: true });
@@ -53,14 +49,8 @@ const Navbar = () => {
             </div>
             <Popover>
               <PopoverTrigger>
-                <div className="profile-wrapper">
-                  <img
-                    onClick={handleProfile}
-                    className="profile-picture"
-                    src={userData.image}
-                    alt="User Pic"
-                  />
-                  <div className={`profile`}></div>
+                <div className="profile-wrapper avatar">
+                  <Avatar name={userData.display_name} src={userData.image} />
                 </div>
               </PopoverTrigger>
               <PopoverContent className="bg-secondary border-0">
