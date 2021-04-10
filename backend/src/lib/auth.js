@@ -25,7 +25,7 @@ const generateToken = (user) => {
 
   const options = {
     issuer: 'vibey',
-    expiredIn: '1h',
+    expiresIn: '1h',
   };
 
   return jwt.sign(payload, jwtSecret, options);

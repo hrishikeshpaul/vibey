@@ -7,6 +7,7 @@ const { User } = require('../db/mongo/models/user');
 
 const { setSession, generateToken } = require('../lib/auth');
 const { checkLogin } = require('../middlewares/auth');
+const { redisClient } = require('../db/redis/config');
 
 
 /**
@@ -60,7 +61,8 @@ app.get('/authorize', async(req, res) => {
       loggedUser['token'] = generateToken(loggedUser);
       res.send(loggedUser);
     } catch (err) {
-      res.status(err.statusCode).send(err);
+      console.log('err: ', err);
+      res.status(500).send(err);
     }
   }
 });
@@ -72,11 +74,19 @@ app.get('/authorize', async(req, res) => {
  *
  */
 app.get('/logout', async(req, res) => {
-  req.session.destroy(function() {
-    spotifyApi.setAccessToken('');
-    spotifyApi.setRefreshToken('');
-    res.redirect('http://localhost:5555/');
-  });
+  // reads the current jwt
+  // adds the jwt to the blacklist
+  const token = req.headers.authorization;
+  if (token) {
+    try {
+      await redisClient.LPUSH('jwt-blacklist', token);
+    } catch (err) {
+      res.status(500).json({ error: 'Error blacklisting token' });
+    }
+  }
+  spotifyApi.setAccessToken('');
+  spotifyApi.setRefreshToken('');
+  res.redirect('http://localhost:5555/');
 });
 
 module.exports = app;
