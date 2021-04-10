@@ -2,8 +2,23 @@
 
 import React, { PropsWithChildren, useState, useEffect } from "react";
 import "./create.scss";
-import Select from '../select/select';
+import Select from "../select/select";
 import { Tag } from "app/models/tag.model";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Input,
+  Textarea,
+  InputGroup,
+  InputRightElement,
+  Tooltip,
+} from "@chakra-ui/react";
+import { TiWarning } from "react-icons/ti";
 
 type CreateProps = {
   open: boolean;
@@ -15,7 +30,7 @@ const initialRoomValues = {
   description: "",
   tags: [],
   error: false,
-}
+};
 
 const Create = (props: PropsWithChildren<CreateProps>) => {
   const { open, close } = props;
@@ -26,8 +41,7 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
   }, []);
 
   useEffect(() => {
-    console.log('h')
-  }, [room.name])
+  }, [room.name]);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
@@ -55,13 +69,89 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
     }));
   };
 
+  const handleUpdateTags = (tags: any) => {
+    console.log('taggs, ', tags)
+  }
+
   const tagOptions: Tag[] = [
-    {name: "edm", value: "edm", score: 0},
-    {name: "rock", value: "rock", score: 0}
+    { label: "edm", value: "edm", score: 12 },
+    { label: "rock", value: "rock", score: 2 },
   ];
 
   return (
-    <></>
+    <div>
+      <Modal
+        isOpen={open}
+        onClose={close}
+        size="xl"
+        isCentered={true}
+        autoFocus={false}
+        closeOnOverlayClick={false}
+      >
+        <ModalOverlay />
+        <ModalContent className="bg-secondary text-white rounded-modal py-2">
+          <ModalHeader>
+            <span className="h4 m-0 font-weight-bolder">Create a room</span>
+            <ModalCloseButton className="mt-3" />
+          </ModalHeader>
+
+          <ModalBody>
+            <form id="create-form" onSubmit={(e) => onSubmit(e)}>
+              <div>
+                <label>Room Name</label>
+                <InputGroup>
+                  <Input
+                    isInvalid={room.error}
+                    placeholder="Enter a catchy room name!"
+                    onChange={handleChange}
+                    type="text"
+                    variant="filled"
+                    className="bg-light input-field rounded-lg"
+                    name="name"
+                  />
+                  {room.error ? (
+                    <Tooltip label="Please enter a valid room name!" aria-label="Please enter a valid room name!" className="bg-danger">
+                      <InputRightElement
+                        children={<TiWarning className="text-danger" />}
+                      />
+                    </Tooltip>
+                  ) : (
+                    ""
+                  )}
+                </InputGroup>
+              </div>
+
+              <div className="mt-4">
+                <label>Room Description</label>
+                <Textarea
+                  className="bg-light input-field rounded-lg"
+                  variant="filled"
+                  type="text"
+                  placeholder="What type of music will you be playing in the room?"
+                  size="sm"
+                />
+              </div>
+              <div className="mt-3">
+                <label>Tags</label>
+                <Select inputValue="" tags={tagOptions} updateTags={handleUpdateTags} presentTags={tagOptions}></Select>
+              </div>
+            </form>
+          </ModalBody>
+
+          <ModalFooter>
+            <div className="text-right mt-3">
+              <button
+                className="btn btn-primary font-weight-bold"
+                type="submit"
+                form="create-form"
+              >
+                Create Room
+              </button>
+            </div>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </div>
     // <Modal
     //   show={open}
     //   size="lg"

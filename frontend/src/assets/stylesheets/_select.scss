@@ -1,24 +1,39 @@
 @import './colors';
 
+.css-2b097c-container {
+  outline: none !important;
+}
+
 .select__control {
   background-color: $light !important;
-  border: 2px solid #808080 !important;
   transition: border 0.5s ease-in-out;
-  border-radius: 10px !important;
+  border-radius: 0.5rem !important;
   outline: none !important;
-
-  &:hover {
-    border: 2px solid #bbbbbb !important;
-  }
+  border: 0 !important;
 
   &:focus {
-    border: 2px solid #dcdcdc !important;
+    border: 2px solid $primary !important;
     outline: none !important;
   }
+   
+  .select__value-container:focus {
+    border: 2px solid $primary !important;
+    outline: none !important;
+  }
+
+  .select__placeholder {
+    color: #919CAA;
+  }
+   
 }
 
 .select__input {
   color: white !important;
+
+  &:focus {
+    border: 2px solid $primary !important;
+    outline: none !important;
+  }
 }
 
 .select__menu {
@@ -69,6 +84,10 @@
 
   &:active {
     background-color: none !important;
+  }
+
+  &::after {
+    content: attr(data-tag-value);
   }
 }
 

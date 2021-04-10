@@ -27,7 +27,7 @@ const Loading = (props: PropsWithChildren<LoadingProps>) => {
         <ModalOverlay />
         <ModalContent className="bg-secondary text-white">
           <ModalHeader className="text-center">Loading...</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton className="loading-close" />
           <ModalBody className="d-flex justify-content-center pb-4 pt-2">
             <Icon Component={LoadingIcon} size={[2.5, 2.5]} color="#4aaeae"></Icon>
           </ModalBody>

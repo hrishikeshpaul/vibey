@@ -5,6 +5,7 @@
 
 #root {
   height: 100%;
+  
 }
 
 .modal-content {
@@ -27,5 +28,9 @@
 }
 
 .rounded-lg {
-  border-radius: 10px !important;
+  border-radius: 0.5rem !important;
+}
+
+.rounded-modal {
+  border-radius: 1rem !important;
 }
