@@ -1,4 +1,6 @@
 @import 'assets/stylesheets/colors';
+@import 'assets/stylesheets/select';
+
 
 label {
   font-weight: 700;
@@ -34,77 +36,4 @@ textarea {
   &:focus {
     border: 2px solid #dcdcdc !important;
   }
-}
-.css-2b097c-container:focus {
-  outline: none !important;
-}
-.select__control {
-  background-color: $light !important;
-  border: 2px solid #808080 !important;
-  transition: border 0.5s ease-in-out;
-  border-radius: 10px !important;
-  outline: none !important;
-
-  &:hover {
-    border: 2px solid #bbbbbb !important;
-  }
-
-  &:focus {
-    border: 2px solid #dcdcdc !important;
-    outline: none !important;
-  }
-}
-
-.select__input {
-  color: white !important;
-}
-
-.select__menu {
-  background-color: $light !important; //#505050
-}
-
-.select__multi-value {
-  background-color: $primary !important;
-  border-radius: 0.5rem !important;
-  &__label {
-    color: white !important;
-    font-weight: 700 !important;
-  }
-
-  .select__multi-value__remove {
-    border-radius: 0.5rem !important;
-    margin-left: 2px;
-    &:hover {
-      color: white !important;
-      cursor: pointer;
-      background-color: darken($primary, $amount: 10%);
-    }
-  }
-}
-
-.select__indicator {
-  cursor: pointer;
-  &:hover {
-    color: white !important;
-  }
-}
-
-.select__dropdown-indicator, .select__indicator-separator {
-  display: none !important;
-}
-
-.select__option {
-  background-color: none !important;
-  &:hover {
-    background-color: #747474 !important;
-    cursor: pointer
-  }
-
-  &:active {
-    background-color: none !important;
-  }
-}
-
-.select__option--is-focused {
-  background-color: transparent !important;
 }

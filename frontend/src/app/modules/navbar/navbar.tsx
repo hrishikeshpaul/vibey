@@ -1,4 +1,4 @@
-import React, { useState, PropsWithChildren } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as Plus } from 'assets/icons/plus.svg';
 import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
@@ -6,7 +6,6 @@ import "./navbar.scss";
 import { Icon } from "app/components/icon/icon";
 import { UserData } from "app/models/user.model";
 import Profile from '../profile/profile';
-import { Modal, Nav } from "react-bootstrap";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
 
 const Navbar = () => {
@@ -49,7 +48,7 @@ const Navbar = () => {
                   alt="User Pic"
                 />
               <div className={`profile`}>
-                <Modal 
+                {/* <Modal 
                   show={showProfile} 
                   onHide={handleProfile}
                   size="sm"
@@ -63,7 +62,7 @@ const Navbar = () => {
                   <Modal.Body className="bg-secondary w-100">
                     <Profile />
                   </Modal.Body>
-                </Modal>
+                </Modal> */}
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ import Navbar from "app/modules/navbar/navbar";
 import { useDispatch } from "react-redux";
 import { getLoginRedirect } from "app/store/user/userActions";
 import Icon from "app/components/icon/icon";
+import { Button, ButtonGroup } from "@chakra-ui/react"
 
 import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
 import { ReactComponent as Spotify } from 'assets/icons/spotify.svg';
