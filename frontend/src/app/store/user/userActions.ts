@@ -1,15 +1,15 @@
 import { Dispatch } from "redux";
 import {
-  GET_AUTH_SUCCESS,
+  SET_USER,
   UserActionTypes,
 } from "app/store/user/userActionTypes";
 import {
   GET_API_START,
   GET_API_FAILURE,
   GET_API_SUCCESS,
+  SET_USER_LOGIN,
 } from "app/store/system/systemActionTypes";
 import { login, authorize } from "app/services/auth.service";
-
 
 /*
  * Called from Home.tsx
@@ -24,6 +24,7 @@ export const getLoginRedirect = () => async (
   try {
     const res = await login();
     window.open(res.data, "_self");
+    dispatch({ type: GET_API_SUCCESS });
   } catch (err) {
     dispatch({
       type: GET_API_FAILURE,
@@ -43,25 +44,54 @@ export const getLoginRedirect = () => async (
  */
 export const getAuthorization = (
   code: string | undefined,
-  state: string | undefined
+  state: string | undefined,
+  history: any
 ) => async (dispatch: Dispatch<UserActionTypes>) => {
   dispatch({ type: GET_API_START });
 
   try {
     const res = await authorize(code, state);
-    console.log(res)
+    const token = res.data.token;
+    localStorage.setItem('v-token', token ? token : '');
+    localStorage.setItem('v-user', JSON.stringify(res.data.user));
+
     dispatch({
-      type: GET_AUTH_SUCCESS,
-      payload: res.data,
+      type: SET_USER,
+      payload: res.data.user,
     });
     dispatch({
       type: GET_API_SUCCESS,
     });
+    history.push('/home');
   } catch (err) {
     console.log(err)
     dispatch({
       type: GET_API_FAILURE,
-      payload: err.response.data,
+      payload: err.data,
     });
   }
 };
+
+export const onLogout = (history: any) => (dispatch: Dispatch<UserActionTypes>) => {
+  localStorage.removeItem('v-token');
+  localStorage.removeItem('v-user');
+  // make an api call here
+  dispatch({
+    type: SET_USER,
+    payload: {
+      id: "",
+      username: "",
+      href: "",
+      uri: "",
+      email: "",
+      display_name: "",
+      image: "",
+      likes: [],
+    }
+  });
+  dispatch({
+    type: SET_USER_LOGIN,
+    payload: false
+  })
+  history.push('/');
+}

@@ -1,14 +1,7 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-
 const jwtSecret = process.env.JWT_SECRET;
-
-const setSession = (req, accessToken, refreshToken, user) => {
-  req.session.access_token = accessToken;
-  req.session.refresh_token = refreshToken;
-  req.session.user = user;
-};
 
 /**
  * Generates a JWWT token
@@ -32,6 +25,5 @@ const generateToken = (user) => {
 };
 
 module.exports = {
-  setSession,
   generateToken,
 };

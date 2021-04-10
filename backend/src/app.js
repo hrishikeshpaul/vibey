@@ -7,8 +7,6 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cors = require('cors');
-const session = require('express-session');
-const { redisClient, redisStore } = require('./db/redis/config');
 const cookieParser = require('cookie-parser');
 
 
@@ -30,16 +28,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    name: 'vss',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false, maxAge: 360000 },
-    store: new redisStore({ client: redisClient, ttl: 3600 }),
-  }),
-);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

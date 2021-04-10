@@ -1,9 +1,12 @@
 import React from "react";
 import "./landing.scss";
-import Navbar from "app/components/navbar/navbar";
+import Navbar from "app/modules/navbar/navbar";
 import { useDispatch } from "react-redux";
 import { getLoginRedirect } from "app/store/user/userActions";
 import Icon from "app/components/icon/icon";
+
+import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
+import { ReactComponent as Spotify } from 'assets/icons/spotify.svg';
 
 const Landing = () => {
   const dispatch = useDispatch();
@@ -30,7 +33,7 @@ const Landing = () => {
             className="btn btn-lg btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center"
             onClick={handleSignIn}
           >
-            <Icon icon="spotify" size={[1.5, 1.5]}></Icon>{" "}
+            <Icon size={[1.5, 1.5]} Component={Spotify}></Icon>{" "}
             <span className="pl-3">Sign in via Spotify</span>
           </button>
         </div>

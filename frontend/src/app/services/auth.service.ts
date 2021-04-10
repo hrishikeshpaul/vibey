@@ -9,7 +9,7 @@ import axios from "app/hooks/useAxios";
  *
  */
 export const login = async (): Promise<any> => {
-  return await axios.get(LOGIN_URL);
+  return axios.get(LOGIN_URL);
 };
 
 /*
@@ -24,10 +24,25 @@ export const authorize = async (
   code: string | undefined,
   state: string | undefined
 ): Promise<any> => {
-  return await axios.get(AUTHORIZE_URL, {
+  return axios.get(AUTHORIZE_URL, {
     params: {
       code: code,
       state: state,
     },
   });
 };
+
+/**
+ * 
+ * @param jwt jwt from the local storage
+ */
+export const checkLogin = async() => {
+  // make api call
+  const jwt = localStorage.getItem('v-token')
+  // const res = axios.get()
+  return true
+}
+
+export const logout = async() => {
+  
+}
