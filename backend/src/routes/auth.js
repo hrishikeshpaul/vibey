@@ -6,6 +6,8 @@ const { spotifyApi } = require('../lib/spotify');
 const { User } = require('../db/mongo/models/user');
 const { generateToken } = require('../lib/auth');
 const { redisClient } = require('../db/redis/config');
+const { isLoggedIn } = require('../middlewares/auth');
+const { ErrorHandler } = require('../lib/errors');
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
@@ -13,7 +15,6 @@ const { redisClient } = require('../db/redis/config');
  * Redirects to call back which then gets the access token and refresh token
  */
 app.get('/login', (req, res) => {
-
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.send(spotifyApi.createAuthorizeURL(scopes, state, true));
@@ -59,31 +60,33 @@ app.get('/authorize', async(req, res) => {
       });
     } catch (err) {
       console.log('err: ', err);
-      res.status(500).send(err);
+      throw new ErrorHandler(500, 'Internal Server Error');
     }
   }
 });
 
 /**
- * Destroys the current session
- * Redirects to home page, where a new session is
- * created (new session lacks tokens)
- *
+ * Reads the user's jwt, verifies it, adds to blacklist,
+ * then wipes the spotify access and refresh token
+ * sends 204 no response on success
  */
-app.get('/logout', async(req, res) => {
-  // reads the current jwt
-  // adds the jwt to the blacklist
+app.post('/logout', isLoggedIn, (req, res) => {
   const token = req.headers.authorization;
   if (token) {
     try {
-      await redisClient.LPUSH('jwt-blacklist', token);
+      redisClient.set(token, true, function(err, reply) {
+        if (err) {
+          // wondering how to catch this error
+          throw new ErrorHandler(500, 'Error setting token to Blacklist');
+        }
+      });
     } catch (err) {
-      res.status(500).json({ error: 'Error blacklisting token' });
+      throw new ErrorHandler(500, 'Error Blacklisting Token');
     }
   }
   spotifyApi.setAccessToken('');
   spotifyApi.setRefreshToken('');
-  res.redirect('http://localhost:5555/');
+  res.status(204);
 });
 
 module.exports = app;
