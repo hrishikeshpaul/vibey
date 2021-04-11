@@ -9,11 +9,12 @@ const logger = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
-
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const tagRouter = require('./routes/tag');
+
+const { handleError } = require('./lib/errors');
 
 const app = express();
 
@@ -34,5 +35,9 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/tag', tagRouter);
+
+app.use((err, req, res, next) => {
+  handleError(err, res);
+});
 
 module.exports = app;
