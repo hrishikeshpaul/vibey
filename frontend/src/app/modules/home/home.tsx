@@ -13,7 +13,7 @@ const Home = () => {
   const createModal = useSelector((state: any) => state.system.createOpen)
 
   const onCreateModalClose = (room: any | undefined) => {
-    console.log(room)
+    console.log('home', {room})
     dispatch({type: SET_CREATE_ROOM_MODAL, payload: false})
   }
 

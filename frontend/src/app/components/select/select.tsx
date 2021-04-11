@@ -15,21 +15,36 @@ type State = {
 };
 
 const tagOptions: Tag[] = [
-  { label: "edm", value: "edm", score: 12 },
-  { label: "rock2", value: "rock2", score: 2 },
-  { label: "rock3", value: "rock3", score: 22 },
-  { label: "rock4", value: "rock4", score: 52 },
-  { label: "rock5", value: "rock5", score: 16 },
-  { label: "rock6", value: "rock6", score: 7 },
-  { label: "rock7", value: "rock7", score: 7 },
-  { label: "rock8", value: "rock8", score: 7 },
-
-];
+  {'label': 'pop-0', 'value': 'pop-0', 'score': 90},
+  {'label': 'pop-4', 'value': 'pop-4', 'score': 81},
+  {'label': 'pop-5', 'value': 'pop-5', 'score': 77},
+  {'label': 'pop-6', 'value': 'pop-6', 'score': 77},
+  {'label': 'pop-9', 'value': 'pop-9', 'score': 75},
+  {'label': 'pop-7', 'value': 'pop-7', 'score': 74},
+  {'label': 'pop-17', 'value': 'pop-17', 'score': 69},
+  {'label': 'pop-2', 'value': 'pop-2', 'score': 68},
+  {'label': 'rock-11', 'value': 'rock-11', 'score': 61},
+  {'label': 'country-8', 'value': 'country-8', 'score': 59},
+  {'label': 'edm-18', 'value': 'edm-18', 'score': 52},
+  {'label': 'country-14', 'value': 'country-14', 'score': 49},
+  {'label': 'rock-13', 'value': 'rock-13', 'score': 32},
+  {'label': 'pop-1', 'value': 'pop-1', 'score': 28},
+  {'label': 'country-19', 'value': 'country-19', 'score': 28},
+  {'label': 'pop-15', 'value': 'pop-15', 'score': 21},
+  {'label': 'pop-12', 'value': 'pop-12', 'score': 14},
+  {'label': 'edm-16', 'value': 'edm-16', 'score': 5},
+  {'label': 'pop-3', 'value': 'pop-3', 'score': 3},
+  {'label': 'pop-10', 'value': 'pop-10', 'score': 3},
+  ]
 
 
 const Select = (props: State) => {
   const { updateTags, presentTags } = props;
-  const [ tags, setTags ] = useState<Tag[]>(tagOptions);
+  const [ tags, setTags ] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    getTagsFromSubstring();
+  }, [])
 
   /**
    * When a tag is selected or created this function is called
@@ -58,8 +73,9 @@ const Select = (props: State) => {
     }
   }
 
-  const getTagsFromSubstring = (substr: string) => {
+  const getTagsFromSubstring = (substr?: string) => {
     // make api call here and populate tags
+    // setTags(response)
   }
 
   return (

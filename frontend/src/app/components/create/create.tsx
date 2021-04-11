@@ -3,7 +3,6 @@
 import React, { PropsWithChildren, useState, useEffect } from "react";
 import "./create.scss";
 import Select from "../select/select";
-import { Tag } from "app/models/tag.model";
 import {
   Modal,
   ModalOverlay,
@@ -37,23 +36,29 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
   const { open, close } = props;
   const [room, setRoom] = useState(initialRoomValues);
 
+  /**
+   * Set room to initial room when create modal pops up
+   */
   useEffect(() => {
-    console.log('here')
     setRoom(initialRoomValues);
-    console.log({room})
   }, []);
 
-  useEffect(() => {}, [room.name]);
-
+  /**
+   * Submits the rom that emits an event with the room details 
+   * and closes the modal
+   * @param e form data - has all the details of a room
+   */
   const onSubmit = (e: any) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log('em')
       close(room);
       setRoom(initialRoomValues);
     }
   };
 
+  /**
+   * Validates the form to see if the room name is present
+   */
   const validateForm = () => {
     if (!room.name) {
       setRoom((prev) => ({
@@ -65,6 +70,11 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
     return true;
   };
 
+  /**
+   * Updates the room name and description on change
+   * 
+   * @param e event to update name and description
+   */
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setRoom((prev) => ({
@@ -73,6 +83,12 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
     }));
   };
 
+  /**
+   * Adds a tag emitted from the Select component to the 
+   * room state
+   * 
+   * @param tag tag that has been added
+   */
   const handleUpdateTags = (tag: any) => {
     const currentTags = room.tags;
     if (tag) {
@@ -81,9 +97,7 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
         tags: currentTags.concat(tag)
       }))
     }
-    
   };
-
 
   return (
     <div>
