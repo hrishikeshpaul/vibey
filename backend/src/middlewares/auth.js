@@ -2,23 +2,46 @@
 
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
-const { redisClient } = require('../db/redis/config');
+const { redisJwtClient } = require('../db/redis/config');
+const { ErrorHandler } = require('../lib/errors');
 
-const isLoggedIn = (req, res, next) => {
+const isLoggedIn = async(req, res, next) => {
   const token = req.headers.authorization;
   try {
     if (token) {
-      // do these need to have 'await' in front of them?
-      // check if token is in blacklist, throws error if found in blacklist
-      checkBlacklist(token);
       // jwt verify the token
-      verifyToken(token);
+      await verifyToken(token, req);
+      console.log('decoded: ', req.decoded);
+      // check if token is in blacklist, throws error if found in blacklist
+      checkBlacklist(token, next);
     } else {
-      return res.status(401).json({ error: 'Unauthorized' });
+      throw new ErrorHandler(401, 'Token required');
     }
   } catch (err) {
-    res.status(500).json({ error: 'Something went wrong'});
+    next(err);
   }
+  next();
+};
+
+const checkBlacklist = (token, next) => {
+  redisJwtClient.get(token, (err, reply) => {
+    if (err) {
+      next(new ErrorHandler(500, 'Something unexpected happened'));
+    }
+    if (reply) {
+      next(new ErrorHandler(401, 'Token Blacklisted'));
+    }
+  });
+};
+
+const verifyToken = async(token, req) => {
+  jwt.verify(token, jwtSecret, (err, decoded) => {
+    if (err) {
+      throw new ErrorHandler(401, 'Error verifying token');
+    } else {
+      req.decoded = decoded;
+    }
+  });
 };
 
 const checkLogin = (req, res, next) => {
@@ -26,33 +49,6 @@ const checkLogin = (req, res, next) => {
     return res.redirect('/home');
   }
   next();
-};
-
-
-const checkBlacklist = async(token) => {
-  try {
-    // get blacklist
-    const result = await redisClient.lrange('jwt-blacklist', 0, 99999999);
-    // throw error if token is in blacklist
-    if (result.indexOf(token) > -1) {
-      throw new Error('Invalid Token');
-    }
-    // otherwise proceed
-    return;
-  } catch (err) {
-    // fix this handler when we move to production
-    throw new Error('Error at validateJwt');
-  }
-};
-
-const verifyToken = async(token) => {
-  jwt.verify(token, jwtSecret, (err, decoded) => {
-    if (err) {
-      throw new Error('Invalid Token');
-    } else {
-      return decoded;
-    }
-  });
 };
 
 module.exports = {
