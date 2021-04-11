@@ -1,73 +1,63 @@
-import React, { useState } from "react";
+
+
+import React from "react";
 import { Tag } from "../../models/tag.model";
-import AsyncCreatableSelect from "react-select/async-creatable";
-import { components } from "react-select";
-import { Badge } from "@chakra-ui/react";
+import CreatableSelect from 'react-select/creatable';
+import { OptionsType,  } from "react-select";
+import { SelectOption, NoSelectOption } from './select-option';
 
-
+/**
+ * @var tags list of tags to be displayed in the option
+ * @function updateTags function emitted that contains the updated tags
+ */
 type State = {
-  inputValue: string;
   tags: Tag[];
-  updateTags: (tags: any) => void;
+  updateTags: (tag: Tag) => void;
   presentTags: Tag[];
+  getTagsFromSubstring: (substr: string) => void;
 };
 
 const Select = (props: State) => {
-  const { tags, updateTags, presentTags } = props;
+  const { tags, updateTags, presentTags, getTagsFromSubstring } = props;
 
-  const filterTags = (inputValue: string) => {
-    return tags.filter((i: Tag) =>
-      i.label.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  };
-
-  const promiseOptions = (
-    inputValue: string
-  ): Promise<{ label: string; value: string }[]> =>
-  // make axios call and return the results
-    new Promise((resolve) => {
-      setTimeout(() => {
-        const json = filterTags(inputValue);
-        resolve(json);
-      }, 1000);
-    });
-
-  const handleKeydown = (e: any) => {
-    if (e.keyCode === 13) {
-      console.log(e.target.value);
-    }
-  };
-
-  const Option = (props: any) => {
-    return (
-      <components.Option {...props}>
-        <span>{props.data.label}</span>{" "}
-        <Badge className="bg-primary rounded-sm ml-1 text-white">
-          {props.data.score}
-        </Badge>
-      </components.Option>
-    );
-  };
-
-  const handleSelectionChange = (tags: any) => {
+  /**
+   * When a tag is selected or created this function is called
+   * To avoid duplicating previous tags, this sends back the
+   * newly added tag to the parent component. 
+   * 
+   * @param tags list of tags from the select
+   */
+  const handleSelectionChange = (tags: OptionsType<Tag>) => {
     if (tags.length) {
-      updateTags(tags);
+      updateTags(tags[tags.length - 1]);
     }
   };
+
+  /**
+   * When the user types letters, the search should be updated.
+   * This mocks a basic debounce of 250ms 
+   * 
+   * @param input typed string values
+   */
+  const handleInputchange = (input: string) => {
+    if(input) {
+      setTimeout(()=> {
+        getTagsFromSubstring(input);
+      }, 250)
+    }
+  }
 
   return (
     <div>
-      <AsyncCreatableSelect
-        classNamePrefix="select"
+      <CreatableSelect
         isMulti
-        cacheOptions
+        classNamePrefix="select"
         defaultValue={presentTags}
-        defaultOptions={presentTags}
-        onKeyDown={handleKeydown}
-        loadOptions={promiseOptions}
-        components={{ Option: Option }}
-        placeholder="Type to add tags..."
         onChange={handleSelectionChange}
+        cacheOptions
+        options={tags}
+        components={{ Option: SelectOption, NoOptionsMessage: NoSelectOption }}
+        onInputChange={handleInputchange}
       />
     </div>
   );

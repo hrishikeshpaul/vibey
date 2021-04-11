@@ -32,21 +32,33 @@ const initialRoomValues = {
   error: false,
 };
 
+const tagOptions: Tag[] = [
+  // { label: "edm", value: "edm", score: 12 },
+  // { label: "rock2", value: "rock2", score: 2 },
+  // { label: "rock3", value: "rock3", score: 22 },
+  // { label: "rock4", value: "rock4", score: 52 },
+  // { label: "rock5", value: "rock5", score: 16 },
+  // { label: "rock6", value: "rock6", score: 7 },
+];
+
 const Create = (props: PropsWithChildren<CreateProps>) => {
   const { open, close } = props;
   const [room, setRoom] = useState(initialRoomValues);
 
   useEffect(() => {
+    console.log('here')
     setRoom(initialRoomValues);
+    console.log({room})
   }, []);
 
-  useEffect(() => {
-  }, [room.name]);
+  useEffect(() => {}, [room.name]);
 
   const onSubmit = (e: any) => {
     e.preventDefault();
     if (validateForm()) {
+      console.log('em')
       close(room);
+      setRoom(initialRoomValues);
     }
   };
 
@@ -69,14 +81,21 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
     }));
   };
 
-  const handleUpdateTags = (tags: any) => {
-    console.log('taggs, ', tags)
-  }
+  const handleUpdateTags = (tag: any) => {
+    const currentTags = room.tags;
+    if (tag) {
+      setRoom((prev) => ({
+        ...prev,
+        tags: currentTags.concat(tag)
+      }))
+    }
+    
+  };
 
-  const tagOptions: Tag[] = [
-    { label: "edm", value: "edm", score: 12 },
-    { label: "rock", value: "rock", score: 2 },
-  ];
+  const getTagsFromSubstring = (substr: string) => {
+    
+  };
+
 
   return (
     <div>
@@ -108,9 +127,14 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
                     variant="filled"
                     className="bg-light input-field rounded-lg"
                     name="name"
+                    value={room.name}
                   />
                   {room.error ? (
-                    <Tooltip label="Please enter a valid room name!" aria-label="Please enter a valid room name!" className="bg-danger">
+                    <Tooltip
+                      label="Please enter a valid room name!"
+                      aria-label="Please enter a valid room name!"
+                      className="bg-danger"
+                    >
                       <InputRightElement
                         children={<TiWarning className="text-danger" />}
                       />
@@ -129,11 +153,19 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
                   type="text"
                   placeholder="What type of music will you be playing in the room?"
                   size="sm"
+                  onChange={handleChange}
+                  name="description"
+                  value={room.description}
                 />
               </div>
               <div className="mt-3">
                 <label>Tags</label>
-                <Select inputValue="" tags={tagOptions} updateTags={handleUpdateTags} presentTags={tagOptions}></Select>
+                <Select
+                  tags={tagOptions}
+                  updateTags={handleUpdateTags}
+                  presentTags={room.tags}
+                  getTagsFromSubstring={getTagsFromSubstring}
+                ></Select>
               </div>
             </form>
           </ModalBody>
@@ -152,65 +184,6 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
         </ModalContent>
       </Modal>
     </div>
-    // <Modal
-    //   show={open}
-    //   size="lg"
-    //   centered
-    //   onHide={close}
-    //   animation={true}
-    //   backdrop="static"
-    //   dialogClassName="text-white"
-    // >
-    //   <Modal.Header
-    //     className="text-white bg-secondary border-0 p-4"
-    //     closeButton
-    //   >
-    //     <span className="h4 m-0">Create a room</span>
-    //   </Modal.Header>
-    //   <Modal.Body className="bg-secondary text-white p-4">
-    //     <form id="create-form" onSubmit={(e) => onSubmit(e)}>
-    //       <div>
-    //         <label>Room Name</label>
-    //         <input
-    //           className="form-control bg-light border-0 text-white rounded-lg"
-    //           placeholder="Enter a catchy room name!"
-    //           onChange={handleChange}
-    //           type="text"
-    //           name="name"
-    //         />
-    //         <small className={`err text-warning ${room.error ? "" : "hidden"}`}>
-    //           Please enter a room name!
-    //         </small>
-    //       </div>
-
-    //       <div className="mt-1">
-    //         <label>Room Description</label>
-    //         <textarea
-    //           rows={3}
-    //           className="form-control bg-light border-0 text-white rounded-lg"
-    //           placeholder="What type of music will you be playing in the room?"
-    //           onChange={handleChange}
-    //           name="description"
-    //         />
-    //       </div>
-    //       <div className="mt-4">
-    //         <label>Tags</label>
-    //         <Select inputValue="" tags={tagOptions}></Select>
-    //       </div>
-    //     </form>
-    //   </Modal.Body>
-    //   <Modal.Footer className="border-0 mb-3 mt-2">
-    //     <div className="text-right">
-    //       <button
-    //         className="btn btn-primary font-weight-bold"
-    //         type="submit"
-    //         form="create-form"
-    //       >
-    //         Create Room
-    //       </button>
-    //     </div>
-    //   </Modal.Footer>
-    // </Modal>
   );
 };
 

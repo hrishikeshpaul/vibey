@@ -20,7 +20,9 @@ const Home = () => {
   return (
     <div className="text-white">
       <Navbar />
-      <Create open={createModal} close={onCreateModalClose} />
+      {
+        createModal ? <Create open={createModal} close={onCreateModalClose} /> : ''
+      }
       
     </div>
   );
