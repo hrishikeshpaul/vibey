@@ -1,24 +1,35 @@
 
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tag } from "../../models/tag.model";
 import CreatableSelect from 'react-select/creatable';
 import { OptionsType,  } from "react-select";
 import { SelectOption, NoSelectOption } from './select-option';
 
 /**
- * @var tags list of tags to be displayed in the option
  * @function updateTags function emitted that contains the updated tags
  */
 type State = {
-  tags: Tag[];
   updateTags: (tag: Tag) => void;
   presentTags: Tag[];
-  getTagsFromSubstring: (substr: string) => void;
 };
 
+const tagOptions: Tag[] = [
+  { label: "edm", value: "edm", score: 12 },
+  { label: "rock2", value: "rock2", score: 2 },
+  { label: "rock3", value: "rock3", score: 22 },
+  { label: "rock4", value: "rock4", score: 52 },
+  { label: "rock5", value: "rock5", score: 16 },
+  { label: "rock6", value: "rock6", score: 7 },
+  { label: "rock7", value: "rock7", score: 7 },
+  { label: "rock8", value: "rock8", score: 7 },
+
+];
+
+
 const Select = (props: State) => {
-  const { tags, updateTags, presentTags, getTagsFromSubstring } = props;
+  const { updateTags, presentTags } = props;
+  const [ tags, setTags ] = useState<Tag[]>(tagOptions);
 
   /**
    * When a tag is selected or created this function is called
@@ -45,6 +56,10 @@ const Select = (props: State) => {
         getTagsFromSubstring(input);
       }, 250)
     }
+  }
+
+  const getTagsFromSubstring = (substr: string) => {
+    // make api call here and populate tags
   }
 
   return (

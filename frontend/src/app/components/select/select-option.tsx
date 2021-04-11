@@ -1,6 +1,7 @@
 import React from 'react';
-import { components, CommonProps} from "react-select";
+import { components } from "react-select";
 import { Badge } from "@chakra-ui/react";
+import './select.scss';
 
 /**
  * Custom option for tags to display the label and score
@@ -12,7 +13,7 @@ import { Badge } from "@chakra-ui/react";
 export const SelectOption = (props: any) => {
   return (
     <components.Option {...props}>
-      <span>{props.data.label}</span>{" "}
+      <span className="text-grey-1">#</span> <span>{props.data.label}</span>{" "}
       <Badge className="bg-primary rounded-sm ml-1 text-white">
         {props.data.score}
       </Badge>
@@ -37,3 +38,4 @@ export const NoSelectOption = (props: any) => {
     </components.NoOptionsMessage>
   );
 };
+

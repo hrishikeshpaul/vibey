@@ -32,14 +32,6 @@ const initialRoomValues = {
   error: false,
 };
 
-const tagOptions: Tag[] = [
-  // { label: "edm", value: "edm", score: 12 },
-  // { label: "rock2", value: "rock2", score: 2 },
-  // { label: "rock3", value: "rock3", score: 22 },
-  // { label: "rock4", value: "rock4", score: 52 },
-  // { label: "rock5", value: "rock5", score: 16 },
-  // { label: "rock6", value: "rock6", score: 7 },
-];
 
 const Create = (props: PropsWithChildren<CreateProps>) => {
   const { open, close } = props;
@@ -89,10 +81,6 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
         tags: currentTags.concat(tag)
       }))
     }
-    
-  };
-
-  const getTagsFromSubstring = (substr: string) => {
     
   };
 
@@ -161,10 +149,8 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
               <div className="mt-3">
                 <label>Tags</label>
                 <Select
-                  tags={tagOptions}
                   updateTags={handleUpdateTags}
                   presentTags={room.tags}
-                  getTagsFromSubstring={getTagsFromSubstring}
                 ></Select>
               </div>
             </form>
