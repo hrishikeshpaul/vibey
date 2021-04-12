@@ -1,3 +1,5 @@
+/* Copyright (C) 2021 Vibey - All Rights Reserved */
+
 import React from 'react';
 import { components } from "react-select";
 import { Badge } from "@chakra-ui/react";
@@ -34,7 +36,7 @@ export const SelectOption = (props: any) => {
 export const NoSelectOption = (props: any) => {
   return (
     <components.NoOptionsMessage {...props}>
-      <span>Loading options...</span>
+      <span>Start typing!</span>
     </components.NoOptionsMessage>
   );
 };

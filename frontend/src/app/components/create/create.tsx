@@ -22,6 +22,7 @@ import { TiWarning } from "react-icons/ti";
 type CreateProps = {
   open: boolean;
   close: any;
+  handleError: (error: any) => void;
 };
 
 const initialRoomValues = {
@@ -33,7 +34,7 @@ const initialRoomValues = {
 
 
 const Create = (props: PropsWithChildren<CreateProps>) => {
-  const { open, close } = props;
+  const { open, close, handleError } = props;
   const [room, setRoom] = useState(initialRoomValues);
 
   /**
@@ -165,6 +166,7 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
                 <Select
                   updateTags={handleUpdateTags}
                   presentTags={room.tags}
+                  handleError={handleError}
                 ></Select>
               </div>
             </form>

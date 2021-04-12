@@ -2,7 +2,6 @@
 
 const { app } = require('../lib/app');
 const { validateTagName, validateTagLength } = require('../middlewares/tags');
-const { isLoggedIn } = require('../middlewares/auth');
 
 const { Tag } = require('../db/mongo/models/tag');
 
@@ -12,8 +11,7 @@ const { Tag } = require('../db/mongo/models/tag');
  * If tag exists, add to score and return updated tag
  */
 app.get(
-  '/',
-  isLoggedIn,
+  '/add',
   validateTagName,
   validateTagLength,
   async function(req, res) {
@@ -23,7 +21,7 @@ app.get(
       let foundTag = await Tag.findOne({ name });
 
       if (!foundTag) {
-        foundTag = await new Tag({ name: name, score: 1 }).save();
+        foundTag = await new Tag({ label: name, value: name, score: 1 }).save();
         res.status(201).json({ name: foundTag.name });
       } else {
         foundTag = await Tag.findOneAndUpdate(
@@ -53,8 +51,8 @@ app.get('/search', async(req, res) => {
   const { str } = req.query;
   try {
     Tag.find(
-      { name: { $regex: str, $options: 'i' } },
-      { name: 1, score: 1, _id: 0 },
+      { label: { $regex: str, $options: 'i' } },
+      { label: 1, score: 1, value: 1, _id: 0 },
       function(err, docs) {
         if (err) {
           res.status(500).json({ error: 'Error finding results' });
