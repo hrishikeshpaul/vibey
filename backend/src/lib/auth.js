@@ -2,28 +2,36 @@
 
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
+const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 
 /**
  * Generates a JWWT token
  * @param {object} user user object
  */
-
-const generateToken = (user) => {
+const createTokens = async(user, secret, secret2) => {
   const { email, id } = user;
   const payload = {
     subject: id,
     email: email,
     role: 'user',
   };
-
-  const options = {
+  const accessOptions = {
     issuer: 'vibey',
     expiresIn: '1h',
   };
-
-  return jwt.sign(payload, jwtSecret, options);
+  const refreshOptions = {
+    issuer: 'vibey',
+    expiresIn: '7d',
+  };
+  const createToken = jwt.sign(payload, jwtSecret, accessOptions);
+  const createRefreshToken = jwt.sign(
+    payload,
+    jwtRefreshSecret,
+    refreshOptions,
+  );
+  return Promise.all([createToken, createRefreshToken]);
 };
 
 module.exports = {
-  generateToken,
+  createTokens,
 };
