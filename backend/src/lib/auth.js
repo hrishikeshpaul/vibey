@@ -8,7 +8,7 @@ const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
  * Generates a JWWT token
  * @param {object} user user object
  */
-const createTokens = async(user, secret, secret2) => {
+const createTokens = async(user) => {
   const { email, id } = user;
   const payload = {
     subject: id,

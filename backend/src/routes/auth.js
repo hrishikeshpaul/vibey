@@ -4,7 +4,7 @@ const { app } = require('../lib/app');
 const { generateRandomString, scopes, STATE_KEY } = require('../static/const');
 const { spotifyApi } = require('../lib/spotify');
 const { User } = require('../db/mongo/models/user');
-const { generateToken } = require('../lib/auth');
+const { createTokens } = require('../lib/auth');
 const { redisClient } = require('../db/redis/config');
 const { isLoggedIn } = require('../middlewares/auth');
 const { ErrorHandler } = require('../lib/errors');
@@ -53,10 +53,11 @@ app.get('/authorize', async(req, res) => {
       if (!loggedUser) {
         loggedUser = await new User(userObj).save();
       }
-      const token = generateToken(loggedUser);
+      const [accessToken, refreshToken] = await createTokens(loggedUser);
       res.status(200).json({
         user: loggedUser,
-        token: token,
+        accessToken,
+        refreshToken,
       });
     } catch (err) {
       console.log('err: ', err);
