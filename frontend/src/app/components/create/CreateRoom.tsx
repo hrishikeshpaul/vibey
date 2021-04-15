@@ -61,7 +61,7 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
    * Validates the form to see if the room name is present
    */
   const validateForm = () => {
-    if (!room.name) {
+    if (!room.name.trim()) {
       setRoom((prev) => ({
         ...prev,
         error: true,
