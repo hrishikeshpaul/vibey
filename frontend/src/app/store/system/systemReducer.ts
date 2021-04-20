@@ -49,7 +49,8 @@ export const systemReducer = (
     case GET_API_FAILURE:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        isLoading: false
       }
     case SET_USER_LOGIN:
       return {

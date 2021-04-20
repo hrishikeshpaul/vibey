@@ -9,7 +9,7 @@ import {
   GET_API_SUCCESS,
   SET_USER_LOGIN,
 } from "app/store/system/systemActionTypes";
-import { login, authorize } from "app/services/auth.service";
+import { login, authorize, logout } from "app/services/auth.service";
 
 /*
  * Called from Home.tsx
@@ -72,26 +72,47 @@ export const getAuthorization = (
   }
 };
 
-export const onLogout = (history: any) => (dispatch: Dispatch<UserActionTypes>) => {
-  localStorage.removeItem('v-token');
-  localStorage.removeItem('v-user');
-  // make an api call here
-  dispatch({
-    type: SET_USER,
-    payload: {
-      id: "",
-      username: "",
-      href: "",
-      uri: "",
-      email: "",
-      display_name: "",
-      image: "",
-      likes: [],
-    }
-  });
-  dispatch({
-    type: SET_USER_LOGIN,
-    payload: false
-  })
-  history.push('/');
+
+/**
+ * Logs the user out
+ * makes an API call to clear the JWT from the backend
+ * 
+ * @param history router history
+ */
+export const onLogout = (history: any) => async (dispatch: Dispatch<UserActionTypes>) => {
+   
+  try {
+    dispatch({type: GET_API_START})
+    await logout();
+    localStorage.removeItem('v-token');
+    localStorage.removeItem('v-user');
+    dispatch({
+      type: SET_USER,
+      payload: {
+        id: "",
+        username: "",
+        href: "",
+        uri: "",
+        email: "",
+        display_name: "",
+        image: "",
+        likes: [],
+      }
+    });
+    dispatch({
+      type: SET_USER_LOGIN,
+      payload: false
+    })
+    dispatch({
+      type: GET_API_SUCCESS,
+    });
+    history.push('/');
+  } catch(err) {
+    console.log(err)
+    dispatch({
+      type: GET_API_FAILURE,
+      payload: err.data,
+    });
+  }
+  
 }
