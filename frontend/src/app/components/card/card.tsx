@@ -39,8 +39,118 @@ const Card = (props: PropsWithChildren<CardProps>) => {
             {tag.label}
           </Badge>
         ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
+        {room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}{room.tags.map((tag, i) => (
+          <Badge className="bg-light text-white mr-2 rounded-lg px-2" key={i}>
+            {tag.label}
+          </Badge>
+        ))}
       </div>
-      <div className="card-footer p-0 w-100">
+      <div className="card-footer p-0 w-100 pt-3">
         <div className="d-flex justify-content-between align-items-center w-100">
           <div className="song d-flex">
             <Avatar
