@@ -52,7 +52,7 @@ const Card = (props: PropsWithChildren<CardProps>) => {
               <p className="font-weight-bold mb-0 song-name">
                 This is the name of the song, and it can be long
               </p>
-              <p className="mb-0">Artist Name</p>
+              <p className="mb-0 song-artist">Artist Name</p>
             </div>
           </div>
         </div>
