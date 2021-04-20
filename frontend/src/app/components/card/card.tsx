@@ -21,7 +21,7 @@ const Card = (props: PropsWithChildren<CardProps>) => {
         <div className="names">
           <div className="h5 m-0 font-weight-bold">{room.name}</div>
           <div className="text-info d-flex align-items-center pt-1">
-            <span>{room.host}</span>
+            <span className="dark-link">{room.host}</span>
             <Badge className="bg-primary d-flex align-items-center ml-2 rounded-lg px-2">
               <Icon Component={Thumb} size={[0.7, 0.7]}></Icon>{" "}
               <span className="text-white pl-1">104</span>{" "}
