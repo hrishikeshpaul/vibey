@@ -1,18 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import "./home.scss";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "app/modules/navbar/navbar";
 import Create from "app/components/create/CreateRoom";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
-import { Error } from "app/models/system.model";
 import { useToast } from "@chakra-ui/react";
 import { ERROR_TOAST } from "../../static/toast";
+import Card from 'app/components/card/card';
+import { Tag } from "app/models/tag.model";
+import { Room } from "app/models/room.model";
 
 const Home = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const toast = useToast();
+
+  // dummy room object
+  // TODO remove this later 
+  const [room, setRoom] = useState<Room>({
+    id: '1',
+    name: "Paul's Rock Room",
+    tags: [{label: "rock", value: "rock", score: 12 }, {label: "edm", value: "emd", score: 22 }] as Tag[],
+    description: 'This is a room to listen to rock music',
+    host: 'hr_paul'
+  })
 
   const createModal = useSelector((state: any) => state.system.createOpen);
 
@@ -44,6 +56,16 @@ const Home = () => {
       ) : (
         ""
       )}
+      <div className="container pt-5">
+        <div className="row">
+          <div className="col-xl-4 col-lg-4 co-md-4 col-sm-12 col-12 my-4">
+            <Card room={room} />
+          </div>
+          <div className="col-xl-4 col-lg-4 co-md-4 col-sm-12 col-12 my-4">
+            <Card room={room} />
+          </div>
+        </div>
+      </div>
 
       <button onClick={handleError}>Toast</button>
     </div>
