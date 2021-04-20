@@ -1,7 +1,7 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
 import React, { PropsWithChildren } from "react";
-import "./card.scss";
+import "./Card.scss";
 import { Room } from "app/models/room.model";
 import Icon from "app/components/icon/icon";
 import { ReactComponent as Users } from "assets/icons/users.svg";
@@ -57,7 +57,6 @@ const Card = (props: PropsWithChildren<CardProps>) => {
           </div>
         </div>
       </div>
-
       <div className="join-room p-2 bg-secondary">
         <button className="btn btn-primary btn-sm font-weight-bold px-3">
           Join Room

@@ -7,7 +7,7 @@ import Create from "app/components/create/CreateRoom";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
 import { useToast } from "@chakra-ui/react";
 import { ERROR_TOAST } from "../../static/toast";
-import Card from 'app/components/card/card';
+import Card from 'app/components/card/Card';
 import { Tag } from "app/models/tag.model";
 import { Room } from "app/models/room.model";
 
