@@ -1,7 +1,7 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
 import React, { PropsWithChildren, useState, useEffect } from "react";
-import "./create.scss";
+import "./CreateRoom.scss";
 import Select from "../select/select";
 import {
   Modal,

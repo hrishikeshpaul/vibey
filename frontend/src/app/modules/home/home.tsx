@@ -3,7 +3,7 @@ import "./home.scss";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "app/modules/navbar/navbar";
-import Create from "app/components/create/create";
+import Create from "app/components/create/CreateRoom";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
 import { Error } from "app/models/system.model";
 import { useToast } from "@chakra-ui/react";
