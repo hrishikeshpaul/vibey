@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ReactComponent as Plus } from 'assets/icons/plus.svg';
-import { ReactComponent as Headphones } from 'assets/icons/headphones.svg';
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ReactComponent as Plus } from "assets/icons/plus.svg";
+import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
 import "./navbar.scss";
 import { Icon } from "app/components/icon/icon";
 import { UserData } from "app/models/user.model";
-import { useHistory } from "react-router-dom";
-import { onLogout } from "app/store/user/userActions";
-import Profile from '../profile/profile';
-import { Modal } from "react-bootstrap";
+import Profile from "../profile/profile";
+import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverArrow,
+} from "@chakra-ui/react";
+import { Avatar } from "@chakra-ui/react"
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [ showProfile, toggleProfile ] = useState(false);
-
+  
   const isLoggedIn = useSelector((state: any) => {
     return state.system.isLoggedIn;
   });
@@ -23,13 +28,9 @@ const Navbar = () => {
     return state.user.user;
   });
 
-  const handleLogout = () => {
-    dispatch(onLogout(history));
-  }
-
-  const handleProfile = () => {
-    toggleProfile(!showProfile);
-  }
+  const handleOpenCreateRoom = () => {
+    dispatch({ type: SET_CREATE_ROOM_MODAL, payload: true });
+  };
 
   return (
     <div className="container text-white">
@@ -38,36 +39,30 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="d-flex align-items-center">
             <div className="mr-4">
-              <button className="btn btn-md btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center">
+              <button
+                className="btn btn-md btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center"
+                onClick={handleOpenCreateRoom}
+              >
                 <Icon Component={Plus} size={[1, 1]}></Icon>{" "}
                 <span className="pl-2">Create Room</span>
               </button>
             </div>
-            <div className="profile-wrapper">
-               <img
-                  onClick={handleProfile}
-                  className="profile-picture"
-                  src={userData.image}
-                  alt="User Pic"
-                />
-              <div className={`profile`}>
-                <Modal 
-                  show={showProfile} 
-                  onHide={handleProfile}
-                  size="sm"
-                  animation={true}
-                  backdrop="static"
-                  dialogClassName="text-white rounded-lg"
-                >
-                  <Modal.Header className="bg-secondary border-0" closeButton>
-                    <h5>Your Profile</h5>
-                  </Modal.Header>
-                  <Modal.Body className="bg-secondary w-100">
-                    <Profile />
-                  </Modal.Body>
-                </Modal>
-              </div>
-            </div>
+            <Popover>
+              <PopoverTrigger>
+                <div className="profile-wrapper avatar">
+                  <Avatar name={userData.display_name} src={userData.image} />
+                </div>
+              </PopoverTrigger>
+              <PopoverContent className="bg-secondary border-0">
+                <PopoverArrow />
+                <PopoverHeader className="px-3 py-3 d-flex justify-content-between align-items-center border-light">
+                  <span className="h5 m-0">Your Profile</span>
+                </PopoverHeader>
+                <PopoverBody>
+                 <Profile></Profile>
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
           </div>
         ) : (
           <div className="d-flex nav-items align-items-center">

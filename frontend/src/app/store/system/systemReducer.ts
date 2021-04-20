@@ -1,4 +1,4 @@
-import { SystemActionTypes, GET_API_FAILURE, SET_USER_LOGIN, GET_API_START, GET_API_SUCCESS } from "./systemActionTypes";
+import { SystemActionTypes, GET_API_FAILURE, SET_USER_LOGIN, GET_API_START, GET_API_SUCCESS, SET_CREATE_ROOM_MODAL } from "./systemActionTypes";
 import { Error } from "app/models/system.model";
 
 export interface SystemState {
@@ -15,6 +15,10 @@ export interface SystemState {
    * Denotes if the user is logged in
    */
   isLoggedIn: boolean;
+  /**
+   * Denotes if the create room modal is open
+   */
+  createOpen: boolean;
 }
 
 /**
@@ -23,7 +27,8 @@ export interface SystemState {
 const initialState: SystemState = {
   isLoading: false,
   error: {},
-  isLoggedIn: false
+  isLoggedIn: false,
+  createOpen: false
 };
 
 export const systemReducer = (
@@ -51,6 +56,11 @@ export const systemReducer = (
       return {
         ...state,
         isLoggedIn: action.payload
+      }
+    case SET_CREATE_ROOM_MODAL:
+      return {
+        ...state,
+        createOpen: action.payload
       }
     default:
       return state
