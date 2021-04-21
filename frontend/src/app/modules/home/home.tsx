@@ -34,7 +34,6 @@ const Home = () => {
 
   return (
     <div className="text-white">
-      <Navbar />
       {createModal ? (
         <Create
           open={createModal}

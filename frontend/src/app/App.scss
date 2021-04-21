@@ -34,3 +34,9 @@
 .rounded-modal {
   border-radius: 1rem !important;
 }
+
+.icon-btn {
+  &:hover {
+    background-color: darken($color: $light, $amount: 10) !important;
+  }
+}

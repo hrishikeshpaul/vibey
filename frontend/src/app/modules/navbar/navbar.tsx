@@ -33,7 +33,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="container text-white">
+    <div className="container text-white mb-4">
       <div className="d-flex justify-content-between align-items-center py-3 nav-bar">
         <div className="logo-type h5 font-weight-title">vibey</div>
         {isLoggedIn ? (
