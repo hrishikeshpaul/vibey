@@ -50,7 +50,7 @@ const RoomPlaylist = (props: PropsWithChildren<RoomPlaylistProps>) => {
         </div>
         <div className="card-body border-0 pt-1 playlist-body px-3">
           <div className="mt-3">
-            <Accordion defaultIndex={[0]} allowMultiple>
+            <Accordion allowMultiple>
               {playlists.map((playlist, i) => (
                 <AccordionItem
                   className="border-0 bg-light rounded-lg my-3"
