@@ -1,0 +1,11 @@
+@import "assets/stylesheets/colors";
+
+.pointer {
+  box-sizing: border-box;
+  cursor: pointer !important;
+  border: 2px solid transparent !important;
+
+  &:active {
+    border: 2px solid $primary !important;
+  }
+}

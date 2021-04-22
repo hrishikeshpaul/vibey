@@ -15,7 +15,7 @@ import {
   InputGroup,
   IconButton,
 } from "@chakra-ui/react";
-import RoomPlaylistSong from '../RoomPlaylistSong/RoomPlaylistSong';
+import RoomPlaylistSong from "../RoomPlaylistSong/RoomPlaylistSong";
 
 type RoomPlaylistProps = {};
 
@@ -37,8 +37,8 @@ const RoomPlaylist = (props: PropsWithChildren<RoomPlaylistProps>) => {
 
   const handlePlaylistPlay = (e: any) => {
     e.preventDefault();
-    console.log('Play pressed!')
-  }
+    console.log("Play pressed!");
+  };
 
   return (
     <div className="bg-secondary w-100 radius">
@@ -69,18 +69,18 @@ const RoomPlaylist = (props: PropsWithChildren<RoomPlaylistProps>) => {
                       {playlist.name}
                     </div>
                     <div className="">
-                      <IconButton
-                        aria-label="Search database"
-                        className="bg-transparent icon-btn mr-1 p-0"
-                        size="md"
-                        icon={<Icon Component={FaPlay} size={[1, 1]}></Icon>}
+                      <a
+                        href=""
+                        className="btn btn-light px-2 mr-1"
                         onClick={handlePlaylistPlay}
-                      ></IconButton>
+                      > 
+                        <Icon Component={FaPlay} size={[1, 1]}></Icon>
+                      </a>
                       <AccordionIcon />
                     </div>
                   </AccordionButton>
                   <AccordionPanel pb={4}>
-                   <RoomPlaylistSong> </RoomPlaylistSong>
+                    <RoomPlaylistSong> </RoomPlaylistSong>
                   </AccordionPanel>
                 </AccordionItem>
               ))}

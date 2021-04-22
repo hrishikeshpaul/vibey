@@ -29,7 +29,6 @@ const Alert = ({isOpen, onClose, title, desc, buttonSting}: PropsWithChildren<Al
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
-        
       >
         <AlertDialogOverlay>
           <AlertDialogContent className="bg-secondary text-white">

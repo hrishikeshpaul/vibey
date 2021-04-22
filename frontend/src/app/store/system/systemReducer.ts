@@ -1,4 +1,11 @@
-import { SystemActionTypes, GET_API_FAILURE, SET_USER_LOGIN, GET_API_START, GET_API_SUCCESS, SET_CREATE_ROOM_MODAL } from "./systemActionTypes";
+import {
+  SystemActionTypes,
+  GET_API_FAILURE,
+  SET_USER_LOGIN,
+  GET_API_START,
+  GET_API_SUCCESS,
+  SET_CREATE_ROOM_MODAL,
+} from "./systemActionTypes";
 import { Error } from "app/models/system.model";
 
 export interface SystemState {
@@ -19,6 +26,10 @@ export interface SystemState {
    * Denotes if the create room modal is open
    */
   createOpen: boolean;
+  /**
+   * Denotes if the edit room modal is open
+   */
+  editOpen: boolean;
 }
 
 /**
@@ -28,7 +39,8 @@ const initialState: SystemState = {
   isLoading: false,
   error: {},
   isLoggedIn: false,
-  createOpen: false
+  createOpen: false,
+  editOpen: false,
 };
 
 export const systemReducer = (
@@ -39,30 +51,30 @@ export const systemReducer = (
     case GET_API_START:
       return {
         ...state,
-        isLoading: true
-      }
+        isLoading: true,
+      };
     case GET_API_SUCCESS:
       return {
         ...state,
-        isLoading: false
-      }
+        isLoading: false,
+      };
     case GET_API_FAILURE:
       return {
         ...state,
         error: action.payload,
-        isLoading: false
-      }
+        isLoading: false,
+      };
     case SET_USER_LOGIN:
       return {
         ...state,
-        isLoggedIn: action.payload
-      }
+        isLoggedIn: action.payload,
+      };
     case SET_CREATE_ROOM_MODAL:
       return {
         ...state,
-        createOpen: action.payload
-      }
+        createOpen: action.payload,
+      };
     default:
-      return state
+      return state;
   }
 };

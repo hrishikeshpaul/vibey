@@ -9,10 +9,11 @@ import { ReactComponent as Cross } from "assets/icons/cross.svg";
 
 type RoomToolbarProps = {
   openCloseRoomAlert: () => void;
+  openShare: () => void;
 };
 
 const RoomToolbar = (props: PropsWithChildren<RoomToolbarProps>) => {
-  const { openCloseRoomAlert } = props;
+  const { openCloseRoomAlert, openShare } = props;
   
   return (
     <div className="d-flex justify-content-between align-items-center text-white">
@@ -34,6 +35,7 @@ const RoomToolbar = (props: PropsWithChildren<RoomToolbarProps>) => {
           className="bg-transparent icon-btn ml-2"
           size="md"
           icon={<Icon Component={Share} size={[1, 1]}></Icon>}
+          onClick={openShare}
         />
       </div>
 

@@ -9,10 +9,12 @@ import RoomEvents from "./RoomEvents/RoomEvents";
 import { Badge } from "@chakra-ui/react";
 import { Tag } from "app/models/tag.model";
 import Alert from "app/components/Alert/Alert";
+import Share from "app/components/Share/Share";
 
 const Room = () => {
   const dispatch = useDispatch();
   const [close, setClose] = useState(false);
+  const [share, setShare] = useState(false);
 
   const tags = [
     {
@@ -28,13 +30,21 @@ const Room = () => {
   ] as Tag[];
 
   const setCloseAlert = () => {
-    console.log('Delete button pressed! Delete the room now!')
+    console.log("Delete button pressed! Delete the room now!");
     setClose(false);
   };
 
   const openCloseRoomAlert = () => {
     setClose(true);
-  }
+  };
+
+  const openShare = () => {
+    setShare(true);
+  };
+
+  const closeShare = () => {
+    setShare(false);
+  };
 
   return (
     <div className="container text-white">
@@ -45,7 +55,11 @@ const Room = () => {
         onClose={setCloseAlert}
         buttonSting={"Confirm Close"}
       ></Alert>
-      <RoomToolbar openCloseRoomAlert={openCloseRoomAlert}></RoomToolbar>
+      <Share isOpen={share} onClose={closeShare}></Share>
+      <RoomToolbar
+        openCloseRoomAlert={openCloseRoomAlert}
+        openShare={openShare}
+      ></RoomToolbar>
       <br></br>
       <div className="h3 font-weight-bolder">
         <div>Paul's Rock Room - This name can be longer</div>
