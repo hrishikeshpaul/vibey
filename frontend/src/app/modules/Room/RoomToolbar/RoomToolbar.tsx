@@ -7,9 +7,13 @@ import { ReactComponent as Share } from "assets/icons/share-link.svg";
 import { ReactComponent as Users } from "assets/icons/users.svg";
 import { ReactComponent as Cross } from "assets/icons/cross.svg";
 
-type RoomToolbarProps = {};
+type RoomToolbarProps = {
+  openCloseRoomAlert: () => void;
+};
 
 const RoomToolbar = (props: PropsWithChildren<RoomToolbarProps>) => {
+  const { openCloseRoomAlert } = props;
+  
   return (
     <div className="d-flex justify-content-between align-items-center text-white">
       <div className="d-flex align-items-center">
@@ -38,7 +42,10 @@ const RoomToolbar = (props: PropsWithChildren<RoomToolbarProps>) => {
           <Icon Component={Users} size={[1.5, 1.5]}></Icon>
           <span className="pl-2 font-weight-bolder">12</span>
         </div>
-        <button className="btn btn-danger text-white font-weight-bold d-flex justify-content-center align-items-center ml-4">
+        <button
+          className="btn btn-danger text-white font-weight-bold d-flex justify-content-center align-items-center ml-4"
+          onClick={openCloseRoomAlert}
+        >
           <Icon Component={Cross}></Icon>{" "}
           <span className="pl-2">Close Room</span>
         </button>

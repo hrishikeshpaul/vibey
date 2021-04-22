@@ -1,9 +1,8 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
 import React, { PropsWithChildren } from "react";
-import { useDispatch } from "react-redux";
 import "./RoomPlaylistSong.scss";
-import { Avatar, Flex, Box } from "@chakra-ui/react";
+import { Avatar } from "@chakra-ui/react";
 
 type RoomPlaylistSongProps = {};
 

@@ -8,9 +8,12 @@ import RoomPlaylist from "./RoomPlaylist/RoomPlaylist";
 import RoomEvents from "./RoomEvents/RoomEvents";
 import { Badge } from "@chakra-ui/react";
 import { Tag } from "app/models/tag.model";
+import Alert from "app/components/Alert/Alert";
 
 const Room = () => {
   const dispatch = useDispatch();
+  const [close, setClose] = useState(false);
+
   const tags = [
     {
       label: "rock",
@@ -24,9 +27,25 @@ const Room = () => {
     },
   ] as Tag[];
 
+  const setCloseAlert = () => {
+    console.log('Delete button pressed! Delete the room now!')
+    setClose(false);
+  };
+
+  const openCloseRoomAlert = () => {
+    setClose(true);
+  }
+
   return (
     <div className="container text-white">
-      <RoomToolbar></RoomToolbar>
+      <Alert
+        isOpen={close}
+        title={"Close Room"}
+        desc={"Are you sure you want to close the room?"}
+        onClose={setCloseAlert}
+        buttonSting={"Confirm Close"}
+      ></Alert>
+      <RoomToolbar openCloseRoomAlert={openCloseRoomAlert}></RoomToolbar>
       <br></br>
       <div className="h3 font-weight-bolder">
         <div>Paul's Rock Room - This name can be longer</div>
