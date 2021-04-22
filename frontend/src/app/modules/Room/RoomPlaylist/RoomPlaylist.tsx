@@ -71,7 +71,7 @@ const RoomPlaylist = (props: PropsWithChildren<RoomPlaylistProps>) => {
                     <div className="">
                       <IconButton
                         aria-label="Search database"
-                        className="bg-transparent icon-btn mr-1"
+                        className="bg-transparent icon-btn mr-1 p-0"
                         size="md"
                         icon={<Icon Component={FaPlay} size={[1, 1]}></Icon>}
                         onClick={handlePlaylistPlay}
