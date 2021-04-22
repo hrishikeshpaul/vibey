@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import "./Room.scss";
 import RoomToolbar from "./RoomToolbar/RoomToolbar";
 import RoomPlaylist from "./RoomPlaylist/RoomPlaylist";
+import RoomEvents from "./RoomEvents/RoomEvents";
 import { Badge } from "@chakra-ui/react";
 import { Tag } from "app/models/tag.model";
 
@@ -43,8 +44,8 @@ const Room = () => {
         </div>
       </div>
 
-      <div className="row mt-5">
-        <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+      <div className="row mt-4">
+        <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 my-3">
           <div className="h6 m-0 dark-link font-weight-bold">
             hrishikeshpaul
           </div>
@@ -55,11 +56,11 @@ const Room = () => {
             touchdown.
           </div>
         </div>
-        <div className="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
+        <div className="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12 my-3">
           <RoomPlaylist></RoomPlaylist>
         </div>
-        <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-          Events
+        <div className="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 my-3">
+          <RoomEvents></RoomEvents>
         </div>
       </div>
     </div>
