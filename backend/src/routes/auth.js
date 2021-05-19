@@ -13,7 +13,6 @@ const { generateToken } = require('../lib/auth');
  * Redirects to call back which then gets the access token and refresh token
  */
 app.get('/login', (req, res) => {
-
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.send(spotifyApi.createAuthorizeURL(scopes, state, true));
@@ -60,6 +59,17 @@ app.get('/authorize', async(req, res) => {
     } catch (err) {
       res.status(500).send(err);
     }
+  }
+});
+
+app.post('/session', (req, res) => {
+  const user = req.body;
+  const session = req.session;
+
+  if (session.user === user) {
+    res.status(200);
+  } else {
+    res.status(401).send('User not in session');
   }
 });
 

@@ -19,14 +19,6 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-const checkLogin = (req, res, next) => {
-  if (req.session.user) {
-    return res.redirect('/home');
-  }
-  next();
-};
-
 module.exports = {
   isLoggedIn,
-  checkLogin,
 };
