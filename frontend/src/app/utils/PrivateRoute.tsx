@@ -19,7 +19,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
 }) => {
   const dispatch = useDispatch();
-  const loggedIn = checkJWT();
+  const loggedIn = checkSession();
   dispatch({
     type: SET_USER_LOGIN,
     payload: loggedIn
@@ -49,7 +49,7 @@ export const PublicRoute: React.FC<PrivateRouteProps> = ({
   ...rest
 }) => {
   const dispatch = useDispatch();
-  const loggedIn = checkJWT();
+  const loggedIn = checkSession();
   dispatch({
     type: SET_USER_LOGIN,
     payload: loggedIn
@@ -69,7 +69,7 @@ export const PublicRoute: React.FC<PrivateRouteProps> = ({
 /**
  * Helper function to verify the JWT
  */
-const checkJWT = () => {
+const checkSession = async () => {
   const token = localStorage.getItem('v-token');
   if(token === null || token === '') {
     return false;

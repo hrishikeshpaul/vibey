@@ -1,4 +1,4 @@
-import { LOGIN_URL, AUTHORIZE_URL, LOGOUT_URL, CHECK_AUTH_URL } from "app/static/url";
+import { LOGIN_URL, AUTHORIZE_URL, LOGOUT_URL, CHECK_AUTH_URL, SESSION_URL} from "app/static/url";
 import axios from "app/hooks/useAxios";
 
 /*
@@ -49,4 +49,9 @@ export const checkLogin = async(): Promise<any> => {
 export const logout = async(): Promise<any> => {
   const jwt = localStorage.getItem('v-token');
   return axios.post(LOGOUT_URL, {jwt})
+}
+
+export const checkSession = async(): Promise<any> => {
+  const user = JSON.parse(localStorage.getItem('v-user') || '');
+  return axios.post(SESSION_URL, {user: user});
 }

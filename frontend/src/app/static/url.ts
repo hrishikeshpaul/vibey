@@ -4,3 +4,4 @@ export const AUTHORIZE_URL = "/api/auth/authorize";
 export const SEARCH_TAG_URL = "/api/tag/search";
 export const LOGOUT_URL = "/api/auth/logout";
 export const CHECK_AUTH_URL = "/api/auth/check";
+export const SESSION_URL = "/api/auth/session";
