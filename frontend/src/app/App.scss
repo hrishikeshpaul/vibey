@@ -34,3 +34,24 @@
 .rounded-modal {
   border-radius: 1rem !important;
 }
+
+/* Scrollbar width */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+  background: $primary; 
+  width: 20px;
+}
+
+/* Scrollbar Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: darken($color: $primary, $amount: 10); 
+}
