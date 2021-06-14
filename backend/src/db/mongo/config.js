@@ -21,7 +21,7 @@ module.exports = function connectMongoDB() {
      * Resolves:
      * (node:31152) DeprecationWarning: collection.ensureIndex
      * is deprecated. Use createIndexes instead.
-    */
+     */
     mongoose.set('useCreateIndex', true);
   } catch (e) {
     console.log(e);
