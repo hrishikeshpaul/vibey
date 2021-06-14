@@ -54,13 +54,13 @@ app.get('/authorize', async(req, res) => {
         loggedUser = await new User(userObj).save();
       }
       const [accessToken, refreshToken] = await createTokens(loggedUser);
+
       res.status(200).json({
         user: loggedUser,
         accessToken,
         refreshToken,
       });
     } catch (err) {
-      console.log('err: ', err);
       throw new ErrorHandler(500, 'Internal Server Error');
     }
   }
