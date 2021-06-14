@@ -45,8 +45,10 @@ export const getAuthorization =
 
   try {
    const res = await authorize(code, state);
-   const token = res.data.token;
-   localStorage.setItem('v-token', token ? token : '');
+   const { accessToken, refreshToken } = res.data;
+
+   localStorage.setItem('v-at', accessToken ? accessToken : '');
+   localStorage.setItem('v-rt', refreshToken ? refreshToken : '');
    localStorage.setItem('v-user', JSON.stringify(res.data.user));
 
    dispatch({

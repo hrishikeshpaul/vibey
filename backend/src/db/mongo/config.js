@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-module.exports = async function connectMongoDB() {
+module.exports = function connectMongoDB() {
   try {
     mongoose
       .connect(process.env.MONGO_URI, {
@@ -13,17 +13,18 @@ module.exports = async function connectMongoDB() {
       .catch((err) => console.log(err));
 
     /**
-   *  make Mongoose use findOneAndUpdate(); resolves deprecation warning
-   *  see findAndModify(): https://mongoosejs.com/docs/deprecations.html
-   */
+     *  make Mongoose use findOneAndUpdate(); resolves deprecation warning
+     *  see findAndModify(): https://mongoosejs.com/docs/deprecations.html
+    */
     mongoose.set('useFindAndModify', false);
     /**
-   * Resolves:
-   * (node:31152) DeprecationWarning: collection.ensureIndex
-   * is deprecated. Use createIndexes instead.
-   */
+     * Resolves:
+     * (node:31152) DeprecationWarning: collection.ensureIndex
+     * is deprecated. Use createIndexes instead.
+    */
     mongoose.set('useCreateIndex', true);
   } catch (e) {
+    console.log(e);
     console.log('MongoDB count not connect :(');
   }
 };
