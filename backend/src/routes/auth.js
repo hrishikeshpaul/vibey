@@ -71,7 +71,7 @@ app.get('/authorize', async(req, res) => {
  * wipes the spotify access and refresh token
  * sends 204 no response on success
  */
-app.post('/logout', isLoggedIn, function(req, res) {
+app.post('/logout', function(req, res) {
   const accessToken = req.headers['v-at'];
 
   if (accessToken) {

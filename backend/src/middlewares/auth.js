@@ -10,7 +10,6 @@ const { ErrorHandler } = require('../lib/errors');
 /**
  * isLoggedIn: Auth/refresh token flow
  * tries to validate access token with jwt.verify and whitelist
- * if success, proceeds to next
  * if fail, tries to verify refresh with jwt.verify and whitelist,
  *   tries to refresh tokens or throw error accordingly
  */
