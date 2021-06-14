@@ -2,20 +2,52 @@
 
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
+const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 const { redisJwtClient } = require('../db/redis/config');
+const { createTokens } = require('../lib/auth');
 const { ErrorHandler } = require('../lib/errors');
+const { promisify } = require('util');
 
+
+// TODO check how to user tokens with headers not body
 const isLoggedIn = async(req, res, next) => {
-  const token = req.headers.authorization;
+  const accessToken = req.headers['v-at'];
+  const refreshToken = req.headers['v-rt'];
+
   try {
-    if (token) {
-      // jwt verify the token
-      await verifyToken(token, req);
-      console.log('decoded: ', req.decoded);
-      // check if token is in blacklist, throws error if found in blacklist
-      checkBlacklist(token, next);
+    if (accessToken && refreshToken) {
+      // jwt verify the access token
+      const isAccessTokenValidated = await verifyToken(
+        accessToken, 'access', req,
+      );
+      if (!isAccessTokenValidated) {
+        // if invalid access token, try to validate refresh token
+        const isRefreshTokenValidated = await verifyToken(
+          refreshToken, 'refresh', req,
+        );
+        // if valid refresh, check whitelist to validate token pair
+        if (isRefreshTokenValidated) {
+          const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
+          if (isWhiteListed) {
+            const [
+              refreshedAccessToken,
+              refreshedRefreshToken,
+            ] = await refreshTokens(accessToken, {
+              email: isRefreshTokenValidated.email,
+              id: isRefreshTokenValidated.subject,
+            });
+            req.headers['v-at'] = refreshedAccessToken;
+            req.headers['v-rt'] = refreshedRefreshToken;
+          } else {
+            throw new ErrorHandler(403, 'Mismatched/Non-whitelisted tokens');
+          }
+        } else {
+          throw new ErrorHandler(403, 'Invalid tokens');
+        }
+      }
+      next();
     } else {
-      throw new ErrorHandler(401, 'Token required');
+      throw new ErrorHandler(401, 'Tokens required');
     }
   } catch (err) {
     next(err);
@@ -23,23 +55,33 @@ const isLoggedIn = async(req, res, next) => {
   next();
 };
 
-const checkBlacklist = (token, next) => {
-  redisJwtClient.get(token, (err, reply) => {
-    if (err) {
-      next(new ErrorHandler(500, 'Something unexpected happened'));
-    }
-    if (reply) {
-      next(new ErrorHandler(401, 'Token Blacklisted'));
-    }
-  });
+const refreshTokens = async(accessToken, userInfo) => {
+  const delAsync = promisify(redisJwtClient.del).bind(redisJwtClient);
+  console.log(await delAsync(accessToken));
+  return await createTokens(userInfo);
 };
 
-const verifyToken = async(token, req) => {
-  jwt.verify(token, jwtSecret, (err, decoded) => {
+const checkWhitelist = async(accessToken, refreshToken) => {
+  const getAsync = promisify(redisJwtClient.get).bind(redisJwtClient);
+
+  const res = await getAsync(accessToken);
+  if (res === refreshToken) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const verifyToken = async(token, type, req) => {
+  let secret;
+  if (type === 'access') { secret = jwtSecret; };
+  if (type === 'refresh') { secret = jwtRefreshSecret; };
+
+  return jwt.verify(token, secret, (err, decoded) => {
     if (err) {
-      throw new ErrorHandler(401, 'Error verifying token');
+      return false;
     } else {
-      req.decoded = decoded;
+      return decoded;
     }
   });
 };

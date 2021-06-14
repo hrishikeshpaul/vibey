@@ -6,6 +6,7 @@ const { spotifyApi } = require('../lib/spotify');
 const { User } = require('../db/mongo/models/user');
 const { createTokens } = require('../lib/auth');
 const { redisJwtClient } = require('../db/redis/config');
+const { isLoggedIn } = require('../middlewares/auth');
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
@@ -70,7 +71,7 @@ app.get('/authorize', async(req, res) => {
  * wipes the spotify access and refresh token
  * sends 204 no response on success
  */
-app.post('/logout', function(req, res) {
+app.post('/logout', isLoggedIn, function(req, res) {
   const { accessToken } = req.body;
 
   if (accessToken) {

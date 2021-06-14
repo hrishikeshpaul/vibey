@@ -19,7 +19,7 @@ const createTokens = async(user) => {
   };
   const accessOptions = {
     issuer: 'vibey',
-    expiresIn: '1h',
+    expiresIn: '15m',
   };
   const refreshOptions = {
     issuer: 'vibey',
