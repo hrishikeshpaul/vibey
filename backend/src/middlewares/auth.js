@@ -1,15 +1,16 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET;
-const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
+const { promisify } = require('util');
+
 const { redisJwtClient } = require('../db/redis/config');
 const { createTokens } = require('../lib/auth');
 const { ErrorHandler } = require('../lib/errors');
-const { promisify } = require('util');
+
+const jwtSecret = process.env.JWT_SECRET;
+const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 
 
-// TODO check how to user tokens with headers not body
 const isLoggedIn = async(req, res, next) => {
   const accessToken = req.headers['v-at'];
   const refreshToken = req.headers['v-rt'];
@@ -20,15 +21,26 @@ const isLoggedIn = async(req, res, next) => {
       const isAccessTokenValidated = await verifyToken(
         accessToken, 'access', req,
       );
-      if (!isAccessTokenValidated) {
+      if (isAccessTokenValidated) {
+        // if valid access token, check whitelist and send to next or error
+        const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
+        if (isWhiteListed) {
+          next();
+        } else {
+          throw new ErrorHandler(403, 'Non-whitelisted token');
+        }
+      } else if (!isAccessTokenValidated) {
         // if invalid access token, try to validate refresh token
         const isRefreshTokenValidated = await verifyToken(
           refreshToken, 'refresh', req,
         );
-        // if valid refresh, check whitelist to validate token pair
+
         if (isRefreshTokenValidated) {
+          // if valid refresh, check whitelist to validate token pair
           const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
+
           if (isWhiteListed) {
+            // if whitelisted, generate new set of tokens and set to headers
             const [
               refreshedAccessToken,
               refreshedRefreshToken,
@@ -38,6 +50,7 @@ const isLoggedIn = async(req, res, next) => {
             });
             req.headers['v-at'] = refreshedAccessToken;
             req.headers['v-rt'] = refreshedRefreshToken;
+
           } else {
             throw new ErrorHandler(403, 'Mismatched/Non-whitelisted tokens');
           }
@@ -66,6 +79,7 @@ const checkWhitelist = async(accessToken, refreshToken) => {
 
   const res = await getAsync(accessToken);
   if (res === refreshToken) {
+    console.log(res);
     return true;
   } else {
     return false;

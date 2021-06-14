@@ -72,7 +72,7 @@ app.get('/authorize', async(req, res) => {
  * sends 204 no response on success
  */
 app.post('/logout', isLoggedIn, function(req, res) {
-  const { accessToken } = req.body;
+  const accessToken = req.headers['v-at'];
 
   if (accessToken) {
     try {
