@@ -5,9 +5,7 @@ const { generateRandomString, scopes, STATE_KEY } = require('../static/const');
 const { spotifyApi } = require('../lib/spotify');
 const { User } = require('../db/mongo/models/user');
 const { createTokens } = require('../lib/auth');
-const { redisClient } = require('../db/redis/config');
-const { isLoggedIn } = require('../middlewares/auth');
-const { ErrorHandler } = require('../lib/errors');
+const { redisJwtClient } = require('../db/redis/config');
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
@@ -53,6 +51,7 @@ app.get('/authorize', async(req, res) => {
       if (!loggedUser) {
         loggedUser = await new User(userObj).save();
       }
+
       const [accessToken, refreshToken] = await createTokens(loggedUser);
 
       res.status(200).json({
@@ -61,33 +60,31 @@ app.get('/authorize', async(req, res) => {
         refreshToken,
       });
     } catch (err) {
-      throw new ErrorHandler(500, 'Internal Server Error');
+      console.log(err);
     }
   }
 });
 
 /**
- * Reads the user's jwt, verifies it, adds to blacklist,
- * then wipes the spotify access and refresh token
+ * Adds the user's AT and RT to blacklist
+ * wipes the spotify access and refresh token
  * sends 204 no response on success
  */
-app.post('/logout', isLoggedIn, (req, res) => {
-  const token = req.headers.authorization;
-  if (token) {
+app.post('/logout', function(req, res) {
+  const { accessToken } = req.body;
+
+  if (accessToken) {
     try {
-      redisClient.set(token, true, function(err, reply) {
-        if (err) {
-          // wondering how to catch this error
-          throw new ErrorHandler(500, 'Error setting token to Blacklist');
-        }
-      });
+      redisJwtClient.del(accessToken);
     } catch (err) {
-      throw new ErrorHandler(500, 'Error Blacklisting Token');
+      console.log(err);
     }
   }
+  console.log('we here');
   spotifyApi.setAccessToken('');
   spotifyApi.setRefreshToken('');
-  res.status(204);
+  console.log('here again');
+  res.status(204).send();
 });
 
 module.exports = app;

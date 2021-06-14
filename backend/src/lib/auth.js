@@ -1,8 +1,10 @@
 'use strict';
 
+const { redisJwtClient } = require('../db/redis/config');
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
+
 
 /**
  * Generates a JWWT token
@@ -29,7 +31,13 @@ const createTokens = async(user) => {
     jwtRefreshSecret,
     refreshOptions,
   );
-  return Promise.all([createToken, createRefreshToken]);
+
+  // creates tokens and stores them in redis as a pair (whitelist)
+  const [accessToken, refreshToken] = await Promise.all([
+    createToken, createRefreshToken,
+  ]);
+  redisJwtClient.set(accessToken, refreshToken);
+  return [accessToken, refreshToken];
 };
 
 module.exports = {
