@@ -7,19 +7,24 @@ const {
 } = require('../lib/auth');
 const { ErrorHandler } = require('../lib/errors');
 
-
+/**
+ * isLoggedIn: Auth/refresh token flow
+ * tries to validate access token with jwt.verify and whitelist
+ * if success, proceeds to next
+ * if fail, tries to verify refresh with jwt.verify and whitelist,
+ *   tries to refresh tokens or throw error accordingly
+ */
 const isLoggedIn = async(req, res, next) => {
   const accessToken = req.headers['v-at'];
   const refreshToken = req.headers['v-rt'];
 
   try {
     if (accessToken && refreshToken) {
-      // jwt verify the access token
       const isAccessTokenValidated = await verifyToken(
         accessToken, 'access', req,
       );
+
       if (isAccessTokenValidated) {
-        // if valid access token, check whitelist and send to next or error
         const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
         if (isWhiteListed) {
           next();
@@ -27,17 +32,14 @@ const isLoggedIn = async(req, res, next) => {
           throw new ErrorHandler(403, 'Non-whitelisted token');
         }
       } else if (!isAccessTokenValidated) {
-        // if invalid access token, try to validate refresh token
         const isRefreshTokenValidated = await verifyToken(
           refreshToken, 'refresh', req,
         );
 
         if (isRefreshTokenValidated) {
-          // if valid refresh, check whitelist to validate token pair
           const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
 
           if (isWhiteListed) {
-            // if whitelisted, generate new set of tokens and set to headers
             const [
               refreshedAccessToken,
               refreshedRefreshToken,
