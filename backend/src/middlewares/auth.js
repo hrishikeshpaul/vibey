@@ -1,14 +1,11 @@
 'use strict';
 
-const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
-
-const { redisJwtClient } = require('../db/redis/config');
-const { createTokens } = require('../lib/auth');
+const {
+  refreshTokens,
+  checkWhitelist,
+  verifyToken,
+} = require('../lib/auth');
 const { ErrorHandler } = require('../lib/errors');
-
-const jwtSecret = process.env.JWT_SECRET;
-const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 
 
 const isLoggedIn = async(req, res, next) => {
@@ -66,38 +63,6 @@ const isLoggedIn = async(req, res, next) => {
     next(err);
   }
   next();
-};
-
-const refreshTokens = async(accessToken, userInfo) => {
-  const delAsync = promisify(redisJwtClient.del).bind(redisJwtClient);
-  console.log(await delAsync(accessToken));
-  return await createTokens(userInfo);
-};
-
-const checkWhitelist = async(accessToken, refreshToken) => {
-  const getAsync = promisify(redisJwtClient.get).bind(redisJwtClient);
-
-  const res = await getAsync(accessToken);
-  if (res === refreshToken) {
-    console.log(res);
-    return true;
-  } else {
-    return false;
-  }
-};
-
-const verifyToken = async(token, type, req) => {
-  let secret;
-  if (type === 'access') { secret = jwtSecret; };
-  if (type === 'refresh') { secret = jwtRefreshSecret; };
-
-  return jwt.verify(token, secret, (err, decoded) => {
-    if (err) {
-      return false;
-    } else {
-      return decoded;
-    }
-  });
 };
 
 const checkLogin = (req, res, next) => {
