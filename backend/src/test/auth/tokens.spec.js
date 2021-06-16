@@ -9,7 +9,6 @@ const { createTokens, refreshTokens } = require('../../lib/auth');
 const { getAsyncJwtClient } = require('../../lib/redis');
 
 const expect = chai.expect;
-const clock = sinon.useFakeTimers();
 chai.use(chaiAsPromised);
 
 describe('token functions', () => {
@@ -40,7 +39,6 @@ describe('token functions', () => {
     });
   });
 
-  // TODO add create tokens for AT as 'before do'
   describe('refreshTokens', () => {
     it('returns a pair of unique tokens', async() => {
       const [accessToken] = await createTokens(mockUser);
@@ -69,6 +67,8 @@ describe('token functions', () => {
 
     it('deletes the old access token from the redis client', async function() {
       const [accessToken, refreshToken] = await createTokens(mockUser);
+      const clock = sinon.useFakeTimers(new Date().getTime());
+
       await expect(getAsyncJwtClient(accessToken))
         .to.eventually.equal(refreshToken);
 
@@ -77,6 +77,16 @@ describe('token functions', () => {
       await refreshTokens(accessToken, mockUser);
       await expect(getAsyncJwtClient(accessToken))
         .to.eventually.equal(null);
+      clock.restore();
+    });
+
+    it('adds the new tokens to the redis client', async function() {
+      const [accessToken] = await createTokens(mockUser);
+      const [rAT, rRT] = await refreshTokens(accessToken, mockUser);
+
+      expect(rRT).to.be.a('string');
+      await expect(getAsyncJwtClient(rAT))
+        .to.eventually.equal(rRT);
     });
   });
 });
