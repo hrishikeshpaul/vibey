@@ -10,7 +10,7 @@ const {
   refreshTokens,
   checkWhitelist,
 } = require('../../lib/auth');
-const { getAsyncJwtClient } = require('../../lib/redis');
+const { getAsyncJwtClient, delAsyncJwtClient } = require('../../lib/redis');
 const { isLoggedIn } = require('../../middlewares/auth');
 
 const expect = chai.expect;
@@ -117,10 +117,11 @@ describe('token functions', () => {
       await expect(checkWhitelist(accessToken, refreshToken2))
         .to.eventually.equal(false);
     });
+    clock.restore();
   });
 
   describe('isLoggedIn', async() => {
-    it('calls next if valid tokens', async() => {
+    it('calls next and updates headers if valid tokens', async() => {
       const nextSpy = sinon.spy();
       const [accessToken, refreshToken] = await createTokens(mockUser);
       const headers = {
@@ -132,5 +133,81 @@ describe('token functions', () => {
       Promise.all(nextSpy.returnValues);
       sinon.assert.calledOnce(nextSpy);
     });
+
+    it('throws error if missing tokens', async() => {
+      const next = sinon.spy();
+      const expectedError = sinon.match.instanceOf(Error)
+        .and(sinon.match.has('message', 'Tokens required'));
+      await isLoggedIn({ headers: {} }, {}, next);
+      sinon.assert.calledWith(next, sinon.match(expectedError));
+    });
+
+    it('throws error if non-whitelisted token', async() => {
+      const next = sinon.spy();
+      const [accessToken, refreshToken] = await createTokens(mockUser);
+      const headers = {
+        'v-at': accessToken,
+        'v-rt': refreshToken,
+      };
+      const expectedError = sinon.match.instanceOf(Error)
+        .and(sinon.match.has('message', 'Non-whitelisted token'));
+
+      await delAsyncJwtClient(accessToken);
+      await isLoggedIn({ headers }, {}, next);
+      sinon.assert.calledWith(next, sinon.match(expectedError));
+    });
+
+    it('throws error if tokens are whitelisted but expired', async() => {
+      const next = sinon.spy();
+      const clock = sinon.useFakeTimers(new Date().getTime());
+      const [accessToken, refreshToken] = await createTokens(mockUser);
+      const headers = {
+        'v-at': accessToken,
+        'v-rt': refreshToken,
+      };
+      const expectedError = sinon.match.instanceOf(Error)
+        .and(sinon.match.has('message', 'Invalid tokens'));
+
+      clock.tick(86400000 * 7); /* 7 days (RT expiration) */
+      await isLoggedIn({ headers }, {}, next);
+      sinon.assert.calledWith(next, sinon.match(expectedError));
+      clock.restore();
+    });
+
+    it('throws an error if tokens are valid but mismatched', async() => {
+      const next = sinon.spy();
+      const clock = sinon.useFakeTimers(new Date().getTime());
+      const [ accessToken ] = await createTokens(mockUser);
+
+      clock.tick(900000); /* 15 minutes (AT expiration) */
+      const [ , refreshToken2 ] = await createTokens(mockUser);
+      const headers = {
+        'v-at': accessToken,
+        'v-rt': refreshToken2,
+      };
+      const expectedError = sinon.match.instanceOf(Error)
+        .and(sinon.match.has('message', 'Mismatched/Non-whitelisted tokens'));
+
+      await isLoggedIn({ headers }, {}, next);
+      sinon.assert.calledWith(next, sinon.match(expectedError));
+      clock.restore();
+    });
+
+    it('updates requet header tokens if valid token pair but AT expired',
+      async() => {
+        const clock = sinon.useFakeTimers(new Date().getTime());
+        const [ accessToken, refreshToken ] = await createTokens(mockUser);
+        const headers = {
+          'v-at': accessToken,
+          'v-rt': refreshToken,
+        };
+
+        clock.tick(900000); /* 15 minutes (AT expiration) */
+        await isLoggedIn({ headers }, {}, () => null);
+        expect(headers['v-at']).to.be.a('string');
+        expect(headers['v-rt']).to.be.a('string');
+        expect(headers['v-at']).not.to.equal(accessToken);
+        expect(headers['v-rt']).not.to.equal(refreshToken);
+      });
   });
 });
