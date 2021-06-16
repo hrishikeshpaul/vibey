@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const { redisJwtClient } = require('../db/redis/config');
 const { getAsyncJwtClient, delAsyncJwtClient } = require('../lib/redis');
+const { ErrorHandler } = require('../lib/errors');
 
 const jwtSecret = process.env.JWT_SECRET;
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
@@ -14,6 +15,9 @@ const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
  * @param {object} user user object
  */
 const createTokens = async(user) => {
+  if (!user) {
+    throw new ErrorHandler(400, 'Cannot create tokens without user info');
+  }
   const { email, id } = user;
   const payload = {
     subject: id,

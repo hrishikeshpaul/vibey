@@ -5,15 +5,7 @@
     "ecmaVersion": 2020
   },
   "rules": {
-    "new-cap": 0,
-    "space-before-function-paren": [
-      "error",
-      {
-        "anonymous": "never",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ]
+    "new-cap": 0
   },
   "env": {
     "es6": true
