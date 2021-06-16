@@ -3,11 +3,13 @@
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
+const sinon = require('sinon');
 
 const { createTokens, refreshTokens } = require('../../lib/auth');
 const { getAsyncJwtClient } = require('../../lib/redis');
 
 const expect = chai.expect;
+const clock = sinon.useFakeTimers();
 chai.use(chaiAsPromised);
 
 describe('token functions', () => {
@@ -63,6 +65,18 @@ describe('token functions', () => {
       await expect(refreshTokens(accessToken, { name: 'Test' }))
         .to.eventually.be
         .rejectedWith('Invalid argument for refresh token');
+    });
+
+    it('deletes the old access token from the redis client', async function() {
+      const [accessToken, refreshToken] = await createTokens(mockUser);
+      await expect(getAsyncJwtClient(accessToken))
+        .to.eventually.equal(refreshToken);
+
+      // done to advance the clock 1s so that the jwt are different
+      clock.tick(1500);
+      await refreshTokens(accessToken, mockUser);
+      await expect(getAsyncJwtClient(accessToken))
+        .to.eventually.equal(null);
     });
   });
 });
