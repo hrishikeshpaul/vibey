@@ -4,7 +4,7 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 
-const { createTokens } = require('../../lib/auth');
+const { createTokens, refreshTokens } = require('../../lib/auth');
 const { getAsyncJwtClient } = require('../../lib/redis');
 
 const expect = chai.expect;
@@ -16,8 +16,8 @@ describe('token functions', () => {
     email: 'test@testuser.test',
   };
 
-  describe('create tokens', () => {
-    it('should generate two unique tokens', async() => {
+  describe('createTokens', () => {
+    it('returns two unique tokens', async() => {
       const [accessToken, refreshToken] = await createTokens(mockUser);
       expect(refreshToken).to.be.a('string');
       expect(accessToken).to.be.a('string');
@@ -35,7 +35,34 @@ describe('token functions', () => {
       await expect(getAsyncJwtClient(accessToken))
         .to.eventually
         .equal(refreshToken);
+    });
+  });
 
+  // TODO add create tokens for AT as 'before do'
+  describe('refreshTokens', () => {
+    it('returns a pair of unique tokens', async() => {
+      const [accessToken] = await createTokens(mockUser);
+      const [
+        refreshedAT,
+        refreshedRT,
+      ] = await refreshTokens(accessToken, mockUser);
+
+      expect(refreshedAT).to.be.a('string');
+      expect(refreshedRT).to.be.a('string');
+      expect(refreshedAT).not.to.equal(refreshedRT);
+    });
+
+    it('throws an error if no arguments are provided', async() => {
+      await expect(refreshTokens())
+        .to.eventually.be
+        .rejectedWith('Invalid argument for refresh token');
+    });
+
+    it('throws an error if invalid user object', async() => {
+      const [accessToken] = await createTokens(mockUser);
+      await expect(refreshTokens(accessToken, { name: 'Test' }))
+        .to.eventually.be
+        .rejectedWith('Invalid argument for refresh token');
     });
   });
 });

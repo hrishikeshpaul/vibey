@@ -52,6 +52,9 @@ const createTokens = async(user) => {
 };
 
 const refreshTokens = async(accessToken, userInfo) => {
+  if (!accessToken || !userInfo['email'] || !userInfo['id']) {
+    throw new ErrorHandler(400, 'Invalid argument for refresh token');
+  }
   await delAsyncJwtClient(accessToken);
   return await createTokens(userInfo);
 };
