@@ -11,6 +11,7 @@ const {
   checkWhitelist,
 } = require('../../lib/auth');
 const { getAsyncJwtClient } = require('../../lib/redis');
+const { isLoggedIn } = require('../../middlewares/auth');
 
 const expect = chai.expect;
 chai.use(chaiAsPromised);
@@ -115,6 +116,21 @@ describe('token functions', () => {
         .to.eventually.equal(true);
       await expect(checkWhitelist(accessToken, refreshToken2))
         .to.eventually.equal(false);
+    });
+  });
+
+  describe('isLoggedIn', async() => {
+    it('calls next if valid tokens', async() => {
+      const nextSpy = sinon.spy();
+      const [accessToken, refreshToken] = await createTokens(mockUser);
+      const headers = {
+        'v-at': accessToken,
+        'v-rt': refreshToken,
+      };
+
+      await isLoggedIn({ headers }, {}, nextSpy);
+      Promise.all(nextSpy.returnValues);
+      sinon.assert.calledOnce(nextSpy);
     });
   });
 });
