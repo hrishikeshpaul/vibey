@@ -5,7 +5,11 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const sinon = require('sinon');
 
-const { createTokens, refreshTokens } = require('../../lib/auth');
+const {
+  createTokens,
+  refreshTokens,
+  checkWhitelist,
+} = require('../../lib/auth');
 const { getAsyncJwtClient } = require('../../lib/redis');
 
 const expect = chai.expect;
@@ -65,7 +69,7 @@ describe('token functions', () => {
         .rejectedWith('Invalid argument for refresh token');
     });
 
-    it('deletes the old access token from the redis client', async function() {
+    it('deletes the old access token from the redis client', async() => {
       const [accessToken, refreshToken] = await createTokens(mockUser);
       const clock = sinon.useFakeTimers(new Date().getTime());
 
@@ -80,13 +84,37 @@ describe('token functions', () => {
       clock.restore();
     });
 
-    it('adds the new tokens to the redis client', async function() {
+    it('adds the new tokens to the redis client', async() => {
       const [accessToken] = await createTokens(mockUser);
       const [rAT, rRT] = await refreshTokens(accessToken, mockUser);
 
       expect(rRT).to.be.a('string');
       await expect(getAsyncJwtClient(rAT))
         .to.eventually.equal(rRT);
+    });
+  });
+
+  describe('checkWhitelist', async() => {
+    it('returns true if tokens are whitelisted', async() => {
+      const [accessToken, refreshToken] = await createTokens(mockUser);
+
+      await expect(checkWhitelist(accessToken, refreshToken))
+        .to.eventually.equal(true);
+    });
+
+    it('returns false if mismatched token pair', async() => {
+      const clock = sinon.useFakeTimers(new Date().getTime());
+      const [accessToken, refreshToken] = await createTokens(mockUser);
+
+      clock.tick(1500);
+      const [accessToken2, refreshToken2] = await createTokens(mockUser);
+
+      await expect(checkWhitelist(accessToken, refreshToken))
+        .to.eventually.equal(true);
+      await expect(checkWhitelist(accessToken2, refreshToken2))
+        .to.eventually.equal(true);
+      await expect(checkWhitelist(accessToken, refreshToken2))
+        .to.eventually.equal(false);
     });
   });
 });
