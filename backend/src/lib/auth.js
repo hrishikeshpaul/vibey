@@ -2,8 +2,11 @@
 
 const jwt = require('jsonwebtoken');
 
-const { redisJwtClient } = require('../db/redis/config');
-const { getAsyncJwtClient, delAsyncJwtClient } = require('../lib/redis');
+const {
+  getAsyncJwtClient,
+  setAsyncJwtClient,
+  delAsyncJwtClient,
+} = require('../lib/redis');
 
 const jwtSecret = process.env.JWT_SECRET;
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
@@ -39,7 +42,7 @@ const createTokens = async(user) => {
   const [accessToken, refreshToken] = await Promise.all([
     createToken, createRefreshToken,
   ]);
-  redisJwtClient.set(accessToken, refreshToken);
+  await setAsyncJwtClient(accessToken, refreshToken, 'EX', 60 * 60 * 24 * 7);
   return [accessToken, refreshToken];
 };
 
