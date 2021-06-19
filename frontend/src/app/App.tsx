@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Redirect from "app/modules/Redirect";
-import "./App.scss";
-import Landing from "./modules/Landing";
-import Home from "./modules/Home";
-import { PrivateRoute, PublicRoute } from "./utils/PrivateRoute";
-=======
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -16,7 +6,6 @@ import './App.scss';
 import Landing from './modules/Landing';
 import Home from './modules/Home';
 import { PrivateRoute, PublicRoute } from './utils/PrivateRoute';
->>>>>>> bfe5db2eb650b5238552b0b349134d94e28b6e94
 import Loading from 'app/components/Loading';
 
 const App = () => {
