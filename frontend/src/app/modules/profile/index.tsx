@@ -3,10 +3,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import './profile.scss';
+import './Profile.scss';
 import { UserData } from "../../models/user.model";
 import { onLogout } from "app/store/user/userActions";
-import Icon from "app/components/icon/icon";
+import Icon from "app/components/Icon";
 import {ReactComponent as Thumb} from 'assets/icons/thumb.svg';
 import { HiMail, HiUser } from "react-icons/hi";
 

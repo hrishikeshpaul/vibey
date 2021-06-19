@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
-import "./navbar.scss";
-import { Icon } from "app/components/icon/icon";
+import "./Navbar.scss";
+import { Icon } from "app/components/Icon";
 import { UserData } from "app/models/user.model";
-import Profile from "../profile/profile";
+import Profile from "../Profile";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
 import {
   Popover,

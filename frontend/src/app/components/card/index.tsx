@@ -3,7 +3,7 @@
 import React, { PropsWithChildren } from "react";
 import "./Card.scss";
 import { Room } from "app/models/room.model";
-import Icon from "app/components/icon/icon";
+import Icon from "app/components/Icon";
 import { ReactComponent as Users } from "assets/icons/users.svg";
 import { ReactComponent as Thumb } from "assets/icons/thumb.svg";
 import { Badge, Avatar } from "@chakra-ui/react";

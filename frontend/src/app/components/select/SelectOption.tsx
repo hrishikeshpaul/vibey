@@ -3,7 +3,7 @@
 import React from 'react';
 import { components } from "react-select";
 import { Badge } from "@chakra-ui/react";
-import './select.scss';
+import './Select.scss';
 
 /**
  * Custom option for tags to display the label and score

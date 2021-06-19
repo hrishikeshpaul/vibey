@@ -1,13 +1,13 @@
 import React, {useState} from "react";
-import "./home.scss";
+import "./Home.scss";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Navbar from "app/modules/navbar/navbar";
-import Create from "app/components/create/CreateRoom";
+import Navbar from "app/modules/Navbar";
+import Create from "app/components/CreateRoom";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
 import { useToast } from "@chakra-ui/react";
 import { ERROR_TOAST } from "../../static/toast";
-import Card from 'app/components/card/Card';
+import Card from 'app/components/Card';
 import { Tag } from "app/models/tag.model";
 import { Room } from "app/models/room.model";
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Tag } from "../../models/tag.model";
 import CreatableSelect from 'react-select/creatable';
 import { OptionsType,  } from "react-select";
-import { SelectOption, NoSelectOption } from './select-option';
+import { SelectOption, NoSelectOption } from './SelectOption';
 import { searchTags } from '../../services/tag.service';
 
 /**

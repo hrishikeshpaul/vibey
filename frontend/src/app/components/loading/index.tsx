@@ -1,7 +1,7 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
 import React, { PropsWithChildren } from "react";
-import "./loading.scss";
+import "./Loading.scss";
 import {
   Modal,
   ModalOverlay,
@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import Icon from 'app/components/icon/icon';
+import Icon from 'app/components/Icon';
 import {ReactComponent as LoadingIcon} from 'assets/icons/loading.svg';
 
 type LoadingProps = {

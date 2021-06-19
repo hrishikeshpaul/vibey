@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Redirect from "app/modules/redirect/Redirect";
+import Redirect from "app/modules/Redirect";
 import "./App.scss";
-import Landing from "./modules/landing/landing";
-import Home from "./modules/home/home";
+import Landing from "./modules/Landing";
+import Home from "./modules/Home";
 import { PrivateRoute, PublicRoute } from "./utils/PrivateRoute";
-import Loading from 'app/components/loading/loading';
+import Loading from 'app/components/Loading';
 
 const App = () => {
   const isLoading = useSelector((state: any) => {
