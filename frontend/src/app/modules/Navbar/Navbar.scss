@@ -45,3 +45,18 @@
     }
   }
 }
+
+.chakra-popover__content {
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+.chakra-popover__arrow {
+  background-color: $secondary !important;
+  box-shadow: none !important;
+}
+
+.avatar {
+  cursor: pointer !important;
+}

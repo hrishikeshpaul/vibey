@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import './icon.scss';
+import './Icon.scss';
 
 /**
  * Prop types

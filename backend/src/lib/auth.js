@@ -46,8 +46,7 @@ const createTokens = async(user) => {
   const [accessToken, refreshToken] = await Promise.all([
     createToken, createRefreshToken,
   ]);
-  await setAsyncJwtClient(accessToken, refreshToken);
-
+  await setAsyncJwtClient(accessToken, refreshToken, 'EX', 60 * 60 * 24 * 7);
   return [accessToken, refreshToken];
 };
 

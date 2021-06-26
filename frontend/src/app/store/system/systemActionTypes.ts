@@ -4,7 +4,7 @@ export const GET_API_START = "GET_API_START";
 export const GET_API_FAILURE = "GET_API_FAILURE";
 export const GET_API_SUCCESS = "GET_API_SUCCESS";
 export const SET_USER_LOGIN = "SET_USER_LOGIN";
-
+export const SET_CREATE_ROOM_MODAL = "SET_CREATE_ROOM_MODAL";
 
 /**
  * Action for when the request has started
@@ -28,9 +28,19 @@ export interface GetApiFailure {
   payload: Error;
 }
 
+/**
+ * Update the user's login state
+ */
 export interface SetUserLogin {
   type: typeof SET_USER_LOGIN;
   payload: boolean;
 }
 
-export type SystemActionTypes = GetApiStart | GetApiSuccess | GetApiFailure | SetUserLogin;
+/**
+ * Open or close create room modal
+ */
+export interface SetCreateRoomModal {
+  type: typeof SET_CREATE_ROOM_MODAL;
+  payload: boolean;
+}
+export type SystemActionTypes = GetApiStart | GetApiSuccess | GetApiFailure | SetUserLogin | SetCreateRoomModal;

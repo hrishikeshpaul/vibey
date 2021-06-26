@@ -1,0 +1,31 @@
+@import 'assets/stylesheets/colors';
+@import 'assets/stylesheets/select';
+
+label {
+  font-weight: 700;
+}
+
+textarea {
+  resize: none;
+}
+
+.tag-body {
+  height: 3.75rem;
+  max-height: 3.75rem;
+  overflow-y: auto;
+}
+
+label {
+  font-size: 0.85rem;
+}
+.input-field {
+  &:focus {
+    border-color: $primary !important;
+  }
+}
+
+.chakra-textarea {
+  &:focus {
+    border: 2px solid;
+  }
+}
