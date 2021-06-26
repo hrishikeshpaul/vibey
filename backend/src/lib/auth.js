@@ -7,6 +7,7 @@ const {
   setAsyncJwtClient,
   delAsyncJwtClient,
 } = require('../lib/redis');
+const { ErrorHandler } = require('../lib/errors');
 
 const jwtSecret = process.env.JWT_SECRET;
 const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
@@ -17,6 +18,9 @@ const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
  * @param {object} user user object
  */
 const createTokens = async(user) => {
+  if (!user) {
+    throw new ErrorHandler(400, 'Cannot create tokens without user info');
+  }
   const { email, id } = user;
   const payload = {
     subject: id,
@@ -47,6 +51,9 @@ const createTokens = async(user) => {
 };
 
 const refreshTokens = async(accessToken, userInfo) => {
+  if (!accessToken || !userInfo['email'] || !userInfo['id']) {
+    throw new ErrorHandler(400, 'Invalid argument for refresh token');
+  }
   await delAsyncJwtClient(accessToken);
   return await createTokens(userInfo);
 };

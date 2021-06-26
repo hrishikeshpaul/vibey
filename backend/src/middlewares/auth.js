@@ -26,7 +26,7 @@ const isLoggedIn = async(req, res, next) => {
       if (isAccessTokenValidated) {
         const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
         if (isWhiteListed) {
-          next();
+          return next();
         } else {
           throw new ErrorHandler(403, 'Non-whitelisted token');
         }
@@ -56,14 +56,14 @@ const isLoggedIn = async(req, res, next) => {
           throw new ErrorHandler(403, 'Invalid tokens');
         }
       }
-      next();
+      return next();
     } else {
       throw new ErrorHandler(401, 'Tokens required');
     }
   } catch (err) {
     next(err);
   }
-  next();
+  return next();
 };
 
 const checkLogin = (req, res, next) => {
