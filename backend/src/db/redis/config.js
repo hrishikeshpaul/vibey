@@ -21,9 +21,11 @@ const initRedis = _ => {
 };
 
 const redisClient = initRedis();
+const redisJwtClient = initRedis();
 const redisStore = connectRedis(session);
 
 module.exports = {
   redisClient,
   redisStore,
+  redisJwtClient,
 };

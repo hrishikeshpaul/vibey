@@ -1,22 +1,69 @@
 'use strict';
 
-const jwt = require('jsonwebtoken');
-const jwtSecret = process.env.JWT_SECRET;
+const {
+  refreshTokens,
+  checkWhitelist,
+  verifyToken,
+} = require('../lib/auth');
+const { ErrorHandler } = require('../lib/errors');
 
-const isLoggedIn = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (token) {
-    jwt.verify(token, jwtSecret, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ error: 'Unauthorized' });
-      } else {
-        req.decodedJwt = decoded;
-        next();
+/**
+ * isLoggedIn: Auth/refresh token flow
+ * tries to validate access token with jwt.verify and whitelist
+ * if fail, tries to verify refresh with jwt.verify and whitelist,
+ *   tries to refresh tokens or throw error accordingly
+ */
+const isLoggedIn = async(req, res, next) => {
+  const accessToken = req.headers['v-at'];
+  const refreshToken = req.headers['v-rt'];
+
+  try {
+    if (accessToken && refreshToken) {
+      const isAccessTokenValidated = await verifyToken(
+        accessToken, 'access', req,
+      );
+
+      if (isAccessTokenValidated) {
+        const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
+        if (isWhiteListed) {
+          next();
+        } else {
+          throw new ErrorHandler(403, 'Non-whitelisted token');
+        }
+      } else if (!isAccessTokenValidated) {
+        const isRefreshTokenValidated = await verifyToken(
+          refreshToken, 'refresh', req,
+        );
+
+        if (isRefreshTokenValidated) {
+          const isWhiteListed = await checkWhitelist(accessToken, refreshToken);
+
+          if (isWhiteListed) {
+            const [
+              refreshedAccessToken,
+              refreshedRefreshToken,
+            ] = await refreshTokens(accessToken, {
+              email: isRefreshTokenValidated.email,
+              id: isRefreshTokenValidated.subject,
+            });
+            req.headers['v-at'] = refreshedAccessToken;
+            req.headers['v-rt'] = refreshedRefreshToken;
+
+          } else {
+            throw new ErrorHandler(403, 'Mismatched/Non-whitelisted tokens');
+          }
+        } else {
+          throw new ErrorHandler(403, 'Invalid tokens');
+        }
       }
-    });
-  } else {
-    return res.status(401).json({ error: 'Unauthorized' });
+      next();
+    } else {
+      throw new ErrorHandler(401, 'Tokens required');
+    }
+  } catch (err) {
+    next(err);
   }
+  next();
 };
 
 const checkLogin = (req, res, next) => {

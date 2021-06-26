@@ -4,15 +4,18 @@ const mongoose = require('mongoose');
 
 module.exports = function connectMongoDB() {
   try {
-    mongoose.connect(
-      process.env.MONGO_URI,
-      { useUnifiedTopology: true, useNewUrlParser: true },
-      () => console.log('MongoDB connected'),
-    );
+    mongoose
+      .connect(process.env.MONGO_URI, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      })
+      .then(() => console.log('MongoDB connected'))
+      .catch((err) => console.log(err));
+
     /**
      *  make Mongoose use findOneAndUpdate(); resolves deprecation warning
      *  see findAndModify(): https://mongoosejs.com/docs/deprecations.html
-     */
+    */
     mongoose.set('useFindAndModify', false);
     /**
      * Resolves:

@@ -4,8 +4,8 @@ const { app } = require('../lib/app');
 const { generateRandomString, scopes, STATE_KEY } = require('../static/const');
 const { spotifyApi } = require('../lib/spotify');
 const { User } = require('../db/mongo/models/user');
-
-const { generateToken } = require('../lib/auth');
+const { createTokens } = require('../lib/auth');
+const { redisJwtClient } = require('../db/redis/config');
 
 /**
  * If user isn't active in Redis, get authorization code from Spotify by
@@ -13,7 +13,6 @@ const { generateToken } = require('../lib/auth');
  * Redirects to call back which then gets the access token and refresh token
  */
 app.get('/login', (req, res) => {
-
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.send(spotifyApi.createAuthorizeURL(scopes, state, true));
@@ -52,27 +51,40 @@ app.get('/authorize', async(req, res) => {
       if (!loggedUser) {
         loggedUser = await new User(userObj).save();
       }
-      const token = generateToken(loggedUser);
+
+      const [accessToken, refreshToken] = await createTokens(loggedUser);
+
       res.status(200).json({
         user: loggedUser,
-        token: token,
+        accessToken,
+        refreshToken,
       });
     } catch (err) {
-      res.status(500).send(err);
+      console.log(err);
     }
   }
 });
 
 /**
- * Destroys the current session
- * Redirects to home page, where a new session is
- * created (new session lacks tokens)
- *
+ * Adds the user's AT and RT to blacklist
+ * wipes the spotify access and refresh token
+ * sends 204 no response on success
  */
-app.get('/logout', async(req, res) => {
+app.post('/logout', function(req, res) {
+  const accessToken = req.headers['v-at'];
+
+  if (accessToken) {
+    try {
+      redisJwtClient.del(accessToken);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  console.log('we here');
   spotifyApi.setAccessToken('');
   spotifyApi.setRefreshToken('');
-  res.redirect('http://localhost:5555/');
+  console.log('here again');
+  res.status(204).send();
 });
 
 module.exports = app;
