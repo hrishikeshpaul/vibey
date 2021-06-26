@@ -1,4 +1,4 @@
-import { LOGIN_URL, AUTHORIZE_URL } from "app/static/url";
+import { LOGIN_URL, AUTHORIZE_URL, LOGOUT_URL, CHECK_AUTH_URL } from "app/static/url";
 import axios from "app/hooks/useAxios";
 
 /*
@@ -33,16 +33,20 @@ export const authorize = async (
 };
 
 /**
- * 
+ * Makes an API call to see if the current JWT stored is 
+ * valid or not
  * @param jwt jwt from the local storage
  */
-export const checkLogin = async() => {
-  // make api call
+export const checkLogin = async(): Promise<any> => {
   const jwt = localStorage.getItem('v-token')
-  // const res = axios.get()
-  return true
+  return axios.post(CHECK_AUTH_URL, {jwt});
 }
 
-export const logout = async() => {
-  
+/**
+ * Service to log the user out
+ * Sends the JWT
+ */
+export const logout = async(): Promise<any> => {
+  const jwt = localStorage.getItem('v-token');
+  return axios.post(LOGOUT_URL, {jwt})
 }

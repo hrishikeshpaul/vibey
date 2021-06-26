@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
  */
 
 const TagSchema = mongoose.Schema({
-  name: {
+  label: {
     type: String,
     required: true,
     /**
@@ -25,6 +25,14 @@ const TagSchema = mongoose.Schema({
       unique: true,
       collation: { locale: 'en', strength: 2 },
     },
+  },
+  /**
+   * React select REQUIRES value. This is (in our case) the same as
+   * the label
+   */
+  value: {
+    type: String,
+    required: true,
   },
   score: {
     type: Number,
