@@ -70,7 +70,7 @@ export const PublicRoute: React.FC<PrivateRouteProps> = ({
  * Helper function to verify the JWT
  */
 const checkJWT = () => {
-  const token = localStorage.getItem('v-token');
+  const token = localStorage.getItem('v-at') && localStorage.getItem('v-rt');
   if(token === null || token === '') {
     return false;
   } else {
