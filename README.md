@@ -3,7 +3,7 @@
 Vibey is a social platform that allows users to explore or host music rooms and listen together in real-time.  Vibey leverages WebSockets and the Spotify API to allow hosts to actively queue up playlists and actively reverse, skip, seek, pause, and play, all while keeping things in-time with other users.
 
 ## 🎨 Mockups
-Mockups made with Adobe XD. [View](https://drive.google.com/file/d/1eJhg2Y52zTAZF1AHTUw9F-0Co5HVcaiK/view?usp=sharing)
+Mockups made with Adobe XD. [Click here to view list](https://drive.google.com/file/d/1eJhg2Y52zTAZF1AHTUw9F-0Co5HVcaiK/view?usp=sharing)
 
 ![banner](https://i.postimg.cc/rFTVqq0b/Screen-Shot-2021-07-21-at-12-06-10-AM.png)
 
