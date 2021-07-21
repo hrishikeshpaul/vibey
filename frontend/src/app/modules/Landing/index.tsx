@@ -24,7 +24,7 @@ const Landing = () => {
       <Navbar />
       <div className="w-100 d-flex justify-content-center align-items-center main-body flex-column">
         <div className="h1 text-center title">
-          Make listening to music, <div className="text-primary">more fun.</div>
+          Make listening to music <div className="text-primary">more fun.</div>
         </div>
         <div className="pt-2 subtitle">
           Vibe with people with the same taste in music.

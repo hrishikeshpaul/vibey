@@ -1,10 +1,6 @@
 import { Dispatch } from 'redux';
 import { SET_USER, UserActionTypes } from 'app/store/user/userActionTypes';
 import {
-  SET_USER,
-  UserActionTypes,
-} from "app/store/user/userActionTypes";
-import {
   GET_API_START,
   GET_API_FAILURE,
   GET_API_SUCCESS,
