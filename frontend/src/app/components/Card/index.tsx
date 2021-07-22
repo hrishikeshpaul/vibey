@@ -1,12 +1,14 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import React, { PropsWithChildren } from "react";
-import "./Card.scss";
+import { PropsWithChildren } from "react";
+import { Badge, Avatar } from "@chakra-ui/react";
+
 import { Room } from "app/models/room.model";
 import Icon from "app/components/Icon";
 import { ReactComponent as Users } from "assets/icons/users.svg";
 import { ReactComponent as Thumb } from "assets/icons/thumb.svg";
-import { Badge, Avatar } from "@chakra-ui/react";
+import { socket } from 'app/static/socket';
+import "./Card.scss";
 
 type CardProps = {
   room: Room;
@@ -14,6 +16,9 @@ type CardProps = {
 
 const Card = (props: PropsWithChildren<CardProps>) => {
   const { room } = props;
+  const handleJoinRoom = () => {
+    socket.emit('join', room.id);
+   };
 
   return (
     <div className="card text-white bg-secondary v-card w-100 shadow-none p-4">
@@ -58,7 +63,9 @@ const Card = (props: PropsWithChildren<CardProps>) => {
         </div>
       </div>
       <div className="join-room p-2 bg-secondary">
-        <button className="btn btn-primary btn-sm font-weight-bold px-3">
+        <button 
+          className="btn btn-primary btn-sm font-weight-bold px-3"
+          onClick={handleJoinRoom}>
           Join Room
         </button>
       </div>
