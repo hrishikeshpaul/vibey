@@ -80,10 +80,8 @@ app.post('/logout', function(req, res) {
       console.log(err);
     }
   }
-  console.log('we here');
   spotifyApi.setAccessToken('');
   spotifyApi.setRefreshToken('');
-  console.log('here again');
   res.status(204).send();
 });
 
