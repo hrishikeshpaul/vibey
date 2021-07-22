@@ -14,7 +14,7 @@ app.get(
   '/add',
   validateTagName,
   validateTagLength,
-  async function(req, res) {
+  async function (req, res) {
     const { name } = req.query;
 
     try {
@@ -47,13 +47,13 @@ app.get(
  * The second error handle may be unnecessary
  *
  */
-app.get('/search', async(req, res) => {
+app.get('/search', async (req, res) => {
   const { str } = req.query;
   try {
     Tag.find(
       { label: { $regex: str, $options: 'i' } },
       { label: 1, score: 1, value: 1, _id: 0 },
-      function(err, docs) {
+      function (err, docs) {
         if (err) {
           res.status(500).json({ error: 'Error finding results' });
         } else {

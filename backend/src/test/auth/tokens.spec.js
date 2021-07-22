@@ -23,20 +23,20 @@ describe('token functions', () => {
   };
 
   describe('createTokens', () => {
-    it('returns two unique tokens', async() => {
+    it('returns two unique tokens', async () => {
       const [accessToken, refreshToken] = await createTokens(mockUser);
       expect(refreshToken).to.be.a('string');
       expect(accessToken).to.be.a('string');
       expect(accessToken).not.to.equal(refreshToken);
     });
 
-    it('throws error if no user provided', async() => {
+    it('throws error if no user provided', async () => {
       await expect(createTokens())
         .to.eventually.be
         .rejectedWith('Cannot create tokens without user info');
     });
 
-    it('adds the token pair to the jwt redis client', async() => {
+    it('adds the token pair to the jwt redis client', async () => {
       const [accessToken, refreshToken] = await createTokens(mockUser);
       await expect(getAsyncJwtClient(accessToken))
         .to.eventually
@@ -45,7 +45,7 @@ describe('token functions', () => {
   });
 
   describe('refreshTokens', () => {
-    it('returns a pair of unique tokens', async() => {
+    it('returns a pair of unique tokens', async () => {
       const [accessToken] = await createTokens(mockUser);
       const [
         refreshedAT,
@@ -57,20 +57,20 @@ describe('token functions', () => {
       expect(refreshedAT).not.to.equal(refreshedRT);
     });
 
-    it('throws an error if no arguments are provided', async() => {
+    it('throws an error if no arguments are provided', async () => {
       await expect(refreshTokens())
         .to.eventually.be
         .rejectedWith('Invalid argument for refresh token');
     });
 
-    it('throws an error if invalid user object', async() => {
+    it('throws an error if invalid user object', async () => {
       const [accessToken] = await createTokens(mockUser);
       await expect(refreshTokens(accessToken, { name: 'Test' }))
         .to.eventually.be
         .rejectedWith('Invalid argument for refresh token');
     });
 
-    it('deletes the old access token from the redis client', async() => {
+    it('deletes the old access token from the redis client', async () => {
       const [accessToken, refreshToken] = await createTokens(mockUser);
       const clock = sinon.useFakeTimers(new Date().getTime());
 
@@ -85,7 +85,7 @@ describe('token functions', () => {
       clock.restore();
     });
 
-    it('adds the new tokens to the redis client', async() => {
+    it('adds the new tokens to the redis client', async () => {
       const [accessToken] = await createTokens(mockUser);
       const [rAT, rRT] = await refreshTokens(accessToken, mockUser);
 
@@ -95,15 +95,15 @@ describe('token functions', () => {
     });
   });
 
-  describe('checkWhitelist', async() => {
-    it('returns true if tokens are whitelisted', async() => {
+  describe('checkWhitelist', async () => {
+    it('returns true if tokens are whitelisted', async () => {
       const [accessToken, refreshToken] = await createTokens(mockUser);
 
       await expect(checkWhitelist(accessToken, refreshToken))
         .to.eventually.equal(true);
     });
 
-    it('returns false if mismatched token pair', async() => {
+    it('returns false if mismatched token pair', async () => {
       const clock = sinon.useFakeTimers(new Date().getTime());
       const [accessToken, refreshToken] = await createTokens(mockUser);
 
@@ -120,8 +120,8 @@ describe('token functions', () => {
     clock.restore();
   });
 
-  describe('isLoggedIn', async() => {
-    it('calls next and updates headers if valid tokens', async() => {
+  describe('isLoggedIn', async () => {
+    it('calls next and updates headers if valid tokens', async () => {
       const nextSpy = sinon.spy();
       const [accessToken, refreshToken] = await createTokens(mockUser);
       const headers = {
@@ -134,7 +134,7 @@ describe('token functions', () => {
       sinon.assert.calledOnce(nextSpy);
     });
 
-    it('throws error if missing tokens', async() => {
+    it('throws error if missing tokens', async () => {
       const next = sinon.spy();
       const expectedError = sinon.match.instanceOf(Error)
         .and(sinon.match.has('message', 'Tokens required'));
@@ -142,7 +142,7 @@ describe('token functions', () => {
       sinon.assert.calledWith(next, sinon.match(expectedError));
     });
 
-    it('throws error if non-whitelisted token', async() => {
+    it('throws error if non-whitelisted token', async () => {
       const next = sinon.spy();
       const [accessToken, refreshToken] = await createTokens(mockUser);
       const headers = {
@@ -157,7 +157,7 @@ describe('token functions', () => {
       sinon.assert.calledWith(next, sinon.match(expectedError));
     });
 
-    it('throws error if tokens are whitelisted but expired', async() => {
+    it('throws error if tokens are whitelisted but expired', async () => {
       const next = sinon.spy();
       const clock = sinon.useFakeTimers(new Date().getTime());
       const [accessToken, refreshToken] = await createTokens(mockUser);
@@ -174,13 +174,13 @@ describe('token functions', () => {
       clock.restore();
     });
 
-    it('throws an error if tokens are valid but mismatched', async() => {
+    it('throws an error if tokens are valid but mismatched', async () => {
       const next = sinon.spy();
       const clock = sinon.useFakeTimers(new Date().getTime());
-      const [ accessToken ] = await createTokens(mockUser);
+      const [accessToken] = await createTokens(mockUser);
 
       clock.tick(900000); /* 15 minutes (AT expiration) */
-      const [ , refreshToken2 ] = await createTokens(mockUser);
+      const [, refreshToken2] = await createTokens(mockUser);
       const headers = {
         'v-at': accessToken,
         'v-rt': refreshToken2,
@@ -194,9 +194,9 @@ describe('token functions', () => {
     });
 
     it('updates requet header tokens if valid token pair but AT expired',
-      async() => {
+      async () => {
         const clock = sinon.useFakeTimers(new Date().getTime());
-        const [ accessToken, refreshToken ] = await createTokens(mockUser);
+        const [accessToken, refreshToken] = await createTokens(mockUser);
         const headers = {
           'v-at': accessToken,
           'v-rt': refreshToken,

@@ -13,12 +13,12 @@ const initRedis = _ => {
     console.log('Redis Socket connected');
   });
 
-  jwtClient.on('error', function(error) {
+  jwtClient.on('error', function (error) {
     console.log('Redis JWT connection error');
     console.error(error);
   });
 
-  socketClient.on('error', function(error) {
+  socketClient.on('error', function (error) {
     console.log('Redis JWT connection error');
     console.error(error);
   });
