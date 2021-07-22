@@ -11,7 +11,7 @@ module.exports = (io) => {
       socket.join(room);
     });
 
-    // TODO create room endpoint should trigger this
+    // TODO trigger POST /rooms/create
     socket.on('create', () => {
     });
 
