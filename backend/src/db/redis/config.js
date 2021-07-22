@@ -1,31 +1,33 @@
 'use strict';
 
 const redis = require('redis');
-const connectRedis = require('connect-redis');
-const session = require('express-session');
-
 
 const initRedis = _ => {
-  const client = redis.createClient();
+  const jwtClient = redis.createClient();
+  const socketClient = redis.createClient(process.env.REDIS_SOCKET_PORT);
 
-  client.on('connect', function() {
-    console.log('Redis connected');
+  jwtClient.on('connect', () => {
+    console.log('Redis JWT connected');
+  });
+  socketClient.on('connect', () => {
+    console.log('Redis Socket connected');
   });
 
-  client.on('error', function(error) {
-    console.log('Redis connection error');
+  jwtClient.on('error', function(error) {
+    console.log('Redis JWT connection error');
     console.error(error);
   });
 
-  return client;
+  socketClient.on('error', function(error) {
+    console.log('Redis JWT connection error');
+    console.error(error);
+  });
+  return [jwtClient, socketClient];
 };
 
-const redisClient = initRedis();
-const redisJwtClient = initRedis();
-const redisStore = connectRedis(session);
+const [redisJwtClient, redisSocketClient] = initRedis();
 
 module.exports = {
-  redisClient,
-  redisStore,
   redisJwtClient,
+  redisSocketClient,
 };
