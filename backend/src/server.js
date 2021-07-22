@@ -9,7 +9,6 @@
 const app = require('../src/app');
 const debug = require('debug')('backend:server');
 const http = require('http');
-const { socket } = require('./lib/socket');
 
 /**
  * Get port from environment and store in Express.
@@ -23,6 +22,13 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: 'http://localhost:3001',
+    methods: ['GET', 'POST'],
+  },
+});
+require('./lib/socket.js')(io);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -31,8 +37,6 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-console.log(socket);
-// socket.connect(server);
 
 /**
  * Normalize a port into a number, string, or false.

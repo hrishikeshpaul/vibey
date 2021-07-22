@@ -1,22 +1,32 @@
 'use strict';
 
-// class Socket {
-//   socket
+module.exports = (io) => {
+  io.on('connection', (socket) => {
+    console.log('socket connected');
 
-//   // constructor() {
-//   //   this.socket = null;
-//   // }
+    socket.on('disconnect', () => {
+      console.log('disconnected');
+      socket.removeAllListeners();
+    });
 
-//   connect(server) {
-//     const io = require('socket.io')(server);
-//     io.on('connection', (socket) => {
-//       console.log('socket connected!', socket)
-//     });
-//   }
-// }
+    socket.on('join', (room) => {
+      console.log('join room: ', room);
+    });
 
-const socket = 'hi';
+    socket.on('create', (room) => { });
 
-module.exports = {
-  socket,
+    socket.on('play', () => { });
+
+    socket.on('pause', () => { });
+
+    socket.on('seek', () => { });
+
+    socket.on('change', () => { });
+
+    socket.on('log', () => { });
+
+    socket.on('announcement', () => { });
+
+    socket.on('close', () => { });
+  });
 };
