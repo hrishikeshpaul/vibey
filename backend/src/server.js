@@ -26,10 +26,7 @@ const server = http.createServer(app);
  * Init sockets, attach to app for endpoint access
  */
 const io = require('socket.io')(server, {
-  cors: {
-    origin: 'http://localhost:3001',
-    methods: ['GET', 'POST'],
-  },
+  cors: { origin: 'http://localhost:3001' },
 });
 require('./lib/socket.js')(io);
 app.set('socketio', io);
