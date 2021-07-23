@@ -5,7 +5,7 @@ import axios from "app/hooks/useAxios";
  * login is called from Home
  * gets query from /api/auth/login with spotify login url, redirect uri, state, etc
  * on success, home forwards itself to the query url
- * TODO: fix 'any'
+ * TODO: fix "any"
  *
  */
 export const login = async (): Promise<any> => {
@@ -16,7 +16,7 @@ export const login = async (): Promise<any> => {
  * authorize is called from Redirect
  * passes code and state to be added as query params
  * back-end verifies states
- * TODO: fix 'any' return
+ * TODO: fix "any" return
  * TODO: fix undefined type ??
  *
  */
@@ -38,7 +38,7 @@ export const authorize = async (
  * @param jwt jwt from the local storage
  */
 export const checkLogin = async(): Promise<any> => {
-  const jwt = localStorage.getItem('v-token')
+  const jwt = localStorage.getItem("v-token")
   return axios.post(CHECK_AUTH_URL, {jwt});
 }
 
@@ -47,6 +47,6 @@ export const checkLogin = async(): Promise<any> => {
  * Sends the JWT
  */
 export const logout = async(): Promise<any> => {
-  const jwt = localStorage.getItem('v-token');
+  const jwt = localStorage.getItem("v-token");
   return axios.post(LOGOUT_URL, {jwt})
 }

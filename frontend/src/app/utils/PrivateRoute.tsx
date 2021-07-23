@@ -28,7 +28,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   if(loggedIn) {
     dispatch({
       type: SET_USER,
-      payload: JSON.parse(localStorage.getItem('v-user') || '')
+      payload: JSON.parse(localStorage.getItem("v-user") || "")
     })
   }
   return (
@@ -70,8 +70,8 @@ export const PublicRoute: React.FC<PrivateRouteProps> = ({
  * Helper function to verify the JWT
  */
 const checkJWT = () => {
-  const token = localStorage.getItem('v-at') && localStorage.getItem('v-rt');
-  if(token === null || token === '') {
+  const token = localStorage.getItem("v-at") && localStorage.getItem("v-rt");
+  if(token === null || token === "") {
     return false;
   } else {
     return true;

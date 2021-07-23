@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { Tag } from "../../models/tag.model";
-import CreatableSelect from 'react-select/creatable';
+import CreatableSelect from "react-select/creatable";
 import { OptionsType,  } from "react-select";
-import { SelectOption, NoSelectOption } from './SelectOption';
-import { searchTags } from '../../services/tag.service';
+import { SelectOption, NoSelectOption } from "./SelectOption";
+import { searchTags } from "../../services/tag.service";
 
 /**
  * @function updateTags function emitted that contains the updated tags
@@ -19,7 +19,7 @@ type State = {
 const Select = (props: State) => {
   const { updateTags, presentTags, handleError } = props;
   const [ tags, setTags ] = useState<Tag[]>([]);
-  const [ inputValue, setInputValue ] = useState<string>('');
+  const [ inputValue, setInputValue ] = useState<string>("");
   const selectInputRef = useRef<any>();
 
   /**
@@ -39,7 +39,7 @@ const Select = (props: State) => {
   const handleSelectionChange = (tags: OptionsType<Tag>) => {
     if (tags.length) {
       updateTags(tags[tags.length - 1]);
-      setInputValue('');
+      setInputValue("");
       setTags([]);
       getTagsFromSubstring();
     }
@@ -66,7 +66,7 @@ const Select = (props: State) => {
    * 
    * @param substr input value 
    */
-  const getTagsFromSubstring = async (substr = '') => {
+  const getTagsFromSubstring = async (substr = "") => {
     try {
       const response = await searchTags(substr);
       setTags(response.data);

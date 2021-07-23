@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from 'react';
-import './Icon.scss';
+import React, { PropsWithChildren } from "react";
+import "./Icon.scss";
 
 /**
  * Prop types
@@ -16,7 +16,7 @@ type IconProps = {
  * @param color Color of the icon
  * @param size [width, height] of icon
  */
-const makeStyles = (color = 'white', size = [1, 1]) => {
+const makeStyles = (color = "white", size = [1, 1]) => {
   return {
     color: color,
     height: `${size[1]}rem`,
@@ -29,11 +29,9 @@ export const Icon = (props: PropsWithChildren<IconProps>) => {
   return (
     <>
       {
-        Component !== undefined ? <Component style={makeStyles(color, size)} fill={color || 'white'}></Component> : ""
+        Component !== undefined ? <Component style={makeStyles(color, size)} fill={color || "white"}></Component> : ""
       }
     </>
     
   )
 }
-
-export default Icon;

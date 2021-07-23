@@ -2,7 +2,7 @@
 
 import React, { PropsWithChildren, useState, useEffect } from "react";
 import "./CreateRoom.scss";
-import Select from "../Select";
+import Select from "../Select/Select";
 import {
   Modal,
   ModalOverlay,

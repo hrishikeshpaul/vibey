@@ -3,11 +3,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import './Profile.scss';
+import "./Profile.scss";
 import { UserData } from "../../models/user.model";
 import { onLogout } from "app/store/user/userActions";
-import Icon from "app/components/Icon";
-import {ReactComponent as Thumb} from 'assets/icons/thumb.svg';
+import Icon from "app/components/Icon/Icon";
+import {ReactComponent as Thumb} from "assets/icons/thumb.svg";
 import { HiMail, HiUser } from "react-icons/hi";
 
 const Profile = () => {

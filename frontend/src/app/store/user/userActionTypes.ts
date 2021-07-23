@@ -1,5 +1,5 @@
 import { SystemActionTypes } from "app/store/system/systemActionTypes";
-import { UserData } from 'app/models/user.model';
+import { UserData } from "app/models/user.model";
 
 export const SET_USER = "SET_USER";
 

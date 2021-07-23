@@ -29,7 +29,7 @@ export interface GetApiFailure {
 }
 
 /**
- * Update the user's login state
+ * Update the user"s login state
  */
 export interface SetUserLogin {
   type: typeof SET_USER_LOGIN;

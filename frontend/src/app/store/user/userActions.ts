@@ -1,5 +1,5 @@
-import { Dispatch } from 'redux';
-import { SET_USER, UserActionTypes } from 'app/store/user/userActionTypes';
+import { Dispatch } from "redux";
+import { SET_USER, UserActionTypes } from "app/store/user/userActionTypes";
 import {
   GET_API_START,
   GET_API_FAILURE,
@@ -19,7 +19,7 @@ export const getLoginRedirect =
   dispatch({ type: GET_API_START });
   try {
    const res = await login();
-   window.open(res.data, '_self');
+   window.open(res.data, "_self");
    dispatch({ type: GET_API_SUCCESS });
   } catch (err) {
    dispatch({
@@ -47,9 +47,9 @@ export const getAuthorization =
    const res = await authorize(code, state);
    const { accessToken, refreshToken } = res.data;
 
-   localStorage.setItem('v-at', accessToken ? accessToken : '');
-   localStorage.setItem('v-rt', refreshToken ? refreshToken : '');
-   localStorage.setItem('v-user', JSON.stringify(res.data.user));
+   localStorage.setItem("v-at", accessToken ? accessToken : "");
+   localStorage.setItem("v-rt", refreshToken ? refreshToken : "");
+   localStorage.setItem("v-user", JSON.stringify(res.data.user));
 
    dispatch({
     type: SET_USER,
@@ -58,7 +58,7 @@ export const getAuthorization =
    dispatch({
     type: GET_API_SUCCESS,
    });
-   history.push('/home');
+   history.push("/home");
   } catch (err) {
    console.log(err);
    dispatch({
@@ -79,8 +79,8 @@ export const onLogout = (history: any) => async (dispatch: Dispatch<UserActionTy
   try {
     dispatch({type: GET_API_START})
     await logout();
-    localStorage.removeItem('v-token');
-    localStorage.removeItem('v-user');
+    localStorage.removeItem("v-token");
+    localStorage.removeItem("v-user");
     dispatch({
       type: SET_USER,
       payload: {
@@ -101,7 +101,7 @@ export const onLogout = (history: any) => async (dispatch: Dispatch<UserActionTy
     dispatch({
       type: GET_API_SUCCESS,
     });
-    history.push('/');
+    history.push("/");
   } catch(err) {
     console.log(err)
     dispatch({

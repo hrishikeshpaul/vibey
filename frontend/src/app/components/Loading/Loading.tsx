@@ -10,8 +10,8 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import Icon from 'app/components/Icon';
-import {ReactComponent as LoadingIcon} from 'assets/icons/loading.svg';
+import Icon from "app/components/Icon/Icon";
+import {ReactComponent as LoadingIcon} from "assets/icons/loading.svg";
 
 type LoadingProps = {
   show: boolean;

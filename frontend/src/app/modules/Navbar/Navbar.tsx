@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
 import "./Navbar.scss";
-import { Icon } from "app/components/Icon";
+import { Icon } from "app/components/Icon/Icon";
 import { UserData } from "app/models/user.model";
-import Profile from "../Profile";
+import Profile from "../Profile/Profile";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
 import {
   Popover,
@@ -14,8 +14,8 @@ import {
   PopoverHeader,
   PopoverBody,
   PopoverArrow,
+  Avatar,
 } from "@chakra-ui/react";
-import { Avatar } from "@chakra-ui/react"
 
 const Navbar = () => {
   const dispatch = useDispatch();

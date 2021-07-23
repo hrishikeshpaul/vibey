@@ -29,7 +29,7 @@ const Redirect = (props: any) => {
         dispatch(getAuthorization(code, state, history));
       } catch (err) {
         console.log(err)
-        // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don't need this catch?
+        // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don"t need this catch?
       }
     };
     fetchData();
