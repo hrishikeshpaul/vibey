@@ -10,17 +10,16 @@ import "./Select.scss";
  *
  * Need to figure out the correct type for the prop to get rid of any
  *
- * @param props options props passed by react-select
+ * @param props options props passed by react-select f
  */
 export const SelectOption = (props: any) => {
- return (
-  <components.Option {...props}>
-   <span className="text-grey-1">#</span> <span>{props.data.label}</span>{" "}
-   <Badge className="bg-primary rounded-sm ml-1 text-white">
-    {props.data.score}
-   </Badge>
-  </components.Option>
- );
+  const { data } = props;
+  return (
+    <components.Option {...props}>
+      <span className="text-grey-1">#</span> <span>{data.label}</span>{" "}
+      <Badge className="bg-primary rounded-sm ml-1 text-white">{data.score}</Badge>
+    </components.Option>
+  );
 };
 
 /**
@@ -34,9 +33,9 @@ export const SelectOption = (props: any) => {
  * @param props options props passed by react-select
  */
 export const NoSelectOption = (props: any) => {
- return (
-  <components.NoOptionsMessage {...props}>
-   <span>Start typing!</span>
-  </components.NoOptionsMessage>
- );
+  return (
+    <components.NoOptionsMessage {...props}>
+      <span>Start typing!</span>
+    </components.NoOptionsMessage>
+  );
 };

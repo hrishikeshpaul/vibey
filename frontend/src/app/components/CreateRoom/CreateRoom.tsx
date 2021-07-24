@@ -2,7 +2,7 @@
 
 import React, { PropsWithChildren, useState, useEffect } from "react";
 import "./CreateRoom.scss";
-import Select from "../Select/Select";
+import { TiWarning } from "react-icons/ti";
 import {
   Modal,
   ModalOverlay,
@@ -17,7 +17,7 @@ import {
   InputRightElement,
   Tooltip,
 } from "@chakra-ui/react";
-import { TiWarning } from "react-icons/ti";
+import { Select } from "../Select/Select";
 
 type CreateProps = {
   open: boolean;
@@ -32,8 +32,7 @@ const initialRoomValues = {
   error: false,
 };
 
-
-const Create = (props: PropsWithChildren<CreateProps>) => {
+export const Create = (props: PropsWithChildren<CreateProps>) => {
   const { open, close, handleError } = props;
   const [room, setRoom] = useState(initialRoomValues);
 
@@ -43,19 +42,6 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
   useEffect(() => {
     setRoom(initialRoomValues);
   }, []);
-
-  /**
-   * Submits the rom that emits an event with the room details 
-   * and closes the modal
-   * @param e form data - has all the details of a room
-   */
-  const onSubmit = (e: any) => {
-    e.preventDefault();
-    if (validateForm()) {
-      close(room);
-      setRoom(initialRoomValues);
-    }
-  };
 
   /**
    * Validates the form to see if the room name is present
@@ -72,8 +58,21 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
   };
 
   /**
+   * Submits the rom that emits an event with the room details
+   * and closes the modal
+   * @param e form data - has all the details of a room
+   */
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    if (validateForm()) {
+      close(room);
+      setRoom(initialRoomValues);
+    }
+  };
+
+  /**
    * Updates the room name and description on change
-   * 
+   *
    * @param e event to update name and description
    */
   const handleChange = (e: any) => {
@@ -85,9 +84,9 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
   };
 
   /**
-   * Adds a tag emitted from the Select component to the 
+   * Adds a tag emitted from the Select component to the
    * room state
-   * 
+   *
    * @param tag tag that has been added
    */
   const handleUpdateTags = (tag: any) => {
@@ -95,21 +94,14 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
     if (tag) {
       setRoom((prev) => ({
         ...prev,
-        tags: currentTags.concat(tag)
-      }))
+        tags: currentTags.concat(tag),
+      }));
     }
   };
 
   return (
     <div>
-      <Modal
-        isOpen={open}
-        onClose={close}
-        size="xl"
-        isCentered={true}
-        autoFocus={false}
-        closeOnOverlayClick={false}
-      >
+      <Modal isOpen={open} onClose={close} size="xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
         <ModalOverlay />
         <ModalContent className="bg-secondary text-white rounded-modal py-2">
           <ModalHeader>
@@ -120,7 +112,7 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
           <ModalBody>
             <form id="create-form" onSubmit={(e) => onSubmit(e)}>
               <div>
-                <label>Room Name</label>
+                <span>Room Name</span>
                 <InputGroup>
                   <Input
                     isInvalid={room.error}
@@ -138,9 +130,7 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
                       aria-label="Please enter a valid room name!"
                       className="bg-danger"
                     >
-                      <InputRightElement
-                        children={<TiWarning className="text-danger" />}
-                      />
+                      <InputRightElement children={<TiWarning className="text-danger" />} />
                     </Tooltip>
                   ) : (
                     ""
@@ -163,22 +153,14 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
               </div>
               <div className="mt-3">
                 <label>Tags</label>
-                <Select
-                  updateTags={handleUpdateTags}
-                  presentTags={room.tags}
-                  handleError={handleError}
-                ></Select>
+                <Select updateTags={handleUpdateTags} presentTags={room.tags} handleError={handleError}></Select>
               </div>
             </form>
           </ModalBody>
 
           <ModalFooter>
             <div className="text-right mt-3">
-              <button
-                className="btn btn-primary font-weight-bold"
-                type="submit"
-                form="create-form"
-              >
+              <button className="btn btn-primary font-weight-bold" type="submit" form="create-form">
                 Create Room
               </button>
             </div>
@@ -188,5 +170,3 @@ const Create = (props: PropsWithChildren<CreateProps>) => {
     </div>
   );
 };
-
-export default Create;

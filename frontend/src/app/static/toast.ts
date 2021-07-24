@@ -2,7 +2,7 @@
 import { UseToastOptions } from "@chakra-ui/react";
 
 /**
- * Properties for a error toast 
+ * Properties for a error toast
  */
 export const ERROR_TOAST = {
   id: "toast-error",
@@ -10,5 +10,5 @@ export const ERROR_TOAST = {
   duration: 5000,
   position: "bottom-right",
   title: "Looks like something is wrong :(",
-  isClosable: true
-} as UseToastOptions
+  isClosable: true,
+} as UseToastOptions;

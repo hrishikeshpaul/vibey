@@ -11,69 +11,50 @@ type PrivateRouteProps = {
 };
 
 /**
+ * Helper function to verify the JWT
+ */
+const checkJWT = () => {
+  const token = localStorage.getItem("v-at") && localStorage.getItem("v-rt");
+  if (token === null || token === "") {
+    return false;
+  }
+  return true;
+};
+
+/**
  * Private route to ensure that components are rendered if the user is
  * logged in.
  * Also dispatches an action to update the state if the user is loggedin
  */
-export const PrivateRoute: React.FC<PrivateRouteProps> = ({
-  component: Component,
-}) => {
+export const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component }) => {
   const dispatch = useDispatch();
   const loggedIn = checkJWT();
+
   dispatch({
     type: SET_USER_LOGIN,
-    payload: loggedIn
+    payload: loggedIn,
   });
 
-  if(loggedIn) {
+  if (loggedIn) {
     dispatch({
       type: SET_USER,
-      payload: JSON.parse(localStorage.getItem("v-user") || "")
-    })
+      payload: JSON.parse(localStorage.getItem("v-user") || ""),
+    });
   }
-  return (
-    <Route
-      render={() =>
-        loggedIn ? <Component /> : <Redirect to="/" />
-      }
-    />
-  );
+  return <Route render={() => (loggedIn ? <Component /> : <Redirect to="/" />)} />;
 };
 
 /**
  * Public route to ensure that if the user is logged in then route to home
  * Dispatches an action to update the logged in state
  */
-export const PublicRoute: React.FC<PrivateRouteProps> = ({
-  component: Component,
-  ...rest
-}) => {
+export const PublicRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
   const dispatch = useDispatch();
   const loggedIn = checkJWT();
   dispatch({
     type: SET_USER_LOGIN,
-    payload: loggedIn
+    payload: loggedIn,
   });
 
-  return (
-    <Route
-      exact
-      {...rest}
-      render={(props) =>
-        !loggedIn ? <Component  {...props} /> : <Redirect to="/home" />
-      }
-    />
-  );
+  return <Route exact {...rest} render={(props) => (!loggedIn ? <Component {...props} /> : <Redirect to="/home" />)} />;
 };
-
-/**
- * Helper function to verify the JWT
- */
-const checkJWT = () => {
-  const token = localStorage.getItem("v-at") && localStorage.getItem("v-rt");
-  if(token === null || token === "") {
-    return false;
-  } else {
-    return true;
-  }
-}

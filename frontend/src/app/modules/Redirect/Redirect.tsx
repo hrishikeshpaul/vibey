@@ -4,7 +4,8 @@ import { useDispatch } from "react-redux";
 import { getAuthorization } from "app/store/user/userActions";
 import { useHistory } from "react-router-dom";
 
-const Redirect = (props: any) => {
+export const Redirect = (props: any) => {
+  const { location } = props;
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -24,18 +25,16 @@ const Redirect = (props: any) => {
          * will look into that soon.
          *
          */
-        const results = getQueryParams(props.location.search);
+        const results = getQueryParams(location.search);
         const [code, state] = [results.get("code"), results.get("state")];
         dispatch(getAuthorization(code, state, history));
       } catch (err) {
-        console.log(err)
+        console.log(err);
         // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don"t need this catch?
       }
     };
     fetchData();
-  }, []);
+  }, [history, dispatch, location]);
 
   return <div>Redirecting...</div>;
 };
-
-export default Redirect;

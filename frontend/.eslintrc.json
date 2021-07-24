@@ -3,10 +3,7 @@
         "browser": true,
         "es2021": true
     },
-    "extends": [
-        "plugin:react/recommended",
-        "airbnb"
-    ],
+    "extends": ["airbnb-typescript-prettier"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,23 +12,18 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": [
-        "react",
-        "@typescript-eslint"
-    ],
+    "plugins": ["react", "@typescript-eslint", "import"],
     "rules": {
         "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": [
-            "error"
-        ],
+        "@typescript-eslint/no-use-before-define": ["error"],
         "quotes": [2, "double", { "avoidEscape": true }],
+        "import/prefer-default-export": "off",
+        "import/no-default-export": "error",
+        "react/jsx-props-no-spreading": "off",
         "react/jsx-filename-extension": [
             1,
             {
-                "extensions": [
-                    ".tsx",
-                    ".ts"
-                ]
+                "extensions": [".tsx", ".ts"]
             }
         ],
         "import/extensions": [
@@ -56,21 +48,15 @@
         "import/no-extraneous-dependencies": [
             "warn",
             {
-                "devDependencies": [
-                    "**/*.stories.tsx",
-                    "**/util/Stories.ts"
-                ]
+                "devDependencies": ["**/*.stories.tsx", "**/util/Stories.ts"]
             }
         ],
         "import/no-unresolved": "error",
+        "indent": [2, "tab"],
         "import/order": [
             "error",
             {
-                "groups": [
-                    "builtin",
-                    "external",
-                    "internal"
-                ],
+                "groups": ["builtin", "external", "internal"],
                 "pathGroups": [
                     {
                         "pattern": "react",
@@ -83,10 +69,7 @@
                         "position": "after"
                     }
                 ],
-                "pathGroupsExcludedImportTypes": [
-                    "react",
-                    ".scss"
-                ],
+                "pathGroupsExcludedImportTypes": ["react", ".scss"],
                 "newlines-between": "always",
                 "alphabetize": {
                     "order": "asc",
@@ -94,25 +77,11 @@
                 }
             }
         ],
-        "import/extensions": [
-            ".js",
-            ".mjs",
-            ".jsx",
-            ".ts",
-            ".tsx"
-        ],
+        "import/extensions": [".js", ".mjs", ".jsx", ".ts", ".tsx"],
         "import/resolver": {
             "node": {
-                "paths": [
-                    "src",
-                    "src/app/components/Card"
-                ],
-                "extensions": [
-                    ".js",
-                    ".jsx",
-                    ".ts",
-                    ".tsx"
-                ]
+                "paths": ["src", "src/app/components/Card"],
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
             }
         }
     }

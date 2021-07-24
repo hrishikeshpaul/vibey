@@ -1,11 +1,6 @@
 import { Dispatch } from "redux";
 import { SET_USER, UserActionTypes } from "app/store/user/userActionTypes";
-import {
-  GET_API_START,
-  GET_API_FAILURE,
-  GET_API_SUCCESS,
-  SET_USER_LOGIN,
-} from "app/store/system/systemActionTypes";
+import { GET_API_START, GET_API_FAILURE, GET_API_SUCCESS, SET_USER_LOGIN } from "app/store/system/systemActionTypes";
 import { login, authorize, logout } from "app/services/auth.service";
 
 /*
@@ -14,20 +9,19 @@ import { login, authorize, logout } from "app/services/auth.service";
  * query string for forwarding to spotify login
  * spotify returns us to Redirect component
  */
-export const getLoginRedirect =
- () => async (dispatch: Dispatch<UserActionTypes>) => {
+export const getLoginRedirect = () => async (dispatch: Dispatch<UserActionTypes>) => {
   dispatch({ type: GET_API_START });
   try {
-   const res = await login();
-   window.open(res.data, "_self");
-   dispatch({ type: GET_API_SUCCESS });
+    const res = await login();
+    window.open(res.data, "_self");
+    dispatch({ type: GET_API_SUCCESS });
   } catch (err) {
-   dispatch({
-    type: GET_API_FAILURE,
-    payload: err,
-   });
+    dispatch({
+      type: GET_API_FAILURE,
+      payload: err,
+    });
   }
- };
+};
 
 /*
  * getAuthorization uses authorize() service
@@ -39,45 +33,44 @@ export const getLoginRedirect =
  *
  */
 export const getAuthorization =
- (code: string | undefined, state: string | undefined, history: any) =>
- async (dispatch: Dispatch<UserActionTypes>) => {
-  dispatch({ type: GET_API_START });
+  (code: string | undefined, state: string | undefined, history: any) =>
+  async (dispatch: Dispatch<UserActionTypes>) => {
+    dispatch({ type: GET_API_START });
 
-  try {
-   const res = await authorize(code, state);
-   const { accessToken, refreshToken } = res.data;
+    try {
+      const res = await authorize(code, state);
+      const { accessToken, refreshToken } = res.data;
 
-   localStorage.setItem("v-at", accessToken ? accessToken : "");
-   localStorage.setItem("v-rt", refreshToken ? refreshToken : "");
-   localStorage.setItem("v-user", JSON.stringify(res.data.user));
+      localStorage.setItem("v-at", accessToken || "");
+      localStorage.setItem("v-rt", refreshToken || "");
+      localStorage.setItem("v-user", JSON.stringify(res.data.user));
 
-   dispatch({
-    type: SET_USER,
-    payload: res.data.user,
-   });
-   dispatch({
-    type: GET_API_SUCCESS,
-   });
-   history.push("/home");
-  } catch (err) {
-   console.log(err);
-   dispatch({
-    type: GET_API_FAILURE,
-    payload: err.data,
-   });
-  }
- };
+      dispatch({
+        type: SET_USER,
+        payload: res.data.user,
+      });
+      dispatch({
+        type: GET_API_SUCCESS,
+      });
+      history.push("/home");
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: GET_API_FAILURE,
+        payload: err.data,
+      });
+    }
+  };
 
 /**
  * Logs the user out
  * makes an API call to clear the JWT from the backend
- * 
+ *
  * @param history router history
  */
 export const onLogout = (history: any) => async (dispatch: Dispatch<UserActionTypes>) => {
-   
   try {
-    dispatch({type: GET_API_START})
+    dispatch({ type: GET_API_START });
     await logout();
     localStorage.removeItem("v-token");
     localStorage.removeItem("v-user");
@@ -92,21 +85,21 @@ export const onLogout = (history: any) => async (dispatch: Dispatch<UserActionTy
         display_name: "",
         image: "",
         likes: [],
-      }
+      },
     });
     dispatch({
       type: SET_USER_LOGIN,
-      payload: false
-    })
+      payload: false,
+    });
     dispatch({
       type: GET_API_SUCCESS,
     });
     history.push("/");
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
+    console.log(err);
     dispatch({
       type: GET_API_FAILURE,
       payload: err.data,
     });
-  } 
-}
+  }
+};

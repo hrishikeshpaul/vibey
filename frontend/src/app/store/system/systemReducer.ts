@@ -1,4 +1,11 @@
-import { SystemActionTypes, GET_API_FAILURE, SET_USER_LOGIN, GET_API_START, GET_API_SUCCESS, SET_CREATE_ROOM_MODAL } from "./systemActionTypes";
+import {
+  SystemActionTypes,
+  GET_API_FAILURE,
+  SET_USER_LOGIN,
+  GET_API_START,
+  GET_API_SUCCESS,
+  SET_CREATE_ROOM_MODAL,
+} from "app/store/system/systemActionTypes";
 import { Error } from "app/models/system.model";
 
 export interface SystemState {
@@ -28,41 +35,38 @@ const initialState: SystemState = {
   isLoading: false,
   error: {},
   isLoggedIn: false,
-  createOpen: false
+  createOpen: false,
 };
 
-export const systemReducer = (
-  state: SystemState = initialState,
-  action: SystemActionTypes
-): SystemState => {
+export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
   switch (action.type) {
     case GET_API_START:
       return {
         ...state,
-        isLoading: true
-      }
+        isLoading: true,
+      };
     case GET_API_SUCCESS:
       return {
         ...state,
-        isLoading: false
-      }
+        isLoading: false,
+      };
     case GET_API_FAILURE:
       return {
         ...state,
         error: action.payload,
-        isLoading: false
-      }
+        isLoading: false,
+      };
     case SET_USER_LOGIN:
       return {
         ...state,
-        isLoggedIn: action.payload
-      }
+        isLoggedIn: action.payload,
+      };
     case SET_CREATE_ROOM_MODAL:
       return {
         ...state,
-        createOpen: action.payload
-      }
+        createOpen: action.payload,
+      };
     default:
-      return state
+      return state;
   }
 };

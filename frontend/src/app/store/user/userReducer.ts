@@ -1,7 +1,4 @@
-import {
-  SET_USER,
-  UserActionTypes,
-} from "./userActionTypes";
+import { SET_USER, UserActionTypes } from "app/store/user/userActionTypes";
 import { UserData } from "app/models/user.model";
 
 export interface UserState {
@@ -27,10 +24,7 @@ const initialState: UserState = {
   },
 };
 
-export const userReducer = (
-  state: UserState = initialState,
-  action: UserActionTypes
-): UserState => {
+export const userReducer = (state: UserState = initialState, action: UserActionTypes): UserState => {
   switch (action.type) {
     case SET_USER:
       return {

@@ -20,33 +20,30 @@ export const login = async (): Promise<any> => {
  * TODO: fix undefined type ??
  *
  */
-export const authorize = async (
-  code: string | undefined,
-  state: string | undefined
-): Promise<any> => {
+export const authorize = async (code: string | undefined, state: string | undefined): Promise<any> => {
   return axios.get(AUTHORIZE_URL, {
     params: {
-      code: code,
-      state: state,
+      code,
+      state,
     },
   });
 };
 
 /**
- * Makes an API call to see if the current JWT stored is 
+ * Makes an API call to see if the current JWT stored is
  * valid or not
  * @param jwt jwt from the local storage
  */
-export const checkLogin = async(): Promise<any> => {
-  const jwt = localStorage.getItem("v-token")
-  return axios.post(CHECK_AUTH_URL, {jwt});
-}
+export const checkLogin = async (): Promise<any> => {
+  const jwt = localStorage.getItem("v-token");
+  return axios.post(CHECK_AUTH_URL, { jwt });
+};
 
 /**
  * Service to log the user out
  * Sends the JWT
  */
-export const logout = async(): Promise<any> => {
+export const logout = async (): Promise<any> => {
   const jwt = localStorage.getItem("v-token");
-  return axios.post(LOGOUT_URL, {jwt})
-}
+  return axios.post(LOGOUT_URL, { jwt });
+};

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
-import "./Navbar.scss";
 import { Icon } from "app/components/Icon/Icon";
 import { UserData } from "app/models/user.model";
-import Profile from "../Profile/Profile";
+import { Profile } from "app/modules/Profile/Profile";
 import { SET_CREATE_ROOM_MODAL } from "app/store/system/systemActionTypes";
+
+import "./Navbar.scss";
+
 import {
   Popover,
   PopoverTrigger,
@@ -17,9 +20,9 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 
-const Navbar = () => {
+export const Navbar = () => {
   const dispatch = useDispatch();
-  
+
   const isLoggedIn = useSelector((state: any) => {
     return state.system.isLoggedIn;
   });
@@ -42,9 +45,9 @@ const Navbar = () => {
               <button
                 className="btn btn-md btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center"
                 onClick={handleOpenCreateRoom}
+                type="button"
               >
-                <Icon Component={Plus} size={[1, 1]}></Icon>{" "}
-                <span className="pl-2">Create Room</span>
+                <Icon Component={Plus} size={[1, 1]} /> <span className="pl-2">Create Room</span>
               </button>
             </div>
             <Popover>
@@ -59,7 +62,7 @@ const Navbar = () => {
                   <span className="h5 m-0">Your Profile</span>
                 </PopoverHeader>
                 <PopoverBody>
-                 <Profile></Profile>
+                  <Profile />
                 </PopoverBody>
               </PopoverContent>
             </Popover>
@@ -69,9 +72,11 @@ const Navbar = () => {
             <div className="label">About Us</div>
             <div className="label">Contact</div>
             <div>
-              <button className="btn btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center">
-                <Icon Component={Headphones}></Icon>{" "}
-                <span className="pl-2">Start listening</span>
+              <button
+                className="btn btn-primary text-white font-weight-bold d-flex justify-content-center align-items-center"
+                type="button"
+              >
+                <Icon Component={Headphones} /> <span className="pl-2">Start listening</span>
               </button>
             </div>
           </div>
@@ -80,5 +85,3 @@ const Navbar = () => {
     </div>
   );
 };
-
-export default Navbar;

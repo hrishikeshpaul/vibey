@@ -8,4 +8,4 @@ import { SEARCH_TAG_URL } from "../static/url";
  */
 export const searchTags = (substr = "") => {
   return axois.get(`${SEARCH_TAG_URL}?str=${substr}`);
-}
+};
