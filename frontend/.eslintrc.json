@@ -1,88 +1,89 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["airbnb-typescript-prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": ["airbnb-typescript-prettier"],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "plugins": ["react", "@typescript-eslint", "import"],
-    "rules": {
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": ["error"],
-        "quotes": [2, "double", { "avoidEscape": true }],
-        "import/prefer-default-export": "off",
-        "import/no-default-export": "error",
-        "react/jsx-props-no-spreading": "off",
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [".tsx", ".ts"]
-            }
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint", "import"],
+  "rules": {
+    "react/prop-types": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "quotes": [2, "double", { "avoidEscape": true }],
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".tsx", ".ts"]
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never",
+        "test.tsx": "never"
+      }
+    ]
+  },
+  "settings": {
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "import/no-duplicates": "off",
+    "import/no-extraneous-dependencies": [
+      "warn",
+      {
+        "devDependencies": ["**/*.stories.tsx", "**/util/Stories.ts"]
+      }
+    ],
+    "import/no-unresolved": "error",
+    "indent": [2, "tab"],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "*.scss",
+            "group": "internal",
+            "position": "after"
+          }
         ],
-        "import/extensions": [
-            "error",
-            "ignorePackages",
-            {
-                "js": "never",
-                "mjs": "never",
-                "jsx": "never",
-                "ts": "never",
-                "tsx": "never",
-                "test.tsx": "never"
-            }
-        ]
-    },
-    "settings": {
-        "@typescript-eslint/ban-ts-comment": "warn",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-unused-vars": "warn",
-        "import/no-duplicates": "off",
-        "import/no-extraneous-dependencies": [
-            "warn",
-            {
-                "devDependencies": ["**/*.stories.tsx", "**/util/Stories.ts"]
-            }
-        ],
-        "import/no-unresolved": "error",
-        "indent": [2, "tab"],
-        "import/order": [
-            "error",
-            {
-                "groups": ["builtin", "external", "internal"],
-                "pathGroups": [
-                    {
-                        "pattern": "react",
-                        "group": "external",
-                        "position": "before"
-                    },
-                    {
-                        "pattern": "*.scss",
-                        "group": "internal",
-                        "position": "after"
-                    }
-                ],
-                "pathGroupsExcludedImportTypes": ["react", ".scss"],
-                "newlines-between": "always",
-                "alphabetize": {
-                    "order": "asc",
-                    "caseInsensitive": true
-                }
-            }
-        ],
-        "import/extensions": [".js", ".mjs", ".jsx", ".ts", ".tsx"],
-        "import/resolver": {
-            "node": {
-                "paths": ["src", "src/app/components/Card"],
-                "extensions": [".js", ".jsx", ".ts", ".tsx"]
-            }
+        "pathGroupsExcludedImportTypes": ["react", ".scss"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
         }
+      }
+    ],
+    "import/extensions": [".js", ".mjs", ".jsx", ".ts", ".tsx"],
+    "import/resolver": {
+      "node": {
+        "paths": ["src", "src/app/components/Card"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
+  }
 }

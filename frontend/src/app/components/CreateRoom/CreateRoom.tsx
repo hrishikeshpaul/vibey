@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { Select } from "../Select/Select";
 
-type CreateProps = {
+type Props = {
   open: boolean;
   close: any;
   handleError: (error: any) => void;
@@ -32,7 +32,7 @@ const initialRoomValues = {
   error: false,
 };
 
-export const Create = (props: PropsWithChildren<CreateProps>) => {
+export const Create = (props: PropsWithChildren<Props>) => {
   const { open, close, handleError } = props;
   const [room, setRoom] = useState(initialRoomValues);
 
@@ -130,7 +130,9 @@ export const Create = (props: PropsWithChildren<CreateProps>) => {
                       aria-label="Please enter a valid room name!"
                       className="bg-danger"
                     >
-                      <InputRightElement children={<TiWarning className="text-danger" />} />
+                      <InputRightElement>
+                        <TiWarning className="text-danger" />
+                      </InputRightElement>
                     </Tooltip>
                   ) : (
                     ""
@@ -139,7 +141,7 @@ export const Create = (props: PropsWithChildren<CreateProps>) => {
               </div>
 
               <div className="mt-4">
-                <label>Room Description</label>
+                <span>Room Description</span>
                 <Textarea
                   className="bg-light input-field rounded-lg"
                   variant="filled"
@@ -152,8 +154,8 @@ export const Create = (props: PropsWithChildren<CreateProps>) => {
                 />
               </div>
               <div className="mt-3">
-                <label>Tags</label>
-                <Select updateTags={handleUpdateTags} presentTags={room.tags} handleError={handleError}></Select>
+                <span>Tags</span>
+                <Select updateTags={handleUpdateTags} presentTags={room.tags} handleError={handleError} />
               </div>
             </form>
           </ModalBody>
