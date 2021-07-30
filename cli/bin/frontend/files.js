@@ -19,8 +19,8 @@ const component = (name) => {
 
   return (`${copyright}
 
-import React, { PropsWithChildren } from 'react';
-import './${name}.scss'
+import React, { PropsWithChildren } from "react";
+import "./${name}.scss"
 
 type ${cName}Props = {
 
@@ -49,7 +49,7 @@ const mod = (name) => {
 
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import './${name}.scss';
+import "./${name}.scss";
 
 const ${cName} = () => {
   const dispatch = useDispatch();

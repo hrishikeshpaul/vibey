@@ -1,5 +1,5 @@
-const { write, read } = require('../config');
-const { component, mod, scss, hook, service, actionTypes, reducer, action } = require('./files');
+const { write, read } = require("../config");
+const { component, mod, scss, hook, service, actionTypes, reducer, action } = require("./files");
 
 /**
  * Get the file name for a nested path
@@ -7,7 +7,7 @@ const { component, mod, scss, hook, service, actionTypes, reducer, action } = re
  * @param {string} path get path 
  */
 const filterName = (path) => {
-  const splitName = path.split('/');
+  const splitName = path.split("/");
   return splitName[splitName.length - 1]
 }
 
@@ -24,32 +24,32 @@ const frontendUtils = (options) => {
   const fileName = filterName(file);
 
   switch(type) {
-    case 'component':
-    case 'comp':
-    case 'c':
+    case "component":
+    case "comp":
+    case "c":
       write(`components/${fileName}/${file}.tsx`, component(fileName), root);
       write(`components/${fileName}/${file}.scss`, scss, root);
       break;
 
-    case 'module':
-    case 'mod':
-    case 'm':
+    case "module":
+    case "mod":
+    case "m":
       write(`modules/${fileName}/${file}.tsx`, mod(fileName), root);
       write(`modules/${fileName}/${file}.scss`, scss, root);
       break;
     
-    case 'hook':
-    case 'h':
+    case "hook":
+    case "h":
       write(`hooks/use${cName}.ts`, hook, root);
       break;
     
-    case 'service':
-    case 'svc':
-    case 's':
+    case "service":
+    case "svc":
+    case "s":
       write(`services/${file}.service.ts`, service, root);
       break;
     
-    case 'state':
+    case "state":
       write(`store/${fileName}/${file}ActionTypes.ts`, actionTypes(fileName), root);
       write(`store/${fileName}/${file}Reducer.ts`, reducer(fileName), root);
       write(`store/${fileName}/${file}Action.ts`, action(fileName), root);
