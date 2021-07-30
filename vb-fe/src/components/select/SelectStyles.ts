@@ -1,33 +1,39 @@
 import { theme } from "theme/ChakraTheme";
+import { StylesConfig, ControlProps } from "react-select";
+import { CSSObject } from "@emotion/react";
 
-export const customStyles = {
-  control: (provided: any, state: any) => ({
-    ...provided,
-    "&:hover": {
-      cursor: "text",
-      background: !state.isFocused ? `${theme.colors.gray[700]}BB` : "",
-    },
-    background: state.isFocused ? `${theme.colors.gray[800]}BB` : `${theme.colors.gray[700]}80`,
-    outline: 0,
-    boxSizing: "border-box",
-    border: state.isFocused ? `2px solid ${theme.colors.teal[400]}` : "2px solid transparent",
-    boxShadow: "none",
-    color: "white",
-    borderRadius: theme.radii.md,
-  }),
-  menu: (provided: any): any => {
+import { Tag } from "util/Tags";
+
+export const customStyles: StylesConfig<Tag, true> = {
+  control: (provided: CSSObject, state: ControlProps<Tag, true>): CSSObject => {
+    return {
+      ...provided,
+      "&:hover": {
+        cursor: "text",
+        background: !state.isFocused ? `${theme.colors.gray[700]}BB` : "",
+      },
+      background: state.isFocused ? `${theme.colors.gray[800]}BB` : `${theme.colors.gray[700]}80`,
+      outline: 0,
+      boxSizing: "border-box",
+      border: state.isFocused ? `2px solid ${theme.colors.teal[400]}` : "2px solid transparent",
+      boxShadow: "none",
+      color: "white",
+      borderRadius: theme.radii.md,
+    };
+  },
+  menu: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       background: theme.colors.gray[700],
     };
   },
-  input: (provided: any): any => {
+  input: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       color: theme.colors.white,
     };
   },
-  option: (provided: any): any => {
+  option: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       background: theme.colors.gray[700],
@@ -38,36 +44,36 @@ export const customStyles = {
       },
     };
   },
-  multiValue: (provided: any): any => {
+  multiValue: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       background: theme.colors.teal[200],
-      fontWeight: "600",
+      fontWeight: 600,
       borderRadius: theme.radii.md,
       fontSize: theme.fontSizes.sm,
     };
   },
 
-  multiValueRemove: (provided: any): any => {
+  multiValueRemove: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       cursor: "pointer",
       color: theme.colors.black,
     };
   },
-  indicatorsContainer: (provided: any): any => {
+  indicatorsContainer: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       cursor: "pointer",
     };
   },
-  placeholder: (provided: any): any => {
+  placeholder: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
       color: theme.colors.gray[400],
     };
   },
-  valueContainer: (provided: any, state: any): any => {
+  valueContainer: (provided: CSSObject, state: ControlProps<Tag, true>): CSSObject => {
     return {
       ...provided,
       padding: state.hasValue ? "0 8px" : "0 16px",
