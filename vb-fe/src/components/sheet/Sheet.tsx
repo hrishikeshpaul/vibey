@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FunctionComponent } from "react";
 
 import { useDispatch } from "react-redux";
 import { Box, IconButton } from "@chakra-ui/react";
@@ -6,7 +6,7 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { MIN_SHEET_HEIGHT, MAX_SHEET_HEIGHT } from "util/Variables";
 import { SystemConstants } from "_store/system/SystemTypes";
 
-export const Sheet = (): JSX.Element => {
+export const Sheet: FunctionComponent<any> = (): JSX.Element => {
   const dispatch = useDispatch();
   const [sheetHeight, setSheetHeight] = useState<string>(MIN_SHEET_HEIGHT);
   const [expanded, setExpanded] = useState<boolean>(false);
@@ -48,13 +48,13 @@ export const Sheet = (): JSX.Element => {
         position="sticky"
         w="100%"
         d="flex"
+        alignItems="center"
         justifyContent="flex-end"
         top="0"
         zIndex="1000"
         id="vb-sheet-header"
         h={MIN_SHEET_HEIGHT}
         bgColor="gray.700"
-        pt={5}
       >
         <IconButton
           icon={expanded ? <IoIosArrowDown /> : <IoIosArrowUp />}

@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
 
 import { useSelector } from "react-redux";
-import { Heading } from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 
-import { Navbar, Sheet, Profile } from "components";
+import { Navbar, Sheet, Profile, Search } from "components";
 import {
   LayoutSidebar,
   LayoutContent,
@@ -33,15 +33,22 @@ export const Home: FunctionComponent<Props> = () => {
     data.push(i.toString());
   }
 
+  const onSearch = (str: string): void => {
+    console.log("Search value: ", str);
+  };
+
   return (
     <>
       <LayoutWrapper>
         {bottomSheetExpanded ? <LayoutFooterOverlay /> : <></>}
         <LayoutHeader>
           <Navbar isAuth profileData={{ ...userData }} />
-          <Heading className="pt-4 w-100 pb-5" bg="primaryDark" size="2xl">
-            Home
-          </Heading>
+          <Flex justifyContent="space-between" alignItems="center" bg="primaryDark" pt="6" pb="12">
+            <Heading w="100%" size="2xl">
+              Home
+            </Heading>
+            <Search onChange={onSearch} />
+          </Flex>
         </LayoutHeader>
         <LayoutBody>
           <LayoutSidebar flex="0.3">
@@ -52,7 +59,7 @@ export const Home: FunctionComponent<Props> = () => {
             <div>
               The numbers here show a long scrolling div of room cards
               {data.map((i) => (
-                <div>{i}</div>
+                <div key={i}>{i}</div>
               ))}
             </div>
           </LayoutContent>
@@ -62,24 +69,6 @@ export const Home: FunctionComponent<Props> = () => {
         </LayoutBody>
         <LayoutFooter>
           <Sheet />
-          {/* <Box
-            bgColor="gray.700"
-            h="100%"
-            height={`${height}px`}
-            borderTopLeftRadius="xl"
-            borderTopRightRadius="xl"
-            mt={10}
-            maxH="500px"
-            transition="height 0.5s ease-in-out"
-            overflowY="auto"
-          >
-            <button type="button" onClick={toggleHeight} className="btn btn-primary">
-              Up
-            </button>
-            <Box height="800px" bg="primary.200">
-              Box values
-            </Box>
-          </Box> */}
         </LayoutFooter>
       </LayoutWrapper>
     </>

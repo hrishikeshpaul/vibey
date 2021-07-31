@@ -52,7 +52,7 @@ const components: ComponentDefaultProps = {
   Input: {
     baseStyle: {},
     defaultProps: {
-      focusBorderColor: "primary.400",
+      focusBorderColor: "primary.500",
     },
   },
   Textarea: {

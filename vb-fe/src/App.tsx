@@ -26,7 +26,6 @@ export const App = (): JSX.Element => {
    */
   useEffect(() => {
     if (localStorage.getItem("v-at")) {
-      console.log("here", SystemConstants.LOGIN);
       dispatch({
         type: SystemConstants.LOGIN,
         payload: true,
