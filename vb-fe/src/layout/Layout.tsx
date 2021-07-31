@@ -11,6 +11,18 @@ interface GenericLayoutProps {
   show?: boolean;
 }
 
+interface LayoutWrapperProps extends Omit<GenericLayoutProps, "children"> {
+  children?:
+    | ReactElement<typeof LayoutHeader | typeof LayoutBody | typeof LayoutFooterOverlay | typeof LayoutFooter>
+    | Array<ReactElement<typeof LayoutHeader | typeof LayoutBody | typeof LayoutFooterOverlay | typeof LayoutFooter>>;
+}
+
+interface LayoutBodyProps extends Omit<GenericLayoutProps, "children"> {
+  children?:
+    | ReactElement<typeof LayoutSidebar | typeof LayoutContent>
+    | Array<ReactElement<typeof LayoutSidebar | typeof LayoutContent>>;
+}
+
 export const LayoutFooterOverlay: FunctionComponent<GenericLayoutProps> = (): JSX.Element => {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -80,12 +92,6 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
   );
 };
 
-interface LayoutBodyProps extends Omit<GenericLayoutProps, "children"> {
-  children?:
-    | ReactElement<typeof LayoutSidebar | typeof LayoutContent>
-    | Array<ReactElement<typeof LayoutSidebar | typeof LayoutContent>>;
-}
-
 export const LayoutBody: FunctionComponent<LayoutBodyProps> = ({ children, className }): JSX.Element => {
   return (
     <Box className={`container ${className}`}>
@@ -101,11 +107,6 @@ export const LayoutHeader: FunctionComponent<GenericLayoutProps> = ({ children, 
     </Box>
   );
 };
-interface LayoutWrapperProps extends Omit<GenericLayoutProps, "children"> {
-  children?:
-    | ReactElement<typeof LayoutHeader | typeof LayoutBody | typeof LayoutFooterOverlay | typeof LayoutFooter>
-    | Array<ReactElement<typeof LayoutHeader | typeof LayoutBody | typeof LayoutFooterOverlay | typeof LayoutFooter>>;
-}
 
 export const LayoutWrapper: FunctionComponent<LayoutWrapperProps> = ({ children }): JSX.Element => {
   return (

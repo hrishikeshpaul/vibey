@@ -1,7 +1,8 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { components } from "react-select";
+
 import { Badge, Box } from "@chakra-ui/react";
 
 import "components/select/Select.scss";
@@ -13,7 +14,7 @@ import "components/select/Select.scss";
  *
  * @param props options props passed by react-select f
  */
-export const SelectOption = (props: any) => {
+export const SelectOption: FunctionComponent<any> = (props) => {
   const { data } = props;
   return (
     <components.Option {...props}>
@@ -37,9 +38,11 @@ export const SelectOption = (props: any) => {
  *
  * @param props options props passed by react-select
  */
-export const NoSelectOption = (props: any) => {
+export const NoSelectOption: FunctionComponent<any> = ({ data }) => {
+  console.log(data);
+
   return (
-    <components.NoOptionsMessage {...props}>
+    <components.NoOptionsMessage {...data}>
       <span>Start typing!</span>
     </components.NoOptionsMessage>
   );

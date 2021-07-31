@@ -14,11 +14,11 @@ import "components/select/Select.scss";
 /**
  * @function updateTags function emitted that contains the updated tags
  */
-type State = {
+interface State {
   updateTags: (tag: Tag) => void;
   presentTags: Tag[];
   handleError: (error: any) => void;
-};
+}
 
 export const Select = (props: State) => {
   const { updateTags, presentTags, handleError } = props;
@@ -78,7 +78,6 @@ export const Select = (props: State) => {
     setInputValue(value);
     if (value) {
       getTagsFromSubstring(value);
-      // setTimeout(() => {}, 500);
     }
   };
 
