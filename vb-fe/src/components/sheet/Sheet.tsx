@@ -41,7 +41,7 @@ export const Sheet = (): JSX.Element => {
       minH={MIN_SHEET_HEIGHT}
       p={5}
       pt={0}
-      overflowY="auto"
+      overflowY={expanded ? "auto" : "hidden"}
       height={sheetHeight}
     >
       <Box
@@ -62,9 +62,6 @@ export const Sheet = (): JSX.Element => {
           onClick={toggleHeight}
           bg="transparent"
         />
-      </Box>
-      <Box h="1500px" bg="primary.500">
-        Player and other room details go here
       </Box>
     </Box>
   );

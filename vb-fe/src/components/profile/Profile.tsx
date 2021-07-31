@@ -1,18 +1,12 @@
 import React, { FunctionComponent } from "react";
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverHeader,
-  PopoverBody,
-  Avatar,
-} from "@chakra-ui/react";
+import { Heading, Avatar, Box, Center, Flex, Text, Stack, useColorModeValue } from "@chakra-ui/react";
 
 export interface Profile {
   displayName: string;
   image: string;
+  username: string;
+  href: string;
 }
 
 export interface Props {
@@ -21,19 +15,45 @@ export interface Props {
 
 export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
   return (
-    <Popover>
-      <PopoverTrigger>
-        <div className="profile-wrapper avatar">
-          <Avatar name={profile.displayName} src={profile.image} />
-        </div>
-      </PopoverTrigger>
-      <PopoverContent className="bg-secondary border-0">
-        <PopoverArrow />
-        <PopoverHeader className="px-3 py-3 d-flex justify-content-between align-items-center border-light">
-          <span className="h5 m-0">Your Profile</span>
-        </PopoverHeader>
-        <PopoverBody>{/* <Profile /> */}</PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <Center>
+      <Box w="full" bg={useColorModeValue("white", "gray.800")} boxShadow="2xl" rounded="md" overflow="hidden">
+        <Box h="100px" bgColor="teal.800" />
+        <Flex justify="center" mt="-9">
+          <Avatar
+            size="lg"
+            src={profile.image}
+            alt="User"
+            css={{
+              border: "2px solid white",
+            }}
+          />
+        </Flex>
+
+        <Box p={6}>
+          <Stack spacing={0} align="center" mb={5}>
+            <Heading fontSize="lg" fontWeight="500">
+              {profile.displayName}
+            </Heading>
+            <Text color="gray.500">{profile.username}</Text>
+          </Stack>
+
+          <Stack direction="row" justify="center" spacing={10}>
+            <Stack spacing={0} align="center">
+              <Text fontWeight={600}>98</Text>
+              <Text fontSize="sm" color="gray.500">
+                Likes
+              </Text>
+            </Stack>
+
+            <Stack spacing={0} align="center">
+              <Text fontWeight={600}>6</Text>
+              <Text fontSize="sm" color="gray.500">
+                Rooms
+              </Text>
+            </Stack>
+          </Stack>
+        </Box>
+      </Box>
+    </Center>
   );
 };

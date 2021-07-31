@@ -3,7 +3,7 @@ import React, { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
 import { Heading } from "@chakra-ui/react";
 
-import { Navbar, Sheet } from "components";
+import { Navbar, Sheet, Profile } from "components";
 import {
   LayoutSidebar,
   LayoutContent,
@@ -25,6 +25,9 @@ export const Home: FunctionComponent<Props> = () => {
   const userData = useSelector((state: State) => state.user.user);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
 
+  const profile = JSON.parse(localStorage.getItem("v-user") || "");
+  profile.displayName = profile.display_name;
+
   const data = [];
   for (let i = 0; i < 100; i += 1) {
     data.push(i.toString());
@@ -41,7 +44,7 @@ export const Home: FunctionComponent<Props> = () => {
           </Heading>
         </LayoutHeader>
         <LayoutBody>
-          <LayoutSidebar>
+          <LayoutSidebar flex="0.3">
             <Heading size="md">Left Sidebar</Heading>
             <div>Filters and search go here</div>
           </LayoutSidebar>
@@ -53,9 +56,8 @@ export const Home: FunctionComponent<Props> = () => {
               ))}
             </div>
           </LayoutContent>
-          <LayoutSidebar>
-            <Heading size="md">Right Sidebar</Heading>
-            <div>Trending and other widgets can go here</div>
+          <LayoutSidebar flex="0.2">
+            <Profile profile={profile} />
           </LayoutSidebar>
         </LayoutBody>
         <LayoutFooter>
