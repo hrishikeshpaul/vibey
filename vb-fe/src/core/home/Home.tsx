@@ -36,7 +36,7 @@ export const Home: FunctionComponent<Props> = () => {
         {bottomSheetExpanded ? <LayoutFooterOverlay /> : <></>}
         <LayoutHeader>
           <Navbar isAuth profileData={{ ...userData }} />
-          <Heading className="pt-4 w-100 pb-5" bg="gray.900" size="2xl">
+          <Heading className="pt-4 w-100 pb-5" bg="primaryDark" size="2xl">
             Home
           </Heading>
         </LayoutHeader>
@@ -74,7 +74,7 @@ export const Home: FunctionComponent<Props> = () => {
             <button type="button" onClick={toggleHeight} className="btn btn-primary">
               Up
             </button>
-            <Box height="800px" bg="teal.200">
+            <Box height="800px" bg="primary.200">
               Box values
             </Box>
           </Box> */}

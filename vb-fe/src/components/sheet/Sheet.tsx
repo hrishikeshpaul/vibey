@@ -63,7 +63,7 @@ export const Sheet = (): JSX.Element => {
           bg="transparent"
         />
       </Box>
-      <Box h="1500px" bg="teal.500">
+      <Box h="1500px" bg="primary.500">
         Player and other room details go here
       </Box>
     </Box>

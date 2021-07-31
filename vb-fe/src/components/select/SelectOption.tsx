@@ -20,7 +20,7 @@ export const SelectOption: FunctionComponent<any> = (props) => {
     <components.Option {...props}>
       <Box>
         <span className="text-grey-1">#</span> <span>{data.label}</span>
-        <Badge colorScheme="teal" mx={2}>
+        <Badge colorScheme="primary" mx={2}>
           {data.score}
         </Badge>
       </Box>

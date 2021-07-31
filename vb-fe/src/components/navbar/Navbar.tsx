@@ -41,7 +41,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
 
   const PlusIcon = (): JSX.Element => {
     return (
-      <Icon color="gray.900" boxSize={4}>
+      <Icon color="primaryDark" boxSize={4}>
         <Plus />
       </Icon>
     );
@@ -51,17 +51,17 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
     return (
       <>
         {BASE_NAV_LINKS.map((link: any) => (
-          <Text fontWeight="bold" _hover={{ color: "teal", cursor: "pointer" }} key={link.name}>
+          <Text fontWeight="bold" _hover={{ color: "primary", cursor: "pointer" }} key={link.name}>
             {link.name}
           </Text>
         ))}
         <Box display={{ base: "none", md: "block" }}>
-          <Button colorScheme="teal" leftIcon={<HeadphonesIcon />} type="button">
+          <Button colorScheme="primary" leftIcon={<HeadphonesIcon />} type="button">
             <Text>Start Listening</Text>
           </Button>
         </Box>
         <Box display={{ base: "block", md: "none" }}>
-          <IconButton colorScheme="teal" icon={<HeadphonesIcon />} type="button" aria-label="icon" />
+          <IconButton colorScheme="primary" icon={<HeadphonesIcon />} type="button" aria-label="icon" />
         </Box>
       </>
     );
@@ -80,12 +80,12 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
     return (
       <>
         <Box display={{ base: "none", md: "block" }}>
-          <Button colorScheme="teal" leftIcon={<PlusIcon />} type="button" onClick={onCreateRoomOpen}>
+          <Button colorScheme="primary" leftIcon={<PlusIcon />} type="button" onClick={onCreateRoomOpen}>
             <Text>Create Room</Text>
           </Button>
         </Box>
         <Box display={{ base: "block", md: "none" }} onClick={onCreateRoomOpen}>
-          <IconButton colorScheme="teal" icon={<PlusIcon />} type="button" aria-label="icon" />
+          <IconButton colorScheme="primary" icon={<PlusIcon />} type="button" aria-label="icon" />
         </Box>
 
         <Menu>
@@ -104,7 +104,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
 
   return (
     <div>
-      <Box width="100%" py={4} bgColor="gray.900">
+      <Box width="100%" py={4} bgColor="primaryDark">
         <Flex justifyContent="space-between" alignItems="center">
           <Heading size="md">vibey</Heading>
           <HStack spacing={6}>{isAuth ? <AuthenticatedNavbar /> : <UnauthenticatedNavbar />}</HStack>

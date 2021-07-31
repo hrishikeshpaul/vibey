@@ -165,7 +165,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
         </ModalBody>
 
         <ModalFooter mt={4}>
-          <Button type="submit" form="create-form" colorScheme="teal" w="100%">
+          <Button type="submit" form="create-form" colorScheme="primary" w="100%">
             Create
           </Button>
         </ModalFooter>

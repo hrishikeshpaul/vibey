@@ -10,12 +10,12 @@ export const customStyles: StylesConfig<Tag, true> = {
       ...provided,
       "&:hover": {
         cursor: "text",
-        background: !state.isFocused ? `${theme.colors.gray[700]}BB` : "",
+        background: !state.isFocused ? `${theme.colors.dark}BB` : "",
       },
-      background: state.isFocused ? `${theme.colors.gray[800]}BB` : `${theme.colors.gray[700]}80`,
+      background: state.isFocused ? `${theme.colors.gray[800]}BB` : `${theme.colors.dark}80`,
       outline: 0,
       boxSizing: "border-box",
-      border: state.isFocused ? `2px solid ${theme.colors.teal[400]}` : "2px solid transparent",
+      border: state.isFocused ? `2px solid ${theme.colors.primary[400]}` : "2px solid transparent",
       boxShadow: "none",
       color: "white",
       borderRadius: theme.radii.md,
@@ -24,7 +24,7 @@ export const customStyles: StylesConfig<Tag, true> = {
   menu: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
-      background: theme.colors.gray[700],
+      background: theme.colors.dark,
     };
   },
   input: (provided: CSSObject): CSSObject => {
@@ -36,7 +36,7 @@ export const customStyles: StylesConfig<Tag, true> = {
   option: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
-      background: theme.colors.gray[700],
+      background: theme.colors.dark,
       color: theme.colors.white,
       cursor: "pointer",
       "&:hover": {
@@ -47,7 +47,7 @@ export const customStyles: StylesConfig<Tag, true> = {
   multiValue: (provided: CSSObject): CSSObject => {
     return {
       ...provided,
-      background: theme.colors.teal[200],
+      background: theme.colors.primary[200],
       fontWeight: 600,
       borderRadius: theme.radii.md,
       fontSize: theme.fontSizes.sm,

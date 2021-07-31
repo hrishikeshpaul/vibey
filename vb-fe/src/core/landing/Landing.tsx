@@ -45,7 +45,7 @@ export const Landing = () => {
               vibe with people with the same taste in music.
             </Text>
             <div className="mt-5">
-              <Button colorScheme="teal" leftIcon={<SpotifyIcon />} type="button" size="lg" onClick={handleSignIn}>
+              <Button colorScheme="primary" leftIcon={<SpotifyIcon />} type="button" size="lg" onClick={handleSignIn}>
                 <Text>Sign in via Spotify</Text>
               </Button>
             </div>

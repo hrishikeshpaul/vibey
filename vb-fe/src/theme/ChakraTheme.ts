@@ -23,7 +23,7 @@ const config: ThemeConfig = {
 const styles = {
   global: {
     body: {
-      bg: "gray.900",
+      bg: "primaryDark",
     },
   },
 };
@@ -40,6 +40,11 @@ const colors = {
     200: "#808080",
     100: "#909090",
   },
+  primary: {
+    ...ChakraTheme.colors.teal,
+  },
+  primaryDark: "#080808",
+  dark: "#2a2a2a",
 };
 
 const components: ComponentDefaultProps = {
@@ -47,18 +52,18 @@ const components: ComponentDefaultProps = {
   Input: {
     baseStyle: {},
     defaultProps: {
-      focusBorderColor: "teal.400",
+      focusBorderColor: "primary.400",
     },
   },
   Textarea: {
     defaultProps: {
-      focusBorderColor: "teal.400",
+      focusBorderColor: "primary.400",
     },
   },
 };
 
 const shadows = {
-  outline: `0 0 0 3px ${ChakraTheme.colors.teal[500]}CC`,
+  outline: "0 0 0 3px #49D9C6CC",
 };
 
 export const theme = extendTheme({ config, styles, colors, fonts, breakpoints, components, shadows });
