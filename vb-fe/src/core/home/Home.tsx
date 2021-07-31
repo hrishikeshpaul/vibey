@@ -36,7 +36,7 @@ export const Home: FunctionComponent<Props> = () => {
         {bottomSheetExpanded ? <LayoutFooterOverlay /> : <></>}
         <LayoutHeader>
           <Navbar isAuth profileData={{ ...userData }} />
-          <Heading className="pt-4 w-100 pb-5" bg="gray.900" size="3xl">
+          <Heading className="pt-4 w-100 pb-5" bg="gray.900" size="2xl">
             Home
           </Heading>
         </LayoutHeader>

@@ -37,10 +37,11 @@ export const Sheet = (): JSX.Element => {
       borderTopRightRadius="xl"
       mt={10}
       transition="height 0.5s ease-in-out"
-      overflowY="auto"
       position="relative"
       minH={MIN_SHEET_HEIGHT}
       p={5}
+      pt={0}
+      overflowY="auto"
       height={sheetHeight}
     >
       <Box
@@ -52,6 +53,8 @@ export const Sheet = (): JSX.Element => {
         zIndex="1000"
         id="vb-sheet-header"
         h={MIN_SHEET_HEIGHT}
+        bgColor="gray.700"
+        pt={5}
       >
         <IconButton
           icon={expanded ? <IoIosArrowDown /> : <IoIosArrowUp />}
@@ -60,7 +63,9 @@ export const Sheet = (): JSX.Element => {
           bg="transparent"
         />
       </Box>
-      <Box h="1500px">Player and other room details go here</Box>
+      <Box h="1500px" bg="teal.500">
+        Player and other room details go here
+      </Box>
     </Box>
   );
 };
