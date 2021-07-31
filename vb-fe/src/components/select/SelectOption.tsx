@@ -38,9 +38,7 @@ export const SelectOption: FunctionComponent<any> = (props) => {
  *
  * @param props options props passed by react-select
  */
-export const NoSelectOption: FunctionComponent<any> = ({ data }) => {
-  console.log(data);
-
+export const NoSelectOption: FunctionComponent<any> = (data) => {
   return (
     <components.NoOptionsMessage {...data}>
       <span>Start typing!</span>

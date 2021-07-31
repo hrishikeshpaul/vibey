@@ -53,7 +53,6 @@ export const customStyles: StylesConfig<Tag, true> = {
       fontSize: theme.fontSizes.sm,
     };
   },
-
   multiValueRemove: (provided: CSSObject): CSSObject => {
     return {
       ...provided,

@@ -74,26 +74,26 @@ export const Select = (props: State) => {
    *
    * @param input typed string values
    */
-  const handleInputchange = (value: string) => {
+  const handleInputChange = (value: string) => {
     setInputValue(value);
-    if (value) {
-      getTagsFromSubstring(value);
-    }
+    getTagsFromSubstring(value);
   };
 
   return (
-    <CreatableSelect
-      ref={selectInputRef}
-      isMulti
-      inputValue={inputValue}
-      classNamePrefix="select"
-      defaultValue={presentTags}
-      onChange={handleSelectionChange}
-      options={tags}
-      components={{ Option: SelectOption, NoOptionsMessage: NoSelectOption }}
-      onInputChange={handleInputchange}
-      placeholder="Type to add tags..."
-      styles={customStyles}
-    />
+    <>
+      <CreatableSelect
+        ref={selectInputRef}
+        isMulti
+        inputValue={inputValue}
+        classNamePrefix="select"
+        defaultValue={presentTags}
+        onChange={handleSelectionChange}
+        options={tags}
+        components={{ Option: SelectOption, NoOptionsMessage: NoSelectOption }}
+        onInputChange={handleInputChange}
+        placeholder="Type to add tags..."
+        styles={customStyles}
+      />
+    </>
   );
 };
