@@ -3,7 +3,7 @@ import React, { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
 import { Flex, Heading } from "@chakra-ui/react";
 
-import { Navbar, Sheet, Profile, Search } from "components";
+import { Navbar, Sheet, Profile, Search, Filters } from "components";
 import {
   LayoutSidebar,
   LayoutContent,
@@ -51,11 +51,10 @@ export const Home: FunctionComponent<Props> = () => {
           </Flex>
         </LayoutHeader>
         <LayoutBody>
-          <LayoutSidebar flex="0.3">
-            <Heading size="md">Left Sidebar</Heading>
-            <div>Filters and search go here</div>
+          <LayoutSidebar flex="0.25">
+            <Filters />
           </LayoutSidebar>
-          <LayoutContent>
+          <LayoutContent flex="0.55">
             <div>
               The numbers here show a long scrolling div of room cards
               {data.map((i) => (

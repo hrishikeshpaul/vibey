@@ -67,7 +67,11 @@ export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = tru
 };
 
 export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.5" }): JSX.Element => {
-  return <Box flex={flex}>{children}</Box>;
+  return (
+    <Box mx={10} flex={flex}>
+      {children}
+    </Box>
+  );
 };
 
 export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.25" }): JSX.Element => {

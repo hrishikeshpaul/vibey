@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 
-import { Heading, Avatar, Box, Center, Flex, Text, Stack, useColorModeValue } from "@chakra-ui/react";
+import { Heading, Avatar, Box, Center, Flex, Text, Stack } from "@chakra-ui/react";
 
 export interface Profile {
   displayName: string;
@@ -16,7 +16,7 @@ export interface Props {
 export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
   return (
     <Center>
-      <Box w="full" bg={useColorModeValue("white", "gray.800")} boxShadow="2xl" rounded="md" overflow="hidden">
+      <Box w="full" bg="dark" rounded="lg" overflow="hidden">
         <Box h="100px" bgColor="teal.800" />
         <Flex justify="center" mt="-9">
           <Avatar
