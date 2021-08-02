@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
@@ -17,6 +17,9 @@ export const App = (): JSX.Element => {
   const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  console.log(isAuthenticated);
 
   /**
    * If at and rt are present then get profile
@@ -30,8 +33,13 @@ export const App = (): JSX.Element => {
         type: SystemConstants.LOGIN,
         payload: true,
       });
+    } else {
+      dispatch({
+        type: SystemConstants.LOGIN,
+        payload: false,
+      });
     }
-  }, [dispatch]);
+  }, [dispatch, history]);
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
@@ -52,7 +60,10 @@ export const App = (): JSX.Element => {
     return (
       <Router>
         <Switch>
-          <Route exact path="/">
+          <Route path="/room">
+            <div>This is a room!</div>
+          </Route>
+          <Route path="/">
             <Home />
           </Route>
         </Switch>

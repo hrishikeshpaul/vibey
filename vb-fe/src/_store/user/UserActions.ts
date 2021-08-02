@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { UserActionTypes, UserConstants } from "_store/user/UserTypes";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 import { login, authorize, logout } from "services/Auth";
+import { HttpStatus } from "util/Http";
 
 /*
  * Called from Home.tsx
@@ -76,32 +77,36 @@ export const getAuthorization =
 export const onLogout =
   (history: any) =>
   async (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): Promise<void> => {
+    dispatch({ type: SystemConstants.LOADING });
+    console.log(history);
     try {
-      dispatch({ type: SystemConstants.LOADING });
-      await logout();
-      localStorage.removeItem("v-token");
-      localStorage.removeItem("v-user");
-      dispatch({
-        type: UserConstants.SET,
-        payload: {
-          id: "",
-          username: "",
-          href: "",
-          uri: "",
-          email: "",
-          display_name: "",
-          image: "",
-          likes: [],
-        },
-      });
-      dispatch({
-        type: SystemConstants.LOGIN,
-        payload: false,
-      });
-      dispatch({
-        type: SystemConstants.SUCCESS,
-      });
-      history.push("/");
+      const res = await logout();
+      if (res.status === HttpStatus.NoContent) {
+        dispatch({
+          type: SystemConstants.LOGIN,
+          payload: false,
+        });
+        dispatch({
+          type: UserConstants.SET,
+          payload: {
+            id: "",
+            username: "",
+            href: "",
+            uri: "",
+            email: "",
+            display_name: "",
+            image: "",
+            likes: [],
+          },
+        });
+        dispatch({
+          type: SystemConstants.SUCCESS,
+        });
+        localStorage.removeItem("v-at");
+        localStorage.removeItem("v-rt");
+        localStorage.removeItem("v-user");
+        // history.push("/");
+      }
     } catch (err) {
       console.log(err);
       dispatch({

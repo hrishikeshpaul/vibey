@@ -44,6 +44,14 @@ export const checkLogin = async (): Promise<any> => {
  * Sends the JWT
  */
 export const logout = async (): Promise<any> => {
-  const jwt = localStorage.getItem("v-token");
-  return Http.post(AuthEndpoints.LOGOUT, { jwt });
+  const jwt = localStorage.getItem("v-at");
+  return Http.post(
+    AuthEndpoints.LOGOUT,
+    { jwt },
+    {
+      headers: {
+        "v-at": jwt,
+      },
+    },
+  );
 };

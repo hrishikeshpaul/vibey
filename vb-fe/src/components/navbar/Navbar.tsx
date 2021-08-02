@@ -24,6 +24,8 @@ import { BASE_NAV_LINKS } from "util/Navbar";
 import "components/navbar/Navbar.scss";
 import { useDispatch } from "react-redux";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { onLogout } from "_store/user/UserActions";
+import { useHistory } from "react-router-dom";
 
 export interface Props {
   isAuth: boolean;
@@ -69,6 +71,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
 
   const AuthenticatedNavbar = (): JSX.Element => {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const onCreateRoomOpen = () => {
       dispatch({
@@ -93,9 +96,9 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
           <MenuList>
             <MenuItem>About</MenuItem>
             <MenuItem>Contact Us</MenuItem>
-            <MenuItem>Terms & Conditions</MenuItem>
+            <MenuItem onClick={() => history.push("/room")}>Terms & Conditions</MenuItem>
             <MenuDivider />
-            <MenuItem>Logout</MenuItem>
+            <MenuItem onClick={() => dispatch(onLogout(history))}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </>

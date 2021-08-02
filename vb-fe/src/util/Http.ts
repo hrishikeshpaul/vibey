@@ -1,8 +1,9 @@
 import axios from "axios";
 import { BASE_URL } from "util/Endpoints";
 
-export enum Status {
+export enum HttpStatus {
   OK = 200,
+  NoContent = 204,
   Error = 400,
   Unauthorized = 401,
   Forbidden = 403,
