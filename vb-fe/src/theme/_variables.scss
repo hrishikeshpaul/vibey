@@ -1,0 +1,20 @@
+$vb-primary: #4fd1c5;
+$vb-secondary: #110E0E;
+$vb-dark: #090305;
+$vb-light: #505050;
+$vb-light2: #b5b5b5;
+$vb-warning: #f6ad55;
+$vb-success: #37c24e;
+$vb-white: #ffffff;
+$vb-danger: #f56565;
+
+$theme-colors: (
+  "primary": $vb-primary,
+  "secondary": $vb-secondary,
+  "dark": $vb-dark,
+  "light": $vb-light,
+  "warning": $vb-warning,
+  "success": $vb-success,
+  "white": $vb-white,
+  "danger": $vb-danger,
+);

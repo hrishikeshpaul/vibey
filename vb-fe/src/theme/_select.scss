@@ -1,0 +1,96 @@
+@import "./colors";
+
+.css-2b097c-container {
+  outline: none !important;
+}
+
+.select__control {
+  background-color: $light !important;
+  transition: border 0.5s ease-in-out;
+  border-radius: 0.5rem !important;
+  outline: none !important;
+  border: 0 !important;
+
+  &:focus {
+    border: 2px solid $primary !important;
+    outline: none !important;
+  }
+   
+  .select__value-container:focus {
+    border: 2px solid $primary !important;
+    outline: none !important;
+  }
+
+  .select__placeholder {
+    color: #919CAA;
+  }
+   
+}
+
+.select__input {
+  color: white !important;
+
+  &:focus {
+    border: 2px solid $primary !important;
+    outline: none !important;
+  }
+}
+
+.select__menu {
+  background-color: $light !important; //#505050
+}
+
+.select__multi-value {
+  background-color: $primary !important;
+  border-radius: 0.5rem !important;
+  &__label {
+    color: white !important;
+    font-weight: 700 !important;
+  }
+
+  .select__multi-value__remove {
+    border-radius: 0.5rem !important;
+    margin-left: 2px;
+    &:hover {
+      color: white !important;
+      cursor: pointer;
+      background-color: darken($primary, $amount: 10%);
+    }
+  }
+}
+
+.select__indicator {
+  cursor: pointer;
+  color: white;
+  &:hover {
+    color: white !important;
+  }
+}
+
+.select__loading-indicator {
+  color: white !important;
+}
+
+.select__dropdown-indicator, .select__indicator-separator {
+  display: none !important;
+}
+
+.select__option {
+  background-color: none !important;
+  &:hover {
+    background-color: #747474 !important;
+    cursor: pointer
+  }
+
+  &:active {
+    background-color: none !important;
+  }
+
+  &::after {
+    content: attr(data-tag-value);
+  }
+}
+
+.select__option--is-focused {
+  background-color: transparent !important;
+}

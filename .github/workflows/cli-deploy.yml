@@ -3,7 +3,11 @@ name: CLI Deploy
 on:
   push:
     branches:
+<<<<<<< HEAD
       - "cli"
+=======
+      - "develop"
+>>>>>>> 65713943a00f0a0ac3c49cc9197de52784ae2192
   workflow_dispatch:
   
 jobs:
@@ -20,7 +24,15 @@ jobs:
       working-directory: ./cli
       run: npm install
       
+<<<<<<< HEAD
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+=======
+    - name: Publish
+      working-directory: ./cli 
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+>>>>>>> 65713943a00f0a0ac3c49cc9197de52784ae2192

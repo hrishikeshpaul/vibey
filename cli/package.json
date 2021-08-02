@@ -1,0 +1,30 @@
+{
+  "name": "vibey-cli",
+  "version": "0.0.7",
+  "description": "cli for vibey",
+  "main": "index.js",
+  "bin": {
+    "vibey": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrishikeshpaul/vibey.git"
+  },
+  "author": "vibey",
+  "license": "ISC",
+  "keywords": [
+    "cli"
+  ],
+  "bugs": {
+    "url": "https://github.com/hrishikeshpaul/vibey/issues"
+  },
+  "homepage": "https://github.com/hrishikeshpaul/vibey#readme",
+  "dependencies": {
+    "find-up": "^5.0.0",
+    "fs-extra": "^9.1.0",
+    "inquirer": "^8.0.0"
+  }
+}
