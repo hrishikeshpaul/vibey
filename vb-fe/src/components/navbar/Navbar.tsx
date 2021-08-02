@@ -106,7 +106,9 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
     <div>
       <Box width="100%" py={4} bgColor="primaryDark">
         <Flex justifyContent="space-between" alignItems="center">
-          <Heading size="md">vibey</Heading>
+          <Heading size="md" fontFamily="'Playfair Display', serif" textColor="teal.50">
+            vibey
+          </Heading>
           <HStack spacing={6}>{isAuth ? <AuthenticatedNavbar /> : <UnauthenticatedNavbar />}</HStack>
         </Flex>
       </Box>
