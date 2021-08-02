@@ -94,7 +94,7 @@ export const onLogout =
             href: "",
             uri: "",
             email: "",
-            display_name: "",
+            displayName: "",
             image: "",
             likes: [],
           },

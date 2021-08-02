@@ -23,7 +23,7 @@ app.get('/login', (req, res) => {
  * Sets the session and the user in the database
  * Returns the new user or an error
  */
-app.get('/authorize', async(req, res) => {
+app.get('/authorize', async (req, res) => {
   const { code, state } = req.query;
   const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
@@ -39,7 +39,7 @@ app.get('/authorize', async(req, res) => {
 
       const user = await spotifyApi.getMe();
       const userObj = {
-        display_name: user.body.display_name,
+        displayName: user.body.displayName,
         email: user.body.email,
         href: user.body.href,
         uri: user.body.uri,
@@ -70,7 +70,7 @@ app.get('/authorize', async(req, res) => {
  * wipes the spotify access and refresh token
  * sends 204 no response on success
  */
-app.post('/logout', function(req, res) {
+app.post('/logout', function (req, res) {
   const accessToken = req.headers['v-at'];
 
   if (accessToken) {

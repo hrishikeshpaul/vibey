@@ -17,7 +17,7 @@ export const Home: FunctionComponent<any> = () => {
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
 
   const profile = JSON.parse(localStorage.getItem("v-user") || "");
-  profile.displayName = profile.display_name;
+  profile.displayName = profile.displayName;
 
   const data = [];
   for (let i = 0; i < 100; i += 1) {
