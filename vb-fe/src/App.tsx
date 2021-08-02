@@ -19,8 +19,6 @@ export const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  console.log(isAuthenticated);
-
   /**
    * If at and rt are present then get profile
    * This will be helpful when the user refreshes the page
