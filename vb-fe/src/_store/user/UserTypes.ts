@@ -1,6 +1,3 @@
-// import { SystemActionTypes } from "app/store/system/systemActionTypes";
-// import { UserData } from "app/models/user.model";
-
 export enum UserConstants {
   SET = "SET_USER",
 }

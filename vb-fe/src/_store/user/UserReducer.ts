@@ -1,5 +1,4 @@
 import { UserConstants, UserActionTypes } from "_store/user/UserTypes";
-// import { UserData } from "app/models/user.model";
 
 export interface UserState {
   /**

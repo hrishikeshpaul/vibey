@@ -21,7 +21,6 @@ export const Redirect = () => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const [code, state] = [params.code, params.state];
-        console.log({ code, state });
         dispatch(getAuthorization(code, state, history));
       } catch (err) {
         console.log(err);

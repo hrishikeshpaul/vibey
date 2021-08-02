@@ -43,8 +43,8 @@ export const getAuthorization =
       const res = await authorize(code, state);
       const { accessToken, refreshToken, user } = res.data;
 
-      localStorage.setItem("v-at", accessToken || "");
-      localStorage.setItem("v-rt", refreshToken || "");
+      localStorage.setItem("v-at", accessToken);
+      localStorage.setItem("v-rt", refreshToken);
       localStorage.setItem("v-user", JSON.stringify(user));
 
       dispatch({
@@ -58,6 +58,7 @@ export const getAuthorization =
       dispatch({ type: SystemConstants.SUCCESS });
       history.push("/");
     } catch (err) {
+      // should go to login page
       console.log(err);
       dispatch({
         type: SystemConstants.FAILURE,

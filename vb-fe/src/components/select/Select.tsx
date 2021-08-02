@@ -1,6 +1,6 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import CreatableSelect from "react-select/creatable";
 
@@ -24,7 +24,6 @@ export const Select = (props: State) => {
   const { updateTags, presentTags, handleError } = props;
   const [tags, setTags] = useState<Tag[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const selectInputRef = useRef<any>();
 
   /**
    * Function to get the tags based on the typed letters
@@ -82,7 +81,6 @@ export const Select = (props: State) => {
   return (
     <>
       <CreatableSelect
-        ref={selectInputRef}
         isMulti
         inputValue={inputValue}
         classNamePrefix="select"

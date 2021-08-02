@@ -17,11 +17,10 @@ import { State } from "_store/rootReducer";
 
 import "core/home/Home.scss";
 
-interface Props {
-  y?: boolean;
-}
-
-export const Home: FunctionComponent<Props> = () => {
+/**
+ * The prop type is a placeholder
+ */
+export const Home: FunctionComponent<any> = () => {
   const userData = useSelector((state: State) => state.user.user);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
 
