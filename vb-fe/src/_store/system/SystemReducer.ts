@@ -2,18 +2,12 @@ import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 // import { Error } from "app/models/system.model";
 
 export interface SystemState {
-  /**
-   * Denotes if the system is in loading state
-   */
   isLoading: boolean;
   /**
    * Stores the error
    * Will need to change this to store the status code and message
    */
   error: any;
-  /**
-   * Denotes if the user is logged in
-   */
   isAuthenticated: boolean;
   /**
    * Denotes if the create room modal is open
