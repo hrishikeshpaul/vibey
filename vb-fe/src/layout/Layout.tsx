@@ -119,3 +119,13 @@ export const LayoutWrapper: FunctionComponent<LayoutWrapperProps> = ({ children 
     </Flex>
   );
 };
+
+export const Layout = {
+  Wrapper: LayoutWrapper,
+  Header: LayoutHeader,
+  Body: LayoutBody,
+  Content: LayoutContent,
+  Sidebar: LayoutSidebar,
+  Footer: LayoutFooter,
+  Overlay: LayoutFooterOverlay,
+};

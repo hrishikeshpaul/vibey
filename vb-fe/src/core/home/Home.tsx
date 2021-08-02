@@ -4,15 +4,7 @@ import { useSelector } from "react-redux";
 import { Flex, Heading } from "@chakra-ui/react";
 
 import { Navbar, Sheet, Profile, Search, Filters } from "components";
-import {
-  LayoutSidebar,
-  LayoutContent,
-  LayoutHeader,
-  LayoutBody,
-  LayoutWrapper,
-  LayoutFooter,
-  LayoutFooterOverlay,
-} from "layout/Layout";
+import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 
 import "core/home/Home.scss";
@@ -38,9 +30,9 @@ export const Home: FunctionComponent<any> = () => {
 
   return (
     <>
-      <LayoutWrapper>
-        {bottomSheetExpanded ? <LayoutFooterOverlay /> : <></>}
-        <LayoutHeader>
+      <Layout.Wrapper>
+        {bottomSheetExpanded ? <Layout.Overlay /> : <></>}
+        <Layout.Header>
           <Navbar isAuth profileData={{ ...userData }} />
           <Flex justifyContent="space-between" alignItems="center" bg="primaryDark" pt="6" pb="12">
             <Heading w="100%" size="2xl">
@@ -48,27 +40,27 @@ export const Home: FunctionComponent<any> = () => {
             </Heading>
             <Search onChange={onSearch} />
           </Flex>
-        </LayoutHeader>
-        <LayoutBody>
-          <LayoutSidebar flex="0.25">
+        </Layout.Header>
+        <Layout.Body>
+          <Layout.Sidebar flex="0.25">
             <Filters />
-          </LayoutSidebar>
-          <LayoutContent flex="0.55">
+          </Layout.Sidebar>
+          <Layout.Content flex="0.55">
             <div>
               The numbers here show a long scrolling div of room cards
               {data.map((i) => (
                 <div key={i}>{i}</div>
               ))}
             </div>
-          </LayoutContent>
-          <LayoutSidebar flex="0.2">
+          </Layout.Content>
+          <Layout.Sidebar flex="0.2">
             <Profile profile={profile} />
-          </LayoutSidebar>
-        </LayoutBody>
-        <LayoutFooter>
+          </Layout.Sidebar>
+        </Layout.Body>
+        <Layout.Footer>
           <Sheet />
-        </LayoutFooter>
-      </LayoutWrapper>
+        </Layout.Footer>
+      </Layout.Wrapper>
     </>
   );
 };
