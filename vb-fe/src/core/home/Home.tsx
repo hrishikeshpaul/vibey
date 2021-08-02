@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
 import { useSelector } from "react-redux";
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { Navbar, Sheet, Profile, Search, Filters } from "components";
 import { Layout } from "layout/Layout";
@@ -35,9 +35,9 @@ export const Home: FunctionComponent<any> = () => {
         <Layout.Header>
           <Navbar isAuth profileData={{ ...userData }} />
           <Flex justifyContent="space-between" alignItems="center" bg="primaryDark" pt="6" pb="12">
-            <Heading w="100%" size="2xl">
-              Home
-            </Heading>
+            {/* <Text w="100%" size="sm"> */}
+            {/* Welcome, {profile.displayName} */}
+            {/* </Text> */}
             <Search onChange={onSearch} />
           </Flex>
         </Layout.Header>
