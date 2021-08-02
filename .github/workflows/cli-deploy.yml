@@ -1,38 +1,27 @@
 name: CLI Deploy
 
 on:
-  push:
-    branches:
-<<<<<<< HEAD
-      - "cli"
-=======
-      - "develop"
->>>>>>> 65713943a00f0a0ac3c49cc9197de52784ae2192
-  workflow_dispatch:
-  
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '12.x'
-        registry-url: 'https://registry.npmjs.org'
-        
-    - name: Install Dependencies
-      working-directory: ./cli
-      run: npm install
-      
-<<<<<<< HEAD
-    - run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+ push:
+  branches:
+   - 'develop'
+ workflow_dispatch:
 
-=======
-    - name: Publish
-      working-directory: ./cli 
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
->>>>>>> 65713943a00f0a0ac3c49cc9197de52784ae2192
+jobs:
+ build:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v2
+   - uses: actions/setup-node@v2
+     with:
+      node-version: '12.x'
+      registry-url: 'https://registry.npmjs.org'
+
+   - name: Install Dependencies
+     working-directory: ./cli
+     run: npm install
+
+   - name: Publish
+     working-directory: ./cli
+     run: npm publish
+     env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
