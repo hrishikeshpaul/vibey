@@ -13,6 +13,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const tagRouter = require('./routes/tag');
+const playlistRouter = require('./routes/playlist');
 
 const { handleError } = require('./lib/errors');
 
@@ -35,6 +36,7 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/tag', tagRouter);
+app.use('/api/playlist', playlistRouter);
 
 app.use((err, req, res, next) => {
   handleError(err, res);

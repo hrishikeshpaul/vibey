@@ -35,9 +35,6 @@ export const Home: FunctionComponent<any> = () => {
         <Layout.Header>
           <Navbar isAuth profileData={{ ...userData }} />
           <Flex justifyContent="space-between" alignItems="center" bg="primaryDark" pt="6" pb="12">
-            {/* <Text w="100%" size="sm"> */}
-            {/* Welcome, {profile.displayName} */}
-            {/* </Text> */}
             <Search onChange={onSearch} />
           </Flex>
         </Layout.Header>
