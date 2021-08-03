@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
 import { useSelector } from "react-redux";
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 
 import { Navbar, Sheet, Profile, Search, Filters, Card } from "components";
 import { Layout } from "layout/Layout";
@@ -20,8 +20,8 @@ export const Home: FunctionComponent<any> = () => {
   profile.displayName = profile.display_name;
 
   const data = [];
-  for (let i = 0; i < 100; i += 1) {
-    data.push(i.toString());
+  for (let i = 0; i < 10; i += 1) {
+    data.push(<Card key={i} />);
   }
 
   const onSearch = (str: string): void => {
@@ -43,9 +43,7 @@ export const Home: FunctionComponent<any> = () => {
             <Filters />
           </Layout.Sidebar>
           <Layout.Content flex="0.55">
-            <Box>
-              <Card />
-            </Box>
+            <VStack spacing="8">{data.map((i) => i)}</VStack>
           </Layout.Content>
           <Layout.Sidebar flex="0.2">
             <Profile profile={profile} />

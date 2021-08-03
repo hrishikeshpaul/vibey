@@ -48,25 +48,27 @@ export const Card = (): JSX.Element => {
     >
       <Flex justifyContent="space-between" alignItems="center">
         <Box flex="0.9" overflow="hidden" pr={3}>
-          <Heading fontSize="md" fontWeight="600" isTruncated>
+          <Heading fontSize="lg" fontWeight="600" isTruncated>
             This is a cool room name
           </Heading>
         </Box>
         <Badge bg="transparent" color="white">
           <Flex flex="0.1" justifyContent="center" alignItems="center">
-            <Icon as={IoPeople} w={4} h={4} />
-            <Text pl="1">12</Text>
+            <Icon as={IoPeople} w={5} h={5} />
+            <Text pl="1" fontSize="sm">
+              12
+            </Text>
           </Flex>
         </Badge>
       </Flex>
       <Flex>
-        <Text fontSize="xs" color="gray.100">
+        <Text fontSize="sm" color="gray.100">
           username
         </Text>
-        <Text fontSize="xs" color="gray.100" px="1">
+        <Text fontSize="sm" color="gray.100" px="1">
           •
         </Text>
-        <Text fontSize="xs" color="gray.100">
+        <Text fontSize="sm" color="gray.100">
           29 minutes ago
         </Text>
       </Flex>
@@ -80,9 +82,9 @@ export const Card = (): JSX.Element => {
         </Box>
       </Flex>
       <Flex mt="5" alignItems="center">
-        <Avatar src="https://i.scdn.co/image/ab67616d00004851a7354aa08bc3e76f416f194e" size="sm" borderRadius="lg" />
+        <Avatar src="https://i.scdn.co/image/ab67616d00004851a7354aa08bc3e76f416f194e" size="md" borderRadius="lg" />
         <Box overflow="hidden">
-          <Text fontSize="xs" isTruncated lineHeight="1.2" pl="3">
+          <Text fontSize="sm" isTruncated lineHeight="1.2" pl="3">
             <Link isExternal href="https://open.spotify.com/track/5RScucFoUuNzhLWwGWy05b">
               Name of song that gets truncates if too long
             </Link>

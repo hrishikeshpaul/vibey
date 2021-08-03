@@ -119,7 +119,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
  */
 export const LayoutBody: FunctionComponent<LayoutBodyProps> = ({ children, className }): JSX.Element => {
   return (
-    <Box className={`container ${className}`} minH="100%">
+    <Box className={`container ${className}`} minH="100%" marginBottom="16">
       <Flex>{children}</Flex>
     </Box>
   );
