@@ -61,7 +61,7 @@ export const Card = (): JSX.Element => {
       </Flex>
       <Flex>
         <Text fontSize="xs" color="gray.100">
-          nut_kesh
+          username
         </Text>
         <Text fontSize="xs" color="gray.100" px="1">
           •
