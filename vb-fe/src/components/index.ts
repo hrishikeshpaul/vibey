@@ -6,3 +6,4 @@ export { Sheet } from "components/sheet/Sheet";
 export { Search } from "components/search/Search";
 export { Filters } from "components/filters/Filters";
 export { Select } from "components/select/Select";
+export { Card } from "components/card/Card";
