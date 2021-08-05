@@ -47,17 +47,22 @@ export class SpotifyService {
 
   // https://github.com/thelinmichael/spotify-web-api-node/blob/master/src/server-methods.js#L65
   grantTokens(code: any): Observable<any> {
+    const params = new URLSearchParams();
+    params.append('redirect_uri', this.redirectURI);
+    params.append('code', code);
+    params.append('grant_type', 'authorization_code');
+    
     return this.http.post(
       `${BASE_URL}/api/token`,
+
       {
-        code,
-        grant_type: 'authorization_code',
-        redirect_uri: this.redirectURI,
-        client_id: this.clientId,
-        client_secret: this.clientSecret,
-      },
-      {
+        params: params,
         headers: {
+          Authorization:
+            'Basic ' +
+            new Buffer(this.clientId + ':' + this.clientSecret).toString(
+              'base64',
+            ),
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       },

@@ -3,6 +3,7 @@ import { Controller, Get, Response, Request } from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
 import { generateRandomString, STATE_KEY } from '@modules/spotify/spotify';
 import { firstValueFrom } from 'rxjs';
+
 @Controller('/api/auth')
 export class AuthController {
   constructor(private readonly spotify: SpotifyService) {}
@@ -23,9 +24,14 @@ export class AuthController {
     if (state === null || state !== storedState) {
       // res.redirect('http://localhost:8080/error?msg=state_mismatch');
     } else {
-      // grant tokens function doesnt work
-      const data = await this.spotify.grantTokens(code).toPromise();
-      const { access_token, refresh_token } = data;
+      // grant tokens function doesnt work 
+      try {
+        const data = await firstValueFrom(this.spotify.grantTokens(code));
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+
       // res.send({});
     }
   }
