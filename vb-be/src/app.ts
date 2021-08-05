@@ -3,11 +3,11 @@
 require('dotenv').config();
 require('./db/mongo/config')();
 
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+import express, { Error } from 'express';
+import path from 'path';
+import logger from 'morgan';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -15,15 +15,15 @@ const authRouter = require('./routes/auth');
 const tagRouter = require('./routes/tag');
 const playlistRouter = require('./routes/playlist');
 
-const { handleError } = require('./lib/errors');
+const { handleError } = require('lib/errors');
 
 const app = express();
 
 app.use(
-  cors({
-    credentials: true,
-    origin: process.env.NODE_ENV === 'production' ? '' : process.env.DEV_URL,
-  }),
+ cors({
+  credentials: true,
+  origin: process.env.NODE_ENV === 'production' ? '' : process.env.DEV_URL,
+ })
 );
 app.use(logger('dev'));
 app.use(express.json());
@@ -38,8 +38,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/tag', tagRouter);
 app.use('/api/playlist', playlistRouter);
 
-app.use((err, req, res, next) => {
-  handleError(err, res);
+app.use((err, _, res) => {
+ handleError(err, res);
 });
 
 module.exports = app;
