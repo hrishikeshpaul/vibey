@@ -1,0 +1,1 @@
+{"version":3,"file":"spotify.config.js","sourceRoot":"","sources":["../../src/config/spotify.config.ts"],"names":[],"mappings":";;;AAAA,+DAAiD;AAEpC,QAAA,UAAU,GAAG,IAAI,8BAAa,CAAC;IAC1C,QAAQ,EAAE,OAAO,CAAC,GAAG,CAAC,iBAAiB;IACvC,YAAY,EAAE,OAAO,CAAC,GAAG,CAAC,qBAAqB;IAC/C,WAAW,EAAE,OAAO,CAAC,GAAG,CAAC,oBAAoB;CAC9C,CAAC,CAAC"}
