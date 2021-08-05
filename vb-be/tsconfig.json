@@ -11,7 +11,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
-  },
-  "include": ["src"]
+    "skipLibCheck": true,
+    "paths": { "@db/*": ["src/database/*"], "@modules/*": ["src/modules/*"]}
+  }
 }

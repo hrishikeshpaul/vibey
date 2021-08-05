@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { RedisDBModule } from 'src/database/redis.module';
-import { MongoDBModule } from 'src/database/mongo.module';
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
+import { RedisModule } from '@db/redis.module';
+import { MongoDBModule } from '@db/mongo.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       cache: true,
     }),
-    RedisDBModule,
+    RedisModule,
     MongoDBModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [RedisDBModule, MongoDBModule],
+  exports: [RedisModule, MongoDBModule],
 })
 export class AppModule {}

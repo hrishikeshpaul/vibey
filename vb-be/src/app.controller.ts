@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { RedisService } from './database/redis.module';
+import { AppService } from 'src/app.service';
+import { RedisService } from '@db/redis.module';
 
 @Controller()
 export class AppController {

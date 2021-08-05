@@ -25,4 +25,4 @@ export class RedisService {
   providers: [RedisService],
   exports: [RedisService],
 })
-export class RedisDBModule {}
+export class RedisModule {}
