@@ -1,17 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from 'src/app.service';
-import { RedisService } from '@db/redis.module';
+import { SpotifyService } from '@modules/spotify/spotify.service';
+import { first, map } from 'rxjs';
 
-@Controller()
+@Controller('/api/auth/login')
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly rs: RedisService,
+    private readonly spotify: SpotifyService,
   ) {}
 
   @Get()
-  getHello(): string {
-    this.rs.redisJWTClient.set('hi', 'hello');
-    return this.appService.getHello();
+  getHello() {
+    return this.spotify
+      .createAuthURL(['user-read-private'], '1234', true)
+      .pipe(map((data) => data.request.res.responseUrl));
   }
 }
