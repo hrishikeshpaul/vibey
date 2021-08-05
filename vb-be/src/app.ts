@@ -3,7 +3,7 @@
 require('dotenv').config();
 require('./db/mongo/config')();
 
-import express, { Error } from 'express';
+import express from 'express';
 import path from 'path';
 import logger from 'morgan';
 import cors from 'cors';
@@ -15,7 +15,7 @@ const authRouter = require('./routes/auth');
 const tagRouter = require('./routes/tag');
 const playlistRouter = require('./routes/playlist');
 
-const { handleError } = require('lib/errors');
+import { handleError } from 'lib/errors';
 
 const app = express();
 
