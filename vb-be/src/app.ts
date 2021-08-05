@@ -15,7 +15,8 @@ const authRouter = require('./routes/auth');
 const tagRouter = require('./routes/tag');
 const playlistRouter = require('./routes/playlist');
 
-import { handleError } from 'lib/errors';
+// import { handleError } from 'lib/errors';
+import { handleError } from './lib/errors';
 
 const app = express();
 
