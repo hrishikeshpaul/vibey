@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { buildURL, scopes } from '@modules/spotify/spotify';
 
 const BASE_URL = 'https://accounts.spotify.com';
 
@@ -12,12 +13,19 @@ export class SpotifyService {
 
   constructor(private readonly http: HttpService) {}
 
-  createAuthURL(scopes: string[], state: string, showDialog: boolean): Observable<any> {
-    const url = `${BASE_URL}/authorize?response_type=code&scopes=${scopes.join(
-      '%20',
-    )}&client_id=${this.clientId}&redirect_uri=${encodeURIComponent(
-      this.redirectURI,
-    )}`;
+  createAuthURL(
+    state: string,
+  ): Observable<any> {
+    const built = buildURL({
+      state,
+      show_dialog: true,
+      redirect_uri: this.redirectURI,
+      client_id: this.clientId,
+      response_type: 'code',
+      scope: scopes,
+    });
+    const url = `${BASE_URL}/authorize?${built}`;
+    console.log(url);
 
     return this.http.get(url);
   }
