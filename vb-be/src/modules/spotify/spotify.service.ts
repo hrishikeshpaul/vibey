@@ -1,13 +1,14 @@
+import { Observable } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { AxiosResponse as A } from 'axios';
+
 import { getQueryString, scopes } from '@modules/spotify/spotify';
 import {
   SpotifyTokenResponse,
   SpotifyAuthResponse,
   SpotifyPublicUser,
 } from '@modules/spotify/spotify.constants';
-import { AxiosResponse as A } from 'axios';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
 const BASE_URL = 'https://api.spotify.com/v1';

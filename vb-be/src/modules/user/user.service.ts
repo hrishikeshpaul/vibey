@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { UserModel, UserType, IUser } from './user.schema';
 
 @Injectable()
