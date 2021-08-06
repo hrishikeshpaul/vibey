@@ -52,7 +52,7 @@ export class AuthController {
         let vbUser = await this.userService.findOne(userObject.email);
         if (!vbUser) await this.userService.create(userObject);
 
-        const [accessToken, refreshToken] = await this.authService.createToken(
+        const [accessToken, refreshToken] = await this.authService.createTokens(
           userObject,
         );
         res.status(200).json({
