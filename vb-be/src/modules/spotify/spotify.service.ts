@@ -22,6 +22,11 @@ export class SpotifyService {
 
   constructor(private readonly http: HttpService) {}
 
+  reset(): void {
+    this.setAccessToken('');
+    this.setRefreshToken('');
+  }
+
   setAccessToken(token: string): void {
     this.accessToken = token;
   }
