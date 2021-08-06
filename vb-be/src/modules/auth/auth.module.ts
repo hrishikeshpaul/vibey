@@ -5,7 +5,7 @@ import { SpotifyModule } from '@modules/spotify/spotify.module';
 import { UserModule } from '@modules/user/user.module';
 
 import { AuthController } from './auth.controller';
-import { LoggerMiddleware } from './auth.middleware';
+import { AuthMiddleware } from './auth.middleware';
 import { AuthService } from './auth.service';
 
 @Module({
@@ -16,6 +16,6 @@ import { AuthService } from './auth.service';
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('api/auth/login');
+    consumer.apply(AuthMiddleware).forRoutes('api/auth/login');
   }
 }
