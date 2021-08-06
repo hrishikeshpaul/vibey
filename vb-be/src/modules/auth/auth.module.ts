@@ -1,4 +1,4 @@
-import { RedisModule, RedisService } from '@db/redis.module';
+import { RedisModule } from '@db/redis.module';
 import { SpotifyModule } from '@modules/spotify/spotify.module';
 import { UserModule } from '@modules/user/user.module';
 import { Module } from '@nestjs/common';

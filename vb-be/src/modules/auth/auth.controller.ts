@@ -62,7 +62,7 @@ export class AuthController {
           username: user.data.id,
         };
 
-        let vbUser = await this.userService.findOne(userObject.email);
+        const vbUser = await this.userService.findOne(userObject.email);
         if (!vbUser) await this.userService.create(userObject);
 
         const [accessToken, refreshToken] = await this.authService.createTokens(
