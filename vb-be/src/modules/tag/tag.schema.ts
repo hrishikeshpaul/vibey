@@ -7,7 +7,9 @@ export interface TagType {
 }
 
 export interface ITag extends Document {
-  // TBD
+  label: string;
+  value: string;
+  score: number;
 }
 
 const TagSchema: Schema = new Schema({
@@ -40,4 +42,4 @@ const TagSchema: Schema = new Schema({
   },
 });
 
-export const TagModel = model('tag', TagSchema);
+export const TagModel: Model<ITag> = model('tag', TagSchema);

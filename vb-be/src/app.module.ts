@@ -5,8 +5,8 @@ import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
 import { RedisModule } from '@db/redis.module';
 import { MongoDBModule } from '@db/mongo.module';
-import { SpotifyModule } from '@modules/spotify/spotify.module';
 import { AuthModule } from '@modules/auth/auth.module';
+import { TagModule } from '@modules/tag/tag.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { AuthModule } from '@modules/auth/auth.module';
     RedisModule,
     MongoDBModule,
     AuthModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

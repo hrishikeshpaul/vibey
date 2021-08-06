@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TagModel, TagType } from './tag.schema';
+import { TagModel, ITag } from './tag.schema';
 
 @Injectable()
 export class TagService {
@@ -7,11 +7,11 @@ export class TagService {
     // TBD
   }
 
-  create(label: string): Promise<TagType> {
-    return new TagModel({ label: label, value: label, score: 1 });
+  create(label: string): Promise<ITag> {
+    return TagModel.create({ label: label, value: label, score: 1 });
   }
 
-  findOne(name: string) {
-    return TagModel.findOne({ name });
+  findOne(label: string) {
+    return TagModel.findOne({ label: label });
   }
 }

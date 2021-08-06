@@ -1,10 +1,4 @@
-import { Controller, Get, Response } from '@nestjs/common';
-import { SpotifyService } from '@modules/spotify/spotify.service';
-import { Response as ExpResponse } from 'express';
+import { Controller } from '@nestjs/common';
 
 @Controller()
-export class AppController {
-  constructor(
-    private readonly spotify: SpotifyService,
-  ) {}
-}
+export class AppController {}
