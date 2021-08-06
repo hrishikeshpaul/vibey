@@ -1,19 +1,21 @@
-import { SpotifyService } from '@modules/spotify/spotify.service';
 import { Controller, Get, Response, Request, Post } from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
+import { firstValueFrom } from 'rxjs';
+import { AxiosResponse as A } from 'axios';
+
+import { SpotifyService } from '@modules/spotify/spotify.service';
 import { generateRandomString, STATE_KEY } from '@modules/spotify/spotify';
 import {
   SpotifyTokenResponse,
   SpotifyAuthResponse,
   SpotifyPublicUser,
 } from '@modules/spotify/spotify.constants';
-import { firstValueFrom } from 'rxjs';
 import { UserService } from '@modules/user/user.service';
 import { UserType } from '@modules/user/user.schema';
-import { AuthService } from './auth.service';
-import { ErrorHandler, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
-import { AxiosResponse as A } from 'axios';
+import { ErrorHandler, ErrorText } from 'src/util/error';
+
+import { AuthService } from './auth.service';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -62,7 +64,7 @@ export class AuthController {
           username: user.data.id,
         };
 
-        let vbUser = await this.userService.findOne(userObject.email);
+        const vbUser = await this.userService.findOne(userObject.email);
         if (!vbUser) await this.userService.create(userObject);
 
         const [accessToken, refreshToken] = await this.authService.createTokens(

@@ -1,7 +1,9 @@
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+
 import { RedisModule } from '@db/redis.module';
 import { SpotifyModule } from '@modules/spotify/spotify.module';
 import { UserModule } from '@modules/user/user.module';
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+
 import { AuthController } from './auth.controller';
 import { LoggerMiddleware } from './auth.middleware';
 import { AuthService } from './auth.service';
