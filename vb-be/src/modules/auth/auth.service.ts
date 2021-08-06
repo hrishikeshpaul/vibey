@@ -2,9 +2,19 @@ import { RedisService } from '@db/redis.module';
 import { UserType } from '@modules/user/user.schema';
 import { Injectable } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { ErrorHandler } from 'src/util/error';
-import { accessOptions, refreshOptions } from './auth.constants';
+import { ErrorHandler, ErrorText } from 'src/util/error';
 import { promisify } from 'util';
+import { HttpStatus } from 'src/util/http';
+
+const accessOptions = {
+  issuer: 'vibey',
+  expiresIn: '15m',
+};
+
+const refreshOptions = {
+  issuer: 'vibey',
+  expiresIn: '7d',
+};
 
 @Injectable()
 export class AuthService {
@@ -28,37 +38,46 @@ export class AuthService {
 
   async createTokens(user: UserType): Promise<string[]> {
     if (!user) {
-      throw new ErrorHandler(400, 'Cannot create tokens without user info');
+      throw new ErrorHandler(HttpStatus.Error, ErrorText.TokenError);
     }
-    const { email, id } = user;
 
-    const payload = {
-      subject: id,
-      email: email,
-      role: 'user',
-    };
+    try {
+      const { email, id } = user;
 
-    const createToken = jwt.sign(payload, this.jwtSecret, accessOptions);
+      const payload = {
+        subject: id,
+        email: email,
+        role: 'user',
+      };
 
-    const createRefreshToken = jwt.sign(
-      payload,
-      this.jwtRefreshSecret,
-      refreshOptions,
-    );
+      const createAccessToken = jwt.sign(
+        payload,
+        this.jwtSecret,
+        accessOptions,
+      );
 
-    // creates tokens and stores them in redis as a pair (whitelist)
-    const [accessToken, refreshToken] = await Promise.all([
-      createToken,
-      createRefreshToken,
-    ]);
+      const createRefreshToken = jwt.sign(
+        payload,
+        this.jwtRefreshSecret,
+        refreshOptions,
+      );
 
-    await this.setAsyncJwtClient(
-      accessToken,
-      refreshToken,
-      'EX',
-      60 * 60 * 24 * 7,
-    );
+      // creates tokens and stores them in redis as a pair (whitelist)
+      const [accessToken, refreshToken] = await Promise.all([
+        createAccessToken,
+        createRefreshToken,
+      ]);
 
-    return [accessToken, refreshToken];
+      await this.setAsyncJwtClient(
+        accessToken,
+        refreshToken,
+        'EX',
+        60 * 60 * 24 * 7,
+      );
+
+      return [accessToken, refreshToken];
+    } catch (err) {
+      throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
+    }
   }
 }

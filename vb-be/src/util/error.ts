@@ -1,3 +1,8 @@
+export enum ErrorText {
+  Generic = 'Something went wrong. Please try again later',
+  TokenError = 'Cannot create tokens without user info',
+}
+
 export class ErrorHandler extends Error {
   constructor(statusCode: number, message: string) {
     super();
