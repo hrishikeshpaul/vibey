@@ -1,4 +1,4 @@
-import { Controller, Get, Response, Request } from '@nestjs/common';
+import { Controller, Get, Response, Request, Post } from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 import { AxiosResponse as A } from 'axios';
@@ -36,7 +36,7 @@ export class AuthController {
   }
 
   @Get('/authorize')
-  async authorize(@Request() req: Req, @Response() res: Res): Promise<any> {
+  async authorize(@Request() req: Req, @Response() res: Res) {
     const { code, state } = req.query;
     const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
@@ -81,6 +81,24 @@ export class AuthController {
       } catch (err) {
         return res.status(HttpStatus.Error).send(err);
       }
+    }
+  }
+
+  @Post('/logout')
+  logout(@Request() req: Req, @Response() res: Res) {
+    const accessToken = req.headers['v-at'];
+
+    if (accessToken) {
+      try {
+        this.authService.delAsyncJwtClient(accessToken);
+      } catch (err) {
+        return res
+          .status(HttpStatus.Error)
+          .send(new ErrorHandler(HttpStatus.Error, JSON.stringify(err)));
+      }
+
+      this.spotify.reset();
+      res.status(HttpStatus.NoContent);
     }
   }
 }

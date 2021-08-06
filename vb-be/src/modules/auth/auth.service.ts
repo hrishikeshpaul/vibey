@@ -81,4 +81,15 @@ export class AuthService {
       throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
     }
   }
+
+  async refreshTokens(
+    accessToken: string,
+    userInfo: UserType,
+  ): Promise<string[]> {
+    if (!accessToken || !userInfo['email'] || !userInfo['id']) {
+      throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidRTArg);
+    }
+    await this.delAsyncJwtClient(accessToken);
+    return await this.createTokens(userInfo);
+  }
 }
