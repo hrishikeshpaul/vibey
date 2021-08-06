@@ -3,10 +3,18 @@ import { Controller, Get, Response, Request } from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
 import { generateRandomString, STATE_KEY } from '@modules/spotify/spotify';
 import { firstValueFrom } from 'rxjs';
+import { UserService } from '@modules/user/user.service';
+import { UserType } from '@modules/user/user.schema';
+import { AuthService } from './auth.service';
+import { ErrorHandler } from 'src/util/error';
 
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private readonly spotify: SpotifyService) {}
+  constructor(
+    private readonly spotify: SpotifyService,
+    private readonly userService: UserService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get('/login')
   async login(@Response() res: Res) {
@@ -22,17 +30,41 @@ export class AuthController {
 
     const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
     if (state === null || state !== storedState) {
-      // res.redirect('http://localhost:8080/error?msg=state_mismatch');
+      res.send(400).send(new ErrorHandler(400, 'Invalid state.'));
     } else {
-      // grant tokens function doesnt work 
       try {
-        const data = await firstValueFrom(this.spotify.grantTokens(code));
-        console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
+        const response = await firstValueFrom(this.spotify.grantTokens(code));
+        const { access_token, refresh_token } = response.data;
 
-      // res.send({});
+        this.spotify.setAccessToken(access_token);
+        this.spotify.setRefreshToken(refresh_token);
+
+        const user = await firstValueFrom(this.spotify.me());
+        const userObject: UserType = {
+          displayName: user.data.display_name,
+          email: user.data.email,
+          href: user.data.href,
+          uri: user.data.uri,
+          image: user.data.images.length > 0 ? user.data.images[0].url : null,
+          username: user.data.id,
+        };
+
+        let vbUser = await this.userService.findOne(userObject.email);
+        if (!vbUser) await this.userService.create(userObject);
+
+        const [accessToken, refreshToken] = await this.authService.createToken(
+          userObject,
+        );
+        res.status(200).json({
+          user: vbUser,
+          spotifyAccessToken: this.spotify.getAccessToken(),
+          spotifyRefreshToken: this.spotify.getRefreshToken(),
+          accessToken,
+          refreshToken,
+        });
+      } catch (err) {
+        res.status(400).send(err);
+      }
     }
   }
 }

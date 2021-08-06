@@ -1,9 +1,10 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { buildURL, scopes } from '@modules/spotify/spotify';
+import { getQueryString, scopes } from '@modules/spotify/spotify';
 
-const BASE_URL = 'https://accounts.spotify.com';
+const AUTH_BASE_URL = 'https://accounts.spotify.com';
+const BASE_URL = 'https://api.spotify.com/v1';
 
 @Injectable()
 export class SpotifyService {
@@ -32,7 +33,7 @@ export class SpotifyService {
   }
 
   createAuthURL(state: string): Observable<any> {
-    const builtURL = buildURL({
+    const query = getQueryString({
       state,
       show_dialog: true,
       redirect_uri: this.redirectURI,
@@ -40,32 +41,32 @@ export class SpotifyService {
       response_type: 'code',
       scope: scopes,
     });
-    const url = `${BASE_URL}/authorize?${builtURL}`;
 
-    return this.http.get(url);
+    return this.http.get(`${AUTH_BASE_URL}/authorize?${query}`);
   }
 
-  // https://github.com/thelinmichael/spotify-web-api-node/blob/master/src/server-methods.js#L65
   grantTokens(code: any): Observable<any> {
-    const params = new URLSearchParams();
-    params.append('redirect_uri', this.redirectURI);
-    params.append('code', code);
-    params.append('grant_type', 'authorization_code');
-    
-    return this.http.post(
-      `${BASE_URL}/api/token`,
+    const params = new URLSearchParams({
+      redirect_uri: this.redirectURI,
+      code: code,
+      grant_type: 'authorization_code',
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+    });
 
-      {
-        params: params,
-        headers: {
-          Authorization:
-            'Basic ' +
-            new Buffer(this.clientId + ':' + this.clientSecret).toString(
-              'base64',
-            ),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+    return this.http.post(`${AUTH_BASE_URL}/api/token`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-    );
+    });
+  }
+
+  me(): Observable<any> {
+    return this.http.get(`${BASE_URL}/me`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.getAccessToken()}`,
+      },
+    });
   }
 }

@@ -18,7 +18,7 @@ export const scopes = [
 
 export const STATE_KEY = 'spotify_auth_state';
 
-export const buildURL = (params: Params) => {
+export const getQueryString = (params: Params) => {
   const parameters: string[] = [];
   Object.keys(params).forEach((keys: string) => {
     parameters.push(`${keys}=${params[keys]}`);
