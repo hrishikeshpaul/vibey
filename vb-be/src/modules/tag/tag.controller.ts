@@ -11,6 +11,10 @@ import { TagService } from './tag.service';
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
+  /**
+   * Gets a particular tag and increases score by 1
+   * If tag doesn't exist, creates and returns the tag
+   */
   @Get('/')
   async findOrAdd(
     @Request() req: Req,
@@ -29,11 +33,7 @@ export class TagController {
       let foundTag = await this.tagService.findOne(name);
 
       if (!foundTag) {
-        foundTag = this.tagService.create({
-          label: name,
-          value: name,
-          score: 1,
-        });
+        foundTag = this.tagService.create(name);
         res.status(HttpStatus.NewResource).json({ name: foundTag.name });
       } else {
         foundTag = await this.tagService.findOne(name);
