@@ -2,6 +2,12 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { getQueryString, scopes } from '@modules/spotify/spotify';
+import {
+  SpotifyTokenResponse,
+  SpotifyAuthResponse,
+  SpotifyPublicUser,
+} from '@modules/spotify/spotify.constants';
+import { AxiosResponse as A } from 'axios';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
 const BASE_URL = 'https://api.spotify.com/v1';
@@ -32,7 +38,7 @@ export class SpotifyService {
     return this.refreshToken;
   }
 
-  createAuthURL(state: string): Observable<any> {
+  createAuthURL(state: string): Observable<A<SpotifyAuthResponse>> {
     const query = getQueryString({
       state,
       show_dialog: true,
@@ -45,7 +51,7 @@ export class SpotifyService {
     return this.http.get(`${AUTH_BASE_URL}/authorize?${query}`);
   }
 
-  grantTokens(code: any): Observable<any> {
+  grantTokens(code: any): Observable<A<SpotifyTokenResponse>> {
     const params = new URLSearchParams({
       redirect_uri: this.redirectURI,
       code: code,
@@ -61,7 +67,7 @@ export class SpotifyService {
     });
   }
 
-  me(): Observable<any> {
+  me(): Observable<A<SpotifyPublicUser>> {
     return this.http.get(`${BASE_URL}/me`, {
       headers: {
         'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 export enum ErrorText {
+  InvalidAuthState = 'Invalid authentication state',
   Generic = 'Something went wrong. Please try again later',
   TokenError = 'Cannot create tokens without user info',
 }
