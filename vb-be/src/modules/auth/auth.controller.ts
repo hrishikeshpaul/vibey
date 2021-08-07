@@ -84,6 +84,14 @@ export class AuthController {
     }
   }
 
+  /**
+   * Intended to check a user's tokens.  If any of them have expired, we refresh all of them
+   */
+  @Get('/validate')
+  async validate(@Response() res: Res) {
+    res.status(HttpStatus.OK).send();
+  }
+
   @Post('/logout')
   async logout(@Request() req: Req, @Response() res: Res) {
     const accessToken = req.headers['v-at'];
