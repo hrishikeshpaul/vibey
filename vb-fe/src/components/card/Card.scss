@@ -1,0 +1,24 @@
+.vb-card {
+  width: 100%;
+  border: 2px solid transparent;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+
+  &:hover {
+    cursor: pointer !important;
+    background-color: var(--chakra-colors-gray-800);
+
+    > .vb-room-join {
+      opacity: 1;
+      bottom: 16px;
+    }
+  }
+
+  .vb-room-join {
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+    bottom: 0;
+    right: 16px;
+    text-transform: lowercase;
+  }
+}

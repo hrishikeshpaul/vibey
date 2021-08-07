@@ -2,6 +2,10 @@
 @import "theme/font";
 @import "node_modules/bootstrap/scss/bootstrap";
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root,
@@ -9,7 +13,6 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 .container {

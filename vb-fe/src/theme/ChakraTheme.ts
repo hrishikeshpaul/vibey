@@ -60,6 +60,39 @@ const components: ComponentDefaultProps = {
       focusBorderColor: "primary.400",
     },
   },
+  Link: {
+    variants: {
+      primary: () => ({
+        color: "white",
+        _hover: {
+          color: "white",
+        },
+      }),
+      secondary: () => ({
+        color: "gray.200",
+        _hover: {
+          color: "gray.50",
+        },
+      }),
+    },
+    defaultProps: {
+      variant: "primary",
+    },
+  },
+  Badge: {
+    baseStyle: {
+      textTransform: "none",
+    },
+  },
+  Avatar: {
+    variants: {
+      square: () => {
+        return {
+          borderRadius: 0,
+        };
+      },
+    },
+  },
 };
 
 const shadows = {

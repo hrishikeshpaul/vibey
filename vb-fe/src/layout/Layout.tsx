@@ -81,7 +81,7 @@ export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = tru
  */
 export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.5" }): JSX.Element => {
   return (
-    <Box mx={10} flex={flex}>
+    <Box mx={{ lg: 10, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
       {children}
     </Box>
   );
@@ -107,7 +107,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
       top={`${topPosition}px`}
       flex={flex}
       height="fit-content"
-      display={{ xl: "block", base: "none" }}
+      display={{ lg: "block", base: "none" }}
     >
       {children}
     </Box>
@@ -119,7 +119,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
  */
 export const LayoutBody: FunctionComponent<LayoutBodyProps> = ({ children, className }): JSX.Element => {
   return (
-    <Box className={`container ${className}`}>
+    <Box className={`container ${className}`} minH="100%" marginBottom="16">
       <Flex>{children}</Flex>
     </Box>
   );
@@ -142,7 +142,7 @@ export const LayoutHeader: FunctionComponent<GenericLayoutProps> = ({ children, 
  */
 export const LayoutWrapper: FunctionComponent<LayoutWrapperProps> = ({ children }): JSX.Element => {
   return (
-    <Flex flexDir="column" alignItems="center">
+    <Flex flexDir="column" alignItems="center" minH="100%">
       {children}
     </Flex>
   );
