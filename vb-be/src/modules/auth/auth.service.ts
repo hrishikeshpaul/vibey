@@ -93,4 +93,32 @@ export class AuthService {
     await this.delAsyncJwtClient(accessToken);
     return await this.createTokens(userInfo);
   }
+
+  /**
+   * Validates token with jwt.verify and redis active token whitelist
+   * @return True if success, else 403 error
+   */
+  async validateToken(
+    token: string,
+    type: 'access' | 'refresh',
+  ): Promise<boolean> {
+    let secret: string;
+    type === 'access'
+      ? (secret = this.jwtSecret)
+      : (secret = this.jwtRefreshSecret);
+
+    try {
+      const decoded = jwt.verify(token, secret);
+      const cacheResult = await this.getAsyncJwtClient(token);
+
+      if (typeof cacheResult === 'string' && decoded) {
+        return true;
+      } else {
+        throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Unauthorized);
+      }
+    } catch (err) {
+      // handle error thrown through jwt.verify
+      throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Unauthorized);
+    }
+  }
 }
