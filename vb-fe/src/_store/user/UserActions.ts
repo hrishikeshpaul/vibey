@@ -107,6 +107,8 @@ export const onLogout =
         localStorage.removeItem("v-at");
         localStorage.removeItem("v-rt");
         localStorage.removeItem("v-user");
+        localStorage.removeItem("v-s-at");
+        localStorage.removeItem("v-s-rt");
         // history.push("/");
       }
     } catch (err) {

@@ -29,7 +29,6 @@ export const Home: FunctionComponent<any> = () => {
   }, []);
 
   const profile = JSON.parse(localStorage.getItem("v-user") || "");
-  profile.displayName = profile.display_name;
 
   const data = [];
   for (let i = 0; i < 10; i += 1) {

@@ -8,6 +8,7 @@ import {
   SpotifyTokenResponse,
   SpotifyAuthResponse,
   SpotifyPublicUser,
+  SpotifyGrantType,
 } from '@modules/spotify/spotify.constants';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
@@ -57,11 +58,26 @@ export class SpotifyService {
     return this.http.get(`${AUTH_BASE_URL}/authorize?${query}`);
   }
 
-  grantTokens(code: any): Observable<A<SpotifyTokenResponse>> {
+  grantTokens(code?: any): Observable<A<SpotifyTokenResponse>> {
     const params = new URLSearchParams({
       redirect_uri: this.redirectURI,
-      code: code,
-      grant_type: 'authorization_code',
+      grant_type: SpotifyGrantType.AuthorizationCode,
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      code,
+    });
+
+    return this.http.post(`${AUTH_BASE_URL}/api/token`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  }
+
+  refreshAccessToken(refreshToken: string): Observable<A<SpotifyTokenResponse>> {
+    const params = new URLSearchParams({
+      refresh_token: refreshToken,
+      grant_type: SpotifyGrantType.RefreshToken,
       client_id: this.clientId,
       client_secret: this.clientSecret,
     });

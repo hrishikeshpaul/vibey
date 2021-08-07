@@ -1,4 +1,11 @@
-import { Controller, Get, Response, Request, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Response,
+  Request,
+  Post,
+  Headers,
+} from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 import { AxiosResponse as A } from 'axios';
@@ -16,6 +23,7 @@ import {
 import { UserService } from '@modules/user/user.service';
 import { UserType } from '@modules/user/user.schema';
 import { AuthService } from '@modules/auth/auth.service';
+import { IDecodedToken, TokenTypes } from '@modules/auth/auth.constants';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -64,11 +72,11 @@ export class AuthController {
           username: user.data.id,
         };
 
-        const vbUser = await this.userService.findOne(userObject.email);
-        if (!vbUser) await this.userService.create(userObject);
+        let vbUser = await this.userService.findOne(userObject.email);
+        if (!vbUser) vbUser = await this.userService.create(userObject);
 
         const [accessToken, refreshToken] = await this.authService.createTokens(
-          userObject,
+          vbUser,
         );
 
         return res.status(HttpStatus.OK).json({
@@ -82,6 +90,66 @@ export class AuthController {
         return res.status(HttpStatus.Error).send(err);
       }
     }
+  }
+
+  /**
+   * Validates AT here and in middleware
+   * jwt verify AT & ensures AT is white-listed in Redis
+   * @return 403 (unauthorized) or 204 no content
+   */
+  @Get('/validate')
+  async validate(
+    @Headers('v-at') accessToken: string,
+    @Request() req: Req,
+    @Response() res: Res,
+  ) {
+    try {
+      const decoded = await this.authService.verifyToken(
+        accessToken,
+        TokenTypes.Access,
+      );
+      const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
+
+      // cache returns null if non-existent
+      if (decoded && typeof cacheResult === 'string') {
+        return res.status(HttpStatus.NoContent).send();
+      } else {
+        res
+          .status(HttpStatus.Forbidden)
+          .json({ error: ErrorText.Unauthorized });
+      }
+    } catch (err) {
+      res.status(HttpStatus.Forbidden).json({ error: ErrorText.Unauthorized });
+    }
+  }
+
+  /**
+   * @param decoded Passed in by middleware
+   * middleware verifies refresh and ensures correct token pair via Redis whitelist
+   * @return 200, { accessToken, refreshToken, spotifyAccessToken }
+   */
+  @Get('/refresh')
+  async refresh(
+    @Headers('decoded') decoded: IDecodedToken,
+    @Headers('v-at') accessToken: string,
+    @Headers('v-s-rt') spotifyRefreshToken: string,
+    @Response() res: Res,
+  ) {
+    const user = { email: decoded.email };
+    const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
+      accessToken,
+      user,
+    );
+    const response = await firstValueFrom(
+      this.spotify.refreshAccessToken(spotifyRefreshToken),
+    );
+    const refreshedSpotifyAT = response.data.access_token;
+
+    res.status(HttpStatus.OK).json({
+      accessToken: refreshedAT,
+      refreshToken: refreshedRT,
+      spotifyAccessToken: refreshedSpotifyAT,
+    });
   }
 
   @Post('/logout')
@@ -98,7 +166,7 @@ export class AuthController {
       }
 
       this.spotify.reset();
-      res.status(HttpStatus.NoContent);
     }
+    return res.status(HttpStatus.NoContent).send();
   }
 }
