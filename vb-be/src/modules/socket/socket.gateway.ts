@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway({ cors: true, namespace: 'rooms' })
+@WebSocketGateway({ cors: true })
 export class EventsGateway {
   @WebSocketServer()
   server: Server;
