@@ -1,10 +1,10 @@
-import { Controller, Get, Response, Request, Query } from '@nestjs/common';
-import { Response as Res, Request as Req } from 'express';
+import { Controller, Get, Response, Query } from '@nestjs/common';
+import { Response as Res } from 'express';
 
 import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 
-import { TagService } from './tag.service';
+import { TagService } from '@modules/tag/tag.service';
 
 @Controller('/api/tag')
 export class TagController {
@@ -13,7 +13,10 @@ export class TagController {
   @Get('/search')
   async search(@Query('label') label: string, @Response() res: Res) {
     try {
-      const queryResults = await this.tagService.find(label);
+      const queryResults = await this.tagService
+        .find(label)
+        .sort({ score: -1 })
+        .limit(5);
       return res.status(200).json(queryResults);
     } catch (err) {
       throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { UserModel, UserType, IUser } from './user.schema';
+import { UserModel, UserType, IUser } from '@modules/user/user.schema';
 
 @Injectable()
 export class UserService {

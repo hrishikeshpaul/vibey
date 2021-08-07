@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 
-import { SpotifyService } from './spotify.service';
+import { SpotifyService } from '@modules/spotify/spotify.service';
 
 @Module({
   imports: [HttpModule],

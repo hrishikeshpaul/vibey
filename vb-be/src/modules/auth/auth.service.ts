@@ -2,10 +2,11 @@ import * as jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import { Injectable } from '@nestjs/common';
 
-import { RedisService } from '@db/redis.module';
-import { UserType } from '@modules/user/user.schema';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
+
+import { RedisService } from '@db/redis.module';
+import { UserType } from '@modules/user/user.schema';
 
 const accessOptions = {
   issuer: 'vibey',

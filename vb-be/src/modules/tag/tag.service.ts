@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { TagModel, ITag } from './tag.schema';
+
+import { TagModel, ITag } from '@modules/tag/tag.schema';
 
 @Injectable()
 export class TagService {

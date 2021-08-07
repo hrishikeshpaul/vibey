@@ -11,7 +11,16 @@ export interface UserType {
   createdAt?: string;
 }
 
-export interface IUser extends Document {}
+export interface IUser extends Document {
+  id?: string;
+  displayName: string;
+  username: string;
+  email: string;
+  href: string;
+  uri: string;
+  image: string;
+  createdAt?: string;
+}
 
 const UserSchema: Schema = new Schema({
   displayName: { type: String, required: true },

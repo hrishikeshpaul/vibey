@@ -3,6 +3,9 @@ import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 import { AxiosResponse as A } from 'axios';
 
+import { HttpStatus } from 'src/util/http';
+import { ErrorHandler, ErrorText } from 'src/util/error';
+
 import { SpotifyService } from '@modules/spotify/spotify.service';
 import { generateRandomString, STATE_KEY } from '@modules/spotify/spotify';
 import {
@@ -12,10 +15,7 @@ import {
 } from '@modules/spotify/spotify.constants';
 import { UserService } from '@modules/user/user.service';
 import { UserType } from '@modules/user/user.schema';
-import { HttpStatus } from 'src/util/http';
-import { ErrorHandler, ErrorText } from 'src/util/error';
-
-import { AuthService } from './auth.service';
+import { AuthService } from '@modules/auth/auth.service';
 
 @Controller('/api/auth')
 export class AuthController {
