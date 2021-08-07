@@ -1,3 +1,8 @@
+export enum SpotifyGrantType {
+  AuthorizationCode = 'authorization_code',
+  RefreshToken = 'refresh_token',
+}
+
 export interface SpotifyAuthResponse {
   request: {
     res: {

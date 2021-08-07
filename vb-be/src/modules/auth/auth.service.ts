@@ -6,7 +6,7 @@ import { ErrorHandler, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import { RedisService } from '@db/redis.module';
-import { UserType } from '@modules/user/user.schema';
+import { ITokenUser, TokenTypes } from '@modules/auth/auth.constants';
 
 const accessOptions = {
   issuer: 'vibey',
@@ -38,7 +38,7 @@ export class AuthService {
     );
   }
 
-  async createTokens(user: UserType): Promise<string[]> {
+  async createTokens(user: ITokenUser): Promise<string[]> {
     if (!user) {
       throw new ErrorHandler(HttpStatus.Error, ErrorText.TokenError);
     }
@@ -85,12 +85,29 @@ export class AuthService {
 
   async refreshTokens(
     accessToken: string,
-    userInfo: UserType,
+    user: ITokenUser,
   ): Promise<string[]> {
-    if (!accessToken || !userInfo['email'] || !userInfo['id']) {
-      throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidRTArg);
-    }
     await this.delAsyncJwtClient(accessToken);
-    return await this.createTokens(userInfo);
+    return await this.createTokens(user);
+  }
+
+  async verifyToken(
+    token: string,
+    type: TokenTypes.Access | TokenTypes.Refresh,
+  ): Promise<any> {
+    let secret: string;
+    type === TokenTypes.Access
+      ? (secret = this.jwtSecret)
+      : (secret = this.jwtRefreshSecret);
+
+    try {
+      return jwt.verify(token, secret);
+    } catch (err) {
+      throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Unauthorized);
+    }
+  }
+
+  async getJwtWhitelist(accessToken: string): Promise<any> {
+    return await this.getAsyncJwtClient(accessToken);
   }
 }
