@@ -71,11 +71,11 @@ export class AuthController {
           username: user.data.id,
         };
 
-        const vbUser = await this.userService.findOne(userObject.email);
-        if (!vbUser) await this.userService.create(userObject);
+        let vbUser = await this.userService.findOne(userObject.email);
+        if (!vbUser) vbUser = await this.userService.create(userObject);
 
         const [accessToken, refreshToken] = await this.authService.createTokens(
-          userObject,
+          vbUser,
         );
 
         return res.status(HttpStatus.OK).json({
@@ -156,7 +156,7 @@ export class AuthController {
       }
 
       this.spotify.reset();
-      res.status(HttpStatus.NoContent);
     }
+    return res.status(HttpStatus.NoContent).send();
   }
 }
