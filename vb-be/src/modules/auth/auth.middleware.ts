@@ -6,11 +6,6 @@ import { ErrorHandler, ErrorText } from 'src/util/error';
 
 import { AuthService } from '@modules/auth/auth.service';
 
-/**
- * Validates accessToken's existence and type
- * Verifies token with jwt.verify and the redis whitelist
- * @returns next if all validation succeeds
- */
 @Injectable()
 export class ValidateAccessTokenMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
@@ -24,6 +19,7 @@ export class ValidateAccessTokenMiddleware implements NestMiddleware {
     next();
   }
 }
+
 @Injectable()
 export class RefreshTokensMiddleware implements NestMiddleware {
   constructor(private readonly authService: AuthService) {}
@@ -43,6 +39,7 @@ export class RefreshTokensMiddleware implements NestMiddleware {
         .json({ error: ErrorText.InvalidDataSet });
     }
 
+    // verify with jwt, and validate JWT pair in whitelist
     const decoded = await this.authService.verifyToken(refreshToken, 'refresh');
     const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
     if (cacheResult !== refreshToken) {
