@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 import { HttpStatus } from 'src/util/http';
-import { ErrorText } from 'src/util/error';
+import { ErrorHandler, ErrorText } from 'src/util/error';
 
 import { AuthService } from '@modules/auth/auth.service';
 
@@ -13,8 +13,6 @@ import { AuthService } from '@modules/auth/auth.service';
  */
 @Injectable()
 export class ValidateAccessTokenMiddleware implements NestMiddleware {
-  constructor(private readonly authService: AuthService) {}
-
   async use(req: Request, res: Response, next: NextFunction) {
     const accessToken = req.headers['v-at'];
 
@@ -23,15 +21,37 @@ export class ValidateAccessTokenMiddleware implements NestMiddleware {
         .status(HttpStatus.Error)
         .json({ error: ErrorText.InvalidDataSet });
     }
+    next();
+  }
+}
+@Injectable()
+export class RefreshTokensMiddleware implements NestMiddleware {
+  constructor(private readonly authService: AuthService) {}
 
-    try {
-      const isValid = await this.authService.validateToken(
-        accessToken,
-        'access',
-      );
-      if (isValid) return next();
-    } catch (err) {
-      return next(err);
+  async use(req: Request, res: Response, next: NextFunction) {
+    const accessToken = req.headers['v-at'];
+    const refreshToken = req.headers['v-rt'];
+
+    if (
+      !accessToken ||
+      !refreshToken ||
+      typeof accessToken !== 'string' ||
+      typeof refreshToken !== 'string'
+    ) {
+      return res
+        .status(HttpStatus.Error)
+        .json({ error: ErrorText.InvalidDataSet });
     }
+
+    const decoded = await this.authService.verifyToken(refreshToken, 'refresh');
+    const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
+    if (cacheResult !== refreshToken) {
+      throw new ErrorHandler(
+        HttpStatus.Unauthorized,
+        ErrorText.InvalidTokenPair,
+      );
+    }
+    req.headers['decoded'] = decoded;
+    next();
   }
 }

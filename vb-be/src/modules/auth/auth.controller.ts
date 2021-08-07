@@ -1,4 +1,11 @@
-import { Controller, Get, Response, Request, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Response,
+  Request,
+  Post,
+  Headers,
+} from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 import { AxiosResponse as A } from 'axios';
@@ -88,8 +95,43 @@ export class AuthController {
    * Intended to check a user's tokens.  If any of them have expired, we refresh all of them
    */
   @Get('/validate')
-  async validate(@Response() res: Res) {
-    res.status(HttpStatus.NoContent).send();
+  async validate(
+    @Headers('v-at') accessToken: string,
+    @Request() req: Req,
+    @Response() res: Res,
+  ) {
+    try {
+      const decoded = await this.authService.verifyToken(accessToken, 'access');
+      const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
+
+      if (decoded && typeof cacheResult === 'string') {
+        return res.status(HttpStatus.NoContent).send();
+      } else {
+        res
+          .status(HttpStatus.Forbidden)
+          .json({ error: ErrorText.Unauthorized });
+      }
+    } catch (err) {
+      res.status(HttpStatus.Forbidden).json({ error: ErrorText.Unauthorized });
+    }
+  }
+
+  @Get('/refresh')
+  async refresh(
+    @Headers('decoded') decoded: { email: string; role: string },
+    @Headers('v-at') accessToken: string,
+    @Response() res: Res,
+  ) {
+    const user = { email: decoded.email };
+    const [refreshedAt, refreshedRT] = await this.authService.refreshTokens(
+      accessToken,
+      user,
+    );
+
+    res.status(HttpStatus.OK).json({
+      accessToken: refreshedAt,
+      refreshToken: refreshedRT,
+    });
   }
 
   @Post('/logout')

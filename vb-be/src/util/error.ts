@@ -3,6 +3,7 @@ import { HttpException } from '@nestjs/common';
 export enum ErrorText {
   InvalidAuthState = 'Invalid authentication state',
   InvalidRTArg = 'Invalid argument for refresh token',
+  InvalidTokenPair = 'Invalid token pair',
   Generic = 'Something went wrong. Please try again later',
   TokenError = 'Cannot create tokens without user info',
   InvalidDataSet = 'Invalid dataset',
