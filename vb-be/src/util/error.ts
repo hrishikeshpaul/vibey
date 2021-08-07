@@ -1,14 +1,18 @@
+import { HttpException } from '@nestjs/common';
+
 export enum ErrorText {
   InvalidAuthState = 'Invalid authentication state',
   InvalidRTArg = 'Invalid argument for refresh token',
   Generic = 'Something went wrong. Please try again later',
   TokenError = 'Cannot create tokens without user info',
   InvalidDataSet = 'Invalid dataset',
+  Unauthorized = 'Unauthorized',
 }
 
-export class ErrorHandler extends Error {
+// https://docs.nestjs.com/exception-filters
+export class ErrorHandler extends HttpException {
   constructor(statusCode: number, message: string) {
-    super();
+    super(message, statusCode);
     statusCode = statusCode;
     message = message;
   }
