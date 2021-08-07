@@ -7,6 +7,7 @@ import { RedisModule } from '@db/redis.module';
 import { MongoDBModule } from '@db/mongo.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TagModule } from '@modules/tag/tag.module';
+import { SocketModule } from '@modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TagModule } from '@modules/tag/tag.module';
     MongoDBModule,
     AuthModule,
     TagModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
