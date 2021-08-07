@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
@@ -76,6 +76,10 @@ export const App = (): JSX.Element => {
     );
   };
 
+  const render = useMemo(() => {
+    return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
+  }, [isAuthenticated]);
+
   const onCreateModalClose = () => {
     dispatch({
       type: SystemConstants.CREATE_ROOM_MODAL,
@@ -99,7 +103,7 @@ export const App = (): JSX.Element => {
           }}
         />
       )}
-      {isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {render}
     </div>
   );
 };
