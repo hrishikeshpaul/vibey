@@ -17,7 +17,7 @@ export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
   return (
     <Center textAlign="center">
       <Box w="full" bg="dark" rounded="lg" overflow="hidden">
-        <Box h="100px" bgColor="teal.800" />
+        <Box h="75px" bgColor="teal.800" />
         <Flex justify="center" mt="-9">
           <Avatar
             size="lg"
