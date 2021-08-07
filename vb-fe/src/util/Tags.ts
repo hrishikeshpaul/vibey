@@ -6,6 +6,7 @@
  *                 to denote if the tag is new
  */
 export interface Tag {
+  _id: string;
   label: string;
   value: string;
   score: number;

@@ -17,21 +17,21 @@ interface Props {
 
 /** Placeholder */
 const tags: Tag[] = [
-  {
-    label: "#edm",
-    value: "#edm",
-    score: 2,
-  },
-  {
-    label: "#trance",
-    value: "#trance",
-    score: 3,
-  },
-  {
-    label: "#future-bass",
-    value: "#future-bass",
-    score: 10,
-  },
+  // {
+  //   label: "#edm",
+  //   value: "#edm",
+  //   score: 2,
+  // },
+  // {
+  //   label: "#trance",
+  //   value: "#trance",
+  //   score: 3,
+  // },
+  // {
+  //   label: "#future-bass",
+  //   value: "#future-bass",
+  //   score: 10,
+  // },
 ];
 
 export const Card = (): JSX.Element => {

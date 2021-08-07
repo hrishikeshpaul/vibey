@@ -15,7 +15,7 @@ export class TagService {
   find(str: string) {
     return TagModel.find(
       { label: { $regex: str, $options: 'i' } },
-      { label: 1, value: 1, score: 1, _id: 0 },
+      { label: 1, value: 1, score: 1, _id: 1 },
       {},
       (err, doc) => {
         if (err) return err;

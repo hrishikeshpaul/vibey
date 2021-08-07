@@ -1,3 +1,4 @@
+import { TagType } from '@modules/tag/tag.schema';
 import { model, Schema, Model, Document } from 'mongoose';
 
 export interface UserType {
@@ -9,6 +10,12 @@ export interface UserType {
   uri: string;
   image: string;
   createdAt?: string;
+}
+
+export interface RoomForm {
+  name: string;
+  description: string;
+  tags: TagType[];
 }
 
 export interface IUser extends Document {
@@ -35,4 +42,4 @@ const UserSchema: Schema = new Schema({
   },
 });
 
-export const UserModel: Model<IUser> = model('User', UserSchema);
+export const UserModel: Model<IUser> = model('user', UserSchema);

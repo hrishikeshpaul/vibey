@@ -1,10 +1,13 @@
 import { Tag } from "./Tags";
 
-export interface Room {
+export interface RoomForm {
   name: string;
   description: string;
-  host: string;
   tags: Tag[];
+}
+
+export interface Room extends RoomForm {
+  host: string;
   start: Date;
   end: Date;
   logs: any[];

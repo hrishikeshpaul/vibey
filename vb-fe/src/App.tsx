@@ -12,6 +12,8 @@ import { SystemConstants } from "_store/system/SystemTypes";
 
 import "App.scss";
 import { useSocket } from "core/socket/useSocket";
+import { RoomForm } from "util/Room";
+import { createRoomAction } from "_store/room/RoomActions";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -94,8 +96,9 @@ export const App = (): JSX.Element => {
         <CreateRoom
           open={isCreateRoomModalOpen}
           close={onCreateModalClose}
-          submit={(room: any) => {
+          submit={(room: RoomForm) => {
             console.log(room);
+            dispatch(createRoomAction(room));
             onCreateModalClose();
           }}
           handleError={(e) => {

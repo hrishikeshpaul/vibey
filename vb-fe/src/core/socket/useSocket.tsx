@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Room } from "util/Room";
-import { useDispatch } from "react-redux";
-import socketIOClient from "socket.io-client";
+import { Room, RoomForm } from "util/Room";
+import { useDispatch, useSelector } from "react-redux";
+import socketIOClient, { Socket } from "socket.io-client";
 import { SOCKET_ENDPOINT } from "util/Socket";
 import { SystemConstants } from "_store/system/SystemTypes";
 
@@ -9,7 +9,6 @@ export const useSocket = () => {
   const dispatch = useDispatch();
 
   const connect = () => {
-    console.log("calling socket connect");
     const socket = socketIOClient(SOCKET_ENDPOINT, {
       transportOptions: {
         polling: {
@@ -22,13 +21,16 @@ export const useSocket = () => {
 
     socket.on("connect", () => {
       console.log("Socket connected!");
-      socket.emit("join-room");
       dispatch({
         type: SystemConstants.SOCKET,
         payload: socket,
       });
     });
   };
+
+  // const createRoom = (room: RoomForm) => {
+  //   socket?.emit("create-room", room);
+  // };
 
   return {
     connect,
