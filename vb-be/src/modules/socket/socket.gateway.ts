@@ -4,6 +4,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
   WsResponse,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Observable } from 'rxjs';
 import { Server, Socket } from 'socket.io';
@@ -16,9 +17,9 @@ export class EventsGateway {
   @SubscribeMessage('join-room')
   joinRoom(
     @MessageBody() data: any,
-    socket: Socket,
+    @ConnectedSocket() client: Socket,
   ): Observable<WsResponse<number>> {
-    console.log(socket);
+    console.log(client);
     return new Observable();
   }
 

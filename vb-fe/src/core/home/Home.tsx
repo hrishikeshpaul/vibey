@@ -24,10 +24,7 @@ export const Home: FunctionComponent<any> = () => {
     const socket = socketIOClient(SOCKET_ENDPOINT);
     socket.on("connect", () => {
       console.log("Socket connected!");
-      socket.emit("events", { test: "test" });
-      // socket.on("events", function (data) {
-      //   console.log("event", data);
-      // });
+      socket.emit("join-room", { test: "test" });
     });
   }, []);
 
