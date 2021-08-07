@@ -19,6 +19,7 @@ import {
   SpotifyTokenResponse,
   SpotifyAuthResponse,
   SpotifyPublicUser,
+  SpotifyGrantType,
 } from '@modules/spotify/spotify.constants';
 import { UserService } from '@modules/user/user.service';
 import { UserType } from '@modules/user/user.schema';
@@ -122,23 +123,29 @@ export class AuthController {
   /**
    * @param decoded Passed in by middleware
    * middleware verifies refresh and ensures correct token pair via Redis whitelist
-   * @return 200, { accessToken, refreshToken }
+   * @return 200, { accessToken, refreshToken, spotifyAccessToken }
    */
   @Get('/refresh')
   async refresh(
     @Headers('decoded') decoded: { email: string; role: string },
     @Headers('v-at') accessToken: string,
+    @Headers('v-s-rt') spotifyRefreshToken: string,
     @Response() res: Res,
   ) {
     const user = { email: decoded.email };
-    const [refreshedAt, refreshedRT] = await this.authService.refreshTokens(
+    const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
       accessToken,
       user,
     );
+    const response = await firstValueFrom(
+      this.spotify.refreshAccessToken(spotifyRefreshToken),
+    );
+    const refreshedSpotifyAT = response.data.access_token;
 
     res.status(HttpStatus.OK).json({
-      accessToken: refreshedAt,
+      accessToken: refreshedAT,
       refreshToken: refreshedRT,
+      spotifyAccessToken: refreshedSpotifyAT,
     });
   }
 
