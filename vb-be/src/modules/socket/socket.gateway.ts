@@ -8,7 +8,7 @@ import {
   WsResponse,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { Observable } from 'rxjs';
+import { from, map } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 import { WsGuard } from './socket.middleware';
 import { SocketService } from './socket.service';
@@ -28,7 +28,7 @@ export class EventsGateway {
       data.userId,
     );
     this.socketService.addRoomToRedis(savedRoom);
-    return new Observable();
+    return { event: 'create-room', data: savedRoom };
   }
 
   @UseGuards(WsGuard)

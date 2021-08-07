@@ -21,6 +21,10 @@ export const useSocket = () => {
 
     socket.on("connect", () => {
       console.log("Socket connected!");
+
+      socket.on("create-room", (room) => {
+        console.log("savedRoom", room);
+      });
       dispatch({
         type: SystemConstants.SOCKET,
         payload: socket,
