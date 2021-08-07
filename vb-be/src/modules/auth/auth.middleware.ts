@@ -5,6 +5,7 @@ import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 
 import { AuthService } from '@modules/auth/auth.service';
+import { TokenTypes } from '@modules/auth/auth.constants';
 
 @Injectable()
 export class ValidateAccessTokenMiddleware implements NestMiddleware {
@@ -40,7 +41,10 @@ export class RefreshTokensMiddleware implements NestMiddleware {
     }
 
     // verify with jwt, and validate JWT pair in whitelist
-    const decoded = await this.authService.verifyToken(refreshToken, 'refresh');
+    const decoded = await this.authService.verifyToken(
+      refreshToken,
+      TokenTypes.Refresh,
+    );
     const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
     if (cacheResult !== refreshToken) {
       throw new ErrorHandler(

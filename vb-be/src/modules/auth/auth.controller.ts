@@ -19,11 +19,11 @@ import {
   SpotifyTokenResponse,
   SpotifyAuthResponse,
   SpotifyPublicUser,
-  SpotifyGrantType,
 } from '@modules/spotify/spotify.constants';
 import { UserService } from '@modules/user/user.service';
 import { UserType } from '@modules/user/user.schema';
 import { AuthService } from '@modules/auth/auth.service';
+import { IDecodedToken, TokenTypes } from '@modules/auth/auth.constants';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -104,7 +104,10 @@ export class AuthController {
     @Response() res: Res,
   ) {
     try {
-      const decoded = await this.authService.verifyToken(accessToken, 'access');
+      const decoded = await this.authService.verifyToken(
+        accessToken,
+        TokenTypes.Access,
+      );
       const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
 
       // cache returns null if non-existent
@@ -127,7 +130,7 @@ export class AuthController {
    */
   @Get('/refresh')
   async refresh(
-    @Headers('decoded') decoded: { email: string; role: string },
+    @Headers('decoded') decoded: IDecodedToken,
     @Headers('v-at') accessToken: string,
     @Headers('v-s-rt') spotifyRefreshToken: string,
     @Response() res: Res,

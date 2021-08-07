@@ -6,7 +6,7 @@ import { ErrorHandler, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import { RedisService } from '@db/redis.module';
-import { ITokenUser } from '@modules/auth/auth.constants';
+import { ITokenUser, TokenTypes } from '@modules/auth/auth.constants';
 
 const accessOptions = {
   issuer: 'vibey',
@@ -44,9 +44,10 @@ export class AuthService {
     }
 
     try {
-      const { email } = user;
+      const { email, id } = user;
 
       const payload = {
+        subject: id,
         email: email,
         role: 'user',
       };
@@ -90,9 +91,12 @@ export class AuthService {
     return await this.createTokens(user);
   }
 
-  async verifyToken(token: string, type: 'access' | 'refresh'): Promise<any> {
+  async verifyToken(
+    token: string,
+    type: TokenTypes.Access | TokenTypes.Refresh,
+  ): Promise<any> {
     let secret: string;
-    type === 'access'
+    type === TokenTypes.Access
       ? (secret = this.jwtSecret)
       : (secret = this.jwtRefreshSecret);
 
