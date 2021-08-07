@@ -3,7 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 
 import { HttpStatus } from 'src/util/http';
 import { ErrorText } from 'src/util/error';
-import { AuthService } from './auth.service';
+
+import { AuthService } from '@modules/auth/auth.service';
 
 /**
  * Validates accessToken's existence and type

@@ -89,7 +89,7 @@ export class AuthController {
    */
   @Get('/validate')
   async validate(@Response() res: Res) {
-    res.status(HttpStatus.OK).send();
+    res.status(HttpStatus.NoContent).send();
   }
 
   @Post('/logout')
