@@ -15,9 +15,9 @@ export interface Props {
 
 export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
   return (
-    <Center>
+    <Center textAlign="center">
       <Box w="full" bg="dark" rounded="lg" overflow="hidden">
-        <Box h="100px" bgColor="teal.800" />
+        <Box h="75px" bgColor="teal.800" />
         <Flex justify="center" mt="-9">
           <Avatar
             size="lg"
@@ -31,7 +31,7 @@ export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
 
         <Box p={6}>
           <Stack spacing={0} align="center" mb={5}>
-            <Heading fontSize="lg" fontWeight="500">
+            <Heading fontSize="md" fontWeight="500">
               {profile.displayName}
             </Heading>
             <Text color="gray.500">{profile.username}</Text>
