@@ -92,7 +92,9 @@ export class AuthController {
   }
 
   /**
-   * Intended to check a user's tokens.  If any of them have expired, we refresh all of them
+   * Validates AT here and in middleware
+   * jwt verify AT & ensures AT is white-listed in Redis
+   * @return 403 (unauthorized) or 204 no content
    */
   @Get('/validate')
   async validate(
@@ -104,6 +106,7 @@ export class AuthController {
       const decoded = await this.authService.verifyToken(accessToken, 'access');
       const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
 
+      // cache returns null if non-existent
       if (decoded && typeof cacheResult === 'string') {
         return res.status(HttpStatus.NoContent).send();
       } else {
@@ -116,6 +119,11 @@ export class AuthController {
     }
   }
 
+  /**
+   * @param decoded Passed in by middleware
+   * middleware verifies refresh and ensures correct token pair via Redis whitelist
+   * @return 200, { accessToken, refreshToken }
+   */
   @Get('/refresh')
   async refresh(
     @Headers('decoded') decoded: { email: string; role: string },

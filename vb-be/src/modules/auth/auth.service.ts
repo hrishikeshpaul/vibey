@@ -86,9 +86,6 @@ export class AuthService {
     accessToken: string,
     user: ITokenUser,
   ): Promise<string[]> {
-    if (!accessToken || !user['email']) {
-      throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidRTArg);
-    }
     await this.delAsyncJwtClient(accessToken);
     return await this.createTokens(user);
   }
