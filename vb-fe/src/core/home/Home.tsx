@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
 
 import { useSelector } from "react-redux";
-import { Flex } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 
-import { Navbar, Sheet, Profile, Search, Filters } from "components";
+import { Navbar, Sheet, Profile, Search, Filters, Card } from "components";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 
@@ -20,8 +20,8 @@ export const Home: FunctionComponent<any> = () => {
   profile.displayName = profile.display_name;
 
   const data = [];
-  for (let i = 0; i < 100; i += 1) {
-    data.push(i.toString());
+  for (let i = 0; i < 10; i += 1) {
+    data.push(<Card key={i} />);
   }
 
   const onSearch = (str: string): void => {
@@ -43,20 +43,15 @@ export const Home: FunctionComponent<any> = () => {
             <Filters />
           </Layout.Sidebar>
           <Layout.Content flex="0.55">
-            <div>
-              The numbers here show a long scrolling div of room cards
-              {data.map((i) => (
-                <div key={i}>{i}</div>
-              ))}
-            </div>
+            <VStack spacing="8">{data.map((i) => i)}</VStack>
           </Layout.Content>
           <Layout.Sidebar flex="0.2">
             <Profile profile={profile} />
           </Layout.Sidebar>
         </Layout.Body>
-        <Layout.Footer>
+        {/* <Layout.Footer>
           <Sheet />
-        </Layout.Footer>
+        </Layout.Footer> */}
       </Layout.Wrapper>
     </>
   );
