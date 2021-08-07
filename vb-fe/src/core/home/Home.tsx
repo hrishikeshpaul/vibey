@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import { Flex, VStack } from "@chakra-ui/react";
-import socketIOClient from "socket.io-client";
 
 import { Navbar, Sheet, Profile, Search, Filters, Card } from "components";
 import { Layout } from "layout/Layout";
@@ -10,23 +9,12 @@ import { State } from "_store/rootReducer";
 
 import "core/home/Home.scss";
 
-const SOCKET_ENDPOINT = "http://localhost:8080/rooms";
-
 /**
  * The prop type is a placeholder
  */
 export const Home: FunctionComponent<any> = () => {
   const userData = useSelector((state: State) => state.user.user);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
-  const [response, setResponse] = useState("");
-
-  useEffect(() => {
-    const socket = socketIOClient(SOCKET_ENDPOINT);
-    socket.on("connect", () => {
-      console.log("Socket connected!");
-      socket.emit("join-room", { test: "test" });
-    });
-  }, []);
 
   const profile = JSON.parse(localStorage.getItem("v-user") || "");
 

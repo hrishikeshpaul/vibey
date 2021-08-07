@@ -5,6 +5,7 @@ import {
   Request,
   Post,
   Headers,
+  Query,
 } from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
@@ -44,8 +45,12 @@ export class AuthController {
   }
 
   @Get('/authorize')
-  async authorize(@Request() req: Req, @Response() res: Res) {
-    const { code, state } = req.query;
+  async authorize(
+    @Request() req: Req,
+    @Response() res: Res,
+    @Query('code') code: string,
+    @Query('state') state: string,
+  ) {
     const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
     if (state === null || state !== storedState) {

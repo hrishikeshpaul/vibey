@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+
 export enum SystemConstants {
   LOADING = "LOADING",
   SUCCESS = "SUCCESS",
@@ -5,6 +7,7 @@ export enum SystemConstants {
   LOGIN = "LOGIN",
   CREATE_ROOM_MODAL = "CREATE_ROOM_MODAL",
   EXPAND_BOTTOM_SHEET = "EXPAND_BOTTOM_SHEET",
+  SOCKET = "SOCKET",
 }
 
 /**
@@ -50,10 +53,16 @@ export interface SetExpandBottomSheet {
   payload: boolean;
 }
 
+export interface SetSocketConnection {
+  type: typeof SystemConstants.SOCKET;
+  payload: Socket | null;
+}
+
 export type SystemActionTypes =
   | GetApiStart
   | GetApiSuccess
   | GetApiFailure
   | SetUserLogin
   | SetCreateRoomModal
-  | SetExpandBottomSheet;
+  | SetExpandBottomSheet
+  | SetSocketConnection;

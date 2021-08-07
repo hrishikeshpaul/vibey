@@ -11,6 +11,7 @@ import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 
 import "App.scss";
+import { useSocket } from "core/socket/useSocket";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -55,6 +56,12 @@ export const App = (): JSX.Element => {
   };
 
   const AuthenticatedApp = (): JSX.Element => {
+    const { connect } = useSocket();
+
+    useEffect(() => {
+      connect();
+    }, [connect]);
+
     return (
       <Router>
         <Switch>
