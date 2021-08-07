@@ -85,12 +85,12 @@ export class AuthController {
   }
 
   @Post('/logout')
-  logout(@Request() req: Req, @Response() res: Res) {
+  async logout(@Request() req: Req, @Response() res: Res) {
     const accessToken = req.headers['v-at'];
 
     if (accessToken) {
       try {
-        this.authService.delAsyncJwtClient(accessToken);
+        await this.authService.delAsyncJwtClient(accessToken);
       } catch (err) {
         return res
           .status(HttpStatus.Error)

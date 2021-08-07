@@ -4,8 +4,6 @@ import { UserModel, UserType, IUser } from './user.schema';
 
 @Injectable()
 export class UserService {
-  constructor() {}
-
   create(user: UserType): Promise<IUser> {
     return UserModel.create(user);
   }
