@@ -1,4 +1,5 @@
 import { TagType } from '@modules/tag/tag.schema';
+import { UserType } from '@modules/user/user.schema';
 import { model, Schema, Model, Document } from 'mongoose';
 
 export interface RoomType {
@@ -9,6 +10,7 @@ export interface RoomType {
   start?: Date;
   end?: Date;
   maxUsers?: number;
+  currentUsers?: UserType;
 }
 
 export interface IRoom extends Document {
@@ -20,6 +22,7 @@ export interface IRoom extends Document {
   start: Date;
   end: Date;
   maxUsers?: number;
+  currentUsers?: UserType;
 }
 
 const RoomSchema: Schema = new Schema({
@@ -52,6 +55,12 @@ const RoomSchema: Schema = new Schema({
     type: Number,
     default: 1,
   },
+  currentUsers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
 });
 
 export const RoomModel: Model<IRoom> = model('room', RoomSchema);
