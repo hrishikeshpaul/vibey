@@ -17,6 +17,7 @@
       "react/prop-types": "off",
       "no-unused-vars": "warn",
       "no-use-before-define": "off",
+      "no-underscore-dangle": "off",
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/no-use-before-define": ["error"],
       "quotes": [2, "double", { "avoidEscape": true }],

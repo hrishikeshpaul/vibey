@@ -12,5 +12,5 @@ export enum TagEndpoints {
 }
 
 export enum RoomEndpoints {
-  CREATE = "api/room/",
+  GENERAL = "api/room/",
 }
