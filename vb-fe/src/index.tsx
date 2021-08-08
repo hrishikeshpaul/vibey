@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { theme } from "theme/ChakraTheme";
 import { store } from "_store/store";
 import { App } from "App";
+import { BrowserRouter as Router } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
@@ -14,7 +15,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </Provider>
     </ChakraProvider>
   </React.StrictMode>,

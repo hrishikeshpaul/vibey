@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
+import { Switch, Route, useHistory } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
@@ -44,16 +44,14 @@ export const App = (): JSX.Element => {
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Landing />
-          </Route>
-          <Route path="/login">
-            <Redirect />
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Route exact path="/">
+          <Landing />
+        </Route>
+        <Route path="/login">
+          <Redirect />
+        </Route>
+      </Switch>
     );
   };
 
@@ -65,16 +63,14 @@ export const App = (): JSX.Element => {
     }, [connect]);
 
     return (
-      <Router>
-        <Switch>
-          <Route path="/room">
-            <div>This is a room!</div>
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Route path="/room">
+          <div>This is a room!</div>
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     );
   };
 
@@ -82,11 +78,17 @@ export const App = (): JSX.Element => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
   }, [isAuthenticated]);
 
-  const onCreateModalClose = () => {
+  const handleCloseModal = () => {
     dispatch({
       type: SystemConstants.CREATE_ROOM_MODAL,
       payload: false,
     });
+  };
+
+  const handleSubmitRoom = async (room: RoomForm) => {
+    dispatch(createRoomAction(room));
+    handleCloseModal();
+    history.push("/room");
   };
 
   return (
@@ -95,10 +97,9 @@ export const App = (): JSX.Element => {
       {isCreateRoomModalOpen && (
         <CreateRoom
           open={isCreateRoomModalOpen}
-          close={onCreateModalClose}
+          close={handleCloseModal}
           submit={(room: RoomForm) => {
-            dispatch(createRoomAction(room));
-            onCreateModalClose();
+            handleSubmitRoom(room);
           }}
           handleError={(e) => {
             console.log(e);
