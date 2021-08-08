@@ -44,7 +44,7 @@ export class RoomController {
 
     try {
       const room = await this.roomService.create(roomData);
-      const populatedRoom = await this.roomService.findOne(room._id);
+      const populatedRoom = await this.roomService.getOneRoom(room._id);
 
       res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {

@@ -13,7 +13,7 @@ export class RoomService {
     return RoomModel.create(room);
   }
 
-  findOne(roomId: string): Query<IRoom, IRoom, {}, IRoom> {
+  getOneRoom(roomId: string): Query<IRoom, IRoom, {}, IRoom> {
     return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
   }
 
