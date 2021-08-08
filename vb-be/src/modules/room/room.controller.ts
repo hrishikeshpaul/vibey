@@ -24,16 +24,13 @@ export class RoomController {
         .json({ error: ErrorText.InvalidDataSet });
     }
 
-    const namedTagsArr = [];
     const tagsArr = [];
     for (const tag of roomObj.tags) {
       if (tag.__isNew__) {
         const newTag = await this.tagService.create(tag.label);
         tagsArr.push(newTag._id);
-        namedTagsArr.push(newTag.label);
       } else {
         const updatedTag = await this.tagService.updateScore(tag._id);
-        namedTagsArr.push(updatedTag.label);
         tagsArr.push(updatedTag._id);
       }
     }
@@ -48,7 +45,7 @@ export class RoomController {
     try {
       const room = await this.roomService.create(roomData);
       const populatedRoom = await this.roomService.findOne(room._id);
-      
+
       res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {
       res.status(HttpStatus.InternalError).json({ error: ErrorText.Generic });
