@@ -1,5 +1,6 @@
-import { ICreateTag } from '@modules/tag/tag.constants';
 import { Types } from 'mongoose';
+
+import { ICreateTag } from '@modules/tag/tag.constants';
 
 export interface ICreateRoom {
   name: string;
@@ -9,10 +10,13 @@ export interface ICreateRoom {
   maxUsers?: number;
 }
 
-export interface ISocketRedisRoom {
+export interface IRedisRoom {
   _id: Types.ObjectId;
   name: string;
   description?: string;
   tags?: string[];
-  host: string;
+  host: {
+    _id: Types.ObjectId;
+    username: string;
+  };
 }
