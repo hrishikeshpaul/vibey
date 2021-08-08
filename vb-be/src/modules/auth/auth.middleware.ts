@@ -21,8 +21,8 @@ export class ValidateAccessTokenMiddleware implements NestMiddleware {
     // validate access token is in header & is correct type
     if (!accessToken || typeof accessToken !== 'string') {
       return res
-        .status(HttpStatus.Error)
-        .json({ error: ErrorText.InvalidDataSet });
+        .status(HttpStatus.Unauthorized)
+        .json({ error: ErrorText.Unauthorized });
     }
 
     // verify with jwt
@@ -59,8 +59,8 @@ export class RefreshTokensMiddleware implements NestMiddleware {
       typeof refreshToken !== 'string'
     ) {
       return res
-        .status(HttpStatus.Error)
-        .json({ error: ErrorText.InvalidDataSet });
+        .status(HttpStatus.Unauthorized)
+        .json({ error: ErrorText.Unauthorized });
     }
 
     // verify with jwt, and validate JWT pair in whitelist
