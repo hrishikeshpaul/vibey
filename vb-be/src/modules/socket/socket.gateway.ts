@@ -7,21 +7,31 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { WsGuard } from './socket.middleware';
-import { SocketService } from './socket.service';
+
+import { RoomService } from '@modules/room/room.service';
+import { ISocketCreateRoomData } from './socket.constants';
 
 @WebSocketGateway({ cors: true })
 export class EventsGateway {
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly socketService: SocketService) {}
+  constructor(private readonly roomService: RoomService) {}
 
   // @UseGuards(WsGuard)
   @SubscribeMessage('create-room')
-  async joinRoom(@MessageBody() data: any, @ConnectedSocket() client: Socket) {}
+  async createRoom(
+    @MessageBody() data: ISocketCreateRoomData,
+    @ConnectedSocket() client: Socket,
+  ) {
+    try {
+      await this.roomService.addRoomToRedis(data.room);
+      console.log(data.room.host);
+    } catch (err) {
+      // error handling for sockets
+    }
+  }
 
-  @UseGuards(WsGuard)
   @SubscribeMessage('get-all-rooms')
   getAllRooms(@ConnectedSocket() client: Socket): any {
     // read from redis

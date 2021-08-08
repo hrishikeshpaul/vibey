@@ -1,11 +1,13 @@
+import { Module } from '@nestjs/common';
+
+import { RoomModule } from '@modules/room/room.module';
 import { RedisModule } from '@db/redis.module';
 import { AuthModule } from '@modules/auth/auth.module';
-import { Module } from '@nestjs/common';
-import { EventsGateway } from './socket.gateway';
-import { SocketService } from './socket.service';
+import { EventsGateway } from '@modules/socket/socket.gateway';
+import { SocketService } from '@modules/socket/socket.service';
 
 @Module({
-  imports: [AuthModule, RedisModule],
+  imports: [AuthModule, RedisModule, RoomModule],
   providers: [EventsGateway, SocketService],
   exports: [SocketService],
 })
