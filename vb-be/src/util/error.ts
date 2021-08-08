@@ -7,6 +7,7 @@ export enum ErrorText {
   Generic = 'Something went wrong. Please try again later',
   TokenError = 'Cannot create tokens without user info',
   InvalidDataSet = 'Invalid dataset',
+  Forbidden = 'Forbidden',
   Unauthorized = 'Unauthorized',
 }
 

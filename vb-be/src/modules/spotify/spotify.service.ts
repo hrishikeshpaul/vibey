@@ -58,7 +58,7 @@ export class SpotifyService {
     return this.http.get(`${AUTH_BASE_URL}/authorize?${query}`);
   }
 
-  grantTokens(code?: any): Observable<A<SpotifyTokenResponse>> {
+  grantTokens(code: any): Observable<A<SpotifyTokenResponse>> {
     const params = new URLSearchParams({
       redirect_uri: this.redirectURI,
       grant_type: SpotifyGrantType.AuthorizationCode,
@@ -74,7 +74,9 @@ export class SpotifyService {
     });
   }
 
-  refreshAccessToken(refreshToken: string): Observable<A<SpotifyTokenResponse>> {
+  refreshAccessToken(
+    refreshToken: string,
+  ): Observable<A<SpotifyTokenResponse>> {
     const params = new URLSearchParams({
       refresh_token: refreshToken,
       grant_type: SpotifyGrantType.RefreshToken,

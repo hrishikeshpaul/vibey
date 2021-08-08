@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
@@ -11,6 +11,9 @@ import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 
 import "App.scss";
+import { useSocket } from "core/socket/useSocket";
+import { RoomForm } from "util/Room";
+import { createRoomAction } from "_store/room/RoomActions";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -55,6 +58,12 @@ export const App = (): JSX.Element => {
   };
 
   const AuthenticatedApp = (): JSX.Element => {
+    const { connect } = useSocket();
+
+    useEffect(() => {
+      connect();
+    }, [connect]);
+
     return (
       <Router>
         <Switch>
@@ -68,6 +77,10 @@ export const App = (): JSX.Element => {
       </Router>
     );
   };
+
+  const render = useMemo(() => {
+    return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
+  }, [isAuthenticated]);
 
   const onCreateModalClose = () => {
     dispatch({
@@ -83,8 +96,9 @@ export const App = (): JSX.Element => {
         <CreateRoom
           open={isCreateRoomModalOpen}
           close={onCreateModalClose}
-          submit={(room: any) => {
+          submit={(room: RoomForm) => {
             console.log(room);
+            dispatch(createRoomAction(room));
             onCreateModalClose();
           }}
           handleError={(e) => {
@@ -92,7 +106,7 @@ export const App = (): JSX.Element => {
           }}
         />
       )}
-      {isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      {render}
     </div>
   );
 };

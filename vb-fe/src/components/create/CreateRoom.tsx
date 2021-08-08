@@ -23,15 +23,20 @@ import {
 
 import "components/create/CreateRoom.scss";
 import { Select } from "components/select/Select";
+import { Room, RoomForm } from "util/Room";
 
 type Props = {
   open: boolean;
   close: () => void;
-  submit: (room: any) => void;
+  submit: (room: RoomForm) => void;
   handleError: (error: any) => void;
 };
 
-const initialRoomValues = {
+interface RoomType extends RoomForm {
+  error: boolean;
+}
+
+const initialRoomValues: RoomType = {
   name: "",
   description: "",
   tags: [],
@@ -44,9 +49,9 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
   /**
    * Set room to initial room when create modal pops up
    */
-  useEffect(() => {
-    setRoom(initialRoomValues);
-  }, []);
+  // useEffect(() => {
+  //   setRoom(initialRoomValues);
+  // }, []);
 
   /**
    * Validates the form to see if the room name is present

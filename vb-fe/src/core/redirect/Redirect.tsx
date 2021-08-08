@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAuthorization } from "_store/user/UserActions";
 import { useHistory } from "react-router-dom";
 
@@ -16,18 +16,19 @@ export const Redirect = () => {
    */
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
+    try {
+      const f = async () => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         const [code, state] = [params.code, params.state];
-        dispatch(getAuthorization(code, state, history));
-      } catch (err) {
-        console.log(err);
-        // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don"t need this catch?
-      }
-    };
-    fetchData();
+        dispatch(getAuthorization(code, state));
+        history.push("/");
+      };
+      f();
+    } catch (err) {
+      console.log(err);
+      // The only promise is getAuthorization, which should inherently take care of error handling, so perhaps we don"t need this catch?
+    }
   }, [history, dispatch]);
 
   return <div>Redirecting...</div>;

@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 // import { Error } from "app/models/system.model";
 
@@ -17,6 +18,7 @@ export interface SystemState {
    * Tracks expanding of bottom sheet
    */
   bottomSheetExpanded: boolean;
+  socket: Socket | null;
 }
 
 /**
@@ -28,6 +30,7 @@ const initialState: SystemState = {
   isAuthenticated: false,
   createRoomOpen: false,
   bottomSheetExpanded: false,
+  socket: null,
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
@@ -62,6 +65,11 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
       return {
         ...state,
         bottomSheetExpanded: action.payload,
+      };
+    case SystemConstants.SOCKET:
+      return {
+        ...state,
+        socket: action.payload,
       };
     default:
       return state;

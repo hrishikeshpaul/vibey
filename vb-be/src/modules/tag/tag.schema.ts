@@ -1,4 +1,4 @@
-import { model, Schema, Model, Document } from 'mongoose';
+import { model, Schema, Model, Document, Types } from 'mongoose';
 
 export interface TagType {
   label: string;
@@ -7,6 +7,7 @@ export interface TagType {
 }
 
 export interface ITag extends Document {
+  _id: Types.ObjectId;
   label: string;
   value: string;
   score: number;

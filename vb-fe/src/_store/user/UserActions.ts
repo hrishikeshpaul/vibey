@@ -36,7 +36,7 @@ export const getLoginRedirect =
  *
  */
 export const getAuthorization =
-  (code: string | undefined, state: string | undefined, history: any) =>
+  (code: string | undefined, state: string | undefined) =>
   async (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
 
@@ -59,7 +59,6 @@ export const getAuthorization =
         payload: res.data.user,
       });
       dispatch({ type: SystemConstants.SUCCESS });
-      history.push("/");
     } catch (err) {
       // should go to login page
       console.log(err);

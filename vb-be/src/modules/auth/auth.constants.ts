@@ -6,7 +6,7 @@ export interface ITokenUser {
 export interface IDecodedToken {
   email: string;
   role: string;
-  id?: string;
+  subject: string;
 }
 
 export enum TokenTypes {
