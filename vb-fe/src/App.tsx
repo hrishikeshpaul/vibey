@@ -14,6 +14,7 @@ import "App.scss";
 import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
 import { createRoomAction } from "_store/room/RoomActions";
+import { initHttp, TokenStorageKeys } from "util/Http";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -29,7 +30,7 @@ export const App = (): JSX.Element => {
    * Need to have the socket stuff here aswell
    */
   useEffect(() => {
-    if (localStorage.getItem("v-at")) {
+    if (localStorage.getItem(TokenStorageKeys.AT)) {
       dispatch({
         type: SystemConstants.LOGIN,
         payload: true,
@@ -62,6 +63,7 @@ export const App = (): JSX.Element => {
 
     useEffect(() => {
       connect();
+      initHttp();
     }, [connect]);
 
     return (

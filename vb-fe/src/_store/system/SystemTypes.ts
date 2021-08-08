@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { Socket } from "socket.io-client";
 
 export enum SystemConstants {
@@ -8,6 +9,7 @@ export enum SystemConstants {
   CREATE_ROOM_MODAL = "CREATE_ROOM_MODAL",
   EXPAND_BOTTOM_SHEET = "EXPAND_BOTTOM_SHEET",
   SOCKET = "SOCKET",
+  RETRY = "RETRY",
 }
 
 /**
@@ -58,6 +60,11 @@ export interface SetSocketConnection {
   payload: Socket | null;
 }
 
+export interface SetRetry {
+  type: typeof SystemConstants.RETRY;
+  payload: boolean;
+}
+
 export type SystemActionTypes =
   | GetApiStart
   | GetApiSuccess
@@ -65,4 +72,5 @@ export type SystemActionTypes =
   | SetUserLogin
   | SetCreateRoomModal
   | SetExpandBottomSheet
-  | SetSocketConnection;
+  | SetSocketConnection
+  | SetRetry;

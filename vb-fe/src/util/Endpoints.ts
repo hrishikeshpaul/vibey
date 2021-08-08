@@ -5,6 +5,7 @@ export enum AuthEndpoints {
   AUTHORIZE = "/api/auth/authorize",
   CHECK = "/api/auth/check",
   LOGOUT = "/api/auth/logout",
+  REFRESH = "/api/auth/refresh",
 }
 
 export enum TagEndpoints {

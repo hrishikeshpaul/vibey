@@ -1,5 +1,5 @@
 import { AuthEndpoints } from "util/Endpoints";
-import { Http } from "util/Http";
+import { Http, TokenStorageKeys } from "util/Http";
 
 /*
  * login is called from Home
@@ -44,14 +44,10 @@ export const checkLogin = async (): Promise<any> => {
  * Sends the JWT
  */
 export const logout = async (): Promise<any> => {
-  const jwt = localStorage.getItem("v-at");
-  return Http.post(
-    AuthEndpoints.LOGOUT,
-    { jwt },
-    {
-      headers: {
-        "v-at": jwt,
-      },
-    },
-  );
+  const jwt = localStorage.getItem(TokenStorageKeys.AT);
+  return Http.post(AuthEndpoints.LOGOUT, { jwt });
+};
+
+export const refreshTokens = (): Promise<any> => {
+  return Http.get(AuthEndpoints.REFRESH);
 };

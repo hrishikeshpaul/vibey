@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
 import { UserActionTypes, UserConstants } from "_store/user/UserTypes";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
-import { login, authorize, logout } from "services/Auth";
-import { HttpStatus } from "util/Http";
+import { login, authorize, logout, refreshTokens } from "services/Auth";
+import { HttpStatus, TokenStorageKeys } from "util/Http";
 
 /*
  * Called from Home.tsx
@@ -44,10 +44,10 @@ export const getAuthorization =
       const res = await authorize(code, state);
       const { accessToken, refreshToken, user, spotifyAccessToken, spotifyRefreshToken } = res.data;
 
-      localStorage.setItem("v-at", accessToken);
-      localStorage.setItem("v-rt", refreshToken);
-      localStorage.setItem("v-s-at", spotifyAccessToken);
-      localStorage.setItem("v-s-rt", spotifyRefreshToken);
+      localStorage.setItem(TokenStorageKeys.AT, accessToken);
+      localStorage.setItem(TokenStorageKeys.RT, refreshToken);
+      localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
+      localStorage.setItem(TokenStorageKeys.SpotifyRT, spotifyRefreshToken);
       localStorage.setItem("v-user", JSON.stringify(user));
 
       dispatch({
@@ -103,11 +103,11 @@ export const onLogout =
         dispatch({
           type: SystemConstants.SUCCESS,
         });
-        localStorage.removeItem("v-at");
-        localStorage.removeItem("v-rt");
+        localStorage.removeItem(TokenStorageKeys.AT);
+        localStorage.removeItem(TokenStorageKeys.RT);
         localStorage.removeItem("v-user");
-        localStorage.removeItem("v-s-at");
-        localStorage.removeItem("v-s-rt");
+        localStorage.removeItem(TokenStorageKeys.SpotifyAT);
+        localStorage.removeItem(TokenStorageKeys.SpotifyRT);
         // history.push("/");
       }
     } catch (err) {

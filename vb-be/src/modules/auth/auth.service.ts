@@ -15,7 +15,7 @@ const accessOptions = {
 
 const refreshOptions = {
   issuer: 'vibey',
-  expiresIn: '7d',
+  expiresIn: '365d',
 };
 
 @Injectable()

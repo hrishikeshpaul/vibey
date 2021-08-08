@@ -1,5 +1,8 @@
-import axios from "axios";
-import { BASE_URL } from "util/Endpoints";
+import axios, { AxiosError, AxiosResponse } from "axios";
+
+import { AuthEndpoints, BASE_URL } from "util/Endpoints";
+import { store } from "_store/store";
+import { SystemConstants } from "_store/system/SystemTypes";
 
 export enum HttpStatus {
   OK = 200,
@@ -11,8 +14,78 @@ export enum HttpStatus {
   InternalError = 500,
 }
 
-// TODO add access token and refresh token to headers
+export enum TokenStorageKeys {
+  AT = "v-at",
+  RT = "v-rt",
+  SpotifyAT = "v-s-at",
+  SpotifyRT = "v-s-rt",
+}
+
+interface RTResponse {
+  accessToken: string;
+  refreshToken: string;
+  spotifyAccessToken: string;
+}
+
+const buildHeaders = () => ({
+  [TokenStorageKeys.AT]: localStorage.getItem(TokenStorageKeys.AT) || "",
+  [TokenStorageKeys.RT]: localStorage.getItem(TokenStorageKeys.RT) || "",
+  [TokenStorageKeys.SpotifyAT]: localStorage.getItem(TokenStorageKeys.SpotifyAT) || "",
+  [TokenStorageKeys.SpotifyRT]: localStorage.getItem(TokenStorageKeys.SpotifyRT) || "",
+});
+
+const setHeadersToLocalStorage = (
+  accessToken: string,
+  refreshToken: string,
+  spotifyAccessToken: string,
+  spotifyRefreshToken: string,
+) => {
+  localStorage.setItem(TokenStorageKeys.AT, accessToken);
+  localStorage.setItem(TokenStorageKeys.RT, refreshToken);
+  localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
+  localStorage.setItem(TokenStorageKeys.SpotifyRT, spotifyRefreshToken);
+};
+
 export const Http = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
+
+export const setHeaders = () => {
+  Http.defaults.headers.common = buildHeaders();
+};
+
+export const initHttp = () => {
+  setHeaders();
+
+  Http.interceptors.response.use(
+    (value: AxiosResponse): AxiosResponse<any> | Promise<AxiosResponse<any>> => {
+      return value;
+    },
+    (err: AxiosError): Promise<any> => {
+      return new Promise((resolve, reject) => {
+        const originalRequest = err.config;
+        const { retry } = store.getState().system;
+        if (err.response?.status === HttpStatus.Unauthorized && !retry) {
+          store.dispatch({ type: SystemConstants.RETRY, payload: true });
+          const response = Http.get<RTResponse>(AuthEndpoints.REFRESH).then((res) => {
+            const { accessToken, refreshToken, spotifyAccessToken } = res.data;
+            console.log(res.headers);
+            setHeadersToLocalStorage(
+              accessToken,
+              refreshToken,
+              spotifyAccessToken,
+              originalRequest.headers[TokenStorageKeys.SpotifyRT],
+            );
+            setHeaders();
+            originalRequest.headers = buildHeaders();
+            store.dispatch({ type: SystemConstants.RETRY, payload: false });
+            return Http.request(originalRequest);
+          });
+          resolve(response);
+        }
+        return reject(err);
+      });
+    },
+  );
+};

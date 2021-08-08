@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { Socket } from "socket.io-client";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 // import { Error } from "app/models/system.model";
@@ -19,6 +20,7 @@ export interface SystemState {
    */
   bottomSheetExpanded: boolean;
   socket: Socket | null;
+  retry: boolean;
 }
 
 /**
@@ -31,6 +33,7 @@ const initialState: SystemState = {
   createRoomOpen: false,
   bottomSheetExpanded: false,
   socket: null,
+  retry: false,
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
@@ -70,6 +73,11 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
       return {
         ...state,
         socket: action.payload,
+      };
+    case SystemConstants.RETRY:
+      return {
+        ...state,
+        retry: action.payload,
       };
     default:
       return state;

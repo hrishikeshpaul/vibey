@@ -63,7 +63,7 @@ export const Select = (props: State) => {
       updateTags(inputTags);
       setInputValue("");
       setTags([]);
-      getTagsFromSubstring();
+      // getTagsFromSubstr ing();
     }
   };
 

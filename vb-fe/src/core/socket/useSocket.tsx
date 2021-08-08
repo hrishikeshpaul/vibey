@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import socketIOClient, { Socket } from "socket.io-client";
 import { SOCKET_ENDPOINT } from "util/Socket";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { TokenStorageKeys } from "util/Http";
 
 export const useSocket = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export const useSocket = () => {
       transportOptions: {
         polling: {
           extraHeaders: {
-            "v-at": localStorage.getItem("v-at") || "",
+            [TokenStorageKeys.AT]: localStorage.getItem(TokenStorageKeys.AT) || "",
           },
         },
       },
