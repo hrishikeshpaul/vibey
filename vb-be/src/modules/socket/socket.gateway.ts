@@ -27,7 +27,8 @@ export class EventsGateway {
     @ConnectedSocket() client: Socket,
   ) {
     try {
-      return await this.roomService.addRoomToRedis(data.room);
+      await this.roomService.addRoomToRedis(data.room);
+      client.emit('new-room-added');
     } catch (err) {
       return socketError(client, HttpStatus.InternalError, ErrorText.Generic);
     }

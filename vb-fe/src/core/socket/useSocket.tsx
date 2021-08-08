@@ -25,16 +25,16 @@ export const useSocket = () => {
       socket.on("create-room", (room) => {
         console.log("savedRoom", room);
       });
+
+      socket.on("socket-err", (data) => {
+        console.error("Error: ", data);
+      });
       dispatch({
         type: SystemConstants.SOCKET,
         payload: socket,
       });
     });
   };
-
-  // const createRoom = (room: RoomForm) => {
-  //   socket?.emit("create-room", room);
-  // };
 
   return {
     connect,
