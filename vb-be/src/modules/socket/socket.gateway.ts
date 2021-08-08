@@ -1,4 +1,3 @@
-import { UseGuards } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
@@ -8,8 +7,11 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
+import { socketError, ErrorText } from 'src/util/error';
+import { HttpStatus } from 'src/util/http';
+
 import { RoomService } from '@modules/room/room.service';
-import { ISocketCreateRoomData } from './socket.constants';
+import { ISocketCreateRoomData } from '@modules/socket/socket.constants';
 
 @WebSocketGateway({ cors: true })
 export class EventsGateway {
@@ -25,10 +27,9 @@ export class EventsGateway {
     @ConnectedSocket() client: Socket,
   ) {
     try {
-      await this.roomService.addRoomToRedis(data.room);
-      console.log(data.room.host);
+      return await this.roomService.addRoomToRedis(data.room);
     } catch (err) {
-      // error handling for sockets
+      return socketError(client, HttpStatus.InternalError, ErrorText.Generic);
     }
   }
 

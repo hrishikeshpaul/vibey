@@ -1,4 +1,5 @@
 import { HttpException } from '@nestjs/common';
+import { connected } from 'process';
 
 export enum ErrorText {
   InvalidAuthState = 'Invalid authentication state',
@@ -27,4 +28,8 @@ export const handleError = (err: any, res: any) => {
     statusCode,
     message,
   });
+};
+
+export const socketError = (client: any, code: number, message: string) => {
+  return client.emit('socket-err', { code, message });
 };
