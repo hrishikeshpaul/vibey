@@ -21,9 +21,9 @@ import { RedisModule } from '@db/redis.module';
 })
 export class RoomModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer
-    //   .apply(ValidateAccessTokenMiddleware)
-    //   .forRoutes({ path: '/api/room', method: RequestMethod.POST });
+    consumer
+      .apply(ValidateAccessTokenMiddleware)
+      .forRoutes({ path: '/api/room', method: RequestMethod.POST });
     consumer
       .apply(ValidateRoomRequestBody)
       .forRoutes({ path: '/api/room', method: RequestMethod.POST });
