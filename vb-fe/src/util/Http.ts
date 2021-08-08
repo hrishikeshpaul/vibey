@@ -27,7 +27,7 @@ interface RTResponse {
   spotifyAccessToken: string;
 }
 
-const buildHeaders = () => ({
+export const buildHeaders = () => ({
   [TokenStorageKeys.AT]: localStorage.getItem(TokenStorageKeys.AT) || "",
   [TokenStorageKeys.RT]: localStorage.getItem(TokenStorageKeys.RT) || "",
   [TokenStorageKeys.SpotifyAT]: localStorage.getItem(TokenStorageKeys.SpotifyAT) || "",
