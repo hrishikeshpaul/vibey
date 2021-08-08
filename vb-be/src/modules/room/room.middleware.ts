@@ -8,6 +8,7 @@ import { HttpStatus } from 'src/util/http';
 export class ValidateRoomRequestBody implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const { room, userId } = req.body;
+    console.log(room, userId);
     const { name, description, tags, maxUsers } = room;
 
     if (typeof name !== 'string' || typeof userId !== 'string') {

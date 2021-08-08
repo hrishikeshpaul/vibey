@@ -47,16 +47,9 @@ export class RoomController {
 
     try {
       const room = await this.roomService.create(roomData);
-
-      // we can pass tags as labels for redis and the FE, as opposed to ID strings
-      const roomWithNamedTags = {
-        _id: room._id,
-        name: room.name,
-        description: room.description,
-        tags: namedTagsArr,
-        host: room.host,
-      };
-      res.status(HttpStatus.NewResource).json(room);
+      const populatedRoom = await this.roomService.findOne(room._id);
+      
+      res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {
       res.status(HttpStatus.InternalError).json({ error: ErrorText.Generic });
     }
