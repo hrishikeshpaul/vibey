@@ -8,23 +8,26 @@ import { HttpStatus } from 'src/util/http';
 export class ValidateRoomRequestBody implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     const { room, userId } = req.body;
-    console.log(room, userId);
     const { name, description, tags, maxUsers } = room;
 
-    if (typeof name !== 'string' || typeof userId !== 'string') {
-      return res
-        .status(HttpStatus.Error)
-        .json({ error: ErrorText.InvalidDataSet });
-    }
+    try {
+      if (typeof name !== 'string' || typeof userId !== 'string') {
+        return res
+          .status(HttpStatus.Error)
+          .json({ error: ErrorText.InvalidDataSet });
+      }
 
-    const roomObj = {
-      name,
-      description,
-      tags,
-      host: userId,
-      maxUsers,
-    };
-    req.body.roomObj = roomObj;
-    return next();
+      const roomObj = {
+        name,
+        description,
+        tags,
+        host: userId,
+        maxUsers,
+      };
+      req.body.roomObj = roomObj;
+      return next();
+    } catch (err) {
+      return res.status(err.statusCode).send(err.message);
+    }
   }
 }
