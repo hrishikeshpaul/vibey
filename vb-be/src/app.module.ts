@@ -8,6 +8,7 @@ import { MongoDBModule } from '@db/mongo.module';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TagModule } from '@modules/tag/tag.module';
 import { SocketModule } from '@modules/socket/socket.module';
+import { RoomModule } from '@modules/room/room.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SocketModule } from '@modules/socket/socket.module';
     MongoDBModule,
     AuthModule,
     TagModule,
+    RoomModule,
     SocketModule,
   ],
   controllers: [AppController],

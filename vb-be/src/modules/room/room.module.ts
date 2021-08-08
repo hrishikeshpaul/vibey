@@ -1,11 +1,29 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  RequestMethod,
+} from '@nestjs/common';
 
 import { RoomController } from '@modules/room/room.controller';
 import { RoomService } from '@modules/room/room.service';
+import { ValidateAccessTokenMiddleware } from '@modules/auth/auth.middleware';
+import { AuthModule } from '@modules/auth/auth.module';
+import { ValidateRoomRequestBody } from '@modules/room/room.middleware';
 
 @Module({
+  imports: [AuthModule],
   controllers: [RoomController],
   providers: [RoomService],
   exports: [RoomService],
 })
-export class RoomModule {}
+export class RoomModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(ValidateAccessTokenMiddleware)
+      .forRoutes({ path: '/api/room', method: RequestMethod.POST });
+    consumer
+      .apply(ValidateRoomRequestBody)
+      .forRoutes({ path: '/api/room', method: RequestMethod.POST });
+  }
+}

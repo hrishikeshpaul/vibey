@@ -24,7 +24,7 @@ import {
 import { UserService } from '@modules/user/user.service';
 import { UserType } from '@modules/user/user.schema';
 import { AuthService } from '@modules/auth/auth.service';
-import { IDecodedToken, TokenTypes } from '@modules/auth/auth.constants';
+import { IDecodedToken } from '@modules/auth/auth.constants';
 
 @Controller('/api/auth')
 export class AuthController {
@@ -100,31 +100,17 @@ export class AuthController {
   /**
    * Validates AT here and in middleware
    * jwt verify AT & ensures AT is white-listed in Redis
-   * @return 403 (unauthorized) or 204 no content
+   * @return 403 (forbidden) or 204 no content
    */
   @Get('/validate')
   async validate(
-    @Headers('v-at') accessToken: string,
-    @Request() req: Req,
+    @Headers('decoded') decoded: IDecodedToken,
     @Response() res: Res,
   ) {
-    try {
-      const decoded = await this.authService.verifyToken(
-        accessToken,
-        TokenTypes.Access,
-      );
-      const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
-
-      // cache returns null if non-existent
-      if (decoded && typeof cacheResult === 'string') {
-        return res.status(HttpStatus.NoContent).send();
-      } else {
-        res
-          .status(HttpStatus.Forbidden)
-          .json({ error: ErrorText.Unauthorized });
-      }
-    } catch (err) {
-      res.status(HttpStatus.Forbidden).json({ error: ErrorText.Unauthorized });
+    if (decoded) {
+      res.status(HttpStatus.NoContent).send();
+    } else {
+      res.status(HttpStatus.Forbidden).json({ error: ErrorText.Forbidden });
     }
   }
 

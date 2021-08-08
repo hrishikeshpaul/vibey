@@ -7,17 +7,40 @@ import { ErrorHandler, ErrorText } from 'src/util/error';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 
+/**
+ * Validates access token with type, JWT, and redis
+ * appends decoded token to headers, or throws 403
+ */
 @Injectable()
 export class ValidateAccessTokenMiddleware implements NestMiddleware {
+  constructor(private readonly authService: AuthService) {}
+
   async use(req: Request, res: Response, next: NextFunction) {
     const accessToken = req.headers['v-at'];
 
+    // validate access token is in header & is correct type
     if (!accessToken || typeof accessToken !== 'string') {
       return res
         .status(HttpStatus.Error)
         .json({ error: ErrorText.InvalidDataSet });
     }
-    next();
+
+    // verify with jwt
+    const decoded = await this.authService.verifyToken(
+      accessToken,
+      TokenTypes.Access,
+    );
+    // check white-list for token existence
+    const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
+
+    if (decoded && typeof cacheResult === 'string') {
+      req.headers['decoded'] = decoded;
+      next();
+    } else {
+      return res
+        .status(HttpStatus.Forbidden)
+        .json({ error: ErrorText.Forbidden });
+    }
   }
 }
 
@@ -47,10 +70,7 @@ export class RefreshTokensMiddleware implements NestMiddleware {
     );
     const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
     if (cacheResult !== refreshToken) {
-      throw new ErrorHandler(
-        HttpStatus.Unauthorized,
-        ErrorText.InvalidTokenPair,
-      );
+      throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.InvalidTokenPair);
     }
     req.headers['decoded'] = decoded;
     next();
