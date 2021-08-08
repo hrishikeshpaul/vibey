@@ -27,6 +27,7 @@ export const useSocket = () => {
       });
 
       socket.on("socket-err", (data) => {
+        // TODO general error handling for socket-err - error toast or alike
         console.error("Error: ", data);
       });
       dispatch({
