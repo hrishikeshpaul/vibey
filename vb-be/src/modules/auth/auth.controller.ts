@@ -100,7 +100,7 @@ export class AuthController {
   /**
    * Validates AT here and in middleware
    * jwt verify AT & ensures AT is white-listed in Redis
-   * @return 403 (forbidden) or 204 no content
+   * @return 401 (unauthorized) or 204 no content
    */
   @Get('/validate')
   async validate(
@@ -110,7 +110,9 @@ export class AuthController {
     if (decoded) {
       res.status(HttpStatus.NoContent).send();
     } else {
-      res.status(HttpStatus.Forbidden).json({ error: ErrorText.Forbidden });
+      res
+        .status(HttpStatus.Unauthorized)
+        .json({ error: ErrorText.Unauthorized });
     }
   }
 

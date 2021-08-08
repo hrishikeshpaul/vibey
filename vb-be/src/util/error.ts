@@ -8,6 +8,7 @@ export enum ErrorText {
   TokenError = 'Cannot create tokens without user info',
   InvalidDataSet = 'Invalid dataset',
   Forbidden = 'Forbidden',
+  Unauthorized = 'Unauthorized',
 }
 
 // https://docs.nestjs.com/exception-filters

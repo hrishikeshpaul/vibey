@@ -103,7 +103,7 @@ export class AuthService {
     try {
       return jwt.verify(token, secret);
     } catch (err) {
-      throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Forbidden);
+      throw new ErrorHandler(HttpStatus.Unauthorized, ErrorText.Unauthorized);
     }
   }
 

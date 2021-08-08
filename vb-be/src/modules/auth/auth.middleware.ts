@@ -38,8 +38,8 @@ export class ValidateAccessTokenMiddleware implements NestMiddleware {
       next();
     } else {
       return res
-        .status(HttpStatus.Forbidden)
-        .json({ error: ErrorText.Forbidden });
+        .status(HttpStatus.Unauthorized)
+        .json({ error: ErrorText.Unauthorized });
     }
   }
 }
@@ -70,7 +70,10 @@ export class RefreshTokensMiddleware implements NestMiddleware {
     );
     const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
     if (cacheResult !== refreshToken) {
-      throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.InvalidTokenPair);
+      throw new ErrorHandler(
+        HttpStatus.Unauthorized,
+        ErrorText.InvalidTokenPair,
+      );
     }
     req.headers['decoded'] = decoded;
     next();
