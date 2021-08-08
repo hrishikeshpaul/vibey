@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
@@ -86,7 +86,6 @@ export const App = (): JSX.Element => {
           open={isCreateRoomModalOpen}
           close={onCreateModalClose}
           submit={(room: RoomForm) => {
-            console.log(room);
             dispatch(createRoomAction(room));
             onCreateModalClose();
           }}
