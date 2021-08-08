@@ -7,14 +7,10 @@ import { HttpStatus } from 'src/util/http';
 @Injectable()
 export class ValidateRoomRequestBody implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
-    const { name, description, tags, maxUsers, userId } = req.body;
+    const { room, userId } = req.body;
+    const { name, description, tags, maxUsers } = room;
 
-    if (
-      typeof name !== 'string' ||
-      typeof description !== 'string' ||
-      !Array.isArray(tags) ||
-      typeof userId !== 'string'
-    ) {
+    if (typeof name !== 'string' || typeof userId !== 'string') {
       return res
         .status(HttpStatus.Error)
         .json({ error: ErrorText.InvalidDataSet });

@@ -3,8 +3,8 @@ import { model, Schema, Model, Document } from 'mongoose';
 
 export interface RoomType {
   name: string;
-  description: string;
-  tags: TagType[];
+  description?: string;
+  tags?: TagType[];
   host: string;
   start?: Date;
   end?: Date;

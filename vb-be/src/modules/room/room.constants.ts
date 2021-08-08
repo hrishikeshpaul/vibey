@@ -1,11 +1,9 @@
-import { TagType } from '@modules/tag/tag.schema';
+import { ICreateTag } from '@modules/tag/tag.constants';
 
 export interface ICreateRoom {
-  roomObj: {
-    name: string;
-    description: string;
-    tags: TagType[];
-    host: string;
-    maxUsers?: number;
-  };
+  name: string;
+  description?: string;
+  tags?: ICreateTag[];
+  host: string;
+  maxUsers?: number;
 }

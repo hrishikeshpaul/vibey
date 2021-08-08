@@ -5,7 +5,11 @@ import { TagModel, ITag } from '@modules/tag/tag.schema';
 @Injectable()
 export class TagService {
   create(label: string): Promise<ITag> {
-    return TagModel.create({ label: label, value: label, score: 1 });
+    return TagModel.create({
+      label: label,
+      value: label,
+      score: 1,
+    });
   }
 
   findOne(label: string) {
@@ -22,5 +26,13 @@ export class TagService {
         if (doc) return doc;
       },
     );
+  }
+
+  updateScore(id: string): Promise<ITag> {
+    return TagModel.findByIdAndUpdate(
+      { _id: id },
+      { $inc: { score: 1 } },
+      { returnOriginal: false },
+    ).exec();
   }
 }
