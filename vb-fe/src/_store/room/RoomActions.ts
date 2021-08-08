@@ -19,7 +19,16 @@ export const createRoomAction =
     try {
       const user: ILocalStorageUser = JSON.parse(localStorage.getItem("v-user") || "");
       const res = await createRoom(room, user._id);
-      socket?.emit("create-room", { room, userId: user._id });
+      const { description, host, name, start, tags, _id } = res.data;
+      const roomData = {
+        description,
+        host: { id: host._id, username: host.username },
+        name,
+        start,
+        tags,
+        _id,
+      };
+      socket?.emit("create-room", { room: roomData });
 
       dispatch({
         type: RoomConstants.CREATE,
