@@ -97,7 +97,6 @@ export const App = (): JSX.Element => {
           open={isCreateRoomModalOpen}
           close={onCreateModalClose}
           submit={(room: RoomForm) => {
-            console.log(room);
             dispatch(createRoomAction(room));
             onCreateModalClose();
           }}
