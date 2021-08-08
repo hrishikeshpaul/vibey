@@ -53,7 +53,7 @@ export class RoomController {
         throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
       }
     } catch (err) {
-      return res.status(err.statusCode).send(err.message);
+      return res.status(err.statusCode || err.status).send(err.message);
     }
   }
 }
