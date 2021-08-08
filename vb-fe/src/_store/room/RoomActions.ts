@@ -1,9 +1,10 @@
-import { useSocket } from "core/socket/useSocket";
 import { Dispatch } from "redux";
-import { Room, RoomForm } from "util/Room";
+import { createRoom } from "services/Room";
+import { RoomForm } from "util/Room";
+import { ILocalStorageUser } from "util/User";
 import { State } from "_store/rootReducer";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
-import { RoomActionTypes } from "./RoomTypes";
+import { RoomActionTypes, RoomConstants } from "./RoomTypes";
 
 export const createRoomAction =
   (room: RoomForm) =>
@@ -12,8 +13,26 @@ export const createRoomAction =
 
     dispatch({
       type: SystemConstants.LOADING,
-      payload: true,
+      payload: false,
     });
-    const user: any = JSON.parse(localStorage.getItem("v-user") || "");
-    socket?.emit("create-room", { room, userId: user["_id"] }); //eslint-disable-line
+
+    try {
+      const user: ILocalStorageUser = JSON.parse(localStorage.getItem("v-user") || "");
+      const res = await createRoom(room, user._id);
+      socket?.emit("create-room", { room, userId: user._id });
+
+      dispatch({
+        type: RoomConstants.CREATE,
+        payload: res.data,
+      });
+      dispatch({
+        type: SystemConstants.LOADING,
+        payload: false,
+      });
+    } catch (err) {
+      dispatch({
+        type: SystemConstants.LOADING,
+        payload: false,
+      });
+    }
   };
