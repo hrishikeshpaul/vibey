@@ -1,5 +1,4 @@
 import { HttpException } from '@nestjs/common';
-import { connected } from 'process';
 
 export enum ErrorText {
   InvalidAuthState = 'Invalid authentication state',
