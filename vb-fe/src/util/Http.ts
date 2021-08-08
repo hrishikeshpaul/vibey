@@ -66,11 +66,12 @@ export const initHttp = () => {
       return new Promise((resolve, reject) => {
         const originalRequest = err.config;
         const { retry } = store.getState().system;
+
         if (err.response?.status === HttpStatus.Unauthorized && !retry) {
           store.dispatch({ type: SystemConstants.RETRY, payload: true });
           const response = Http.get<RTResponse>(AuthEndpoints.REFRESH).then((res) => {
             const { accessToken, refreshToken, spotifyAccessToken } = res.data;
-            console.log(res.headers);
+
             setHeadersToLocalStorage(
               accessToken,
               refreshToken,
@@ -80,6 +81,7 @@ export const initHttp = () => {
             setHeaders();
             originalRequest.headers = buildHeaders();
             store.dispatch({ type: SystemConstants.RETRY, payload: false });
+
             return Http.request(originalRequest);
           });
           resolve(response);

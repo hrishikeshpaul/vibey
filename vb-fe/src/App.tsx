@@ -15,7 +15,6 @@ import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
 import { createRoomAction } from "_store/room/RoomActions";
 import { initHttp, TokenStorageKeys } from "util/Http";
-import { checkLogin } from "services/Auth";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
