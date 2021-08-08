@@ -14,6 +14,10 @@ import "App.scss";
 import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
 import { createRoomAction } from "_store/room/RoomActions";
+import { usePlayer } from "core/player/usePlayer";
+import { Button } from "@chakra-ui/react";
+import { PlayerConstants } from "_store/player/PlayerTypes";
+import { playTrack } from "_store/player/PlayerActions";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -59,10 +63,12 @@ export const App = (): JSX.Element => {
 
   const AuthenticatedApp = (): JSX.Element => {
     const { connect } = useSocket();
+    const { init } = usePlayer();
 
     useEffect(() => {
       connect();
-    }, [connect]);
+      init();
+    }, [connect, init]);
 
     return (
       <Router>
@@ -71,6 +77,9 @@ export const App = (): JSX.Element => {
             <div>This is a room!</div>
           </Route>
           <Route path="/">
+            <Button colorScheme="teal" onClick={() => dispatch(playTrack("spotify:album:0Nu5uWgrnNGWWbWfzXPgPI"))}>
+              Play me!
+            </Button>
             <Home />
           </Route>
         </Switch>
@@ -80,7 +89,7 @@ export const App = (): JSX.Element => {
 
   const render = useMemo(() => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
-  }, [isAuthenticated]);
+  }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onCreateModalClose = () => {
     dispatch({

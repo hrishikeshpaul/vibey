@@ -12,7 +12,7 @@ import {
 } from '@modules/spotify/spotify.constants';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
-const BASE_URL = 'https://api.spotify.com/v1';
+export const BASE_URL = 'https://api.spotify.com/v1';
 
 @Injectable()
 export class SpotifyService {

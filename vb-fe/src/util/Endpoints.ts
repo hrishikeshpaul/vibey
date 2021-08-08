@@ -10,3 +10,7 @@ export enum AuthEndpoints {
 export enum TagEndpoints {
   SEARCH = "/api/tag/search",
 }
+
+export enum PlayerEndpoints {
+  PLAY = "/api/player/play",
+}

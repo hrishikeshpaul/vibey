@@ -9,6 +9,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { TagModule } from '@modules/tag/tag.module';
 import { SocketModule } from '@modules/socket/socket.module';
 import { RoomModule } from '@modules/room/room.module';
+import { PlayerModule } from '@modules/player/player.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { RoomModule } from '@modules/room/room.module';
     TagModule,
     RoomModule,
     SocketModule,
+    PlayerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
