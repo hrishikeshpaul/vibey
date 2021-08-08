@@ -7,14 +7,12 @@ import { ErrorText } from 'src/util/error';
 import { RoomService } from '@modules/room/room.service';
 import { ICreateRoom } from '@modules/room/room.constants';
 import { TagService } from '@modules/tag/tag.service';
-import { SocketService } from '@modules/socket/socket.service';
 
 @Controller('/api/room')
 export class RoomController {
   constructor(
     private readonly roomService: RoomService,
     private readonly tagService: TagService,
-    private readonly socketService: SocketService,
   ) {}
 
   @Post('/')
@@ -58,7 +56,6 @@ export class RoomController {
         tags: namedTagsArr,
         host: room.host,
       };
-      await this.socketService.addRoomToRedis(roomWithNamedTags);
       res.status(HttpStatus.NewResource).json(room);
     } catch (err) {
       res.status(HttpStatus.InternalError).json({ error: ErrorText.Generic });
