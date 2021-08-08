@@ -11,10 +11,10 @@ import { ValidateAccessTokenMiddleware } from '@modules/auth/auth.middleware';
 import { AuthModule } from '@modules/auth/auth.module';
 import { ValidateRoomRequestBody } from '@modules/room/room.middleware';
 import { TagModule } from '@modules/tag/tag.module';
-import { SocketModule } from '@modules/socket/socket.module';
+import { RedisModule } from '@db/redis.module';
 
 @Module({
-  imports: [AuthModule, TagModule, SocketModule],
+  imports: [AuthModule, TagModule, RedisModule],
   controllers: [RoomController],
   providers: [RoomService],
   exports: [RoomService],

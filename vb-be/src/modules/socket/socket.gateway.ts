@@ -1,14 +1,11 @@
-import { IRoom } from '@modules/room/room.schema';
 import { UseGuards } from '@nestjs/common';
 import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  WsResponse,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { from, map } from 'rxjs';
 import { Server, Socket } from 'socket.io';
 import { WsGuard } from './socket.middleware';
 import { SocketService } from './socket.service';
@@ -22,14 +19,7 @@ export class EventsGateway {
 
   // @UseGuards(WsGuard)
   @SubscribeMessage('create-room')
-  async joinRoom(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
-    const savedRoom: IRoom = await this.socketService.saveRoomToMongo(
-      data.room,
-      data.userId,
-    );
-    this.socketService.addRoomToRedis(savedRoom);
-    return { event: 'create-room', data: savedRoom };
-  }
+  async joinRoom(@MessageBody() data: any, @ConnectedSocket() client: Socket) {}
 
   @UseGuards(WsGuard)
   @SubscribeMessage('get-all-rooms')
