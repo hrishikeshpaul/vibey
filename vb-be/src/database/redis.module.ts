@@ -33,10 +33,17 @@ export class RedisService {
 
     this.redisSocketClient.on('connect', () => {
       console.log('Redis Socket connected');
+      this.setAsyncSocketClient = promisify(this.redisSocketClient.set).bind(
+        this.redisSocketClient,
+      );
+      this.getAsyncSocketClient = promisify(this.redisSocketClient.get).bind(
+        this.redisSocketClient,
+      );
+      this.delAsyncSocketClient = promisify(this.redisSocketClient.del).bind(
+        this.redisSocketClient,
+      );
     });
   }
-
-  setAsync;
 }
 
 @Module({

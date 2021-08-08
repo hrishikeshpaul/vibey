@@ -7,12 +7,14 @@ import { ErrorText } from 'src/util/error';
 import { RoomService } from '@modules/room/room.service';
 import { ICreateRoom } from '@modules/room/room.constants';
 import { TagService } from '@modules/tag/tag.service';
+import { SocketService } from '@modules/socket/socket.service';
 
 @Controller('/api/room')
 export class RoomController {
   constructor(
     private readonly roomService: RoomService,
     private readonly tagService: TagService,
+    private readonly socketService: SocketService,
   ) {}
 
   @Post('/')
@@ -24,15 +26,16 @@ export class RoomController {
         .json({ error: ErrorText.InvalidDataSet });
     }
 
+    const namedTagsArr = [];
     const tagsArr = [];
     for (const tag of roomObj.tags) {
       if (tag.__isNew__) {
         const newTag = await this.tagService.create(tag.label);
-        console.log(newTag);
         tagsArr.push(newTag._id);
+        namedTagsArr.push(newTag.label);
       } else {
         const updatedTag = await this.tagService.updateScore(tag._id);
-        console.log(updatedTag);
+        namedTagsArr.push(updatedTag.label);
         tagsArr.push(updatedTag._id);
       }
     }
@@ -46,6 +49,16 @@ export class RoomController {
 
     try {
       const room = await this.roomService.create(roomData);
+
+      // we can pass tags as labels for redis and the FE, as opposed to ID strings
+      const roomWithNamedTags = {
+        _id: room._id,
+        name: room.name,
+        description: room.description,
+        tags: namedTagsArr,
+        host: room.host,
+      };
+      await this.socketService.addRoomToRedis(roomWithNamedTags);
       res.status(HttpStatus.NewResource).json(room);
     } catch (err) {
       res.status(HttpStatus.InternalError).json({ error: ErrorText.Generic });
