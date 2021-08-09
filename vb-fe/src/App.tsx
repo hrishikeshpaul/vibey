@@ -21,10 +21,7 @@ export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
   const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
-  const currentRoom = useSelector((state: State) => state.room.currentRoom);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem(TokenStorageKeys.AT)) {
@@ -74,12 +71,6 @@ export const App = (): JSX.Element => {
   const render = useMemo(() => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
   }, [isAuthenticated]); // eslint-disable-line
-
-  // useEffect(() => {
-  //   if (currentRoom && location.pathname !== `/room/${currentRoom._id}`) {
-  //     history.push(`/room/${currentRoom._id}`);
-  //   }
-  // }, [currentRoom, history, location.pathname]);
 
   return (
     <div className="h-100 w-100 px-3">
