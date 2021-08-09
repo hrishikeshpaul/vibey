@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { TagModel, ITag, TagType } from '@modules/tag/tag.schema';
+import { TagModel, ITag } from '@modules/tag/tag.schema';
 import { Types } from 'mongoose';
 import { ICreateTag } from './tag.constants';
 import { ErrorHandler, ErrorText } from 'src/util/error';
@@ -8,7 +8,7 @@ import { HttpStatus } from 'src/util/http';
 
 @Injectable()
 export class TagService {
-  create(label: string): Promise<ITag> {
+  private create(label: string): Promise<ITag> {
     return TagModel.create({
       label: label,
       value: label,
@@ -16,7 +16,15 @@ export class TagService {
     });
   }
 
-  async upsert(tag: ICreateTag) {
+  private updateScore(id: Types.ObjectId): Promise<ITag> {
+    return TagModel.findByIdAndUpdate(
+      { _id: id },
+      { $inc: { score: 1 } },
+      { returnOriginal: false },
+    ).exec();
+  }
+
+  async updateOrInsert(tag: ICreateTag) {
     if (tag._id) {
       return await this.updateScore(Types.ObjectId(tag._id));
     } else if (tag.__isNew__) {
@@ -36,13 +44,5 @@ export class TagService {
         if (doc) return doc;
       },
     );
-  }
-
-  updateScore(id: Types.ObjectId): Promise<ITag> {
-    return TagModel.findByIdAndUpdate(
-      { _id: id },
-      { $inc: { score: 1 } },
-      { returnOriginal: false },
-    ).exec();
   }
 }

@@ -25,7 +25,7 @@ export class RoomController {
         throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
       }
 
-      roomData.tags.map(async (tag) => await this.tagService.upsert(tag));
+      roomData.tags.map(async (tag) => await this.tagService.updateOrInsert(tag));
 
       try {
         const room = await this.roomService.create(roomData);
