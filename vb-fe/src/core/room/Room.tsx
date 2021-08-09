@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { Flex, VStack } from "@chakra-ui/react";
+import { Input, Button } from "@chakra-ui/react";
 
 import { Navbar } from "components";
 import { Layout } from "layout/Layout";
@@ -13,9 +13,7 @@ export const Room = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("here");
     if (socket) {
-      console.log(socket);
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
         socket?.emit("join-room", roomId);
@@ -31,7 +29,12 @@ export const Room = () => {
         </Layout.Header>
         <Layout.Body>
           <Layout.Content flex="1">
-            <span>this is room</span>
+            <Input
+              variant="filled"
+              onChange={(e: any) => {
+                socket?.emit("message", { value: e.target.value, roomId: location.pathname.split("/")[2] });
+              }}
+            />
           </Layout.Content>
         </Layout.Body>
       </Layout.Wrapper>

@@ -33,7 +33,7 @@ export class EventsGateway {
 
   @SubscribeMessage('join-room')
   async createRoom(
-    @MessageBody() data: string,
+    @MessageBody() roomId: string,
     @ConnectedSocket() client: Socket,
   ) {
     try {
@@ -41,11 +41,20 @@ export class EventsGateway {
       const { id } = await this.authService.verifyToken(AT, TokenTypes.Access);
 
       // const currentRoom = await this.roomService.getOneRoom(data);
-      await this.roomService.addUserToRoom(data, id);
-      const updatedRoom = await this.roomService.getOneRoom(data);
-      await client.join(id);
+      await this.roomService.addUserToRoom(roomId, id);
+      const updatedRoom = await this.roomService.getOneRoom(roomId);
+      await client.join(roomId);
+      client.emit('join-room-success', updatedRoom);
     } catch (err) {
       client.emit('socket-err', err);
     }
+  }
+
+  @SubscribeMessage('message')
+  async message(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
+    const { value, roomId } = data;
+
+    console.log(data);
+    this.server.to(roomId).emit('message', value);
   }
 }

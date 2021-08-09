@@ -1,14 +1,14 @@
 import { useDispatch } from "react-redux";
-import socketIOClient from "socket.io-client";
+import socketIOClient, { Socket } from "socket.io-client";
 import { SOCKET_ENDPOINT } from "util/Socket";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { TokenStorageKeys } from "util/Http";
-import { Socket } from "dgram";
+import { Room } from "util/Room";
 
 export const useSocket = () => {
   const dispatch = useDispatch();
 
-  const joinRoom = (data: any) => {
+  const joinRoom = (data: any, socket: Socket) => {
     console.log("join room on - ", data);
   };
 
@@ -26,7 +26,13 @@ export const useSocket = () => {
     socket.on("connect", () => {
       console.log("Socket connected!");
 
-      socket.on("join-room", joinRoom);
+      socket.on("join-room-success", (data: Room) => {
+        console.log("JOIN ROOM SUCCESS", data);
+      });
+
+      socket.on("message", (data) => {
+        console.log("MESSAGE", data);
+      });
 
       socket.on("socket-err", (data) => {
         // TODO general error handling for socket-err - error toast or alike
