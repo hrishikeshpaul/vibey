@@ -1,10 +1,9 @@
 import { Room } from "util/Room";
 import { RoomConstants, RoomActionTypes } from "./RoomTypes";
 
-// import { Error } from "app/models/system.model";
-
 export interface RoomState {
   roomsList: Room[];
+  currentRoom: Room | null;
 }
 
 /**
@@ -12,14 +11,15 @@ export interface RoomState {
  */
 const initialState: RoomState = {
   roomsList: [],
+  currentRoom: null,
 };
 
-export const systemReducer = (state: RoomState = initialState, action: RoomActionTypes): RoomState => {
+export const roomReducer = (state: RoomState = initialState, action: RoomActionTypes): RoomState => {
   switch (action.type) {
     case RoomConstants.CREATE: {
       return {
         ...state,
-        roomsList: action.payload,
+        currentRoom: action.payload,
       };
     }
     default:

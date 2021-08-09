@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, useHistory, useLocation } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
@@ -9,13 +9,12 @@ import { Redirect } from "core/redirect/Redirect";
 import { Loading, CreateRoom } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { createRoomAction } from "_store/room/RoomActions";
 
 import "App.scss";
 import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
-import { createRoomAction } from "_store/room/RoomActions";
 import { initHttp, TokenStorageKeys } from "util/Http";
-import { onLogout } from "_store/user/UserActions";
 import { resetApp } from "util/Logout";
 
 export const App = (): JSX.Element => {
@@ -34,16 +33,14 @@ export const App = (): JSX.Element => {
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Landing />
-          </Route>
-          <Route path="/login">
-            <Redirect />
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Route exact path="/">
+          <Landing />
+        </Route>
+        <Route path="/login">
+          <Redirect />
+        </Route>
+      </Switch>
     );
   };
 
@@ -60,16 +57,14 @@ export const App = (): JSX.Element => {
     }, [isAuthenticated]); // eslint-disable-line
 
     return (
-      <Router>
-        <Switch>
-          <Route path="/room">
-            <div>This is a room!</div>
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/room/:id">
+          <div>This is a room!</div>
+        </Route>
+      </Switch>
     );
   };
 
@@ -77,23 +72,15 @@ export const App = (): JSX.Element => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
   }, [isAuthenticated]); // eslint-disable-line
 
-  const onCreateModalClose = () => {
-    dispatch({
-      type: SystemConstants.CREATE_ROOM_MODAL,
-      payload: false,
-    });
-  };
-
   return (
     <div className="h-100 w-100 px-3">
       {isLoading && <Loading show />}
       {isCreateRoomModalOpen && (
         <CreateRoom
           open={isCreateRoomModalOpen}
-          close={onCreateModalClose}
+          close={() => dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: false })}
           submit={(room: RoomForm) => {
             dispatch(createRoomAction(room));
-            onCreateModalClose();
           }}
           handleError={(e) => {
             console.log(e);

@@ -12,12 +12,6 @@ export interface UserType {
   createdAt?: string;
 }
 
-export interface RoomForm {
-  name: string;
-  description: string;
-  tags: TagType[];
-}
-
 export interface IUser extends Document {
   id?: string;
   displayName: string;

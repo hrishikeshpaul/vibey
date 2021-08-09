@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { Room, RoomForm } from "util/Room";
-import { useDispatch, useSelector } from "react-redux";
-import socketIOClient, { Socket } from "socket.io-client";
+import { useDispatch } from "react-redux";
+import socketIOClient from "socket.io-client";
 import { SOCKET_ENDPOINT } from "util/Socket";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { TokenStorageKeys } from "util/Http";
@@ -26,16 +24,17 @@ export const useSocket = () => {
       socket.on("create-room", (room) => {
         console.log("savedRoom", room);
       });
+
+      socket.on("socket-err", (data) => {
+        // TODO general error handling for socket-err - error toast or alike
+        console.error("Error: ", data);
+      });
       dispatch({
         type: SystemConstants.SOCKET,
         payload: socket,
       });
     });
   };
-
-  // const createRoom = (room: RoomForm) => {
-  //   socket?.emit("create-room", room);
-  // };
 
   return {
     connect,

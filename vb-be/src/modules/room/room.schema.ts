@@ -1,6 +1,6 @@
 import { TagType } from '@modules/tag/tag.schema';
 import { UserType } from '@modules/user/user.schema';
-import { model, Schema, Model, Document } from 'mongoose';
+import { model, Schema, Model, Document, Types } from 'mongoose';
 
 export interface RoomType {
   name: string;
@@ -10,19 +10,11 @@ export interface RoomType {
   start?: Date;
   end?: Date;
   maxUsers?: number;
-  currentUsers?: UserType;
+  currentUsers?: UserType[];
 }
 
 export interface IRoom extends Document {
-  id: string;
-  name: string;
-  description: string;
-  tags: TagType[];
-  host: string;
-  start: Date;
-  end: Date;
-  maxUsers?: number;
-  currentUsers?: UserType;
+  _id?: Types.ObjectId;
 }
 
 const RoomSchema: Schema = new Schema({

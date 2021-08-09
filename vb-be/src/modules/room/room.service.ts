@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { Query, Types } from 'mongoose';
 
 import { RedisService } from '@db/redis.module';
 import { RoomModel, RoomType, IRoom } from '@modules/room/room.schema';
-import { ISocketRedisRoom } from '@modules/room/room.constants';
-import { Query } from 'mongoose';
+import { IRedisRoom } from './room.constants';
 
 @Injectable()
 export class RoomService {
@@ -14,13 +14,12 @@ export class RoomService {
   }
 
   getOneRoom(
-    roomId: string,
+    roomId: Types.ObjectId,
   ): Query<IRoom, IRoom, Record<string, unknown>, IRoom> {
     return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
   }
 
-  addRoomToRedis(room: ISocketRedisRoom): Promise<any> {
-    const roomString = JSON.stringify(room);
-    return this.redis.setAsyncSocketClient(roomString);
+  addRoomToRedis(roomId: Types.ObjectId): Promise<any> {
+    return this.redis.setAsyncSocketClient(roomId.toString(), 0);
   }
 }

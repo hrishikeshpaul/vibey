@@ -6,7 +6,7 @@ export enum RoomConstants {
 
 export interface CreateRoom {
   type: typeof RoomConstants.CREATE;
-  payload: Room[];
+  payload: Room;
 }
 
 export type RoomActionTypes = CreateRoom;

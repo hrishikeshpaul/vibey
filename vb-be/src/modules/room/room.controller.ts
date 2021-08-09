@@ -7,6 +7,7 @@ import { ErrorHandler, ErrorText } from 'src/util/error';
 import { RoomService } from '@modules/room/room.service';
 import { ICreateRoom } from '@modules/room/room.constants';
 import { TagService } from '@modules/tag/tag.service';
+import { Types } from 'mongoose';
 
 @Controller('/api/room')
 export class RoomController {
@@ -24,36 +25,22 @@ export class RoomController {
         throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
       }
 
-      const tagsArr = [];
+      const tags = [];
+
       for (const tag of roomObj.tags) {
-        if (tag.__isNew__) {
-          const newTag = await this.tagService.create(tag.label);
-          tagsArr.push(newTag._id);
-        } else if (tag._id) {
-          const updatedTag = await this.tagService.updateScore(tag._id);
-          tagsArr.push(updatedTag._id);
-        } else {
-          throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
-        }
+        tags.push(await this.tagService.updateOrInsert(tag));
       }
 
-      const roomData = {
-        name: roomObj.name,
-        description: roomObj.description,
-        tags: tagsArr,
-        host: roomObj.host,
-      };
+      const roomData = { ...roomObj, tags };
 
-      try {
-        const room = await this.roomService.create(roomData);
-        const populatedRoom = await this.roomService.getOneRoom(room._id);
+      const room = await this.roomService.create(roomData);
+      const populatedRoom = await this.roomService.getOneRoom(room._id);
 
-        return res.status(HttpStatus.NewResource).json(populatedRoom);
-      } catch (err) {
-        throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
-      }
+      await this.roomService.addRoomToRedis(room._id);
+
+      return res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {
-      return res.status(err.statusCode).send(err.message);
+      throw new ErrorHandler(HttpStatus.InternalError, err.toString());
     }
   }
 }

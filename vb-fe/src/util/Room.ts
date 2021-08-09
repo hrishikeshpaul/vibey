@@ -1,4 +1,14 @@
-import { Tag } from "./Tags";
+import { User } from "util/User";
+import { Tag } from "util/Tags";
+
+export interface Room {
+  description: string;
+  host: User;
+  name: string;
+  start: Date;
+  tags: Tag[];
+  _id: string;
+}
 
 export interface RoomForm {
   name: string;
@@ -6,10 +16,11 @@ export interface RoomForm {
   tags: Tag[];
 }
 
-export interface Room extends RoomForm {
+export interface CreateRoom extends RoomForm {
   host: string;
   start: Date;
   end: Date;
   logs: any[];
   maxUsers: number;
+  _id: string;
 }

@@ -1,6 +1,6 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import React, { useState, useEffect, FunctionComponent } from "react";
+import React, { useState, FunctionComponent } from "react";
 import { TiWarning } from "react-icons/ti";
 import {
   Modal,
@@ -23,7 +23,7 @@ import {
 
 import "components/create/CreateRoom.scss";
 import { Select } from "components/select/Select";
-import { Room, RoomForm } from "util/Room";
+import { RoomForm } from "util/Room";
 
 type Props = {
   open: boolean;
@@ -45,13 +45,6 @@ const initialRoomValues: RoomType = {
 
 export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError, submit }) => {
   const [room, setRoom] = useState(initialRoomValues);
-
-  /**
-   * Set room to initial room when create modal pops up
-   */
-  // useEffect(() => {
-  //   setRoom(initialRoomValues);
-  // }, []);
 
   /**
    * Validates the form to see if the room name is present

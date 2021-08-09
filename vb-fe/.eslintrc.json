@@ -15,9 +15,10 @@
     "plugins": ["react", "@typescript-eslint", "import"],
     "rules": {
       "react/prop-types": "off",
-      "no-unused-vars": "warn",
+      "no-unused-vars": "off",
       "no-use-before-define": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "no-underscore-dangle": "off",
+      "@typescript-eslint/no-unused-vars": ["warn"],
       "@typescript-eslint/no-use-before-define": ["error"],
       "quotes": [2, "double", { "avoidEscape": true }],
       "import/prefer-default-export": "off",
@@ -46,7 +47,7 @@
       "@typescript-eslint/ban-ts-comment": "warn",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": ["error"],
       "import/no-duplicates": "off",
       "import/no-extraneous-dependencies": [
         "warn",

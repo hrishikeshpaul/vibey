@@ -11,3 +11,7 @@ export enum AuthEndpoints {
 export enum TagEndpoints {
   SEARCH = "/api/tag/search",
 }
+
+export enum RoomEndpoints {
+  GENERAL = "api/room/",
+}

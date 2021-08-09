@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ConnectedRouter } from "connected-react-router";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "react-redux";
 
 import { theme } from "theme/ChakraTheme";
 import { store } from "_store/store";
 import { App } from "App";
+import { history } from "util/History";
+
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
@@ -14,7 +17,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
       </Provider>
     </ChakraProvider>
   </React.StrictMode>,
