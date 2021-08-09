@@ -1,5 +1,6 @@
 export enum UserConstants {
   SET = "SET_USER",
+  RESET = "RESET",
 }
 
 /**
@@ -11,4 +12,11 @@ export interface SetUser {
   payload: any;
 }
 
-export type UserActionTypes = SetUser;
+/**
+ * Resets the user state to initial on logout
+ */
+export interface ResetUserState {
+  type: typeof UserConstants.RESET;
+}
+
+export type UserActionTypes = SetUser | ResetUserState;

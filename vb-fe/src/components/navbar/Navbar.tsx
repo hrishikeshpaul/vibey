@@ -98,7 +98,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
             <MenuItem>Contact Us</MenuItem>
             <MenuItem onClick={() => history.push("/room")}>Terms & Conditions</MenuItem>
             <MenuDivider />
-            <MenuItem onClick={() => dispatch(onLogout(history))}>Logout</MenuItem>
+            <MenuItem onClick={() => dispatch(onLogout())}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </>

@@ -10,12 +10,12 @@ import { ITokenUser, TokenTypes } from '@modules/auth/auth.constants';
 
 const accessOptions = {
   issuer: 'vibey',
-  expiresIn: '15m',
+  expiresIn: '1h',
 };
 
 const refreshOptions = {
   issuer: 'vibey',
-  expiresIn: '7d',
+  expiresIn: '365d',
 };
 
 @Injectable()

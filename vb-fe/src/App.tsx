@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, useHistory } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
@@ -14,33 +14,23 @@ import "App.scss";
 import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
 import { createRoomAction } from "_store/room/RoomActions";
+import { initHttp, TokenStorageKeys } from "util/Http";
+import { onLogout } from "_store/user/UserActions";
+import { resetApp } from "util/Logout";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
   const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
   const dispatch = useDispatch();
-  const history = useHistory();
 
-  /**
-   * If at and rt are present then get profile
-   * This will be helpful when the user refreshes the page
-   * If the AT/RT are valid then return data and then update the store and render the appropriate app
-   * Need to have the socket stuff here aswell
-   */
   useEffect(() => {
-    if (localStorage.getItem("v-at")) {
-      dispatch({
-        type: SystemConstants.LOGIN,
-        payload: true,
-      });
+    if (localStorage.getItem(TokenStorageKeys.AT)) {
+      dispatch({ type: SystemConstants.LOGIN, payload: true });
     } else {
-      dispatch({
-        type: SystemConstants.LOGIN,
-        payload: false,
-      });
+      dispatch({ type: SystemConstants.LOGIN, payload: false });
     }
-  }, [dispatch, history]);
+  }, []); //eslint-disable-line
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
@@ -62,7 +52,12 @@ export const App = (): JSX.Element => {
 
     useEffect(() => {
       connect();
+      initHttp();
     }, [connect]);
+
+    useEffect(() => {
+      if (!isAuthenticated) resetApp();
+    }, [isAuthenticated]); // eslint-disable-line
 
     return (
       <Router>
@@ -80,7 +75,7 @@ export const App = (): JSX.Element => {
 
   const render = useMemo(() => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
-  }, [isAuthenticated]);
+  }, [isAuthenticated]); // eslint-disable-line
 
   const onCreateModalClose = () => {
     dispatch({
@@ -97,7 +92,6 @@ export const App = (): JSX.Element => {
           open={isCreateRoomModalOpen}
           close={onCreateModalClose}
           submit={(room: RoomForm) => {
-            console.log(room);
             dispatch(createRoomAction(room));
             onCreateModalClose();
           }}

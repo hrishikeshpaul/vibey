@@ -17,7 +17,6 @@ export class ValidateAccessTokenMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
     const accessToken = req.headers['v-at'];
-
     // validate access token is in header & is correct type
     if (!accessToken || typeof accessToken !== 'string') {
       return res
