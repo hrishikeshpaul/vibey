@@ -33,7 +33,7 @@ export class RoomController {
 
       const roomData = { ...roomObj, tags };
 
-      const room = await this.roomService.create(roomObj);
+      const room = await this.roomService.create(roomData);
       const populatedRoom = await this.roomService.getOneRoom(room._id);
 
       await this.roomService.addRoomToRedis(room._id);
