@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RedisClient, createClient } from 'redis';
+import { ErrorHandler } from 'src/util/error';
+import { HttpStatus } from 'src/util/http';
 import { promisify } from 'util';
 
 export class RedisService {
@@ -42,6 +44,14 @@ export class RedisService {
       this.delAsyncSocketClient = promisify(this.redisSocketClient.del).bind(
         this.redisSocketClient,
       );
+    });
+
+    this.redisSocketClient.on('error', (err) => {
+      throw new ErrorHandler(HttpStatus.InternalError, err);
+    });
+    
+    this.redisJWTClient.on('error', (err) => {
+      throw new ErrorHandler(HttpStatus.InternalError, err);
     });
   }
 }

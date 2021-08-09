@@ -18,6 +18,10 @@ export class ErrorHandler extends HttpException {
     statusCode = statusCode;
     message = message;
   }
+
+  public toString() {
+    return this.message;
+  }
 }
 
 export const handleError = (err: any, res: any) => {

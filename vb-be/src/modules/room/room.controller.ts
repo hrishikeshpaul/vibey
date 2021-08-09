@@ -22,24 +22,21 @@ export class RoomController {
 
     try {
       if (!roomData) {
-        throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
+        throw new ErrorHandler(HttpStatus.Error, ErrorText.Forbidden);
       }
 
-      roomData.tags.map(async (tag) => await this.tagService.updateOrInsert(tag));
+      roomData.tags.map(
+        async (tag) => await this.tagService.updateOrInsert(tag),
+      );
 
-      try {
-        const room = await this.roomService.create(roomData);
-        const populatedRoom = await this.roomService.getOneRoom(room._id);
+      const room = await this.roomService.create(roomData);
+      const populatedRoom = await this.roomService.getOneRoom(room._id);
 
-        await this.roomService.addRoomToRedis(room._id);
+      await this.roomService.addRoomToRedis(room._id);
 
-        return res.status(HttpStatus.NewResource).json(populatedRoom);
-      } catch (err) {
-        throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
-      }
+      return res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {
-      console.log(err);
-      return res.status(err.statusCode || err.status).send(err.message);
+      throw new ErrorHandler(HttpStatus.InternalError, err.toString());
     }
   }
 }
