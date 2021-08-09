@@ -20,6 +20,6 @@ export class RoomService {
   }
 
   addRoomToRedis(roomId: Types.ObjectId): Promise<any> {
-    return this.redis.setAsyncSocketClient(roomId, 0);
+    return this.redis.setAsyncSocketClient(roomId.toString(), 0);
   }
 }
