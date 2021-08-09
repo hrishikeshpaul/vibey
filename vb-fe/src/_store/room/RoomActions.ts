@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { createRoom } from "services/Room";
 import { RoomForm } from "util/Room";
-import { ILocalStorageUser } from "util/User";
+import { User } from "util/User";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { RoomActionTypes, RoomConstants } from "./RoomTypes";
 
@@ -14,7 +14,7 @@ export const createRoomAction =
     });
 
     try {
-      const user: ILocalStorageUser = JSON.parse(localStorage.getItem("v-user") || "");
+      const user: User = JSON.parse(localStorage.getItem("v-user") || "");
       const res = await createRoom(room, user._id);
 
       dispatch({
