@@ -19,10 +19,13 @@ import {
   ValidateAccessTokenMiddleware,
 } from '@modules/auth/auth.middleware';
 
+const NODE_ENV = process.env.NODE_ENV;
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       cache: true,
+      envFilePath: NODE_ENV ? `.env.${NODE_ENV}` : '.env',
     }),
     RedisModule,
     MongoDBModule,
