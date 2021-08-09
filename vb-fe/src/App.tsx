@@ -1,19 +1,21 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useHistory, useLocation } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
 import { Redirect } from "core/redirect/Redirect";
-import { useSocket } from "core/socket/useSocket";
 import { Loading, CreateRoom } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { createRoomAction } from "_store/room/RoomActions";
-import { RoomForm } from "util/Room";
 
 import "App.scss";
+import { useSocket } from "core/socket/useSocket";
+import { RoomForm } from "util/Room";
+import { initHttp, TokenStorageKeys } from "util/Http";
+import { resetApp } from "util/Logout";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -24,25 +26,13 @@ export const App = (): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
 
-  /**
-   * If at and rt are present then get profile
-   * This will be helpful when the user refreshes the page
-   * If the AT/RT are valid then return data and then update the store and render the appropriate app
-   * Need to have the socket stuff here aswell
-   */
   useEffect(() => {
-    if (localStorage.getItem("v-at")) {
-      dispatch({
-        type: SystemConstants.LOGIN,
-        payload: true,
-      });
+    if (localStorage.getItem(TokenStorageKeys.AT)) {
+      dispatch({ type: SystemConstants.LOGIN, payload: true });
     } else {
-      dispatch({
-        type: SystemConstants.LOGIN,
-        payload: false,
-      });
+      dispatch({ type: SystemConstants.LOGIN, payload: false });
     }
-  }, [dispatch, history]);
+  }, []); //eslint-disable-line
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
@@ -62,7 +52,12 @@ export const App = (): JSX.Element => {
 
     useEffect(() => {
       connect();
+      initHttp();
     }, [connect]);
+
+    useEffect(() => {
+      if (!isAuthenticated) resetApp();
+    }, [isAuthenticated]); // eslint-disable-line
 
     return (
       <Switch>
@@ -78,7 +73,7 @@ export const App = (): JSX.Element => {
 
   const render = useMemo(() => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
-  }, [isAuthenticated]);
+  }, [isAuthenticated]); // eslint-disable-line
 
   useEffect(() => {
     if (currentRoom && location.pathname !== `/room/${currentRoom._id}`) {

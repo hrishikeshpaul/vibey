@@ -128,21 +128,25 @@ export class AuthController {
     @Headers('v-s-rt') spotifyRefreshToken: string,
     @Response() res: Res,
   ) {
-    const user = { email: decoded.email };
-    const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
-      accessToken,
-      user,
-    );
-    const response = await firstValueFrom(
-      this.spotify.refreshAccessToken(spotifyRefreshToken),
-    );
-    const refreshedSpotifyAT = response.data.access_token;
+    try {
+      const user = { email: decoded.email };
+      const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
+        accessToken,
+        user,
+      );
+      const response = await firstValueFrom(
+        this.spotify.refreshAccessToken(spotifyRefreshToken),
+      );
+      const refreshedSpotifyAT = response.data.access_token;
 
-    res.status(HttpStatus.OK).json({
-      accessToken: refreshedAT,
-      refreshToken: refreshedRT,
-      spotifyAccessToken: refreshedSpotifyAT,
-    });
+      return res.status(HttpStatus.OK).json({
+        accessToken: refreshedAT,
+        refreshToken: refreshedRT,
+        spotifyAccessToken: refreshedSpotifyAT,
+      });
+    } catch (err) {
+      return res.status(err.statusCode).send(err);
+    }
   }
 
   @Post('/logout')
