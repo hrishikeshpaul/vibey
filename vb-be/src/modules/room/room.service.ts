@@ -3,13 +3,13 @@ import { Query, Types } from 'mongoose';
 
 import { RedisService } from '@db/redis.module';
 import { RoomModel, RoomType, IRoom } from '@modules/room/room.schema';
-import { IRedisRoom } from './room.constants';
+import { IRedisRoom, RoomForm } from './room.constants';
 
 @Injectable()
 export class RoomService {
   constructor(private readonly redis: RedisService) {}
 
-  create(room: RoomType): Promise<IRoom> {
+  create(room: RoomForm): Promise<IRoom> {
     return RoomModel.create(room);
   }
 
@@ -20,6 +20,6 @@ export class RoomService {
   }
 
   addRoomToRedis(roomId: Types.ObjectId): Promise<any> {
-    return this.redis.setAsyncSocketClient(roomId, 0);
+    return this.redis.setAsyncSocketClient(roomId.toString(), 0);
   }
 }

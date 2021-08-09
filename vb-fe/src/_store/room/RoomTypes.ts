@@ -2,6 +2,7 @@ import { Room } from "util/Room";
 
 export enum RoomConstants {
   CREATE = "CREATE",
+  JOIN = "JOIN",
 }
 
 export interface CreateRoom {
@@ -9,4 +10,9 @@ export interface CreateRoom {
   payload: Room;
 }
 
-export type RoomActionTypes = CreateRoom;
+export interface JoinRoom {
+  type: typeof RoomConstants.JOIN;
+  payload: string;
+}
+
+export type RoomActionTypes = CreateRoom | JoinRoom;

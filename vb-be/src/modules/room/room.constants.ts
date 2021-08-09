@@ -9,6 +9,7 @@ export interface RoomForm {
 }
 
 export interface ICreateRoom extends RoomForm {
+  room: RoomForm;
   host: string;
 }
 

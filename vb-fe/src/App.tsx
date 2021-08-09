@@ -6,6 +6,7 @@ import { Router, Switch, Route, useHistory, useLocation } from "react-router-dom
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
 import { Redirect } from "core/redirect/Redirect";
+import { Room } from "core/room/Room";
 import { Loading, CreateRoom } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
@@ -65,7 +66,7 @@ export const App = (): JSX.Element => {
           <Home />
         </Route>
         <Route path="/room/:id">
-          <div>This is a room!</div>
+          <Room />
         </Route>
       </Switch>
     );

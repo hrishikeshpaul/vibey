@@ -17,19 +17,19 @@ export class RoomController {
   ) {}
 
   @Post('/')
-  async create(@Body() body: { roomData: ICreateRoom }, @Response() res: Res) {
-    const { roomData } = body;
+  async create(@Body() body: { roomObj: ICreateRoom }, @Response() res: Res) {
+    const { roomObj } = body;
 
     try {
-      if (!roomData) {
+      if (!roomObj) {
         throw new ErrorHandler(HttpStatus.Error, ErrorText.Forbidden);
       }
 
-      roomData.tags.map(
+      roomObj.tags.map(
         async (tag) => await this.tagService.updateOrInsert(tag),
       );
 
-      const room = await this.roomService.create(roomData);
+      const room = await this.roomService.create(roomObj);
       const populatedRoom = await this.roomService.getOneRoom(room._id);
 
       await this.roomService.addRoomToRedis(room._id);
