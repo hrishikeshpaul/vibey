@@ -12,15 +12,14 @@ export class RoomService {
   create(room: RoomType): Promise<IRoom> {
     return RoomModel.create(room);
   }
-  
+
   getOneRoom(
     roomId: Types.ObjectId,
   ): Query<IRoom, IRoom, Record<string, unknown>, IRoom> {
     return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
   }
 
-  addRoomToRedis(roomId: string): Promise<any> {
-    console.log(roomId);
-    return this.redis.setAsyncSocketClient(roomId, 0);
+  addRoomToRedis(roomId: Types.ObjectId): Promise<any> {
+    return this.redis.setAsyncSocketClient(roomId.toString(), 0);
   }
 }

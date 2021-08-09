@@ -2,12 +2,14 @@ import { Types } from 'mongoose';
 
 import { ICreateTag } from '@modules/tag/tag.constants';
 
-export interface ICreateRoom {
+export interface RoomForm {
   name: string;
   description?: string;
   tags?: ICreateTag[];
+}
+
+export interface ICreateRoom extends RoomForm {
   host: string;
-  maxUsers?: number;
 }
 
 export interface IRedisRoom {

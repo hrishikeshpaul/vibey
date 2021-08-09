@@ -17,33 +17,22 @@ export class RoomController {
   ) {}
 
   @Post('/')
-  async create(@Body() body: { roomObj: ICreateRoom }, @Response() res: Res) {
-    const { roomObj } = body;
+  async create(@Body() body: { roomData: ICreateRoom }, @Response() res: Res) {
+    const { roomData } = body;
 
     try {
-      if (!roomObj) {
+      if (!roomData) {
         throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
       }
 
-      const tagsArr = [];
-      
-      for (const tag of roomObj.tags) {
-        const newTag = await this.tagService.upsert(tag);
-        tagsArr.push(newTag)
-      }
-
-      const roomData = {
-        name: roomObj.name,
-        description: roomObj.description,
-        tags: tagsArr,
-        host: roomObj.host,
-      };
+      roomData.tags.map(async (tag) => await this.tagService.upsert(tag));
 
       try {
         const room = await this.roomService.create(roomData);
         const populatedRoom = await this.roomService.getOneRoom(room._id);
 
-        await this.roomService.addRoomToRedis(room._id.toString());
+        await this.roomService.addRoomToRedis(room._id);
+
         return res.status(HttpStatus.NewResource).json(populatedRoom);
       } catch (err) {
         throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
