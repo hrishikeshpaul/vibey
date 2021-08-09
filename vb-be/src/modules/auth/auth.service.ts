@@ -10,7 +10,7 @@ import { ITokenUser, TokenTypes } from '@modules/auth/auth.constants';
 
 const accessOptions = {
   issuer: 'vibey',
-  expiresIn: '10s',
+  expiresIn: '1h',
 };
 
 const refreshOptions = {
