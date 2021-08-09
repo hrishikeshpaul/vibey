@@ -40,10 +40,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(ValidateAccessTokenMiddleware)
       .exclude('/api/auth/authorize', '/api/auth/login', '/api/auth/refresh')
-      .forRoutes({ path: '/api', method: RequestMethod.GET });
-    consumer
-      .apply(RefreshTokensMiddleware)
-      .exclude('/api/auth/authorize', '/api/auth/login')
-      .forRoutes({ path: '/api', method: RequestMethod.GET });
+      .forRoutes({
+        path: '/api',
+        method: RequestMethod.ALL,
+      });
   }
 }

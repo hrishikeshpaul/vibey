@@ -24,10 +24,6 @@ import {
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(ValidateAccessTokenMiddleware)
-      .exclude('/api/auth/refresh')
-      .forRoutes({ path: '/api/auth/validate', method: RequestMethod.GET });
-    consumer
       .apply(RefreshTokensMiddleware)
       .forRoutes({ path: '/api/auth/refresh', method: RequestMethod.GET });
   }

@@ -15,6 +15,7 @@ import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
 import { createRoomAction } from "_store/room/RoomActions";
 import { initHttp, TokenStorageKeys } from "util/Http";
+import { onLogout } from "_store/user/UserActions";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -29,6 +30,10 @@ export const App = (): JSX.Element => {
       dispatch({ type: SystemConstants.LOGIN, payload: false });
     }
   }, []); //eslint-disable-line
+
+  useEffect(() => {
+    if (!isAuthenticated) dispatch(onLogout());
+  }, [isAuthenticated, dispatch]);
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
@@ -69,7 +74,7 @@ export const App = (): JSX.Element => {
 
   const render = useMemo(() => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
-  }, [isAuthenticated]);
+  }, [isAuthenticated]); // eslint-disable-line
 
   const onCreateModalClose = () => {
     dispatch({

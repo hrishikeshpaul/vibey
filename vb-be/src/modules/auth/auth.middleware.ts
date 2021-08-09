@@ -68,6 +68,7 @@ export class RefreshTokensMiddleware implements NestMiddleware {
       TokenTypes.Refresh,
     );
     const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
+    console.log(cacheResult);
     if (cacheResult !== refreshToken) {
       throw new ErrorHandler(
         HttpStatus.Unauthorized,

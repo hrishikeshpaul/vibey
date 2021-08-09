@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { AuthEndpoints, BASE_URL } from "util/Endpoints";
 import { store } from "_store/store";
@@ -58,6 +58,12 @@ export const setHeaders = () => {
 export const initHttp = () => {
   setHeaders();
 
+  Http.interceptors.request.use((value: AxiosRequestConfig) => {
+    const request = { ...value };
+    request.headers = buildHeaders();
+    return request;
+  });
+
   Http.interceptors.response.use(
     (value: AxiosResponse): AxiosResponse<any> | Promise<AxiosResponse<any>> => {
       return value;
@@ -85,7 +91,8 @@ export const initHttp = () => {
             return Http.request(originalRequest);
           });
           resolve(response);
-        }
+        } else if (err.response?.status === HttpStatus.Unauthorized && retry)
+          store.dispatch({ type: SystemConstants.LOGIN, payload: false });
         return reject(err);
       });
     },

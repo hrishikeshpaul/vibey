@@ -73,13 +73,11 @@ export const getAuthorization =
  * Logs the user out
  * makes an API call to clear the JWT from the backend
  *
- * @param history router history
  */
 export const onLogout =
-  (history: any) =>
-  async (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): Promise<void> => {
+  () =>
+  async (dispatch: any): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
-    console.log(history);
     try {
       const res = await logout();
       if (res.status === HttpStatus.NoContent) {
