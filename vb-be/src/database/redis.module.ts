@@ -4,8 +4,6 @@ import { ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 import { promisify } from 'util';
 
-const REDIS_HOST = process.env.REDIS_HOST;
-
 export class RedisService {
   public redisJWTClient: RedisClient;
   public redisSocketClient: RedisClient;
@@ -20,7 +18,8 @@ export class RedisService {
     this.redisJWTClient = createClient();
     this.redisSocketClient = createClient({
       port: parseInt(process.env.REDIS_SOCKET_PORT, 10),
-      host: process.env.REDIS_HOST,
+      host: process.env.REDIS_SOCKET_HOST,
+      password: process.env.REDIS_PASSWORD,
     });
 
     this.redisJWTClient.on('connect', () => {
