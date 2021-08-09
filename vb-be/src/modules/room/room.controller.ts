@@ -22,12 +22,16 @@ export class RoomController {
 
     try {
       if (!roomObj) {
-        throw new ErrorHandler(HttpStatus.Error, ErrorText.Forbidden);
+        throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
       }
 
-      roomObj.tags.map(
-        async (tag) => await this.tagService.updateOrInsert(tag),
-      );
+      const tags = [];
+
+      for (const tag of roomObj.tags) {
+        tags.push(await this.tagService.updateOrInsert(tag));
+      }
+
+      const roomData = { ...roomObj, tags };
 
       const room = await this.roomService.create(roomObj);
       const populatedRoom = await this.roomService.getOneRoom(room._id);

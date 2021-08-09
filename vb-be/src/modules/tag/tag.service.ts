@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { TagModel, ITag } from '@modules/tag/tag.schema';
 import { Types } from 'mongoose';
-import { ICreateTag } from './tag.constants';
+import { ICreateTag } from '@modules/tag/tag.constants';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 

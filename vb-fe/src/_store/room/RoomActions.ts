@@ -10,10 +10,7 @@ import { RoomActionTypes, RoomConstants } from "./RoomTypes";
 export const createRoomAction =
   (room: RoomForm) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
-    dispatch({
-      type: SystemConstants.LOADING,
-      payload: false,
-    });
+    dispatch({ type: SystemConstants.LOADING });
 
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
