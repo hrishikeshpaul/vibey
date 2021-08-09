@@ -1,4 +1,4 @@
-export interface ILocalStorageUser {
+export interface User {
   createdAt: Date;
   _id: string;
   likes: any[];

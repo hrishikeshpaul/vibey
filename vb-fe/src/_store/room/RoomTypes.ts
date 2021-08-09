@@ -1,4 +1,4 @@
-import { dataCreateRoom } from "util/Room";
+import { Room } from "util/Room";
 
 export enum RoomConstants {
   CREATE = "CREATE",
@@ -6,7 +6,7 @@ export enum RoomConstants {
 
 export interface CreateRoom {
   type: typeof RoomConstants.CREATE;
-  payload: dataCreateRoom;
+  payload: Room;
 }
 
 export type RoomActionTypes = CreateRoom;

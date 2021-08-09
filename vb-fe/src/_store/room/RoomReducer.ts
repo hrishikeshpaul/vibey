@@ -1,9 +1,9 @@
-import { dataCreateRoom, Room } from "util/Room";
+import { Room } from "util/Room";
 import { RoomConstants, RoomActionTypes } from "./RoomTypes";
 
 export interface RoomState {
   roomsList: Room[];
-  currentRoom: dataCreateRoom | null;
+  currentRoom: Room | null;
 }
 
 /**
