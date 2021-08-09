@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import { Socket } from "socket.io-client";
 
 export enum SystemConstants {
+  RESET = "RESET",
   LOADING = "LOADING",
   SUCCESS = "SUCCESS",
   FAILURE = "FAILURE",
@@ -10,6 +11,10 @@ export enum SystemConstants {
   EXPAND_BOTTOM_SHEET = "EXPAND_BOTTOM_SHEET",
   SOCKET = "SOCKET",
   RETRY = "RETRY",
+}
+
+export interface ResetSystem {
+  type: typeof SystemConstants.RESET;
 }
 
 /**
@@ -66,6 +71,7 @@ export interface SetRetry {
 }
 
 export type SystemActionTypes =
+  | ResetSystem
   | GetApiStart
   | GetApiSuccess
   | GetApiFailure

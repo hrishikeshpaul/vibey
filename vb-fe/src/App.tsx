@@ -16,6 +16,7 @@ import { RoomForm } from "util/Room";
 import { createRoomAction } from "_store/room/RoomActions";
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { onLogout } from "_store/user/UserActions";
+import { resetApp } from "util/Logout";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -30,10 +31,6 @@ export const App = (): JSX.Element => {
       dispatch({ type: SystemConstants.LOGIN, payload: false });
     }
   }, []); //eslint-disable-line
-
-  useEffect(() => {
-    if (!isAuthenticated) dispatch(onLogout());
-  }, [isAuthenticated, dispatch]);
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
@@ -57,6 +54,10 @@ export const App = (): JSX.Element => {
       connect();
       initHttp();
     }, [connect]);
+
+    useEffect(() => {
+      if (!isAuthenticated) resetApp();
+    }, [isAuthenticated]); // eslint-disable-line
 
     return (
       <Router>

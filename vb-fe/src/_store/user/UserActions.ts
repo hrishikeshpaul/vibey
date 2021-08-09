@@ -3,6 +3,7 @@ import { UserActionTypes, UserConstants } from "_store/user/UserTypes";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 import { login, authorize, logout, refreshTokens } from "services/Auth";
 import { HttpStatus, TokenStorageKeys } from "util/Http";
+import { resetApp } from "util/Logout";
 
 /*
  * Called from Home.tsx
@@ -81,32 +82,7 @@ export const onLogout =
     try {
       const res = await logout();
       if (res.status === HttpStatus.NoContent) {
-        dispatch({
-          type: SystemConstants.LOGIN,
-          payload: false,
-        });
-        dispatch({
-          type: UserConstants.SET,
-          payload: {
-            id: "",
-            username: "",
-            href: "",
-            uri: "",
-            email: "",
-            display_name: "",
-            image: "",
-            likes: [],
-          },
-        });
-        dispatch({
-          type: SystemConstants.SUCCESS,
-        });
-        localStorage.removeItem(TokenStorageKeys.AT);
-        localStorage.removeItem(TokenStorageKeys.RT);
-        localStorage.removeItem("v-user");
-        localStorage.removeItem(TokenStorageKeys.SpotifyAT);
-        localStorage.removeItem(TokenStorageKeys.SpotifyRT);
-        // history.push("/");
+        resetApp();
       }
     } catch (err) {
       console.log(err);

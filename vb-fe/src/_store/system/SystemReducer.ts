@@ -38,6 +38,8 @@ const initialState: SystemState = {
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
   switch (action.type) {
+    case SystemConstants.RESET:
+      return { ...initialState };
     case SystemConstants.LOADING:
       return {
         ...state,
