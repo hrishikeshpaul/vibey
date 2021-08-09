@@ -1,4 +1,5 @@
 import { model, Schema, Model, Document, Types } from 'mongoose';
+import { ICreateTag } from './tag.constants';
 
 export interface TagType {
   label: string;
@@ -6,11 +7,8 @@ export interface TagType {
   score: number;
 }
 
-export interface ITag extends Document {
-  _id: Types.ObjectId;
-  label: string;
-  value: string;
-  score: number;
+export interface ITag extends TagType, Document {
+  _id?: Types.ObjectId;
 }
 
 const TagSchema: Schema = new Schema({

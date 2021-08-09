@@ -20,28 +20,28 @@ export class EventsGateway {
 
   constructor(private readonly roomService: RoomService) {}
 
-  // @UseGuards(WsGuard)
-  @SubscribeMessage('create-room')
-  async createRoom(
-    @MessageBody() data: ISocketCreateRoomData,
-    @ConnectedSocket() client: Socket,
-  ) {
-    try {
-      await this.roomService.addRoomToRedis(data.room);
-      client.emit('new-room-added');
-    } catch (err) {
-      return socketError(client, HttpStatus.InternalError, ErrorText.Generic);
-    }
-  }
+  // // @UseGuards(WsGuard)
+  // @SubscribeMessage('create-room')
+  // async createRoom(
+  //   @MessageBody() data: ISocketCreateRoomData,
+  //   @ConnectedSocket() client: Socket,
+  // ) {
+  //   try {
+  //     await this.roomService.addRoomToRedis(data.room);
+  //     client.emit('new-room-added');
+  //   } catch (err) {
+  //     return socketError(client, HttpStatus.InternalError, ErrorText.Generic);
+  //   }
+  // }
 
-  @SubscribeMessage('get-all-rooms')
-  getAllRooms(@ConnectedSocket() client: Socket): any {
-    // read from redis
-    // return an observable
-  }
+  // @SubscribeMessage('get-all-rooms')
+  // getAllRooms(@ConnectedSocket() client: Socket): any {
+  //   // read from redis
+  //   // return an observable
+  // }
 
-  @SubscribeMessage('identity')
-  async identity(@MessageBody() data: number): Promise<number> {
-    return data;
-  }
+  // @SubscribeMessage('identity')
+  // async identity(@MessageBody() data: number): Promise<number> {
+  //   return data;
+  // }
 }

@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 
-import { TagModel, ITag } from '@modules/tag/tag.schema';
+import { TagModel, ITag, TagType } from '@modules/tag/tag.schema';
+import { Types } from 'mongoose';
+import { ICreateTag } from './tag.constants';
+import { ErrorHandler, ErrorText } from 'src/util/error';
+import { HttpStatus } from 'src/util/http';
 
 @Injectable()
 export class TagService {
@@ -12,8 +16,14 @@ export class TagService {
     });
   }
 
-  findOne(label: string) {
-    return TagModel.findOne({ label: label });
+  async upsert(tag: ICreateTag) {
+    if (tag._id) {
+      return await this.updateScore(Types.ObjectId(tag._id));
+    } else if (tag.__isNew__) {
+      return this.create(tag.label);
+    } else {
+      throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
+    }
   }
 
   find(str: string) {
@@ -28,7 +38,7 @@ export class TagService {
     );
   }
 
-  updateScore(id: string): Promise<ITag> {
+  updateScore(id: Types.ObjectId): Promise<ITag> {
     return TagModel.findByIdAndUpdate(
       { _id: id },
       { $inc: { score: 1 } },
