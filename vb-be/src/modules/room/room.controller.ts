@@ -48,6 +48,7 @@ export class RoomController {
         const room = await this.roomService.create(roomData);
         const populatedRoom = await this.roomService.getOneRoom(room._id);
 
+        this.roomService.addRoomToRedis(populatedRoom._id);
         return res.status(HttpStatus.NewResource).json(populatedRoom);
       } catch (err) {
         throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
