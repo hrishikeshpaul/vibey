@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { UserModel, UserType, IUser } from '@modules/user/user.schema';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -10,5 +11,9 @@ export class UserService {
 
   findOne(email: string) {
     return UserModel.findOne({ email });
+  }
+
+  findOneById(id: string | Types.ObjectId) {
+    return UserModel.findById({ _id: id });
   }
 }

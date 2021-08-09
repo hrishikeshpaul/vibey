@@ -14,9 +14,19 @@ export class RoomService {
   }
 
   getOneRoom(
-    roomId: Types.ObjectId,
+    roomId: Types.ObjectId | string,
   ): Query<IRoom, IRoom, Record<string, unknown>, IRoom> {
     return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
+  }
+
+  addUserToRoom(
+    roomId: Types.ObjectId | string,
+    userId: Types.ObjectId | string,
+  ) {
+    return RoomModel.updateOne(
+      { _id: roomId },
+      { $addToSet: { currentUsers: userId } },
+    );
   }
 
   addRoomToRedis(roomId: Types.ObjectId): Promise<any> {
