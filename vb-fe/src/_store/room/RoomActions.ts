@@ -1,4 +1,6 @@
 import { Dispatch } from "redux";
+import { push, CallHistoryMethodAction } from "connected-react-router";
+
 import { createRoom } from "services/Room";
 import { RoomForm } from "util/Room";
 import { User } from "util/User";
@@ -7,7 +9,7 @@ import { RoomActionTypes, RoomConstants } from "./RoomTypes";
 
 export const createRoomAction =
   (room: RoomForm) =>
-  async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes>): Promise<void> => {
+  async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
     dispatch({
       type: SystemConstants.LOADING,
       payload: false,
@@ -28,6 +30,7 @@ export const createRoomAction =
       dispatch({
         type: SystemConstants.SUCCESS,
       });
+      dispatch(push(`/room/${res.data._id}`));
     } catch (err) {
       dispatch({
         type: SystemConstants.FAILURE,

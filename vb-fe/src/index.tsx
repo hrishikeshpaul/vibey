@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { ConnectedRouter } from "connected-react-router";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "react-redux";
 
 import { theme } from "theme/ChakraTheme";
 import { store } from "_store/store";
 import { App } from "App";
-import { BrowserRouter as Router } from "react-router-dom";
+import { history } from "util/History";
+
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
@@ -15,9 +17,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <Provider store={store}>
-        <Router>
+        <ConnectedRouter history={history}>
           <App />
-        </Router>
+        </ConnectedRouter>
       </Provider>
     </ChakraProvider>
   </React.StrictMode>,

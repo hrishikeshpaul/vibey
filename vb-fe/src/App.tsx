@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, useHistory, useLocation } from "react-router-dom";
+import { Router, Switch, Route, useHistory, useLocation } from "react-router-dom";
 
 import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
@@ -61,11 +61,11 @@ export const App = (): JSX.Element => {
 
     return (
       <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route path="/room/:id">
           <div>This is a room!</div>
-        </Route>
-        <Route path="/">
-          <Home />
         </Route>
       </Switch>
     );
@@ -75,11 +75,11 @@ export const App = (): JSX.Element => {
     return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />;
   }, [isAuthenticated]); // eslint-disable-line
 
-  useEffect(() => {
-    if (currentRoom && location.pathname !== `/room/${currentRoom._id}`) {
-      history.push(`/room/${currentRoom._id}`);
-    }
-  }, [currentRoom, history, location.pathname]);
+  // useEffect(() => {
+  //   if (currentRoom && location.pathname !== `/room/${currentRoom._id}`) {
+  //     history.push(`/room/${currentRoom._id}`);
+  //   }
+  // }, [currentRoom, history, location.pathname]);
 
   return (
     <div className="h-100 w-100 px-3">
