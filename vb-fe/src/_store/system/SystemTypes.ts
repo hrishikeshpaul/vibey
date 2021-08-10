@@ -1,6 +1,3 @@
-import { AxiosError } from "axios";
-import { Socket } from "socket.io-client";
-
 export enum SystemConstants {
   RESET = "RESET",
   LOADING = "LOADING",
@@ -60,11 +57,6 @@ export interface SetExpandBottomSheet {
   payload: boolean;
 }
 
-export interface SetSocketConnection {
-  type: typeof SystemConstants.SOCKET;
-  payload: Socket | null;
-}
-
 export interface SetRetry {
   type: typeof SystemConstants.RETRY;
   payload: boolean;
@@ -78,5 +70,4 @@ export type SystemActionTypes =
   | SetUserLogin
   | SetCreateRoomModal
   | SetExpandBottomSheet
-  | SetSocketConnection
   | SetRetry;
