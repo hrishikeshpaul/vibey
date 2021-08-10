@@ -14,4 +14,5 @@ export enum TagEndpoints {
 
 export enum RoomEndpoints {
   GENERAL = "api/room/",
+  PLAYLIST = "api/room/playlists",
 }

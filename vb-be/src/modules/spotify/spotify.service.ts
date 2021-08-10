@@ -9,6 +9,7 @@ import {
   SpotifyAuthResponse,
   SpotifyPublicUser,
   SpotifyGrantType,
+  Playlist,
 } from '@modules/spotify/spotify.constants';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
@@ -96,6 +97,23 @@ export class SpotifyService {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.getAccessToken()}`,
+      },
+    });
+  }
+
+  getUserPlaylists(
+    spotifyAccessToken?: string,
+    offset?: string,
+    limit = 5,
+  ): Observable<A<Playlist>> {
+    return this.http.get(`${BASE_URL}/me/playlists`, {
+      params: {
+        offset,
+        limit,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${spotifyAccessToken}`,
       },
     });
   }

@@ -5,6 +5,7 @@ import { Flex, IconButton, Heading, Box, Button, HStack, Icon, Text } from "@cha
 import { IoIosArrowRoundBack, IoIosPeople } from "react-icons/io";
 import { HiPencil, HiShare } from "react-icons/hi";
 import { IoPeople } from "react-icons/io5";
+import { RiPlayListFill } from "react-icons/ri";
 
 import { Navbar } from "components";
 import { Layout } from "layout/Layout";
@@ -42,7 +43,10 @@ export const Room = () => {
     return (
       <Flex alignItems="center" justifyContent="space-between" pt="6" pb="6">
         <IconButton icon={<IoIosArrowRoundBack />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="4xl" />
+
         <HStack spacing={3}>
+          <IconButton icon={<RiPlayListFill />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
+
           {room?.host._id === currentUser?._id && (
             <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
           )}
