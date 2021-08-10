@@ -40,10 +40,11 @@ export class EventsGateway {
       const AT: string = client.handshake.headers['v-at'] as string;
       const { id } = await this.authService.verifyToken(AT, TokenTypes.Access);
 
-      // const currentRoom = await this.roomService.getOneRoom(data);
       await this.roomService.addUserToRoom(roomId, id);
       const updatedRoom = await this.roomService.getOneRoom(roomId);
+
       await client.join(roomId);
+      
       client.emit('join-room-success', updatedRoom);
     } catch (err) {
       client.emit('socket-err', err);

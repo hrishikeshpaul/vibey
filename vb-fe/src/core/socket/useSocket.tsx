@@ -26,10 +26,6 @@ export const useSocket = () => {
     socket.on("connect", () => {
       console.log("Socket connected!");
 
-      socket.on("join-room-success", (data: Room) => {
-        console.log("JOIN ROOM SUCCESS", data);
-      });
-
       socket.on("message", (data) => {
         console.log("MESSAGE", data);
       });
