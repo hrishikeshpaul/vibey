@@ -1,3 +1,4 @@
+import { PlayerConstants } from "_store/player/PlayerTypes";
 import { store } from "_store/store";
 
 declare global {
@@ -37,6 +38,14 @@ class Player {
       this.player.addListener("ready", (data: any) => {
         console.log("Ready with Device ID", data);
         this.setDeviceId(data.device_id);
+      });
+
+      this.player.addListener("player_state_changed", (data: any) => {
+        store.dispatch({
+          type: PlayerConstants.PLAY,
+          payload: data.track_window.current_track,
+        });
+        console.log(data);
       });
 
       this.player.connect();

@@ -113,7 +113,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({
     const footerHeight: number = footer?.clientHeight || 0;
     const mainHeight: number = main?.clientHeight || 0;
 
-    setSidebarHeight(mainHeight - headerHeight - footerHeight - 50);
+    setSidebarHeight(mainHeight - headerHeight - footerHeight - 100);
     setTopPosition(headerHeight);
   }, []);
 

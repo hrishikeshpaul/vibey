@@ -1,35 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Flex, Avatar, Box, Link, Text, IconButton, HStack } from "@chakra-ui/react";
 import { FaStepBackward, FaStepForward, FaPause, FaPlay } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { State } from "_store/rootReducer";
+import { SimplifiedArtist } from "util/Playlist";
 
 export const Player = (): JSX.Element => {
   const [paused, setPaused] = useState<boolean>(true);
+  const track = useSelector((state: State) => state.player.track);
+  const trackState = useSelector((state: State) => state.player.state);
 
   return (
-    <Flex alignItems="center" justifyContent="space-between">
-      <Flex alignItems="center" overflow="hidden">
-        <Avatar src="https://i.scdn.co/image/ab67616d00004851a7354aa08bc3e76f416f194e" size="md" borderRadius="lg" />
-        <Box overflow="hidden">
-          <Text isTruncated lineHeight="1.2" pl="3">
-            <Link isExternal href="https://open.spotify.com/track/5RScucFoUuNzhLWwGWy05b">
-              Name of song that gets truncates if too long
-            </Link>
-          </Text>
-          <Text fontSize="sm" isTruncated pl="3">
-            <Link isExternal href="https://open.spotify.com/artist/0SfsnGyD8FpIN4U4WCkBZ5" variant="secondary">
-              Artist name
-            </Link>
-          </Text>
-        </Box>
-      </Flex>
-      <Flex>
-        <HStack spacing="3">
-          <IconButton icon={<FaStepBackward />} aria-label="track-back" />
-          <IconButton icon={paused ? <FaPause /> : <FaPlay />} aria-label="track-back" />
-          <IconButton icon={<FaStepForward />} aria-label="track-back" />
-        </HStack>
-      </Flex>
-    </Flex>
+    <>
+      {track ? (
+        <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="center" overflow="hidden">
+            <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" />
+            <Box overflow="hidden">
+              <Text isTruncated lineHeight="1.2" pl="3">
+                <Link isExternal href="https://open.spotify.com/track/5RScucFoUuNzhLWwGWy05b">
+                  {track.name}
+                </Link>
+              </Text>
+              <Text fontSize="sm" isTruncated pl="3">
+                <Link isExternal href="https://open.spotify.com/artist/0SfsnGyD8FpIN4U4WCkBZ5" variant="secondary">
+                  {track.artists.map((artist: SimplifiedArtist) => artist.name).join(",")}
+                </Link>
+              </Text>
+            </Box>
+          </Flex>
+          <Flex>
+            <HStack spacing="3">
+              <IconButton icon={<FaStepBackward />} aria-label="track-back" />
+              <IconButton icon={trackState === "PLAYING" ? <FaPause /> : <FaPlay />} aria-label="track-back" />
+              <IconButton icon={<FaStepForward />} aria-label="track-back" />
+            </HStack>
+          </Flex>
+        </Flex>
+      ) : null}
+    </>
   );
 };
