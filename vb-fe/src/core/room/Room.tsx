@@ -8,8 +8,9 @@ import { IoMdArrowBack } from "react-icons/io";
 import { HiPencil, HiShare } from "react-icons/hi";
 import { RiPlayListFill } from "react-icons/ri";
 import { IoPeople } from "react-icons/io5";
+import { FaInfo } from "react-icons/fa";
 
-import { Navbar, CurrentUsers } from "components";
+import { Navbar, CurrentUsers, Player } from "components";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 import { useLocation } from "react-router-dom";
@@ -47,6 +48,7 @@ export const Room = () => {
         <IconButton icon={<IoMdArrowBack />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="2xl" />
 
         <HStack spacing={3}>
+          <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="xl" />
           <IconButton icon={<RiPlayListFill />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
 
           {room?.host._id === currentUser?._id && (
@@ -87,8 +89,8 @@ export const Room = () => {
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>
-              <Box bg="teal.800">
-                <Heading>Player</Heading>
+              <Box bg="dark" p="4" borderTopRightRadius="lg" borderTopLeftRadius="lg">
+                <Player />
               </Box>
             </Layout.Footer>
           </>

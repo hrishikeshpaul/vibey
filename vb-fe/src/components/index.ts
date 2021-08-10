@@ -8,3 +8,4 @@ export { Filters } from "components/filters/Filters";
 export { Select } from "components/select/Select";
 export { Card } from "components/card/Card";
 export { CurrentUsers } from "components/current-users/CurrentUsers";
+export { Player } from "components/player/Player";
