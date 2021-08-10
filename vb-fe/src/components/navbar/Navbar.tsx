@@ -16,9 +16,11 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { CgMenuMotion } from "react-icons/cg";
+import { BiLogOut } from "react-icons/bi";
 
 import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
+import { ReactComponent as Close } from "assets/icons/cross.svg";
 import { BASE_NAV_LINKS } from "util/Navbar";
 
 import "components/navbar/Navbar.scss";
@@ -30,9 +32,11 @@ import { useHistory } from "react-router-dom";
 export interface Props {
   isAuth: boolean;
   profileData?: any;
+  isHost?: boolean;
+  isInRoom?: boolean;
 }
 
-export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
+export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): JSX.Element => {
   const HeadphonesIcon = (): JSX.Element => {
     return (
       <Icon color="gray.700" boxSize={6}>
@@ -45,6 +49,14 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
     return (
       <Icon color="primaryDark" boxSize={4}>
         <Plus />
+      </Icon>
+    );
+  };
+
+  const CloseIcon = (): JSX.Element => {
+    return (
+      <Icon color="primaryDark" boxSize={4}>
+        <Close />
       </Icon>
     );
   };
@@ -80,12 +92,34 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
       });
     };
 
+    const NavbarButton = (): JSX.Element => {
+      if (isHost) {
+        return (
+          <Button colorScheme="red" bgColor="red.400" leftIcon={<CloseIcon />} type="button">
+            <Text>Close Room</Text>
+          </Button>
+        );
+      }
+
+      if (isInRoom && !isHost) {
+        return (
+          <Button colorScheme="orange" leftIcon={<BiLogOut />} type="button" onClick={onCreateRoomOpen}>
+            <Text>Create Room</Text>
+          </Button>
+        );
+      }
+
+      return (
+        <Button colorScheme="primary" leftIcon={<PlusIcon />} type="button" onClick={onCreateRoomOpen}>
+          <Text>Create Room</Text>
+        </Button>
+      );
+    };
+
     return (
       <>
         <Box display={{ base: "none", md: "block" }}>
-          <Button colorScheme="primary" leftIcon={<PlusIcon />} type="button" onClick={onCreateRoomOpen}>
-            <Text>Create Room</Text>
-          </Button>
+          <NavbarButton />
         </Box>
         <Box display={{ base: "block", md: "none" }} onClick={onCreateRoomOpen}>
           <IconButton colorScheme="primary" icon={<PlusIcon />} type="button" aria-label="icon" />
