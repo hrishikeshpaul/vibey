@@ -20,4 +20,5 @@ export enum RoomEndpoints {
 export enum PlayerEndpoints {
   PLAY = "/api/player/play",
   NEXT = "/api/player/next",
+  PREVIOUS = "/api/player/previous",
 }

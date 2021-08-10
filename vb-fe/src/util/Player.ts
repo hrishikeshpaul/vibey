@@ -45,6 +45,9 @@ class Player {
           type: PlayerConstants.UPDATE_TRACK,
           payload: data.track_window.current_track,
         });
+        store.dispatch({
+          type: PlayerConstants.PLAY,
+        });
       });
 
       this.player.connect();

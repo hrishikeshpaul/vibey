@@ -27,3 +27,15 @@ export const next = (deviceId: string) => {
     },
   );
 };
+
+export const previous = (deviceId: string) => {
+  return Http.post(
+    PlayerEndpoints.PREVIOUS,
+    {},
+    {
+      params: {
+        device_id: deviceId,
+      },
+    },
+  );
+};

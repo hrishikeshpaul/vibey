@@ -136,9 +136,23 @@ export class SpotifyService {
   }
 
   playNext(deviceId: string, accessToken: string) {
-    console.log(deviceId);
     return this.http.post(
       `${BASE_URL}/me/player/next`,
+      {},
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  playPrevious(deviceId: string, accessToken: string) {
+    return this.http.post(
+      `${BASE_URL}/me/player/previous`,
       {},
       {
         params: {
