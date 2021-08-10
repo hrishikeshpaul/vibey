@@ -7,8 +7,8 @@ export enum PlayerStates {
 }
 
 export enum PlayerConstants {
-  ADD_DEVICE = "ADD_DEVICE",
-  ADD_PLAYER = "ADD_PLAYER",
+  SET_CURRENT_PLAYLIST = "SET_CURRENT_PLAYLIST",
+  SET_TRACK_NUMBER = "SET_TRACK_NUMBER",
   PLAY = "PLAY",
   PAUSE = "PAUSE",
   UPDATE_TRACK = "UPDATE_TRACK",
@@ -16,14 +16,9 @@ export enum PlayerConstants {
   UPDATE_DURATION = "UPDATE_DURATION",
 }
 
-export interface AddPlayer {
-  type: typeof PlayerConstants.ADD_PLAYER;
-  payload: any;
-}
-
-export interface AddDevice {
-  type: typeof PlayerConstants.ADD_DEVICE;
-  payload: string;
+export interface SetTrackNumber {
+  type: typeof PlayerConstants.SET_TRACK_NUMBER;
+  payload: number;
 }
 
 export interface PlayTrack {
@@ -49,11 +44,16 @@ export interface UpdateDuration {
   payload: number;
 }
 
+export interface SetCurrentPlaylist {
+  type: typeof PlayerConstants.SET_CURRENT_PLAYLIST;
+  payload: string;
+}
+
 export type PlayerActionTypes =
-  | AddPlayer
-  | AddDevice
+  | SetTrackNumber
   | PlayTrack
   | PauseTrack
   | UpdateTrack
   | UpdatePosition
-  | UpdateDuration;
+  | UpdateDuration
+  | SetCurrentPlaylist;

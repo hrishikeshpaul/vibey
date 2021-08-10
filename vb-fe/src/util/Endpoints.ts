@@ -22,4 +22,5 @@ export enum PlayerEndpoints {
   NEXT = "/api/player/next",
   PREVIOUS = "/api/player/previous",
   PAUSE = "/api/player/pause",
+  RESUME = "/api/player/resume",
 }

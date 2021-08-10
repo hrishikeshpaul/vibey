@@ -180,11 +180,19 @@ export class SpotifyService {
     );
   }
 
-  playResume(contextUri, deviceId: string, accessToken: string) {
+  playResume(
+    contextUri: string,
+    deviceId: string,
+    position: string,
+    accessToken: string,
+    trackNumber: string,
+  ) {
     return this.http.put(
-      `${BASE_URL}/me/player/start`,
+      `${BASE_URL}/me/player/play`,
       {
         context_uri: contextUri,
+        position_ms: parseInt(position, 10),
+        offset: { position: trackNumber },
       },
       {
         params: {
@@ -195,5 +203,17 @@ export class SpotifyService {
         },
       },
     );
+  }
+
+  getPlaylistTracks(
+    playlistId: string,
+    accessToken: string,
+  ): Observable<A<Playlist>> {
+    const pid = playlistId.split(':')[2];
+    return this.http.get(`${BASE_URL}/playlists/${pid}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   }
 }

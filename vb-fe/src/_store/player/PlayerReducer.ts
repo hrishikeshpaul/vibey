@@ -10,6 +10,8 @@ export interface PlayerState {
   trackDuration: number;
   trackPosition: number;
   volume: number;
+  playlistContext: string;
+  trackNumber: number;
 }
 
 /**
@@ -22,14 +24,22 @@ const initialState: PlayerState = {
   trackDuration: 0,
   trackPosition: 0,
   volume: 0,
+  playlistContext: "",
+  trackNumber: 0,
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
   switch (action.type) {
-    case PlayerConstants.ADD_DEVICE: {
+    case PlayerConstants.SET_CURRENT_PLAYLIST: {
       return {
         ...state,
-        deviceId: action.payload,
+        playlistContext: action.payload,
+      };
+    }
+    case PlayerConstants.SET_TRACK_NUMBER: {
+      return {
+        ...state,
+        trackNumber: action.payload,
       };
     }
     case PlayerConstants.UPDATE_TRACK: {

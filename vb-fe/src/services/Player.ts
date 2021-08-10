@@ -51,3 +51,18 @@ export const pause = (deviceId: string) => {
     },
   );
 };
+
+export const resume = (contextUri: string, deviceId: string, position: number, trackNumber: number) => {
+  return Http.put(
+    PlayerEndpoints.RESUME,
+    {},
+    {
+      params: {
+        position,
+        track_number: trackNumber,
+        context_uri: contextUri,
+        device_id: deviceId,
+      },
+    },
+  );
+};

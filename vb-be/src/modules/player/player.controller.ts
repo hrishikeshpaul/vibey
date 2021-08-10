@@ -84,4 +84,30 @@ export class PlayerController {
       return res.status(HttpStatus.Error).send(err);
     }
   }
+
+  @Put('/resume')
+  async resume(
+    @Response() res: Res,
+    @Query('context_uri') contextUri: string,
+    @Query('position') position: string,
+    @Query('track_number') trackNumber: string,
+    @Query('device_id') deviceId: string,
+    @Headers('v-s-at') accessToken: string,
+  ) {
+    try {
+      await firstValueFrom(
+        this.spotifyService.playResume(
+          contextUri,
+          deviceId,
+          position,
+          accessToken,
+          trackNumber,
+        ),
+      );
+      return res.status(HttpStatus.NoContent).send();
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.Error).send(err);
+    }
+  }
 }

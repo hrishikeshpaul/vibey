@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-import { Flex, Avatar, Box, Link, Text, IconButton, HStack } from "@chakra-ui/react";
+import { Flex, Avatar, Box, Link, Text, IconButton, HStack, position } from "@chakra-ui/react";
 import { FaStepBackward, FaStepForward, FaPause, FaPlay } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "_store/rootReducer";
 import { SimplifiedArtist } from "util/Playlist";
 import { PlayerConstants, PlayerStates } from "_store/player/PlayerTypes";
-import { pauseTrack, playNext, playPrevious } from "_store/player/PlayerActions";
+import { pauseTrack, playNext, playPrevious, resumeTrack } from "_store/player/PlayerActions";
 import { WebPlayer } from "util/Player";
 
 export const Player = (): JSX.Element => {
-  const [paused, setPaused] = useState<boolean>(true);
   const track = useSelector((state: State) => state.player.track);
   const trackState = useSelector((state: State) => state.player.state);
+  const trackPosition = useSelector((state: State) => state.player.trackPosition);
+  const contextUri = useSelector((state: State) => state.player.playlistContext);
   const dispatch = useDispatch();
 
   return (
@@ -38,7 +39,11 @@ export const Player = (): JSX.Element => {
               {trackState === PlayerStates.PLAYING ? (
                 <IconButton icon={<FaPause />} aria-label="track-back" onClick={() => dispatch(pauseTrack())} />
               ) : (
-                <IconButton icon={<FaPlay />} aria-label="track-back" />
+                <IconButton
+                  icon={<FaPlay />}
+                  aria-label="track-back"
+                  onClick={() => dispatch(resumeTrack(contextUri, trackPosition))}
+                />
               )}
 
               <IconButton icon={<FaStepForward />} aria-label="track-back" onClick={() => dispatch(playNext())} />
