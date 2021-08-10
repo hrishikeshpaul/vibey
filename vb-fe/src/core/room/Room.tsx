@@ -17,6 +17,7 @@ import { useLocation } from "react-router-dom";
 import { Room as RoomType } from "util/Room";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { User } from "util/User";
+import { RoomToolbar } from "./RoomToolbar";
 
 export const Room = () => {
   const socket = useSelector((state: State) => state.system.socket);
@@ -24,8 +25,6 @@ export const Room = () => {
   const dispatch = useDispatch();
   const [room, setRoom] = useState<RoomType | null>(null);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
-
-  console.log(currentUser);
 
   useEffect(() => {
     dispatch({ type: SystemConstants.LOADING });
@@ -42,36 +41,16 @@ export const Room = () => {
     }
   }, [socket]); //eslint-disable-line
 
-  const RoomToolbar = (): JSX.Element => {
-    return (
-      <Flex alignItems="center" justifyContent="space-between" pt="6" pb="6" bg="primaryDark">
-        <IconButton icon={<IoMdArrowBack />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="2xl" />
-
-        <HStack spacing={3}>
-          <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="xl" />
-          <IconButton icon={<RiPlayListFill />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
-
-          {room?.host._id === currentUser?._id && (
-            <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
-          )}
-          <IconButton icon={<HiShare />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
-          <Flex justifyContent="center" alignItems="center">
-            <IconButton icon={<IoPeople />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
-            <Text pl="1" fontSize="sm">
-              {room?.currentUsers.length}
-            </Text>
-          </Flex>
-        </HStack>
-      </Flex>
-    );
-  };
+  // const RoomToolbar = (): JSX.Element => {
+  //   return
+  // };
 
   return (
     <>
       <Layout.Wrapper>
         <Layout.Header>
           <Navbar isAuth />
-          <RoomToolbar />
+          {room && currentUser ? <RoomToolbar room={room} currentUser={currentUser} /> : <></>}
         </Layout.Header>
         {room ? (
           <>
@@ -84,7 +63,7 @@ export const Room = () => {
                   </Text>
                 </Box>
               </Layout.Content>
-              <Layout.Sidebar flex="0.3">
+              <Layout.Sidebar flex="0.3" calcSidebarHeight>
                 <CurrentUsers users={room.currentUsers} />
               </Layout.Sidebar>
             </Layout.Body>

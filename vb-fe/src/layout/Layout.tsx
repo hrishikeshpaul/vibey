@@ -2,8 +2,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 
 import { Box, Flex } from "@chakra-ui/react";
 
-import { MIN_SHEET_HEIGHT } from "util/Variables";
-
 interface GenericLayoutProps {
   children?: ReactElement | ReactElement[];
   style?: any;
@@ -11,6 +9,7 @@ interface GenericLayoutProps {
   flex?: string;
   show?: boolean;
   mx?: number;
+  calcSidebarHeight?: boolean;
 }
 
 interface LayoutWrapperProps extends Omit<GenericLayoutProps, "children"> {
@@ -98,7 +97,11 @@ export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({
  * width based on the flex value.
  * The Y position of the sidebar depends on the height of the header which is dynamically calculated here.
  */
-export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.25" }): JSX.Element => {
+export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({
+  children,
+  flex = "0.25",
+  calcSidebarHeight,
+}): JSX.Element => {
   const [topPosition, setTopPosition] = useState<number>(0); // randomly set initial value
   const [sidebarHeight, setSidebarHeight] = useState<number>(0);
 
@@ -119,7 +122,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
       position="sticky"
       top={`${topPosition}px`}
       flex={flex}
-      height={`${sidebarHeight}px`}
+      height={calcSidebarHeight ? `${sidebarHeight}px` : "fit-content"}
       display={{ lg: "block", base: "none" }}
       bottom="20px"
     >
