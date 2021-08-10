@@ -13,7 +13,7 @@ import {
 } from '@modules/spotify/spotify.constants';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
-const BASE_URL = 'https://api.spotify.com/v1';
+export const BASE_URL = 'https://api.spotify.com/v1';
 
 @Injectable()
 export class SpotifyService {
@@ -116,5 +116,22 @@ export class SpotifyService {
         Authorization: `Bearer ${spotifyAccessToken}`,
       },
     });
+  }
+
+  play(deviceId: string, contextUri: string, accessToken: string) {
+    return this.http.put(
+      `${BASE_URL}/me/player/play`,
+      {
+        context_uri: contextUri,
+      },
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   }
 }

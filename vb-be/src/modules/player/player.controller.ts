@@ -1,0 +1,30 @@
+import { Controller, Put, Response, Query, Headers, Get } from '@nestjs/common';
+import { Response as Res } from 'express';
+
+import { HttpStatus } from 'src/util/http';
+
+import { firstValueFrom } from 'rxjs';
+import { SpotifyService } from '@modules/spotify/spotify.service';
+
+@Controller('/api/player')
+export class PlayerController {
+  constructor(private readonly spotifyService: SpotifyService) {}
+
+  @Put('/play')
+  async play(
+    @Response() res: Res,
+    @Query('context_uri') contextUri: string,
+    @Query('device_id') deviceId: string,
+    @Headers('v-s-at') accessToken: string,
+  ) {
+    try {
+      await firstValueFrom(
+        this.spotifyService.play(deviceId, contextUri, accessToken),
+      );
+      return res.status(HttpStatus.NoContent).send();
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.Error).send(err);
+    }
+  }
+}
