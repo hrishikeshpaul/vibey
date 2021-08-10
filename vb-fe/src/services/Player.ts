@@ -15,3 +15,15 @@ export const play = (contextUri: string, deviceId: string) => {
     },
   );
 };
+
+export const next = (deviceId: string) => {
+  return Http.post(
+    PlayerEndpoints.NEXT,
+    {},
+    {
+      params: {
+        device_id: deviceId,
+      },
+    },
+  );
+};

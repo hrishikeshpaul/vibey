@@ -42,10 +42,9 @@ class Player {
 
       this.player.addListener("player_state_changed", (data: any) => {
         store.dispatch({
-          type: PlayerConstants.PLAY,
+          type: PlayerConstants.UPDATE_TRACK,
           payload: data.track_window.current_track,
         });
-        console.log(data);
       });
 
       this.player.connect();

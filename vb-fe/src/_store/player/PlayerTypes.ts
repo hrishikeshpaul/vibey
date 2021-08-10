@@ -1,5 +1,11 @@
 import { Track } from "util/Playlist";
 
+export enum PlayerStates {
+  PLAYING = "PLAYING",
+  PAUSED = "PAUSED",
+  INITIAL = "INITIAL",
+}
+
 export enum PlayerConstants {
   ADD_DEVICE = "ADD_DEVICE",
   ADD_PLAYER = "ADD_PLAYER",
@@ -20,7 +26,6 @@ export interface AddDevice {
 
 export interface PlayTrack {
   type: typeof PlayerConstants.PLAY;
-  payload: Track;
 }
 
 export interface PauseTrack {
@@ -29,6 +34,7 @@ export interface PauseTrack {
 
 export interface UpdateTrack {
   type: typeof PlayerConstants.UPDATE_TRACK;
+  payload: Track;
 }
 
 export type PlayerActionTypes = AddPlayer | AddDevice | PlayTrack | PauseTrack | UpdateTrack;

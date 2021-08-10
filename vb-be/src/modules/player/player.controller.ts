@@ -1,4 +1,4 @@
-import { Controller, Put, Response, Query, Headers, Get } from '@nestjs/common';
+import { Controller, Put, Response, Query, Headers, Get, Post } from '@nestjs/common';
 import { Response as Res } from 'express';
 
 import { HttpStatus } from 'src/util/http';
@@ -20,6 +20,23 @@ export class PlayerController {
     try {
       await firstValueFrom(
         this.spotifyService.play(deviceId, contextUri, accessToken),
+      );
+      return res.status(HttpStatus.NoContent).send();
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.Error).send(err);
+    }
+  }
+
+  @Post('/next')
+  async next(
+    @Response() res: Res,
+    @Query('device_id') deviceId: string,
+    @Headers('v-s-at') accessToken: string,
+  ) {
+    try {
+      await firstValueFrom(
+        this.spotifyService.playNext(deviceId, accessToken),
       );
       return res.status(HttpStatus.NoContent).send();
     } catch (err) {

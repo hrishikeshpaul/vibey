@@ -1,12 +1,12 @@
 import { Track } from "util/Playlist";
-import { PlayerConstants, PlayerActionTypes } from "_store/player/PlayerTypes";
+import { PlayerConstants, PlayerActionTypes, PlayerStates } from "_store/player/PlayerTypes";
 
 // import { Error } from "app/models/system.model";
 
 export interface PlayerState {
   deviceId: string;
   track: Track | null;
-  state: "PLAYING" | "PAUSED" | "NONE";
+  state: PlayerStates;
 }
 
 /**
@@ -15,7 +15,7 @@ export interface PlayerState {
 const initialState: PlayerState = {
   deviceId: "",
   track: null,
-  state: "NONE",
+  state: PlayerStates.INITIAL,
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -26,17 +26,22 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
         deviceId: action.payload,
       };
     }
-    case PlayerConstants.PLAY: {
+    case PlayerConstants.UPDATE_TRACK: {
       return {
         ...state,
         track: action.payload,
-        state: "PLAYING",
+      };
+    }
+    case PlayerConstants.PLAY: {
+      return {
+        ...state,
+        state: PlayerStates.PLAYING,
       };
     }
     case PlayerConstants.PAUSE: {
       return {
         ...state,
-        state: "PAUSED",
+        state: PlayerStates.PAUSED,
       };
     }
     default:

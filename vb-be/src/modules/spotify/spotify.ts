@@ -14,6 +14,7 @@ export const scopes = [
   'user-read-playback-position',
   'playlist-read-private',
   'playlist-read-collaborative',
+  'user-modify-playback-state',
 ];
 
 export const STATE_KEY = 'spotify_auth_state';
