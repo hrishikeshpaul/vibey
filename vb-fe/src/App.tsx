@@ -7,16 +7,17 @@ import { Home } from "core/home/Home";
 import { Landing } from "core/landing/Landing";
 import { Redirect } from "core/redirect/Redirect";
 import { Room } from "core/room/Room";
+import { useSocket } from "core/socket/useSocket";
 import { Loading, CreateRoom } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { createRoomAction } from "_store/room/RoomActions";
 
-import "App.scss";
-import { useSocket } from "core/socket/useSocket";
+import { WebPlayer } from "util/Player";
 import { RoomForm } from "util/Room";
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
+import "App.scss";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -51,6 +52,7 @@ export const App = (): JSX.Element => {
     useEffect(() => {
       connect();
       initHttp();
+      console.log(WebPlayer.getPlayer());
     }, [connect]);
 
     useEffect(() => {

@@ -5,6 +5,8 @@ import { Playlist as PlaylistType } from "util/Playlist";
 import { FaPlay } from "react-icons/fa";
 
 import "components/playlist/Playlist.scss";
+import { useDispatch } from "react-redux";
+import { playTrack } from "_store/player/PlayerActions";
 
 interface Props {
   playlists: PlaylistType[];
@@ -16,8 +18,20 @@ interface PlaylistItemProps {
 }
 
 export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist }) => {
+  const dispatch = useDispatch();
+
+  const onPlay = () => {
+    dispatch(playTrack(playlist.uri));
+  };
   return (
-    <Flex alignItems="center" _hover={{ bgColor: "gray.800" }} borderRadius="lg" p="3" className="vb-playlist-item">
+    <Flex
+      alignItems="center"
+      _hover={{ bgColor: "gray.800" }}
+      borderRadius="lg"
+      p="3"
+      className="vb-playlist-item"
+      onClick={onPlay}
+    >
       <Box pr="3">
         <Icon fontSize="md" size="md">
           <FaPlay />

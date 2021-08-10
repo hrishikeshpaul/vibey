@@ -1,5 +1,9 @@
 .vb-playlist {
   &-item {
     width: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

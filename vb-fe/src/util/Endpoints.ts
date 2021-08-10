@@ -16,3 +16,7 @@ export enum RoomEndpoints {
   GENERAL = "api/room/",
   PLAYLIST = "api/room/playlists",
 }
+
+export enum PlayerEndpoints {
+  PLAY = "/api/player/play",
+}
