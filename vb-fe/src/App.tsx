@@ -13,7 +13,6 @@ import { SystemConstants } from "_store/system/SystemTypes";
 import { createRoomAction } from "_store/room/RoomActions";
 
 import "App.scss";
-import { useSocket } from "core/socket/useSocket";
 import { RoomForm } from "util/Room";
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
@@ -46,12 +45,9 @@ export const App = (): JSX.Element => {
   };
 
   const AuthenticatedApp = (): JSX.Element => {
-    const { connect } = useSocket();
-
     useEffect(() => {
-      connect();
       initHttp();
-    }, [connect]);
+    }, []);
 
     useEffect(() => {
       if (!isAuthenticated) resetApp();
