@@ -13,7 +13,7 @@ export interface RoomType {
   currentUsers?: UserType[];
 }
 
-export interface IRoom extends Document {
+export interface IRoom extends RoomType, Document {
   _id?: Types.ObjectId;
 }
 
