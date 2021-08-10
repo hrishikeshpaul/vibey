@@ -65,7 +65,7 @@ export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = tru
     <Box
       // display={show ? "block" : "none"}
       position="fixed"
-      minH={MIN_SHEET_HEIGHT}
+      // minH={MIN_SHEET_HEIGHT}
       bottom="0"
       w="100%"
       className={`container ${className}`}
@@ -103,7 +103,15 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
 
   useEffect(() => {
     const header: HTMLElement | null = document.getElementById("vb-header");
+    const footer: HTMLElement | null = document.getElementById("vb-footer");
+    const main: HTMLElement | null = document.getElementById("vb-main");
     const headerHeight: number = header!.clientHeight;
+    const footerHeight: number = footer?.clientHeight || 0;
+    const mainHeight: number = main?.clientHeight || 0;
+
+    console.log(mainHeight);
+    console.log(headerHeight, footerHeight);
+    console.log(mainHeight - headerHeight - footerHeight);
     setTopPosition(headerHeight);
   }, []);
 
@@ -112,10 +120,9 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
       position="sticky"
       top={`${topPosition}px`}
       flex={flex}
-      height="fit-content"
+      height="732px"
       display={{ lg: "block", base: "none" }}
-      transition="all 0.5s east-in-out"
-      right="100"
+      bottom="20px"
     >
       {children}
     </Box>

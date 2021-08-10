@@ -74,7 +74,7 @@ export const App = (): JSX.Element => {
   }, [isAuthenticated]); // eslint-disable-line
 
   return (
-    <div className="h-100 w-100 px-3">
+    <div className="h-100 w-100 px-3" id="vb-main">
       {isLoading && <Loading show />}
       {isCreateRoomModalOpen && (
         <CreateRoom

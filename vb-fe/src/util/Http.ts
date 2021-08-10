@@ -91,8 +91,9 @@ export const initHttp = () => {
             return Http.request(originalRequest);
           });
           resolve(response);
-        } else if (err.response?.status === HttpStatus.Unauthorized && retry)
+        } else if (err.response?.status === HttpStatus.Unauthorized && retry) {
           store.dispatch({ type: SystemConstants.LOGIN, payload: false });
+        }
         return reject(err);
       });
     },
