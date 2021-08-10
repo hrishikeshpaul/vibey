@@ -55,7 +55,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
 
   const CloseIcon = (): JSX.Element => {
     return (
-      <Icon color="primaryDark" boxSize={4}>
+      <Icon color="gray.800" boxSize={4}>
         <Close />
       </Icon>
     );

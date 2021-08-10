@@ -3,7 +3,7 @@ import React, { useEffect, useState, FunctionComponent } from "react";
 import moment from "moment";
 
 import { useSelector, useDispatch } from "react-redux";
-import { Heading, Box, Text, Badge } from "@chakra-ui/react";
+import { Heading, Box, Text, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
@@ -14,10 +14,13 @@ import { Room as RoomType } from "util/Room";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { User } from "util/User";
 import { getUserPlaylistsAction } from "_store/room/RoomActions";
+import { Tag } from "util/Tags";
 
 interface RoomInfoProps {
   name: string;
   start: Date;
+  description: string;
+  tags: Tag[];
 }
 
 export const Room = () => {
@@ -48,13 +51,21 @@ export const Room = () => {
     }
   }, [socket]); //eslint-disable-line
 
-  const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name }): JSX.Element => {
+  const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name, description, tags }): JSX.Element => {
     return (
       <Box>
         <Heading>{name}</Heading>
         <Text size="sm" color="gray.200">
           {moment(start).format("DD MMM YYYY • hh:mm A")}
         </Text>
+        <Text pt="5">{description}</Text>
+        <Wrap spacing="3" pt="5">
+          {tags.map((tag) => (
+            <WrapItem key={tag.label}>
+              <Badge colorScheme="teal">#{tag.label}</Badge>
+            </WrapItem>
+          ))}
+        </Wrap>
       </Box>
     );
   };
