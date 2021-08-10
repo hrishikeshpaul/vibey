@@ -17,14 +17,22 @@ interface PlaylistItemProps {
 
 export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist }) => {
   return (
-    <Flex alignItems="center" _hover={{ bgColor: "gray.800" }} borderRadius="lg" p="2" className="vb-playlist-item">
+    <Flex alignItems="center" _hover={{ bgColor: "gray.800" }} borderRadius="lg" p="3" className="vb-playlist-item">
       <Box pr="3">
         <Icon fontSize="md" size="md">
           <FaPlay />
         </Icon>
       </Box>
-      <Flex overflow="hidden">
+      <Flex overflow="hidden" alignItems="center">
         <Avatar src={playlist.images[0].url} size="md" borderRadius="lg" />
+        <Box overflow="hidden" pl="3">
+          <Heading isTruncated fontSize="sm" fontWeight="500">
+            {playlist.name}
+          </Heading>
+          <Text fontSize="sm" isTruncated color="gray.300">
+            {playlist.description}
+          </Text>
+        </Box>
       </Flex>
     </Flex>
   );
@@ -32,19 +40,12 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
 
 export const Playlist: FunctionComponent<Props> = ({ playlists }): JSX.Element => {
   return (
-    <Box bg="dark" height="100%" position="relative" borderRadius="lg" overflow="hidden" className="vb-playlist">
-      <Heading size="sm" p="6">
-        Playlist
-      </Heading>
-      <Box top="50px" position="absolute" w="100%" p="6" left="0" right="0" bottom="0" overflowY="auto">
-        <VStack spacing={4}>
-          {playlists.map(
-            (playlist: PlaylistType, i: number): JSX.Element => (
-              <PlaylistItem playlist={playlist} index={i} key={playlist.id} />
-            ),
-          )}
-        </VStack>
-      </Box>
-    </Box>
+    <VStack spacing={4}>
+      {playlists.map(
+        (playlist: PlaylistType, i: number): JSX.Element => (
+          <PlaylistItem playlist={playlist} index={i} key={playlist.id} />
+        ),
+      )}
+    </VStack>
   );
 };

@@ -13,7 +13,6 @@ import { useLocation } from "react-router-dom";
 import { Room as RoomType } from "util/Room";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { User } from "util/User";
-import { Playlist as PlaylistType } from "util/Playlist";
 import { getUserPlaylistsAction } from "_store/room/RoomActions";
 
 interface RoomInfoProps {
@@ -26,7 +25,6 @@ export const Room = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [room, setRoom] = useState<RoomType | null>(null);
-  // const [playlists, setPlaylists] = useState<PlaylistType[]>([]);
   const playlists = useSelector((state: State) => state.room.playlists);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
   const [playlistOffset, setPlaylistOffset] = useState<number>(0);

@@ -20,7 +20,6 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JS
 
       <HStack spacing={3}>
         <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="xl" />
-        <IconButton icon={<RiPlayListFill />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
 
         {room?.host._id === currentUser?._id && (
           <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
