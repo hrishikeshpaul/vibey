@@ -9,7 +9,7 @@ import { HiPencil, HiShare } from "react-icons/hi";
 import { RiPlayListFill } from "react-icons/ri";
 import { IoPeople } from "react-icons/io5";
 
-import { Navbar } from "components";
+import { Navbar, CurrentUsers } from "components";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 import { useLocation } from "react-router-dom";
@@ -71,39 +71,30 @@ export const Room = () => {
           <Navbar isAuth />
           <RoomToolbar />
         </Layout.Header>
-        <Layout.Body>
-          <Layout.Content flex="0.7" mx={0}>
-            <Box>
-              <Heading>{room?.name}</Heading>
-              <Text size="sm" color="gray.200">
-                {moment(room?.start).format("DD MMM YYYY • hh:mm A")}
-              </Text>
-            </Box>
-          </Layout.Content>
-          <Layout.Sidebar flex="0.3">
-            <Box bg="dark" height="100%" position="relative" borderRadius="lg" overflow="hidden">
-              <Heading size="sm" p="5">
-                Current Users
-              </Heading>
-              <Box
-                bg="teal.500"
-                top="60px"
-                position="absolute"
-                w="100%"
-                p="5"
-                left="0"
-                right="0"
-                bottom="0"
-                overflow="auto"
-              >
-                <Box height="800px">Current users here</Box>
+        {room ? (
+          <>
+            <Layout.Body>
+              <Layout.Content flex="0.7" mx={0}>
+                <Box>
+                  <Heading>{room.name}</Heading>
+                  <Text size="sm" color="gray.200">
+                    {moment(room.start).format("DD MMM YYYY • hh:mm A")}
+                  </Text>
+                </Box>
+              </Layout.Content>
+              <Layout.Sidebar flex="0.3">
+                <CurrentUsers users={room.currentUsers} />
+              </Layout.Sidebar>
+            </Layout.Body>
+            <Layout.Footer>
+              <Box bg="teal.800">
+                <Heading>Player</Heading>
               </Box>
-            </Box>
-          </Layout.Sidebar>
-        </Layout.Body>
-        <Layout.Footer>
-          <Box bg="teal.800">Player</Box>
-        </Layout.Footer>
+            </Layout.Footer>
+          </>
+        ) : (
+          <span>Room Loading</span>
+        )}
       </Layout.Wrapper>
     </>
   );

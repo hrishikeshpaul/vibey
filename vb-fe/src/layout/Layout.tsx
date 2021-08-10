@@ -100,6 +100,7 @@ export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({
  */
 export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.25" }): JSX.Element => {
   const [topPosition, setTopPosition] = useState<number>(0); // randomly set initial value
+  const [sidebarHeight, setSidebarHeight] = useState<number>(0);
 
   useEffect(() => {
     const header: HTMLElement | null = document.getElementById("vb-header");
@@ -109,9 +110,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
     const footerHeight: number = footer?.clientHeight || 0;
     const mainHeight: number = main?.clientHeight || 0;
 
-    console.log(mainHeight);
-    console.log(headerHeight, footerHeight);
-    console.log(mainHeight - headerHeight - footerHeight);
+    setSidebarHeight(mainHeight - headerHeight - footerHeight - 50);
     setTopPosition(headerHeight);
   }, []);
 
@@ -120,7 +119,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
       position="sticky"
       top={`${topPosition}px`}
       flex={flex}
-      height="732px"
+      height={`${sidebarHeight}px`}
       display={{ lg: "block", base: "none" }}
       bottom="20px"
     >
