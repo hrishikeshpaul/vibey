@@ -12,6 +12,8 @@ export enum PlayerConstants {
   PLAY = "PLAY",
   PAUSE = "PAUSE",
   UPDATE_TRACK = "UPDATE_TRACK",
+  UPDATE_POSITION = "UPDATE_POSITION",
+  UPDATE_DURATION = "UPDATE_DURATION",
 }
 
 export interface AddPlayer {
@@ -37,4 +39,21 @@ export interface UpdateTrack {
   payload: Track;
 }
 
-export type PlayerActionTypes = AddPlayer | AddDevice | PlayTrack | PauseTrack | UpdateTrack;
+export interface UpdatePosition {
+  type: typeof PlayerConstants.UPDATE_POSITION;
+  payload: number;
+}
+
+export interface UpdateDuration {
+  type: typeof PlayerConstants.UPDATE_DURATION;
+  payload: number;
+}
+
+export type PlayerActionTypes =
+  | AddPlayer
+  | AddDevice
+  | PlayTrack
+  | PauseTrack
+  | UpdateTrack
+  | UpdatePosition
+  | UpdateDuration;

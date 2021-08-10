@@ -7,6 +7,9 @@ export interface PlayerState {
   deviceId: string;
   track: Track | null;
   state: PlayerStates;
+  trackDuration: number;
+  trackPosition: number;
+  volume: number;
 }
 
 /**
@@ -16,6 +19,9 @@ const initialState: PlayerState = {
   deviceId: "",
   track: null,
   state: PlayerStates.INITIAL,
+  trackDuration: 0,
+  trackPosition: 0,
+  volume: 0,
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -42,6 +48,18 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         state: PlayerStates.PAUSED,
+      };
+    }
+    case PlayerConstants.UPDATE_POSITION: {
+      return {
+        ...state,
+        trackPosition: action.payload,
+      };
+    }
+    case PlayerConstants.UPDATE_DURATION: {
+      return {
+        ...state,
+        trackDuration: action.payload,
       };
     }
     default:

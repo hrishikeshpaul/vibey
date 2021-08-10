@@ -32,7 +32,7 @@ class Player {
         getOAuthToken: (callback: any) => {
           callback(localStorage.getItem("v-s-at"));
         },
-        volume: 0.2,
+        volume: 0.5,
       });
 
       this.player.addListener("ready", (data: any) => {
@@ -41,12 +41,21 @@ class Player {
       });
 
       this.player.addListener("player_state_changed", (data: any) => {
+        console.log(data);
         store.dispatch({
           type: PlayerConstants.UPDATE_TRACK,
           payload: data.track_window.current_track,
         });
         store.dispatch({
-          type: PlayerConstants.PLAY,
+          type: data.paused ? PlayerConstants.PAUSE : PlayerConstants.PLAY,
+        });
+        store.dispatch({
+          type: PlayerConstants.UPDATE_POSITION,
+          payload: data.position,
+        });
+        store.dispatch({
+          type: PlayerConstants.UPDATE_DURATION,
+          payload: data.duration,
         });
       });
 

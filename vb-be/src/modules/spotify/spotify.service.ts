@@ -164,4 +164,36 @@ export class SpotifyService {
       },
     );
   }
+
+  playPause(deviceId: string, accessToken: string) {
+    return this.http.put(
+      `${BASE_URL}/me/player/pause`,
+      {},
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  playResume(contextUri, deviceId: string, accessToken: string) {
+    return this.http.put(
+      `${BASE_URL}/me/player/start`,
+      {
+        context_uri: contextUri,
+      },
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
 }

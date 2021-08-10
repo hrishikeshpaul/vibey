@@ -39,3 +39,15 @@ export const previous = (deviceId: string) => {
     },
   );
 };
+
+export const pause = (deviceId: string) => {
+  return Http.put(
+    PlayerEndpoints.PAUSE,
+    {},
+    {
+      params: {
+        device_id: deviceId,
+      },
+    },
+  );
+};

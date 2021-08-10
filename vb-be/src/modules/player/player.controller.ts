@@ -67,4 +67,21 @@ export class PlayerController {
       return res.status(HttpStatus.Error).send(err);
     }
   }
+
+  @Put('/pause')
+  async pause(
+    @Response() res: Res,
+    @Query('device_id') deviceId: string,
+    @Headers('v-s-at') accessToken: string,
+  ) {
+    try {
+      await firstValueFrom(
+        this.spotifyService.playPause(deviceId, accessToken),
+      );
+      return res.status(HttpStatus.NoContent).send();
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.Error).send(err);
+    }
+  }
 }

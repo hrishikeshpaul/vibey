@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "_store/rootReducer";
 import { SimplifiedArtist } from "util/Playlist";
 import { PlayerConstants, PlayerStates } from "_store/player/PlayerTypes";
-import { playNext, playPrevious } from "_store/player/PlayerActions";
+import { pauseTrack, playNext, playPrevious } from "_store/player/PlayerActions";
+import { WebPlayer } from "util/Player";
 
 export const Player = (): JSX.Element => {
   const [paused, setPaused] = useState<boolean>(true);
@@ -34,10 +35,12 @@ export const Player = (): JSX.Element => {
           <Flex>
             <HStack spacing="3">
               <IconButton icon={<FaStepBackward />} aria-label="track-back" onClick={() => dispatch(playPrevious())} />
-              <IconButton
-                icon={trackState === PlayerStates.PLAYING ? <FaPause /> : <FaPlay />}
-                aria-label="track-back"
-              />
+              {trackState === PlayerStates.PLAYING ? (
+                <IconButton icon={<FaPause />} aria-label="track-back" onClick={() => dispatch(pauseTrack())} />
+              ) : (
+                <IconButton icon={<FaPlay />} aria-label="track-back" />
+              )}
+
               <IconButton icon={<FaStepForward />} aria-label="track-back" onClick={() => dispatch(playNext())} />
             </HStack>
           </Flex>
