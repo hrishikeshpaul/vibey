@@ -3,16 +3,18 @@ import React, { useEffect, useState, FunctionComponent } from "react";
 import moment from "moment";
 
 import { useSelector, useDispatch } from "react-redux";
-import { Flex, IconButton, Heading, Box, Button, HStack, Icon, Text, Badge } from "@chakra-ui/react";
+import { Heading, Box, Text, Badge } from "@chakra-ui/react";
 
-import { Navbar, CurrentUsers, Player } from "components";
+import { Navbar, CurrentUsers, Player, Playlist } from "components";
+import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 import { useLocation } from "react-router-dom";
 import { Room as RoomType } from "util/Room";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { User } from "util/User";
-import { RoomToolbar } from "./RoomToolbar";
+import { Playlist as PlaylistType } from "util/Playlist";
+import { getUserPlaylistsAction } from "_store/room/RoomActions";
 
 interface RoomInfoProps {
   name: string;
@@ -24,7 +26,10 @@ export const Room = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [room, setRoom] = useState<RoomType | null>(null);
+  // const [playlists, setPlaylists] = useState<PlaylistType[]>([]);
+  const playlists = useSelector((state: State) => state.room.playlists);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
+  const [playlistOffset, setPlaylistOffset] = useState<number>(0);
 
   useEffect(() => {
     dispatch({ type: SystemConstants.LOADING });
@@ -36,6 +41,8 @@ export const Room = () => {
 
       socket?.on("join-room-success", (data: RoomType) => {
         dispatch({ type: SystemConstants.SUCCESS });
+        dispatch(getUserPlaylistsAction(playlistOffset));
+        setPlaylistOffset(playlistOffset + 5);
         setRoom(data);
       });
     }
@@ -63,10 +70,10 @@ export const Room = () => {
           <>
             <Layout.Body>
               <Layout.Sidebar flex="0.25">
-                <RoomInfo name={room.name} start={room.start} />
+                <RoomInfo {...room} />
               </Layout.Sidebar>
               <Layout.Content flex="0.45">
-                <Heading>Playlist</Heading>
+                <Playlist playlists={playlists} />
               </Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
                 <CurrentUsers users={room.currentUsers} />

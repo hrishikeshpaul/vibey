@@ -1,8 +1,10 @@
+import { Playlist } from "util/Playlist";
 import { Room } from "util/Room";
 
 export enum RoomConstants {
   CREATE = "CREATE",
   JOIN = "JOIN",
+  ADD_TO_PLAYLIST = "ADD_TO_PLAYLIST",
 }
 
 export interface CreateRoom {
@@ -15,4 +17,9 @@ export interface JoinRoom {
   payload: string;
 }
 
-export type RoomActionTypes = CreateRoom | JoinRoom;
+export interface AddToPlaylist {
+  type: typeof RoomConstants.ADD_TO_PLAYLIST;
+  payload: Playlist[];
+}
+
+export type RoomActionTypes = CreateRoom | JoinRoom | AddToPlaylist;
