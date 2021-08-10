@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Flex, IconButton, HStack, Text, Icon } from "@chakra-ui/react";
+import { Flex, IconButton, HStack, Text, Icon, Box, Heading } from "@chakra-ui/react";
 import { HiPencil, HiShare } from "react-icons/hi";
 import { IoPeople } from "react-icons/io5";
 import { FaInfo } from "react-icons/fa";
@@ -24,10 +24,15 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JS
 
   return (
     <Flex alignItems="center" justifyContent="space-between" pt="6" pb="6" bg="primaryDark">
-      <IconButton icon={<BackIcon />} aria-label="room-back" bg="primaryDark" color="white" ml={-3} fontSize="xl" />
+      <Flex alignItems="center" overflow="hidden">
+        <IconButton icon={<BackIcon />} aria-label="room-back" bg="primaryDark" color="white" fontSize="xl" />
+        <Heading fontSize="xl" pl="3" isTruncated display={{ base: "block", lg: "none" }}>
+          {room.name}
+        </Heading>
+      </Flex>
 
       <HStack spacing={3}>
-        <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" ml={-3} fontSize="xl" />
+        <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" fontSize="xl" />
 
         {room?.host._id === currentUser?._id && (
           <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
