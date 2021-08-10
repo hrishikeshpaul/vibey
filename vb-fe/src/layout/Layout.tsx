@@ -9,6 +9,7 @@ interface GenericLayoutProps {
   className?: string;
   flex?: string;
   show?: boolean;
+  mx?: number;
 }
 
 interface LayoutWrapperProps extends Omit<GenericLayoutProps, "children"> {
@@ -79,9 +80,13 @@ export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = tru
 /**
  * This content is scroll-able and will have the different room cards
  */
-export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.5" }): JSX.Element => {
+export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({
+  children,
+  flex = "0.5",
+  mx = 10,
+}): JSX.Element => {
   return (
-    <Box mx={{ lg: 10, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
+    <Box mx={{ lg: mx, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
       {children}
     </Box>
   );
