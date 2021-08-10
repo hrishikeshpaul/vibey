@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FunctionComponent } from "react";
 
 import moment from "moment";
 
 import { useSelector, useDispatch } from "react-redux";
 import { Flex, IconButton, Heading, Box, Button, HStack, Icon, Text, Badge } from "@chakra-ui/react";
-import { IoMdArrowBack } from "react-icons/io";
-import { HiPencil, HiShare } from "react-icons/hi";
-import { RiPlayListFill } from "react-icons/ri";
-import { IoPeople } from "react-icons/io5";
-import { FaInfo } from "react-icons/fa";
 
 import { Navbar, CurrentUsers, Player } from "components";
 import { Layout } from "layout/Layout";
@@ -18,6 +13,11 @@ import { Room as RoomType } from "util/Room";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { User } from "util/User";
 import { RoomToolbar } from "./RoomToolbar";
+
+interface RoomInfoProps {
+  name: string;
+  start: Date;
+}
 
 export const Room = () => {
   const socket = useSelector((state: State) => state.system.socket);
@@ -41,9 +41,16 @@ export const Room = () => {
     }
   }, [socket]); //eslint-disable-line
 
-  // const RoomToolbar = (): JSX.Element => {
-  //   return
-  // };
+  const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name }): JSX.Element => {
+    return (
+      <Box>
+        <Heading>{name}</Heading>
+        <Text size="sm" color="gray.200">
+          {moment(start).format("DD MMM YYYY • hh:mm A")}
+        </Text>
+      </Box>
+    );
+  };
 
   return (
     <>
@@ -55,13 +62,11 @@ export const Room = () => {
         {room ? (
           <>
             <Layout.Body>
-              <Layout.Content flex="0.7" mx={0}>
-                <Box>
-                  <Heading>{room.name}</Heading>
-                  <Text size="sm" color="gray.200">
-                    {moment(room.start).format("DD MMM YYYY • hh:mm A")}
-                  </Text>
-                </Box>
+              <Layout.Sidebar flex="0.25">
+                <RoomInfo name={room.name} start={room.start} />
+              </Layout.Sidebar>
+              <Layout.Content flex="0.45">
+                <Heading>Playlist</Heading>
               </Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
                 <CurrentUsers users={room.currentUsers} />
