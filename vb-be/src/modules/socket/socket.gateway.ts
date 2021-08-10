@@ -10,8 +10,11 @@ import { Server, Socket } from 'socket.io';
 import { socketError, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
+import {
+  SocketMessageData,
+  SocketEvents,
+} from '@modules/socket/socket.constants';
 import { RoomService } from '@modules/room/room.service';
-import { SocketMessageData } from '@modules/socket/socket.constants';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 
@@ -25,7 +28,7 @@ export class EventsGateway {
     private readonly authService: AuthService,
   ) {}
 
-  @SubscribeMessage('join-room')
+  @SubscribeMessage(SocketEvents.JoinRoom)
   async createRoom(
     @MessageBody() roomId: string,
     @ConnectedSocket() client: Socket,
@@ -38,15 +41,15 @@ export class EventsGateway {
       const updatedRoom = await this.roomService.getOneRoom(roomId);
       await client.join(roomId);
 
-      client.emit('join-room-success', updatedRoom);
+      client.emit(SocketEvents.JoinSuccess, updatedRoom);
     } catch (err) {
       socketError(client, HttpStatus.InternalError, ErrorText.Generic);
     }
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage(SocketEvents.Message)
   async message(@MessageBody() data: SocketMessageData) {
     const { message, roomId } = data;
-    this.server.to(roomId).emit('message', message);
+    this.server.to(roomId).emit(SocketEvents.Message, message);
   }
 }
