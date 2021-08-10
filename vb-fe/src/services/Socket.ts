@@ -2,7 +2,7 @@ import socketIOClient from "socket.io-client";
 
 import { TokenStorageKeys } from "util/Http";
 import { Room } from "util/Room";
-import { SOCKET_ENDPOINT, SocketError, SocketMessage } from "util/Socket";
+import { SOCKET_ENDPOINT, SocketError, SocketMessage, SocketEvents } from "util/Socket";
 
 export const socket = socketIOClient(SOCKET_ENDPOINT, {
   transportOptions: {
@@ -19,15 +19,15 @@ export const socket = socketIOClient(SOCKET_ENDPOINT, {
  */
 export const subscribeTo = {
   joinSuccess: (cb: (data: Room) => unknown): void => {
-    socket.on("join-room-success", (data: Room) => cb(data));
+    socket.on(SocketEvents.JoinSuccess, (data: Room) => cb(data));
   },
 
   message: (cb: (message: string) => unknown): void => {
-    socket.on("message", (message: string) => cb(message));
+    socket.on(SocketEvents.Message, (message: string) => cb(message));
   },
 
   error: (cb: (data: SocketError) => unknown): void => {
-    socket.on("socket-err", (data: SocketError) => cb(data));
+    socket.on(SocketEvents.Error, (data: SocketError) => cb(data));
   },
 };
 
@@ -36,9 +36,9 @@ export const subscribeTo = {
  */
 export const emit = {
   joinRoom: (roomId: string): void => {
-    socket.emit("join-room", roomId);
+    socket.emit(SocketEvents.JoinRoom, roomId);
   },
   message: ({ message, roomId }: SocketMessage): void => {
-    socket.emit("message", { message, roomId });
+    socket.emit(SocketEvents.Message, { message, roomId });
   },
 };

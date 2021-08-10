@@ -1,3 +1,4 @@
+import { SocketEvents } from '@modules/socket/socket.constants';
 import { HttpException } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
@@ -35,5 +36,5 @@ export const handleError = (err: any, res: any) => {
 };
 
 export const socketError = (client: Socket, code: number, message: string) => {
-  return client.emit('socket-err', { code, message });
+  return client.emit(SocketEvents.Error, { code, message });
 };
