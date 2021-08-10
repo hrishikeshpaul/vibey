@@ -16,7 +16,10 @@ export class RoomService {
   getOneRoom(
     roomId: Types.ObjectId | string,
   ): Query<IRoom, IRoom, Record<string, unknown>, IRoom> {
-    return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
+    return RoomModel.findOne({ _id: roomId })
+      .populate('tags')
+      .populate('host')
+      .populate('currentUsers');
   }
 
   addUserToRoom(
