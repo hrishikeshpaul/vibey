@@ -105,7 +105,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
 
   return (
     <Modal isOpen={open} onClose={onClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
-      <ModalOverlay />
+      <ModalOverlay bgColor="blackAlpha.800" />
       <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} py="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
           <Heading size="lg">Create a room</Heading>
