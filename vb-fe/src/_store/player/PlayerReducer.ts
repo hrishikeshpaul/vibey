@@ -4,11 +4,9 @@ import { PlayerConstants, PlayerActionTypes, PlayerStates } from "_store/player/
 // import { Error } from "app/models/system.model";
 
 export interface PlayerState {
-  deviceId: string;
   track: Track | null;
   state: PlayerStates;
   trackPosition: number;
-  volume: number;
   playlistContext: string;
 }
 
@@ -16,11 +14,9 @@ export interface PlayerState {
  * Initial values for the System State
  */
 const initialState: PlayerState = {
-  deviceId: "",
   track: null,
   state: PlayerStates.INITIAL,
   trackPosition: 0,
-  volume: 0,
   playlistContext: "",
 };
 
@@ -54,12 +50,6 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         trackPosition: action.payload,
-      };
-    }
-    case PlayerConstants.SET_VOLUME: {
-      return {
-        ...state,
-        volume: action.payload,
       };
     }
     default:
