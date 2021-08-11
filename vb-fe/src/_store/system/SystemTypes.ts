@@ -19,6 +19,7 @@ export interface ResetSystem {
  */
 export interface GetApiStart {
   type: typeof SystemConstants.LOADING;
+  payload?: string;
 }
 
 /**

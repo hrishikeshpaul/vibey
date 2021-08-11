@@ -2,6 +2,7 @@ import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 
 export interface SystemState {
   isLoading: boolean;
+  loadingText: string;
   /**
    * Stores the error
    * Will need to change this to store the status code and message
@@ -29,6 +30,7 @@ const initialState: SystemState = {
   createRoomOpen: false,
   bottomSheetExpanded: false,
   retry: false,
+  loadingText: "Loading...",
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
@@ -39,6 +41,7 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
       return {
         ...state,
         isLoading: true,
+        loadingText: action.payload ? action.payload : "Loading...",
       };
     case SystemConstants.SUCCESS:
       return {

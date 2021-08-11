@@ -16,6 +16,7 @@ import "App.scss";
 import { RoomForm } from "util/Room";
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
+import { initPipeline } from "util/System";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -47,6 +48,7 @@ export const App = (): JSX.Element => {
   const AuthenticatedApp = (): JSX.Element => {
     useEffect(() => {
       initHttp();
+      initPipeline();
     }, []);
 
     useEffect(() => {
