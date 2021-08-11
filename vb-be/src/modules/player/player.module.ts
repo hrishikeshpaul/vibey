@@ -1,7 +1,7 @@
 import { SpotifyModule } from '@modules/spotify/spotify.module';
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { PlayerController } from './player.controller';
+import { PlayerController } from '@modules/player/player.controller';
 
 @Module({
   imports: [HttpModule, SpotifyModule],

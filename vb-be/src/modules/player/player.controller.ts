@@ -8,11 +8,10 @@ import {
   Post,
 } from '@nestjs/common';
 import { Response as Res } from 'express';
-
-import { HttpStatus } from 'src/util/http';
-
 import { firstValueFrom } from 'rxjs';
+
 import { SpotifyService } from '@modules/spotify/spotify.service';
+import { HttpStatus } from 'src/util/http';
 
 @Controller('/api/player')
 export class PlayerController {

@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse as A } from 'axios';
+import { Observable } from 'rxjs';
 
 import { getQueryString, scopes } from '@modules/spotify/spotify';
 import {
