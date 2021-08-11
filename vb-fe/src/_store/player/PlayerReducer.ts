@@ -72,6 +72,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
         trackDuration: action.payload,
       };
     }
+    case PlayerConstants.SET_VOLUME: {
+      return {
+        ...state,
+        volume: action.payload,
+      };
+    }
     default:
       return state;
   }

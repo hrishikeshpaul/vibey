@@ -56,7 +56,7 @@
         }
       ],
       "import/no-unresolved": "error",
-      "indent": [2, "tab"],
+      "indent": [4, "tab"],
       "import/order": [
         "error",
         {

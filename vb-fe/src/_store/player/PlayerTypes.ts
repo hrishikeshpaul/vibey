@@ -14,6 +14,7 @@ export enum PlayerConstants {
   UPDATE_TRACK = "UPDATE_TRACK",
   UPDATE_POSITION = "UPDATE_POSITION",
   UPDATE_DURATION = "UPDATE_DURATION",
+  SET_VOLUME = "SET_VOLUME",
 }
 
 export interface SetTrackNumber {
@@ -49,6 +50,11 @@ export interface SetCurrentPlaylist {
   payload: string;
 }
 
+export interface SetVolume {
+  type: typeof PlayerConstants.SET_VOLUME;
+  payload: number;
+}
+
 export type PlayerActionTypes =
   | SetTrackNumber
   | PlayTrack
@@ -56,4 +62,5 @@ export type PlayerActionTypes =
   | UpdateTrack
   | UpdatePosition
   | UpdateDuration
-  | SetCurrentPlaylist;
+  | SetCurrentPlaylist
+  | SetVolume;
