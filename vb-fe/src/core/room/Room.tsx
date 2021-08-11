@@ -91,7 +91,7 @@ export const Room = () => {
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>
-              <Box bg="dark" p="4" borderTopRightRadius="lg" borderTopLeftRadius="lg">
+              <Box bg="dark" borderTopRightRadius="lg" borderTopLeftRadius="lg">
                 <Player />
               </Box>
             </Layout.Footer>

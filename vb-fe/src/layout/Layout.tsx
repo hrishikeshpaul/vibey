@@ -62,9 +62,7 @@ export const LayoutFooterOverlay: FunctionComponent<GenericLayoutProps> = (): JS
 export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = true, children, className }) => {
   return (
     <Box
-      // display={show ? "block" : "none"}
       position="fixed"
-      // minH={MIN_SHEET_HEIGHT}
       bottom="0"
       w="100%"
       className={`container ${className}`}

@@ -42,7 +42,7 @@ export const Player = (): JSX.Element => {
   return (
     <>
       {track ? (
-        <Flex alignItems="center" justifyContent="space-between">
+        <Flex alignItems="center" justifyContent="space-between" p="4">
           <Flex alignItems="center" overflow="hidden">
             <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" />
             <Box overflow="hidden">

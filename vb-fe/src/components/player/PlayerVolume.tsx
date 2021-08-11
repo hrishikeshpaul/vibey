@@ -46,7 +46,7 @@ export const PlayerVolume: FunctionComponent = (): JSX.Element => {
         <PopoverContent>
           <PopoverArrow />
           <PopoverBody>
-            {volume && (
+            {volume !== null && (
               <Slider
                 onChange={onVolumeChange}
                 aria-label="slider-ex-3"
