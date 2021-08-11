@@ -46,7 +46,7 @@ export const PlayerVolume: FunctionComponent = (): JSX.Element => {
             <Slider
               onChange={onVolumeChange}
               aria-label="slider-ex-3"
-              value={volume}
+              defaultValue={volume}
               max={100}
               min={0}
               minH="150px"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const DEBOUNCE_TIME = 500;
+const DEBOUNCE_TIME = 200;
 
 export const useDebounce = () => {
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
@@ -13,10 +13,7 @@ export const useDebounce = () => {
 
     setDebounceTimer(
       setTimeout(() => {
-        if (inputValue && callback) {
-          return callback(inputValue);
-        }
-        return null;
+        return callback(inputValue);
       }, DEBOUNCE_TIME),
     );
   };
