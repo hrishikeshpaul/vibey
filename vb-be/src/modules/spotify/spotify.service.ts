@@ -104,7 +104,7 @@ export class SpotifyService {
   getUserPlaylists(
     spotifyAccessToken?: string,
     offset?: string,
-    limit = 5,
+    limit = 10,
   ): Observable<A<Playlist>> {
     return this.http.get(`${BASE_URL}/me/playlists`, {
       params: {

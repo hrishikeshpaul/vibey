@@ -26,7 +26,6 @@ export const PlayerVolume: FunctionComponent = (): JSX.Element => {
       .getVolume()
       .then((vol: number) => {
         setVolume(vol * 100);
-        console.log(vol, volume);
       });
   }, []); //eslint-disable-line
 
