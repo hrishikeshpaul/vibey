@@ -12,7 +12,7 @@ import { HttpStatus } from 'src/util/http';
 
 import { RoomService } from '@modules/room/room.service';
 import { ISocketCreateRoomData } from '@modules/socket/socket.constants';
-import { WsGuard } from './socket.middleware';
+import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 import { RedisService } from '@db/redis.module';

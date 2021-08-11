@@ -8,15 +8,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { Response as Res, Request as Req } from 'express';
-
-import { HttpStatus } from 'src/util/http';
-import { ErrorHandler, ErrorText } from 'src/util/error';
+import { firstValueFrom } from 'rxjs';
 
 import { RoomService } from '@modules/room/room.service';
 import { ICreateRoom } from '@modules/room/room.constants';
 import { TagService } from '@modules/tag/tag.service';
 import { SpotifyService } from '@modules/spotify/spotify.service';
-import { firstValueFrom } from 'rxjs';
+import { HttpStatus } from 'src/util/http';
+import { ErrorHandler, ErrorText } from 'src/util/error';
 
 @Controller('/api/room')
 export class RoomController {
@@ -67,8 +66,7 @@ export class RoomController {
       );
       return res.status(HttpStatus.OK).json(response.data);
     } catch (err) {
-      console.log(err);
-      // return res.status(err.statusCode).send(err);
+      return res.status(err.statusCode).send(err);
     }
   }
 }
