@@ -71,7 +71,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
   const onSubmit = (e: any) => {
     e.preventDefault();
     if (validateForm()) {
-      // dispatch(createRoomAction(room));
+      dispatch(createRoomAction(room));
       setRoom(initialRoomValues);
     }
   };
