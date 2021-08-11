@@ -3,7 +3,7 @@ import { play, next, previous } from "services/Player";
 import { State } from "_store/rootReducer";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { PlayerActionTypes, PlayerConstants } from "_store/player/PlayerTypes";
-import { WebPlayer } from "util/Player";
+import { WebPlayer } from "core/player/Player";
 
 export const playTrack =
   (contextUri: string) =>

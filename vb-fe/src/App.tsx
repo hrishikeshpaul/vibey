@@ -13,7 +13,7 @@ import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { createRoomAction } from "_store/room/RoomActions";
 
-import { WebPlayer } from "util/Player";
+import { WebPlayer } from "core/player/Player";
 import { RoomForm } from "util/Room";
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";

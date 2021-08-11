@@ -5,7 +5,7 @@ const DEFAULT_VOLUME = 50;
 
 declare global {
   interface Window {
-    onSpotifyWebPlaybackSDKReady: any;
+    onSpotifyWebPlaybackSDKReady: () => void;
     Spotify: any;
   }
 }

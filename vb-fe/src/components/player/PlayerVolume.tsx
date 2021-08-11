@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { HiVolumeOff, HiVolumeUp } from "react-icons/hi";
 import { useDebounce } from "util/Input";
-import { WebPlayer } from "util/Player";
+import { WebPlayer } from "core/player/Player";
 
 export const PlayerVolume: FunctionComponent = (): JSX.Element => {
   const [debounce] = useDebounce();

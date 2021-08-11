@@ -9,7 +9,7 @@ import { State } from "_store/rootReducer";
 import { SimplifiedArtist } from "util/Playlist";
 import { PlayerStates } from "_store/player/PlayerTypes";
 import { playNext, playPrevious } from "_store/player/PlayerActions";
-import { WebPlayer } from "util/Player";
+import { WebPlayer } from "core/player/Player";
 
 interface PlayerControlProps {
   showVolume?: boolean;
