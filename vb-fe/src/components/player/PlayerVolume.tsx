@@ -19,13 +19,16 @@ import { WebPlayer } from "core/player/Player";
 
 export const PlayerVolume: FunctionComponent = (): JSX.Element => {
   const [debounce] = useDebounce();
-  const [volume, setVolume] = useState<number>(0);
+  const [volume, setVolume] = useState<number | null>(null);
 
   useEffect(() => {
     WebPlayer.getPlayer()
       .getVolume()
-      .then((vol: number) => setVolume(vol * 100));
-  }, []);
+      .then((vol: number) => {
+        setVolume(vol * 100);
+        console.log(vol, volume);
+      });
+  }, []); //eslint-disable-line
 
   const onVolumeChange = (value: number) => {
     debounce(value, (vol: any) => {
@@ -38,26 +41,28 @@ export const PlayerVolume: FunctionComponent = (): JSX.Element => {
     <Box>
       <Popover>
         <PopoverTrigger>
-          <IconButton icon={volume > 0 ? <HiVolumeUp /> : <HiVolumeOff />} aria-label="track-volume" />
+          <IconButton icon={volume && volume > 0 ? <HiVolumeUp /> : <HiVolumeOff />} aria-label="track-volume" />
         </PopoverTrigger>
         <PopoverContent>
           <PopoverArrow />
           <PopoverBody>
-            <Slider
-              onChange={onVolumeChange}
-              aria-label="slider-ex-3"
-              defaultValue={volume}
-              max={100}
-              min={0}
-              minH="150px"
-              orientation="vertical"
-              colorScheme="teal"
-            >
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb />
-            </Slider>
+            {volume && (
+              <Slider
+                onChange={onVolumeChange}
+                aria-label="slider-ex-3"
+                defaultValue={50}
+                max={100}
+                min={0}
+                minH="150px"
+                orientation="vertical"
+                colorScheme="teal"
+              >
+                <SliderTrack>
+                  <SliderFilledTrack />
+                </SliderTrack>
+                <SliderThumb />
+              </Slider>
+            )}
           </PopoverBody>
         </PopoverContent>
       </Popover>
