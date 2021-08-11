@@ -3,10 +3,12 @@ import React, { FunctionComponent } from "react";
 import { Avatar, Box, Heading, Text, Flex, IconButton, Icon, VStack } from "@chakra-ui/react";
 import { Playlist as PlaylistType } from "util/Playlist";
 import { FaPlay } from "react-icons/fa";
+import { HiVolumeUp } from "react-icons/hi";
 
 import "components/playlist/Playlist.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { playTrack } from "_store/player/PlayerActions";
+import { State } from "_store/rootReducer";
 
 interface Props {
   playlists: PlaylistType[];
@@ -19,6 +21,7 @@ interface PlaylistItemProps {
 
 export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist }) => {
   const dispatch = useDispatch();
+  const playlistContext = useSelector((state: State) => state.player.playlistContext);
 
   const onPlay = () => {
     dispatch(playTrack(playlist.uri));
@@ -33,9 +36,15 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
       onClick={onPlay}
     >
       <Box pr="3">
-        <Icon fontSize="md" size="md">
-          <FaPlay />
-        </Icon>
+        {playlistContext === playlist.uri ? (
+          <Icon fontSize="lg" size="lg" color="teal.400">
+            <HiVolumeUp />
+          </Icon>
+        ) : (
+          <Icon size="lg" fontSize="md" boxSize={[18, 18]}>
+            <FaPlay />
+          </Icon>
+        )}
       </Box>
       <Flex overflow="hidden" alignItems="center">
         <Avatar src={playlist.images[0].url} size="md" borderRadius="lg" />
