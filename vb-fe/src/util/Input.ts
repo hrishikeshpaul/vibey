@@ -14,7 +14,7 @@ export const useDebounce = () => {
     setDebounceTimer(
       setTimeout(() => {
         if (inputValue && callback) {
-          return callback();
+          return callback(inputValue);
         }
         return null;
       }, DEBOUNCE_TIME),

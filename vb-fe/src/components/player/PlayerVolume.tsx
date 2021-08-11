@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState, useEffect } from "react";
 
 import {
   Slider,
@@ -15,35 +15,43 @@ import {
 } from "@chakra-ui/react";
 import { HiVolumeOff, HiVolumeUp } from "react-icons/hi";
 import { useDebounce } from "util/Input";
-import { useDispatch, useSelector } from "react-redux";
-import { State } from "_store/rootReducer";
+import { WebPlayer } from "util/Player";
 
 export const PlayerVolume: FunctionComponent = (): JSX.Element => {
   const [debounce] = useDebounce();
-  const volume = useSelector((state: State) => state.player.volume);
-  const dispatch = useDispatch();
+  const [volume, setVolume] = useState<number>(0);
+
+  useEffect(() => {
+    WebPlayer.getPlayer()
+      .getVolume()
+      .then((vol: number) => setVolume(vol * 100));
+  }, []);
+
+  const onVolumeChange = (value: number) => {
+    debounce(value, (vol: any) => {
+      setVolume(vol);
+      WebPlayer.getPlayer().setVolume(vol / 100);
+    });
+  };
 
   return (
     <Box>
       <Popover>
         <PopoverTrigger>
-          <IconButton icon={<HiVolumeUp />} aria-label="track-volume" />
+          <IconButton icon={volume > 0 ? <HiVolumeUp /> : <HiVolumeOff />} aria-label="track-volume" />
         </PopoverTrigger>
         <PopoverContent>
           <PopoverArrow />
           <PopoverBody>
             <Slider
-              onChange={(value: number) => {
-                debounce(value, () => {
-                  console.log(value);
-                });
-              }}
+              onChange={onVolumeChange}
               aria-label="slider-ex-3"
-              defaultValue={volume}
+              value={volume}
               max={100}
               min={0}
+              minH="150px"
+              orientation="vertical"
               colorScheme="teal"
-              style={{ position: "absolute" }}
             >
               <SliderTrack>
                 <SliderFilledTrack />

@@ -39,10 +39,11 @@ class Player {
       this.player.addListener("ready", (data: any) => {
         console.log("Ready with Device ID", data);
         this.setDeviceId(data.device_id);
-        store.dispatch({ type: PlayerConstants.SET_VOLUME, payload: DEFAULT_VOLUME });
+        // store.dispatch({ type: PlayerConstants.SET_VOLUME, payload: DEFAULT_VOLUME });
       });
 
       this.player.addListener("player_state_changed", (data: any) => {
+        console.log(data);
         store.dispatch({
           type: PlayerConstants.UPDATE_TRACK,
           payload: data.track_window.current_track,

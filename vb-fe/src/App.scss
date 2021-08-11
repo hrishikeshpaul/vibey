@@ -35,3 +35,16 @@ body,
   border-radius: 0px;
   box-shadow: inset 0px 0px 0px 0px #f0f0f0;
 }
+
+.chakra-popover__content {
+  padding-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px !important;
+
+  .chakra-popover__body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
