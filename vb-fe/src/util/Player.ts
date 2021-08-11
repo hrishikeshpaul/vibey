@@ -54,10 +54,6 @@ class Player {
           type: PlayerConstants.UPDATE_POSITION,
           payload: data.position,
         });
-        store.dispatch({
-          type: PlayerConstants.UPDATE_DURATION,
-          payload: data.duration,
-        });
       });
       this.player.connect();
     };

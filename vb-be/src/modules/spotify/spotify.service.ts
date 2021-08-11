@@ -165,46 +165,6 @@ export class SpotifyService {
     );
   }
 
-  playPause(deviceId: string, accessToken: string) {
-    return this.http.put(
-      `${BASE_URL}/me/player/pause`,
-      {},
-      {
-        params: {
-          device_id: deviceId,
-        },
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-  }
-
-  playResume(
-    contextUri: string,
-    deviceId: string,
-    position: string,
-    accessToken: string,
-    trackNumber: string,
-  ) {
-    return this.http.put(
-      `${BASE_URL}/me/player/play`,
-      {
-        context_uri: contextUri,
-        position_ms: parseInt(position, 10),
-        offset: { position: trackNumber },
-      },
-      {
-        params: {
-          device_id: deviceId,
-        },
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-  }
-
   getPlaylistTracks(
     playlistId: string,
     accessToken: string,

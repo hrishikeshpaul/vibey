@@ -8,7 +8,8 @@ import { PlayerVolume } from "components/player/PlayerVolume";
 import { State } from "_store/rootReducer";
 import { SimplifiedArtist } from "util/Playlist";
 import { PlayerStates } from "_store/player/PlayerTypes";
-import { pauseTrack, playNext, playPrevious, resumeTrack } from "_store/player/PlayerActions";
+import { playNext, playPrevious } from "_store/player/PlayerActions";
+import { WebPlayer } from "util/Player";
 
 interface PlayerControlProps {
   showVolume?: boolean;
@@ -16,27 +17,16 @@ interface PlayerControlProps {
 
 const PlayerControls: FunctionComponent<PlayerControlProps> = ({ showVolume = true }): JSX.Element => {
   const trackState = useSelector((state: State) => state.player.state);
-  const trackPosition = useSelector((state: State) => state.player.trackPosition);
-  const contextUri = useSelector((state: State) => state.player.playlistContext);
-  const volume = useSelector((state: State) => state.player.volume);
   const dispatch = useDispatch();
-
-  const onVolumeChange = (value: number) => {
-    console.log(value);
-  };
 
   return (
     <Flex>
       <HStack spacing="3">
         <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={() => dispatch(playPrevious())} />
         {trackState === PlayerStates.PLAYING ? (
-          <IconButton icon={<FaPause />} aria-label="track-pause" onClick={() => dispatch(pauseTrack())} />
+          <IconButton icon={<FaPause />} aria-label="track-pause" onClick={() => WebPlayer.getPlayer().pause()} />
         ) : (
-          <IconButton
-            icon={<FaPlay />}
-            aria-label="track-play"
-            onClick={() => dispatch(resumeTrack(contextUri, trackPosition))}
-          />
+          <IconButton icon={<FaPlay />} aria-label="track-play" onClick={() => WebPlayer.getPlayer().resume()} />
         )}
         <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={() => dispatch(playNext())} />
         <Divider />

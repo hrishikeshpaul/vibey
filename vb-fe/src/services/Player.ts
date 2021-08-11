@@ -39,30 +39,3 @@ export const previous = (deviceId: string) => {
     },
   );
 };
-
-export const pause = (deviceId: string) => {
-  return Http.put(
-    PlayerEndpoints.PAUSE,
-    {},
-    {
-      params: {
-        device_id: deviceId,
-      },
-    },
-  );
-};
-
-export const resume = (contextUri: string, deviceId: string, position: number, trackNumber: number) => {
-  return Http.put(
-    PlayerEndpoints.RESUME,
-    {},
-    {
-      params: {
-        position,
-        track_number: trackNumber,
-        context_uri: contextUri,
-        device_id: deviceId,
-      },
-    },
-  );
-};
