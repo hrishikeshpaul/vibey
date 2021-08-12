@@ -88,7 +88,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth }): JSX.Element => {
           </Button>
         </Box>
         <Box display={{ base: "block", md: "none" }} onClick={onCreateRoomOpen}>
-          <IconButton colorScheme="primary" icon={<PlusIcon />} type="button" aria-label="icon" />
+          <IconButton colorScheme="primary" icon={<PlusIcon />} type="button" aria-label="icon" size="sm" />
         </Box>
 
         <Menu>

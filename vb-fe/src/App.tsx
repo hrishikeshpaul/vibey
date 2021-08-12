@@ -78,10 +78,6 @@ export const App = (): JSX.Element => {
       {isCreateRoomModalOpen && (
         <CreateRoom
           open={isCreateRoomModalOpen}
-          close={() => dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: false })}
-          submit={(room: RoomForm) => {
-            dispatch(createRoomAction(room));
-          }}
           handleError={(e) => {
             console.log(e);
           }}
