@@ -38,21 +38,18 @@ const PlayerControls: FunctionComponent<PlayerControlProps> = ({ showVolume = tr
 
 export const Player = (): JSX.Element => {
   const track = useSelector((state: State) => state.player.track);
-
   return (
     <>
       {track ? (
-        <Flex alignItems="center" justifyContent="space-between" p="4">
+        <Flex alignItems="center" justifyContent="space-between" p="4" overflow="hidden">
           <Flex alignItems="center" overflow="hidden">
             <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" />
             <Box overflow="hidden">
               <Text isTruncated lineHeight="1.2" pl="3">
-                <Link isExternal href={track.href}>
-                  {track.name}
-                </Link>
+                {track.name}
               </Text>
               <Text fontSize="sm" isTruncated pl="3">
-                {track.artists.map((artist: SimplifiedArtist) => artist.name).join(",")}
+                {track.artists.map((artist: SimplifiedArtist) => artist.name).join(", ")}
               </Text>
             </Box>
           </Flex>
