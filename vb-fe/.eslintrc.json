@@ -16,6 +16,7 @@
     "rules": {
       "react/prop-types": "off",
       "no-unused-vars": "off",
+      "consistent-return": "off",
       "no-use-before-define": "off",
       "no-underscore-dangle": "off",
       "@typescript-eslint/no-unused-vars": ["warn"],

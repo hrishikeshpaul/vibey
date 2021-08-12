@@ -5,6 +5,7 @@ import { FaStepBackward, FaStepForward, FaPause, FaPlay } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 import { PlayerVolume } from "components/player/PlayerVolume";
+import { PlayerSeeker } from "components/player/PlayerSeek";
 import { State } from "_store/rootReducer";
 import { SimplifiedArtist } from "util/Playlist";
 import { PlayerStates } from "_store/player/PlayerTypes";
@@ -41,8 +42,8 @@ export const Player = (): JSX.Element => {
   return (
     <>
       {track ? (
-        <Flex alignItems="center" justifyContent="space-between" p="4" overflow="hidden">
-          <Flex alignItems="center" overflow="hidden">
+        <Flex alignItems="center" justifyContent="space-between" p="4" overflow="hidden" style={{ gap: "20px" }}>
+          <Flex alignItems="center" overflow="hidden" flex="0.3">
             <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" />
             <Box overflow="hidden">
               <Text isTruncated lineHeight="1.2" pl="3">
@@ -53,7 +54,12 @@ export const Player = (): JSX.Element => {
               </Text>
             </Box>
           </Flex>
-          <PlayerControls />
+          <Box flex="0.6" w="100%">
+            <PlayerSeeker />
+          </Box>
+          <Box flex="0.1">
+            <PlayerControls />
+          </Box>
         </Flex>
       ) : null}
     </>
