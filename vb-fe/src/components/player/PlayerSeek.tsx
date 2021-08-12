@@ -49,11 +49,19 @@ export const PlayerSeeker = () => {
       <Text fontSize="xs" pr="2">
         {formatMilliseconds(position, false)}
       </Text>
-      <Slider aria-label="vb-seek-slider" colorScheme="teal" w="100%" max={track?.duration_ms} min={0} value={position}>
+      <Slider
+        aria-label="vb-seek-slider"
+        colorScheme="teal"
+        w="100%"
+        max={track?.duration_ms}
+        min={0}
+        value={position}
+        focusThumbOnChange={false}
+      >
         <SliderTrack>
           <SliderFilledTrack />
         </SliderTrack>
-        <SliderThumb />
+        {/* <SliderThumb /> */}
       </Slider>
       <Text fontSize="xs" pl="2">
         {formatMilliseconds(track ? track.duration_ms : 0, false)}
