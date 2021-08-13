@@ -14,12 +14,14 @@ import { PlayerStates } from "_store/player/PlayerTypes";
 import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
 import { WebPlayer } from "core/player/Player";
 
+export { PlayerVolume } from "components/player/PlayerVolume";
+
 interface PlayerControlProps {
   showVolume?: boolean;
   showShuffle?: boolean;
 }
 
-const PlayerControls: FunctionComponent<PlayerControlProps> = ({
+export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   showVolume = true,
   showShuffle = true,
 }): JSX.Element => {

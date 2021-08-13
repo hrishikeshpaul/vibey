@@ -84,7 +84,7 @@ export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({
   mx = 10,
 }): JSX.Element => {
   return (
-    <Box mx={{ lg: mx, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
+    <Box mx={{ lg: mx, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden" height="800px">
       {children}
     </Box>
   );

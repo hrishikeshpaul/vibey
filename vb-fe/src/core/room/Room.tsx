@@ -10,9 +10,7 @@ import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { getUserPlaylistsAction } from "_store/room/RoomActions";
 import { RoomConstants } from "_store/room/RoomTypes";
-import { usePagination } from "util/Input";
 import { Room as RoomType } from "util/Room";
 import { Tag } from "util/Tags";
 import { User } from "util/User";
@@ -28,17 +26,10 @@ export const Room = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const socket = useSelector((state: State) => state.system.socket);
-  const playlists = useSelector((state: State) => state.room.playlists);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
   const [room, setRoom] = useState<RoomType | null>(null);
-  const [playlistOffset, setPlaylistOffset] = useState<number>(0);
   const [isHost, setIsHost] = useState<boolean>(false);
-
-  usePagination(() => {
-    dispatch(getUserPlaylistsAction(playlistOffset));
-    setPlaylistOffset(playlistOffset + 10);
-  });
 
   useEffect(() => {
     let isMounted = true;
@@ -54,9 +45,7 @@ export const Room = () => {
 
       socket?.on("join-room-success", (data: RoomType) => {
         dispatch({ type: SystemConstants.SUCCESS });
-        dispatch(getUserPlaylistsAction(playlistOffset));
-        setPlaylistOffset(playlistOffset + 10);
-        if (data.host._id === currentUser?._id) setIsHost(true);
+        setIsHost(data.host._id === currentUser?._id);
         setRoom(data);
       });
     }
@@ -91,7 +80,7 @@ export const Room = () => {
       <Layout.Wrapper>
         <Layout.Header>
           <Navbar isAuth isHost={isHost} />
-          {room && currentUser ? <RoomToolbar room={room} currentUser={currentUser} /> : <></>}
+          {room && currentUser ? <RoomToolbar room={room} isHost={isHost} /> : <></>}
         </Layout.Header>
         {room ? (
           <>
@@ -99,9 +88,7 @@ export const Room = () => {
               <Layout.Sidebar flex="0.2">
                 <RoomInfo {...room} />
               </Layout.Sidebar>
-              <Layout.Content flex="0.5">
-                <Playlist playlists={playlists} />
-              </Layout.Content>
+              <Layout.Content flex="0.5">{isHost ? <Playlist /> : <></>}</Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
                 <CurrentUsers users={room.currentUsers} />
               </Layout.Sidebar>

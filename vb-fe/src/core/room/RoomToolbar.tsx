@@ -11,10 +11,10 @@ import { useHistory } from "react-router-dom";
 
 interface Props {
   room: Room;
-  currentUser: User;
+  isHost: boolean;
 }
 
-export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JSX.Element => {
+export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Element => {
   const history = useHistory();
 
   const BackIcon = (): JSX.Element => {
@@ -30,7 +30,7 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JS
   };
 
   return (
-    <Flex alignItems="center" justifyContent="space-between" pt="6" pb="6" bg="primaryDark">
+    <Flex alignItems="center" justifyContent="space-between" pt="5" pb="6" bg="primaryDark">
       <Flex alignItems="center" overflow="hidden">
         <IconButton
           icon={<BackIcon />}
@@ -48,9 +48,7 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JS
       <HStack spacing={3}>
         <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" fontSize="xl" />
 
-        {room?.host._id === currentUser?._id && (
-          <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
-        )}
+        {isHost && <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />}
         <IconButton icon={<HiShare />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
         <Flex justifyContent="center" alignItems="center">
           <IconButton icon={<IoPeople />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />

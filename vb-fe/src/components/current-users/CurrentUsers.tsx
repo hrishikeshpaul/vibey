@@ -11,7 +11,7 @@ export const CurrentUsers: FunctionComponent<Props> = ({ users }): JSX.Element =
   return (
     <>
       {users && users.length > 0 ? (
-        <Box bg="dark" height="100%" position="relative" borderRadius="lg" overflow="hidden">
+        <Box bg="gray.800" height="100%" position="relative" borderRadius="lg" overflow="hidden">
           <Heading size="sm" p="6">
             Current Users
           </Heading>
@@ -31,7 +31,7 @@ export const CurrentUsers: FunctionComponent<Props> = ({ users }): JSX.Element =
           </Box>
         </Box>
       ) : (
-        <div>No users currently in room.</div>
+        <Text>No users currently in room.</Text>
       )}
     </>
   );

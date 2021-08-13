@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
 import { Avatar, Box, Heading, Text, Flex, IconButton, Icon, VStack } from "@chakra-ui/react";
 import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
@@ -9,10 +9,8 @@ import "components/playlist/Playlist.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { playTrack } from "_store/player/PlayerActions";
 import { State } from "_store/rootReducer";
-
-interface Props {
-  playlists: PlaylistType[];
-}
+import { getUserPlaylistsAction } from "_store/room/RoomActions";
+import { usePagination } from "util/Input";
 
 interface PlaylistItemProps {
   playlist: PlaylistType;
@@ -21,6 +19,7 @@ interface PlaylistItemProps {
 
 export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist }) => {
   const dispatch = useDispatch();
+
   const playlistContext = useSelector((state: State) => state.player.playlistContext);
   playlist.owner.displayName = playlist.owner.display_name || "Spotify User"; //eslint-disable-line
 
@@ -68,8 +67,21 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
   );
 };
 
-export const Playlist: FunctionComponent<Props> = ({ playlists }): JSX.Element => {
+export const Playlist: FunctionComponent = (): JSX.Element => {
+  const dispatch = useDispatch();
   const { playlistLoading } = useSelector((state: State) => state.room);
+  const [playlistOffset, setPlaylistOffset] = useState<number>(0);
+  const playlists = useSelector((state: State) => state.room.playlists);
+
+  useEffect(() => {
+    dispatch(getUserPlaylistsAction(playlistOffset));
+    setPlaylistOffset(playlistOffset + 10);
+  }, []); //eslint-disable-line
+
+  usePagination(() => {
+    dispatch(getUserPlaylistsAction(playlistOffset));
+    setPlaylistOffset(playlistOffset + 10);
+  });
 
   const NoPlaylists: FunctionComponent = () => {
     return (
