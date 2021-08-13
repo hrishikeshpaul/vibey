@@ -14,6 +14,7 @@ import {
   Box,
   Flex,
   HStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { CgMenuMotion } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
@@ -93,31 +94,38 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
     };
 
     const NavbarButtons = (): JSX.Element => {
+      const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
       if (isHost) {
         return (
-          <Button colorScheme="red" bgColor="red.400" leftIcon={<CloseIcon />} type="button">
-            <Text display={{ base: "none", md: "block" }} pl="2">
-              Close Room
-            </Text>
+          <Button colorScheme="red" bgColor="red.400" leftIcon={<CloseIcon />} type="button" size={buttonSize}>
+            <Text pl="2">Close Room</Text>
           </Button>
         );
       }
 
       if (isInRoom && !isHost) {
         return (
-          <Button colorScheme="orange" leftIcon={<BiLogOut />} type="button" onClick={onCreateRoomOpen}>
-            <Text display={{ base: "none", md: "block" }} pl="2">
-              Leave Room
-            </Text>
+          <Button
+            colorScheme="orange"
+            leftIcon={<BiLogOut />}
+            type="button"
+            onClick={onCreateRoomOpen}
+            size={buttonSize}
+          >
+            <Text pl="2">Leave Room</Text>
           </Button>
         );
       }
 
       return (
-        <Button colorScheme="primary" leftIcon={<PlusIcon />} type="button" onClick={onCreateRoomOpen}>
-          <Text display={{ base: "none", md: "block" }} pl="2">
-            Create Room
-          </Text>
+        <Button
+          colorScheme="primary"
+          leftIcon={<PlusIcon />}
+          type="button"
+          onClick={onCreateRoomOpen}
+          size={buttonSize}
+        >
+          <Text pl="2">Create Room</Text>
         </Button>
       );
     };
