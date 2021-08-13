@@ -22,7 +22,7 @@ interface RoomInfoProps {
   tags: Tag[];
 }
 
-export const Room = () => {
+export const Room: FunctionComponent = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useDispatch();
   const socket = useSelector((state: State) => state.system.socket);

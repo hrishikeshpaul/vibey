@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
-import { Flex, IconButton, HStack, Text, Icon, Box, Heading } from "@chakra-ui/react";
+
+import { Flex, IconButton, HStack, Text, Icon, Heading } from "@chakra-ui/react";
 import { HiPencil, HiShare } from "react-icons/hi";
 import { IoPeople } from "react-icons/io5";
 import { FaInfo } from "react-icons/fa";
 
 import { ReactComponent as Back } from "assets/icons/back.svg";
 import { Room } from "util/Room";
-import { User } from "util/User";
 import { useHistory } from "react-router-dom";
 
 interface Props {

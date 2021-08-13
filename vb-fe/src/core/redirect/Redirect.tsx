@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FunctionComponent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthorization } from "_store/user/UserActions";
 import { useHistory } from "react-router-dom";
 import { State } from "_store/rootReducer";
 
-export const Redirect = () => {
+export const Redirect: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
   const history = useHistory();
   const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
-
   /*
    * useEffect on initial render only
    * pulls code and state from query

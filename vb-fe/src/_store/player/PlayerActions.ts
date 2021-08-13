@@ -8,9 +8,11 @@ import { WebPlayer } from "core/player/Player";
 
 export const playTrack =
   (contextUri: string) =>
-  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>): Promise<void> => {
     const deviceId = WebPlayer.getDeviceId();
+
     dispatch({ type: SystemConstants.LOADING });
+
     try {
       await play(contextUri, deviceId);
       dispatch({ type: PlayerConstants.SET_CURRENT_PLAYLIST, payload: contextUri });

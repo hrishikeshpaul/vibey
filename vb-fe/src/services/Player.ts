@@ -2,8 +2,9 @@
 
 import { Http } from "util/Http";
 import { PlayerEndpoints } from "util/Endpoints";
+import { AxiosResponse } from "axios";
 
-export const play = (contextUri: string, deviceId: string) => {
+export const play = (contextUri: string, deviceId: string): Promise<AxiosResponse<void>> => {
   return Http.put(
     PlayerEndpoints.PLAY,
     {},
@@ -16,7 +17,7 @@ export const play = (contextUri: string, deviceId: string) => {
   );
 };
 
-export const next = (deviceId: string) => {
+export const next = (deviceId: string): Promise<AxiosResponse<void>> => {
   return Http.post(
     PlayerEndpoints.NEXT,
     {},
@@ -28,7 +29,7 @@ export const next = (deviceId: string) => {
   );
 };
 
-export const previous = (deviceId: string) => {
+export const previous = (deviceId: string): Promise<AxiosResponse<void>> => {
   return Http.post(
     PlayerEndpoints.PREVIOUS,
     {},
@@ -40,7 +41,7 @@ export const previous = (deviceId: string) => {
   );
 };
 
-export const shuffle = (deviceId: string, state: boolean) => {
+export const shuffle = (deviceId: string, state: boolean): Promise<AxiosResponse<void>> => {
   return Http.put(
     PlayerEndpoints.SHUFFLE,
     {},

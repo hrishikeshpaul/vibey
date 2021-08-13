@@ -59,7 +59,7 @@ export const LayoutFooterOverlay: FunctionComponent<GenericLayoutProps> = (): JS
  * The footer will also be expanded so that it can reveal the room details and the people
  * that are in the room and the other information that has been discussed in the spec.
  */
-export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = true, children, className }) => {
+export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ children, className }) => {
   return (
     <Box
       position="fixed"
@@ -84,7 +84,7 @@ export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({
   mx = 10,
 }): JSX.Element => {
   return (
-    <Box mx={{ lg: mx, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden" height="800px">
+    <Box mx={{ lg: mx, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
       {children}
     </Box>
   );
@@ -107,7 +107,7 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({
     const header: HTMLElement | null = document.getElementById("vb-header");
     const footer: HTMLElement | null = document.getElementById("vb-footer");
     const main: HTMLElement | null = document.getElementById("vb-main");
-    const headerHeight: number = header!.clientHeight;
+    const headerHeight: number = header?.clientHeight || 0;
     const footerHeight: number = footer?.clientHeight || 0;
     const mainHeight: number = main?.clientHeight || 0;
 
