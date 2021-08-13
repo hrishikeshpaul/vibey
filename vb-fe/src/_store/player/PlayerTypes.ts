@@ -12,6 +12,7 @@ export enum PlayerConstants {
   PAUSE = "PAUSE",
   UPDATE_TRACK = "UPDATE_TRACK",
   UPDATE_POSITION = "UPDATE_POSITION",
+  CONTROLS_DISABLED = "CONTROLS_DISABLED",
 }
 
 export interface PlayTrack {
@@ -37,4 +38,15 @@ export interface SetCurrentPlaylist {
   payload: string;
 }
 
-export type PlayerActionTypes = PlayTrack | PauseTrack | UpdateTrack | UpdatePosition | SetCurrentPlaylist;
+export interface SetControlsDisabled {
+  type: typeof PlayerConstants.CONTROLS_DISABLED;
+  payload: boolean;
+}
+
+export type PlayerActionTypes =
+  | PlayTrack
+  | PauseTrack
+  | UpdateTrack
+  | UpdatePosition
+  | SetCurrentPlaylist
+  | SetControlsDisabled;

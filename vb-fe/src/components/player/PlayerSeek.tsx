@@ -46,7 +46,7 @@ export const PlayerSeeker = () => {
 
   return (
     <Flex>
-      <Text fontSize="xs" pr="2">
+      <Text fontSize="xs" pr="2" color="gray.200">
         {formatMilliseconds(position, false)}
       </Text>
       <Slider
@@ -61,9 +61,8 @@ export const PlayerSeeker = () => {
         <SliderTrack>
           <SliderFilledTrack />
         </SliderTrack>
-        {/* <SliderThumb /> */}
       </Slider>
-      <Text fontSize="xs" pl="2">
+      <Text fontSize="xs" pl="2" color="gray.200">
         {formatMilliseconds(track ? track.duration_ms : 0, false)}
       </Text>
     </Flex>

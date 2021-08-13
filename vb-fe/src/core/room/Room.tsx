@@ -84,20 +84,20 @@ export const Room = () => {
                 <RoomInfo {...room} />
               </Layout.Sidebar>
               <Layout.Content flex="0.5">
-                <Playlist playlists={[]} />
+                <Playlist playlists={playlists} />
               </Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
                 <CurrentUsers users={room.currentUsers} />
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>
-              <Box bg="dark" borderTopRightRadius="lg" borderTopLeftRadius="lg">
+              <Box bg="gray.800" borderTopRightRadius="lg" borderTopLeftRadius="lg">
                 <Player />
               </Box>
             </Layout.Footer>
           </>
         ) : (
-          <span>Room Loading</span>
+          <Text>Room Loading..</Text>
         )}
       </Layout.Wrapper>
     </>

@@ -42,22 +42,22 @@ export const Player = (): JSX.Element => {
   return (
     <>
       {track ? (
-        <Flex alignItems="center" justifyContent="space-between" p="4" overflow="hidden" style={{ gap: "20px" }}>
-          <Flex alignItems="center" overflow="hidden" flex="0.3">
+        <Flex alignItems="center" justifyContent="space-between" p="4" overflow="hidden" style={{ gap: "30px" }}>
+          <Flex alignItems="center" overflow="hidden" flex={{ base: "0.8", md: "0.3" }}>
             <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" />
             <Box overflow="hidden">
               <Text isTruncated lineHeight="1.2" pl="3">
                 {track.name}
               </Text>
-              <Text fontSize="sm" isTruncated pl="3">
+              <Text fontSize="sm" isTruncated pl="3" color="gray.100">
                 {track.artists.map((artist: SimplifiedArtist) => artist.name).join(", ")}
               </Text>
             </Box>
           </Flex>
-          <Box flex="0.6" w="100%">
+          <Box flex="0.6" w="100%" display={{ base: "none", md: "block" }}>
             <PlayerSeeker />
           </Box>
-          <Box flex="0.1">
+          <Box flex={{ base: "0.2", md: "0.1" }}>
             <PlayerControls />
           </Box>
         </Flex>

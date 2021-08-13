@@ -7,6 +7,7 @@ import { FaInfo } from "react-icons/fa";
 import { ReactComponent as Back } from "assets/icons/back.svg";
 import { Room } from "util/Room";
 import { User } from "util/User";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   room: Room;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JSX.Element => {
+  const history = useHistory();
+
   const BackIcon = (): JSX.Element => {
     return (
       <Icon>
@@ -22,10 +25,21 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, currentUser }): JS
     );
   };
 
+  const onBack = () => {
+    history.push("/");
+  };
+
   return (
     <Flex alignItems="center" justifyContent="space-between" pt="6" pb="6" bg="primaryDark">
       <Flex alignItems="center" overflow="hidden">
-        <IconButton icon={<BackIcon />} aria-label="room-back" bg="primaryDark" color="white" fontSize="xl" />
+        <IconButton
+          icon={<BackIcon />}
+          aria-label="room-back"
+          bg="primaryDark"
+          color="white"
+          fontSize="xl"
+          onClick={onBack}
+        />
         <Heading fontSize="xl" pl="3" isTruncated display={{ base: "block", lg: "none" }}>
           {room.name}
         </Heading>
