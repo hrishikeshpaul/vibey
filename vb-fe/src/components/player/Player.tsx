@@ -23,9 +23,9 @@ const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   showVolume = true,
   showShuffle = true,
 }): JSX.Element => {
-  const trackState = useSelector((state: State) => state.player.state);
   const dispatch = useDispatch();
   const { shuffle } = useSelector((state: State) => state.player);
+  const trackState = useSelector((state: State) => state.player.state);
 
   const Seek: FunctionComponent = (): JSX.Element => {
     return (
@@ -43,7 +43,7 @@ const PlayerControls: FunctionComponent<PlayerControlProps> = ({
     <Flex>
       <HStack spacing="3">
         <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={() => dispatch(playPrevious())} />
-        {trackState === PlayerStates.PLAYING ? (
+        {trackState && trackState === PlayerStates.PLAYING ? (
           <IconButton
             icon={<TiMediaPause />}
             fontSize="3xl"
@@ -62,7 +62,7 @@ const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   );
 };
 
-export const Player = (): JSX.Element => {
+export const Player: FunctionComponent = (): JSX.Element => {
   const track = useSelector((state: State) => state.player.track);
   return (
     <>

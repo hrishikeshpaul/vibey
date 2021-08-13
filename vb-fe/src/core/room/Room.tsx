@@ -15,6 +15,7 @@ import { SystemConstants } from "_store/system/SystemTypes";
 import { User } from "util/User";
 import { getUserPlaylistsAction } from "_store/room/RoomActions";
 import { Tag } from "util/Tags";
+import { RoomConstants } from "_store/room/RoomTypes";
 
 interface RoomInfoProps {
   name: string;
@@ -34,8 +35,9 @@ export const Room = () => {
   const [isHost, setIsHost] = useState<boolean>(false);
 
   useEffect(() => {
+    let isMounted = true;
     dispatch({ type: SystemConstants.LOADING });
-    if (socket) {
+    if (isMounted && socket) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
         socket?.emit("join-room", roomId);
@@ -49,6 +51,11 @@ export const Room = () => {
         setRoom(data);
       });
     }
+
+    return () => {
+      isMounted = false;
+      dispatch({ type: RoomConstants.ADD_TO_PLAYLIST, payload: [] });
+    };
   }, [socket]); //eslint-disable-line
 
   const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name, description, tags }): JSX.Element => {
