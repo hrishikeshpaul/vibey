@@ -19,16 +19,21 @@ import {
   FormControl,
   FormLabel,
   Button,
+  Text,
 } from "@chakra-ui/react";
 
 import "components/create/CreateRoom.scss";
 import { Select } from "components/select/Select";
 import { RoomForm } from "util/Room";
+import { Tag } from "util/Tags";
+import { useDispatch } from "react-redux";
+import { createRoomAction } from "_store/room/RoomActions";
+import { SystemConstants } from "_store/system/SystemTypes";
+
+const MAX_NAME_LENGTH = 40;
 
 type Props = {
   open: boolean;
-  close: () => void;
-  submit: (room: RoomForm) => void;
   handleError: (error: any) => void;
 };
 
@@ -43,7 +48,8 @@ const initialRoomValues: RoomType = {
   error: false,
 };
 
-export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError, submit }) => {
+export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
+  const dispatch = useDispatch();
   const [room, setRoom] = useState(initialRoomValues);
 
   /**
@@ -51,10 +57,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
    */
   const validateForm = () => {
     if (!room.name.trim()) {
-      setRoom((prev) => ({
-        ...prev,
-        error: true,
-      }));
+      setRoom({ ...room, error: true });
       return false;
     }
     return true;
@@ -68,7 +71,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
   const onSubmit = (e: any) => {
     e.preventDefault();
     if (validateForm()) {
-      submit(room);
+      dispatch(createRoomAction(room));
       setRoom(initialRoomValues);
     }
   };
@@ -83,10 +86,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
 
     if (name === "name" && value) setRoom({ ...room, error: false });
 
-    setRoom((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setRoom({ ...room, [name]: value });
   };
 
   /**
@@ -95,29 +95,27 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
    *
    * @param tag tag that has been added
    */
-  const handleUpdateTags = (tag: any) => {
-    const currentTags = room.tags;
-    if (tag) {
-      setRoom((prev) => ({
-        ...prev,
-        tags: currentTags.concat(tag),
-      }));
-    }
+  const handleUpdateTags = (tags: Tag[]) => {
+    setRoom({ ...room, tags });
+  };
+
+  const onClose = () => {
+    dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: false });
   };
 
   return (
-    <Modal isOpen={open} onClose={close} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
-      <ModalOverlay />
-      <ModalContent bg="gray.800" p={{ base: "0", md: "4" }} py="3">
+    <Modal isOpen={open} onClose={onClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
+      <ModalOverlay bgColor="blackAlpha.800" />
+      <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} py="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
           <Heading size="lg">Create a room</Heading>
           <ModalCloseButton position="relative" top="none" right="none" />
         </ModalHeader>
         <ModalBody mt={4}>
-          <form id="create-form" onSubmit={(e) => onSubmit(e)}>
+          <form id="create-form" onSubmit={onSubmit}>
             <FormControl>
               <FormLabel htmlFor="name">Room name</FormLabel>
-              <InputGroup>
+              <InputGroup display="flex" flexDir="column">
                 <Input
                   isInvalid={room.error}
                   placeholder="Enter a catchy room name!"
@@ -126,6 +124,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
                   variant="filled"
                   name="name"
                   value={room.name}
+                  maxLength={MAX_NAME_LENGTH}
                 />
                 {room.error ? (
                   <Tooltip
@@ -138,15 +137,18 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, close, handleError,
                     </InputRightElement>
                   </Tooltip>
                 ) : null}
+                <Text fontSize="xs" color="gray.100" textAlign="right" pt="1">
+                  {room.name.length}/{MAX_NAME_LENGTH} chars
+                </Text>
               </InputGroup>
             </FormControl>
 
             <FormControl pt={4}>
               <FormLabel html="tags">Tags</FormLabel>
-              <Select updateTags={handleUpdateTags} presentTags={room.tags} handleError={handleError} />
+              <Select onChange={handleUpdateTags} presentTags={room.tags} handleError={handleError} />
             </FormControl>
 
-            <FormControl pt={4}>
+            <FormControl pt={8}>
               <FormLabel htmlFor="description">Room Description</FormLabel>
               <Textarea
                 variant="filled"
