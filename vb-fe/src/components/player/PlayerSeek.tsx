@@ -67,6 +67,7 @@ export const PlayerSeeker = () => {
         value={position}
         focusThumbOnChange={false}
         onChange={onSeek}
+        isDisabled={state === PlayerStates.INITIAL}
       >
         <SliderTrack>
           <SliderFilledTrack />

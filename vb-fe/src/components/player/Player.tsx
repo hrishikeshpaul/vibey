@@ -27,8 +27,8 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   showShuffle = true,
 }): JSX.Element => {
   const dispatch = useDispatch();
-  const { shuffle } = useSelector((state: State) => state.player);
-  const trackState = useSelector((state: State) => state.player.state);
+  const { shuffle, state } = useSelector((states: State) => states.player);
+  const trackState = useSelector((states: State) => states.player.state);
 
   const Seek: FunctionComponent = (): JSX.Element => {
     return (
@@ -38,6 +38,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
         icon={<RiShuffleFill />}
         aria-label="track-shuffle"
         onClick={() => dispatch(shuffleAction())}
+        disabled={state === PlayerStates.INITIAL}
       />
     );
   };
@@ -45,18 +46,34 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   return (
     <Flex>
       <HStack spacing="3">
-        <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={() => dispatch(playPrevious())} />
+        <IconButton
+          icon={<FaStepBackward />}
+          aria-label="track-prev"
+          onClick={() => dispatch(playPrevious())}
+          disabled={state === PlayerStates.INITIAL}
+        />
         {trackState && trackState === PlayerStates.PLAYING ? (
           <IconButton
             icon={<TiMediaPause />}
             fontSize="3xl"
             aria-label="track-pause"
             onClick={() => WebPlayer.getPlayer().pause()}
+            disabled={state === PlayerStates.INITIAL}
           />
         ) : (
-          <IconButton icon={<FaPlay />} aria-label="track-play" onClick={() => WebPlayer.getPlayer().resume()} />
+          <IconButton
+            icon={<FaPlay />}
+            aria-label="track-play"
+            onClick={() => WebPlayer.getPlayer().resume()}
+            disabled={state === PlayerStates.INITIAL}
+          />
         )}
-        <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={() => dispatch(playNext())} />
+        <IconButton
+          icon={<FaStepForward />}
+          aria-label="track-next"
+          onClick={() => dispatch(playNext())}
+          disabled={state === PlayerStates.INITIAL}
+        />
         <Divider />
         {showShuffle && <Seek />}
         {showVolume && <PlayerVolume />}

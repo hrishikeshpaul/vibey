@@ -48,6 +48,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
         state: PlayerStates.PAUSED,
       };
     }
+    case PlayerConstants.SET_INITIAL: {
+      return {
+        ...state,
+        state: PlayerStates.INITIAL,
+      };
+    }
     case PlayerConstants.UPDATE_POSITION: {
       return {
         ...state,

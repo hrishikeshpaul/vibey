@@ -30,8 +30,8 @@ export const playNext =
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
     const deviceId = WebPlayer.getDeviceId();
 
-    dispatch({ type: SystemConstants.LOADING });
     dispatch({ type: PlayerConstants.PAUSE });
+    dispatch({ type: PlayerConstants.SET_INITIAL });
     try {
       await next(deviceId);
       dispatch({ type: SystemConstants.SUCCESS });
