@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Slider, SliderTrack, SliderFilledTrack, SliderThumb, Flex, Text } from "@chakra-ui/react";
+import { Slider, SliderTrack, SliderFilledTrack, Flex, Text } from "@chakra-ui/react";
 
 import { useSelector } from "react-redux";
 import { State } from "_store/rootReducer";
-import { PlayerConstants, PlayerStates } from "_store/player/PlayerTypes";
-import useInterval from "util/Interval";
+import { PlayerStates } from "_store/player/PlayerTypes";
+import { useInterval } from "util/Interval";
+import { WebPlayer } from "core/player/Player";
+import { useDebounce } from "util/Input";
 
 export const PlayerSeeker = () => {
   const { track, state, trackPosition } = useSelector((states: State) => states.player);
   const [position, setPosition] = useState<number>(0);
-  const [strPos, setStrPos] = useState<string>("0:00");
+  const [debounce] = useDebounce();
 
   const formatMilliseconds = (milliseconds: number, padStart: boolean): string => {
     function pad(num: number) {
@@ -44,6 +46,13 @@ export const PlayerSeeker = () => {
     state === PlayerStates.PLAYING ? 1000 : null,
   );
 
+  const onSeek = (value: number) => {
+    debounce(value, (pos: number) => {
+      WebPlayer.getPlayer().seek(pos);
+      setPosition(pos);
+    });
+  };
+
   return (
     <Flex>
       <Text fontSize="xs" pr="2" color="gray.200">
@@ -57,6 +66,7 @@ export const PlayerSeeker = () => {
         min={0}
         value={position}
         focusThumbOnChange={false}
+        onChange={onSeek}
       >
         <SliderTrack>
           <SliderFilledTrack />
