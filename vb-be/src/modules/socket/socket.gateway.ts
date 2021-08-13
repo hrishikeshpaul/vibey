@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { socketError, ErrorText } from 'src/util/error';
+import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import { RoomService } from '@modules/room/room.service';
@@ -40,11 +40,17 @@ export class EventsGateway {
       const AT: string = client.handshake.headers['v-at'] as string;
       const { id } = await this.authService.verifyToken(AT, TokenTypes.Access);
 
+      if (!id)
+        throw new ErrorHandler(
+          HttpStatus.Unauthorized,
+          ErrorText.InvalidTokenPair,
+        );
+
       await this.roomService.addUserToRoom(roomId, id);
       const updatedRoom = await this.roomService.getOneRoom(roomId);
 
       await client.join(roomId);
-      
+
       client.emit('join-room-success', updatedRoom);
     } catch (err) {
       client.emit('socket-err', err);

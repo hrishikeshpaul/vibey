@@ -168,12 +168,32 @@ export class SpotifyService {
   getPlaylistTracks(
     playlistId: string,
     accessToken: string,
-  ): Observable<A<Playlist>> {
+  ): Observable<A<void>> {
     const pid = playlistId.split(':')[2];
     return this.http.get(`${BASE_URL}/playlists/${pid}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+  }
+
+  setShuffle(
+    state: boolean,
+    deviceId: string,
+    accessToken: string,
+  ): Observable<A<void>> {
+    return this.http.put(
+      `${BASE_URL}/me/player/shuffle`,
+      {},
+      {
+        params: {
+          device_id: deviceId,
+          state,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   }
 }

@@ -66,4 +66,22 @@ export class PlayerController {
       return res.status(HttpStatus.Error).send(err);
     }
   }
+
+  @Put('/shuffle')
+  async shuffle(
+    @Response() res: Res,
+    @Query('device_id') deviceId: string,
+    @Query('state') state: boolean,
+    @Headers('v-s-at') accessToken: string,
+  ) {
+    try {
+      await firstValueFrom(
+        this.spotifyService.setShuffle(state, deviceId, accessToken),
+      );
+      return res.status(HttpStatus.NoContent).send();
+    } catch (err) {
+      console.log(err);
+      return res.status(HttpStatus.Error).send(err);
+    }
+  }
 }
