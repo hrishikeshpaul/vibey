@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const DEBOUNCE_TIME = 200;
 
-export const useDebounce = () => {
+export const useDebounce = (): [(inputValue: number | string, callback: (value: any) => void) => void] => {
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
 
-  const debounce = (inputValue: any, callback: any): void => {
+  const debounce = (inputValue: number | string, callback: (value: any) => void): void => {
     if (debounceTimer) {
       clearTimeout(debounceTimer);
       setDebounceTimer(null);
@@ -21,7 +21,7 @@ export const useDebounce = () => {
   return [debounce];
 };
 
-export const usePagination = (callback: any) => {
+export const usePagination = (callback: () => any): void => {
   useEffect(() => {
     const handleScroll = () => {
       const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;

@@ -1,16 +1,17 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
-import { Avatar, Box, Heading, Text, Flex, IconButton, Icon, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Heading, Text, Flex, Icon, VStack } from "@chakra-ui/react";
 import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
 import { FaPlay } from "react-icons/fa";
 import { HiVolumeUp } from "react-icons/hi";
 
-import "components/playlist/Playlist.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { playTrack } from "_store/player/PlayerActions";
 import { State } from "_store/rootReducer";
 import { getUserPlaylistsAction } from "_store/room/RoomActions";
 import { usePagination } from "util/Input";
+
+import "components/playlist/Playlist.scss";
 
 interface PlaylistItemProps {
   playlist: PlaylistType;
