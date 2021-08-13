@@ -92,11 +92,13 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
       });
     };
 
-    const NavbarButton = (): JSX.Element => {
+    const NavbarButtons = (): JSX.Element => {
       if (isHost) {
         return (
           <Button colorScheme="red" bgColor="red.400" leftIcon={<CloseIcon />} type="button">
-            <Text>Close Room</Text>
+            <Text display={{ base: "none", md: "block" }} pl="2">
+              Close Room
+            </Text>
           </Button>
         );
       }
@@ -104,27 +106,27 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
       if (isInRoom && !isHost) {
         return (
           <Button colorScheme="orange" leftIcon={<BiLogOut />} type="button" onClick={onCreateRoomOpen}>
-            <Text>Create Room</Text>
+            <Text display={{ base: "none", md: "block" }} pl="2">
+              Leave Room
+            </Text>
           </Button>
         );
       }
 
       return (
         <Button colorScheme="primary" leftIcon={<PlusIcon />} type="button" onClick={onCreateRoomOpen}>
-          <Text>Create Room</Text>
+          <Text display={{ base: "none", md: "block" }} pl="2">
+            Create Room
+          </Text>
         </Button>
       );
     };
 
     return (
       <>
-        <Box display={{ base: "none", md: "block" }}>
-          <NavbarButton />
+        <Box>
+          <NavbarButtons />
         </Box>
-        <Box display={{ base: "block", md: "none" }} onClick={onCreateRoomOpen}>
-          <IconButton colorScheme="primary" icon={<PlusIcon />} type="button" aria-label="icon" />
-        </Box>
-
         <Menu>
           <MenuButton as={IconButton} fontSize="3xl" icon={<CgMenuMotion />} aria-label="Menu" className="bg-dark" />
           <MenuList>
