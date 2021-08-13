@@ -13,6 +13,7 @@ export enum PlayerConstants {
   UPDATE_TRACK = "UPDATE_TRACK",
   UPDATE_POSITION = "UPDATE_POSITION",
   CONTROLS_DISABLED = "CONTROLS_DISABLED",
+  SET_SHUFFLE = "SET_SHUFFLE",
 }
 
 export interface PlayTrack {
@@ -43,10 +44,16 @@ export interface SetControlsDisabled {
   payload: boolean;
 }
 
+export interface SetShuffle {
+  type: typeof PlayerConstants.SET_SHUFFLE;
+  payload: boolean;
+}
+
 export type PlayerActionTypes =
   | PlayTrack
   | PauseTrack
   | UpdateTrack
   | UpdatePosition
   | SetCurrentPlaylist
-  | SetControlsDisabled;
+  | SetControlsDisabled
+  | SetShuffle;

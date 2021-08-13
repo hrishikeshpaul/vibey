@@ -1,7 +1,9 @@
 import React, { FunctionComponent } from "react";
 
-import { Flex, Avatar, Box, Link, Text, IconButton, HStack, Divider } from "@chakra-ui/react";
-import { FaStepBackward, FaStepForward, FaPause, FaPlay } from "react-icons/fa";
+import { Flex, Avatar, Box, Text, IconButton, HStack, Divider } from "@chakra-ui/react";
+import { FaStepBackward, FaStepForward, FaPlay } from "react-icons/fa";
+import { RiShuffleFill } from "react-icons/ri";
+import { TiMediaPause } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 
 import { PlayerVolume } from "components/player/PlayerVolume";
@@ -9,28 +11,51 @@ import { PlayerSeeker } from "components/player/PlayerSeek";
 import { State } from "_store/rootReducer";
 import { SimplifiedArtist } from "util/Playlist";
 import { PlayerStates } from "_store/player/PlayerTypes";
-import { playNext, playPrevious } from "_store/player/PlayerActions";
+import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
 import { WebPlayer } from "core/player/Player";
 
 interface PlayerControlProps {
   showVolume?: boolean;
+  showShuffle?: boolean;
 }
 
-const PlayerControls: FunctionComponent<PlayerControlProps> = ({ showVolume = true }): JSX.Element => {
+const PlayerControls: FunctionComponent<PlayerControlProps> = ({
+  showVolume = true,
+  showShuffle = true,
+}): JSX.Element => {
   const trackState = useSelector((state: State) => state.player.state);
   const dispatch = useDispatch();
+  const { shuffle } = useSelector((state: State) => state.player);
+
+  const Seek: FunctionComponent = (): JSX.Element => {
+    return (
+      <IconButton
+        fontWeight="bold"
+        color={shuffle ? "teal.300" : "white"}
+        icon={<RiShuffleFill />}
+        aria-label="track-shuffle"
+        onClick={() => dispatch(shuffleAction())}
+      />
+    );
+  };
 
   return (
     <Flex>
       <HStack spacing="3">
         <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={() => dispatch(playPrevious())} />
         {trackState === PlayerStates.PLAYING ? (
-          <IconButton icon={<FaPause />} aria-label="track-pause" onClick={() => WebPlayer.getPlayer().pause()} />
+          <IconButton
+            icon={<TiMediaPause />}
+            fontSize="3xl"
+            aria-label="track-pause"
+            onClick={() => WebPlayer.getPlayer().pause()}
+          />
         ) : (
           <IconButton icon={<FaPlay />} aria-label="track-play" onClick={() => WebPlayer.getPlayer().resume()} />
         )}
         <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={() => dispatch(playNext())} />
         <Divider />
+        {showShuffle && <Seek />}
         {showVolume && <PlayerVolume />}
       </HStack>
     </Flex>

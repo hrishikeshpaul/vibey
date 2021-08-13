@@ -39,3 +39,16 @@ export const previous = (deviceId: string) => {
     },
   );
 };
+
+export const shuffle = (deviceId: string, state: boolean) => {
+  return Http.put(
+    PlayerEndpoints.SHUFFLE,
+    {},
+    {
+      params: {
+        device_id: deviceId,
+        state,
+      },
+    },
+  );
+};

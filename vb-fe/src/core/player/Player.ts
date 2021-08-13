@@ -54,6 +54,7 @@ class Player {
             type: PlayerConstants.UPDATE_POSITION,
             payload: data.position,
           });
+          store.dispatch({ type: PlayerConstants.SET_SHUFFLE, payload: data.shuffle });
         }
       });
       this.player.connect();

@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 
-import { play, next, previous } from "services/Player";
+import { play, next, previous, shuffle as setShuffle } from "services/Player";
 import { State } from "_store/rootReducer";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { PlayerActionTypes, PlayerConstants } from "_store/player/PlayerTypes";
@@ -50,6 +50,26 @@ export const playPrevious =
     dispatch({ type: PlayerConstants.PAUSE });
     try {
       await previous(deviceId);
+      dispatch({ type: SystemConstants.SUCCESS });
+      dispatch({ type: PlayerConstants.PLAY, payload: true });
+    } catch (err) {
+      dispatch({
+        type: SystemConstants.FAILURE,
+        payload: err,
+      });
+    }
+  };
+
+export const shuffleAction =
+  () =>
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+    const deviceId = WebPlayer.getDeviceId();
+    const { shuffle } = getState().player;
+
+    dispatch({ type: SystemConstants.LOADING });
+    dispatch({ type: PlayerConstants.PAUSE });
+    try {
+      await setShuffle(deviceId, !shuffle);
       dispatch({ type: SystemConstants.SUCCESS });
       dispatch({ type: PlayerConstants.PLAY, payload: true });
     } catch (err) {

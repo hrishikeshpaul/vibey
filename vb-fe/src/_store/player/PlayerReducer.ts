@@ -8,6 +8,7 @@ export interface PlayerState {
   state: PlayerStates;
   trackPosition: number;
   playlistContext: string;
+  shuffle: boolean;
 }
 
 /**
@@ -18,6 +19,7 @@ const initialState: PlayerState = {
   state: PlayerStates.INITIAL,
   trackPosition: 0,
   playlistContext: "",
+  shuffle: false,
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -50,6 +52,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         trackPosition: action.payload,
+      };
+    }
+    case PlayerConstants.SET_SHUFFLE: {
+      return {
+        ...state,
+        shuffle: action.payload,
       };
     }
     default:

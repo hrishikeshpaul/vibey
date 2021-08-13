@@ -23,4 +23,5 @@ export enum PlayerEndpoints {
   PREVIOUS = "/api/player/previous",
   PAUSE = "/api/player/pause",
   RESUME = "/api/player/resume",
+  SHUFFLE = "/api/player/shuffle",
 }
