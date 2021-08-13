@@ -8,7 +8,6 @@ interface Props {
 }
 
 export const CurrentUsers: FunctionComponent<Props> = ({ users }): JSX.Element => {
-  console.log(users);
   return (
     <>
       {users && users.length > 0 ? (

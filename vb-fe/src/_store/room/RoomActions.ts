@@ -39,7 +39,6 @@ export const createRoomAction =
 export const getUserPlaylistsAction =
   (offset: number) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes>): Promise<void> => {
-    dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: true });
     try {
       const response = await getUserPlaylists(offset);
       dispatch({

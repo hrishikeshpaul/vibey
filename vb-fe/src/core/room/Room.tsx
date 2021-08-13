@@ -1,21 +1,21 @@
 import React, { useEffect, useState, FunctionComponent } from "react";
 
 import moment from "moment";
-
 import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { Heading, Box, Text, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
-import { useLocation } from "react-router-dom";
-import { Room as RoomType } from "util/Room";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { User } from "util/User";
 import { getUserPlaylistsAction } from "_store/room/RoomActions";
-import { Tag } from "util/Tags";
 import { RoomConstants } from "_store/room/RoomTypes";
+import { usePagination } from "util/Input";
+import { Room as RoomType } from "util/Room";
+import { Tag } from "util/Tags";
+import { User } from "util/User";
 
 interface RoomInfoProps {
   name: string;
@@ -25,18 +25,27 @@ interface RoomInfoProps {
 }
 
 export const Room = () => {
-  const socket = useSelector((state: State) => state.system.socket);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [room, setRoom] = useState<RoomType | null>(null);
+  const socket = useSelector((state: State) => state.system.socket);
   const playlists = useSelector((state: State) => state.room.playlists);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
+
+  const [room, setRoom] = useState<RoomType | null>(null);
   const [playlistOffset, setPlaylistOffset] = useState<number>(0);
   const [isHost, setIsHost] = useState<boolean>(false);
 
+  usePagination(() => {
+    dispatch(getUserPlaylistsAction(playlistOffset));
+    setPlaylistOffset(playlistOffset + 10);
+  });
+
   useEffect(() => {
     let isMounted = true;
+
     dispatch({ type: SystemConstants.LOADING });
+    dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: true });
+
     if (isMounted && socket) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
@@ -46,7 +55,7 @@ export const Room = () => {
       socket?.on("join-room-success", (data: RoomType) => {
         dispatch({ type: SystemConstants.SUCCESS });
         dispatch(getUserPlaylistsAction(playlistOffset));
-        setPlaylistOffset(playlistOffset + 5);
+        setPlaylistOffset(playlistOffset + 10);
         if (data.host._id === currentUser?._id) setIsHost(true);
         setRoom(data);
       });

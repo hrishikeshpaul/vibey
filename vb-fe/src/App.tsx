@@ -52,7 +52,6 @@ export const App = (): JSX.Element => {
     useEffect(() => {
       connect();
       initHttp();
-      console.log(WebPlayer.getPlayer());
     }, [connect]);
 
     useEffect(() => {

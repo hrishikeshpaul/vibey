@@ -22,6 +22,7 @@ interface PlaylistItemProps {
 export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist }) => {
   const dispatch = useDispatch();
   const playlistContext = useSelector((state: State) => state.player.playlistContext);
+  playlist.owner.displayName = playlist.owner.display_name || "Spotify User"; //eslint-disable-line
 
   const onPlay = () => {
     dispatch(playTrack(playlist.uri));
@@ -52,14 +53,14 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
           </Icon>
         )}
       </Box>
-      <Flex overflow="hidden" alignItems="center">
+      <Flex overflow="hidden" alignItems="center" width="100%">
         <Avatar src={imgCheck(playlist.images)} size="md" borderRadius="lg" />
-        <Box overflow="hidden" pl="3">
+        <Box overflow="hidden" pl="3" width="100%">
           <Heading isTruncated fontSize="sm" fontWeight="500">
             {playlist.name}
           </Heading>
           <Text fontSize="sm" isTruncated color="gray.300">
-            {playlist.description}
+            {playlist.owner.displayName} • {playlist.tracks.total} tracks
           </Text>
         </Box>
       </Flex>

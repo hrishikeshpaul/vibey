@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const DEBOUNCE_TIME = 200;
 
@@ -19,4 +19,24 @@ export const useDebounce = () => {
   };
 
   return [debounce];
+};
+
+export const usePagination = (callback: any) => {
+  useEffect(() => {
+    const handleScroll = () => {
+      const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
+
+      if (bottom) {
+        callback();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [callback]);
 };
