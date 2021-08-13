@@ -1,9 +1,10 @@
 import React, { FunctionComponent } from "react";
 
-import { Flex, Avatar, Box, Text, IconButton, HStack, Divider } from "@chakra-ui/react";
+import { Flex, Avatar, Box, Text, IconButton, HStack, Divider, Icon } from "@chakra-ui/react";
 import { FaStepBackward, FaStepForward, FaPlay } from "react-icons/fa";
 import { RiShuffleFill } from "react-icons/ri";
 import { TiMediaPause } from "react-icons/ti";
+import { BsMusicNote } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 
 import { PlayerVolume } from "components/player/PlayerVolume";
@@ -71,7 +72,7 @@ export const Player: FunctionComponent = (): JSX.Element => {
       {track ? (
         <Flex alignItems="center" justifyContent="space-between" p="4" overflow="hidden" style={{ gap: "30px" }}>
           <Flex alignItems="center" overflow="hidden" flex={{ base: "0.8", md: "0.3" }}>
-            <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" />
+            <Avatar src={track.album.images[0].url} size="md" borderRadius="lg" icon={<BsMusicNote />} bg="gray.500" />
             <Box overflow="hidden">
               <Text isTruncated lineHeight="1.2" pl="3">
                 {track.name}

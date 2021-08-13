@@ -1,17 +1,20 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 
 import { Avatar, Box, Heading, Text, Flex, Icon, VStack } from "@chakra-ui/react";
-import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
-import { FaPlay } from "react-icons/fa";
+import { BsPlayFill, BsMusicNoteList } from "react-icons/bs";
 import { HiVolumeUp } from "react-icons/hi";
-
+import { TiMediaPause } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
+
 import { playTrack } from "_store/player/PlayerActions";
 import { State } from "_store/rootReducer";
 import { getUserPlaylistsAction } from "_store/room/RoomActions";
 import { usePagination } from "util/Input";
+import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
 
 import "components/playlist/Playlist.scss";
+import { PlayerStates } from "_store/player/PlayerTypes";
+import { WebPlayer } from "core/player/Player";
 
 interface PlaylistItemProps {
   playlist: PlaylistType;
@@ -20,12 +23,19 @@ interface PlaylistItemProps {
 
 export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist }) => {
   const dispatch = useDispatch();
-
   const playlistContext = useSelector((state: State) => state.player.playlistContext);
+  const { state } = useSelector((states: State) => states.player);
   playlist.owner.displayName = playlist.owner.display_name || "Spotify User"; //eslint-disable-line
+  const isCurrent = playlistContext === playlist.uri;
 
   const onPlay = () => {
-    dispatch(playTrack(playlist.uri));
+    if (isCurrent && state === PlayerStates.PLAYING) {
+      WebPlayer.getPlayer().pause();
+    } else if (isCurrent && state === PlayerStates.PAUSED) {
+      WebPlayer.getPlayer().resume();
+    } else if (!isCurrent) {
+      dispatch(playTrack(playlist.uri));
+    }
   };
 
   const imgCheck = (images: SpotifyImage[]): string => {
@@ -42,21 +52,44 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
       className="vb-playlist-item"
       onClick={onPlay}
     >
-      <Box pr="3">
-        {playlistContext === playlist.uri ? (
-          <Icon fontSize="xl" size="lg" color="teal.400">
-            <HiVolumeUp />
-          </Icon>
-        ) : (
-          <Icon size="lg" fontSize="md" boxSize={[18, 18]}>
-            <FaPlay />
-          </Icon>
-        )}
-      </Box>
       <Flex overflow="hidden" alignItems="center" width="100%">
-        <Avatar src={imgCheck(playlist.images)} size="md" borderRadius="lg" />
+        <Box position="relative">
+          <Avatar
+            src={imgCheck(playlist.images)}
+            size="md"
+            borderRadius="lg"
+            icon={<BsMusicNoteList />}
+            bg="gray.500"
+          />
+          <Flex
+            h="100%"
+            w="100%"
+            bg="blackAlpha.700"
+            position="absolute"
+            top="0"
+            borderRadius="lg"
+            justifyContent="center"
+            alignItems="center"
+            className={`image-overlay ${isCurrent ? "is-playing" : ""}`}
+          >
+            {isCurrent ? (
+              <>
+                <Icon fontSize="xl" size="lg" className="playing-icon">
+                  <HiVolumeUp />
+                </Icon>
+                <Icon fontSize="2xl" size="lg" className="pause-icon">
+                  <TiMediaPause />
+                </Icon>
+              </>
+            ) : (
+              <Icon fontSize="2xl">
+                <BsPlayFill />
+              </Icon>
+            )}
+          </Flex>
+        </Box>
         <Box overflow="hidden" pl="3" width="100%">
-          <Heading isTruncated fontSize="sm" fontWeight="500">
+          <Heading isTruncated fontSize="sm" fontWeight="500" color={isCurrent ? "teal.300" : "white"}>
             {playlist.name}
           </Heading>
           <Text fontSize="sm" isTruncated color="gray.300">
