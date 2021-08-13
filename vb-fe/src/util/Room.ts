@@ -8,6 +8,7 @@ export interface Room {
   start: Date;
   tags: Tag[];
   _id: string;
+  currentUsers: User[];
 }
 
 export interface RoomForm {

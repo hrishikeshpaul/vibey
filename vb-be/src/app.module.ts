@@ -18,6 +18,7 @@ import {
   RefreshTokensMiddleware,
   ValidateAccessTokenMiddleware,
 } from '@modules/auth/auth.middleware';
+import { PlayerModule } from '@modules/player/player.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import {
     TagModule,
     RoomModule,
     SocketModule,
+    PlayerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -39,7 +41,12 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ValidateAccessTokenMiddleware)
-      .exclude('/api/auth/authorize', '/api/auth/login', '/api/auth/refresh')
+      .exclude(
+        '/api/auth/authorize',
+        '/api/auth/login',
+        '/api/auth/refresh',
+        'api/player/play',
+      )
       .forRoutes({
         path: '/api',
         method: RequestMethod.ALL,

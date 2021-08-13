@@ -27,7 +27,7 @@ interface RTResponse {
   spotifyAccessToken: string;
 }
 
-export const buildHeaders = () => ({
+export const buildHeaders = (): any => ({
   [TokenStorageKeys.AT]: localStorage.getItem(TokenStorageKeys.AT) || "",
   [TokenStorageKeys.RT]: localStorage.getItem(TokenStorageKeys.RT) || "",
   [TokenStorageKeys.SpotifyAT]: localStorage.getItem(TokenStorageKeys.SpotifyAT) || "",
@@ -39,7 +39,7 @@ const setHeadersToLocalStorage = (
   refreshToken: string,
   spotifyAccessToken: string,
   spotifyRefreshToken: string,
-) => {
+): void => {
   localStorage.setItem(TokenStorageKeys.AT, accessToken);
   localStorage.setItem(TokenStorageKeys.RT, refreshToken);
   localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
@@ -51,11 +51,11 @@ export const Http = axios.create({
   withCredentials: true,
 });
 
-export const setHeaders = () => {
+export const setHeaders = (): void => {
   Http.defaults.headers.common = buildHeaders();
 };
 
-export const initHttp = () => {
+export const initHttp = (): void => {
   setHeaders();
 
   Http.interceptors.request.use((value: AxiosRequestConfig) => {
@@ -91,8 +91,9 @@ export const initHttp = () => {
             return Http.request(originalRequest);
           });
           resolve(response);
-        } else if (err.response?.status === HttpStatus.Unauthorized && retry)
+        } else if (err.response?.status === HttpStatus.Unauthorized && retry) {
           store.dispatch({ type: SystemConstants.LOGIN, payload: false });
+        }
         return reject(err);
       });
     },

@@ -1,75 +1,21 @@
-export enum SpotifyGrantType {
-  AuthorizationCode = 'authorization_code',
-  RefreshToken = 'refresh_token',
-}
-
-export interface SpotifyAuthResponse {
-  request: {
-    res: {
-      responseUrl: string;
-    };
-  };
-}
-
-export interface SpotifyTokenResponse {
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
-}
-
-export interface ExternalURL {
-  [key: string]: string;
-}
-
-export interface Followers {
-  href: string | null;
-  total: number;
-}
-
-export interface SpotifyImage {
-  height: number | null;
-  url: string;
-  width: number | null;
-}
-
-export interface SpotifyPublicUser {
-  display_name?: string | null;
-  external_urls: ExternalURL;
-  followers?: Followers;
-  href: string;
-  id: string;
-  images?: SpotifyImage[];
-  type: 'user';
-  uri: string;
-  email: string;
-}
-
-export type Restrictions = {
-  reason: string;
-};
-
-export type ExternalID = {
-  [key: string]: string;
-};
+import { User } from "./User";
 
 export type SimplifiedArtist = {
   external_urls: ExternalURL;
   href: string;
   id: string;
   name: string;
-  type: 'artist';
+  type: "artist";
   uri: string;
 };
 
+export type Restrictions = {
+  reason: string;
+};
+
 export type SimplifiedAlbum = {
-  album_group?: 'album' | 'single' | 'compilation' | 'appears_on';
-  album_type:
-    | 'album'
-    | 'ALBUM'
-    | 'single'
-    | 'SINGLE'
-    | 'compilation'
-    | 'COMPILATION';
+  album_group?: "album" | "single" | "compilation" | "appears_on";
+  album_type: "album" | "ALBUM" | "single" | "SINGLE" | "compilation" | "COMPILATION";
   artists: SimplifiedArtist[];
   available_markets?: string[];
   external_urls: ExternalURL;
@@ -78,10 +24,10 @@ export type SimplifiedAlbum = {
   images: SpotifyImage[];
   name: string;
   release_date: string;
-  release_date_precision: 'year' | 'month' | 'day';
+  release_date_precision: "year" | "month" | "day";
   restrictions?: Restrictions;
   total_tracks: number;
-  type: 'album';
+  type: "album";
   uri: string;
 };
 
@@ -89,9 +35,13 @@ export type TrackLink = {
   external_urls: ExternalURL;
   href: string;
   id: string;
-  type: 'track';
+  type: "track";
   uri: string;
 };
+
+export interface ExternalID {
+  [key: string]: string;
+}
 
 export type Track = {
   album: SimplifiedAlbum;
@@ -107,13 +57,12 @@ export type Track = {
   id: string;
   is_playable?: boolean;
   linked_from?: TrackLink;
-  restrictions?: Restrictions;
   name: string;
   popularity: number;
   preview_url: string | null;
   track?: boolean;
   track_number: number;
-  type: 'track';
+  type: "track";
   uri: string;
   is_local: boolean;
 };
@@ -127,7 +76,7 @@ export type PlaylistDetails = {
 
 export type PlaylistItem = {
   added_at: string | null;
-  added_by: SpotifyPublicUser | null;
+  added_by: User | null;
   is_local: boolean;
   primary_color?: string | null;
   track: Track;
@@ -143,6 +92,21 @@ export type Paging<T> = {
   total: number;
 };
 
+export interface SpotifyImage {
+  height: number | null;
+  url: string;
+  width: number | null;
+}
+
+export interface Followers {
+  href: string | null;
+  total: number;
+}
+
+export interface ExternalURL {
+  [key: string]: string;
+}
+
 export interface Playlist {
   collaborative: boolean;
   description: string | null;
@@ -152,11 +116,11 @@ export interface Playlist {
   id: string;
   images: SpotifyImage[];
   name: string;
-  owner: SpotifyPublicUser;
+  owner: User;
   primary_color?: string | null;
   public: boolean | null;
   snapshot_id: string;
   tracks: Paging<PlaylistItem>;
-  type: 'playlist';
+  type: "playlist";
   uri: string;
 }

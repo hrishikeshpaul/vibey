@@ -1,4 +1,7 @@
 import { Dispatch } from "redux";
+
+import { push, CallHistoryMethodAction } from "connected-react-router";
+
 import { UserActionTypes, UserConstants } from "_store/user/UserTypes";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 import { login, authorize, logout, refreshTokens } from "services/Auth";
@@ -77,13 +80,16 @@ export const getAuthorization =
  */
 export const onLogout =
   () =>
-  async (dispatch: any): Promise<void> => {
+  async (dispatch: Dispatch<CallHistoryMethodAction | SystemActionTypes>): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
     try {
-      const res = await logout();
-      if (res.status === HttpStatus.NoContent) {
-        resetApp();
-      }
+      setTimeout(async () => {
+        const res = await logout();
+        if (res.status === HttpStatus.NoContent) {
+          resetApp();
+          dispatch(push("/"));
+        }
+      }, 2000);
     } catch (err) {
       console.log(err);
       dispatch({

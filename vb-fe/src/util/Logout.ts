@@ -3,7 +3,7 @@ import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { UserConstants } from "_store/user/UserTypes";
 
-export const resetApp = () => {
+export const resetApp = (): void => {
   store.dispatch({ type: SystemConstants.RESET });
   store.dispatch({ type: UserConstants.RESET });
   localStorage.removeItem(TokenStorageKeys.AT);
