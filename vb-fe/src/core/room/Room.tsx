@@ -84,7 +84,7 @@ export const Room = () => {
                 <RoomInfo {...room} />
               </Layout.Sidebar>
               <Layout.Content flex="0.5">
-                <Playlist playlists={playlists} />
+                <Playlist playlists={[]} />
               </Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
                 <CurrentUsers users={room.currentUsers} />

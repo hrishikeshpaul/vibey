@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
 import { Avatar, Box, Heading, Text, Flex, IconButton, Icon, VStack } from "@chakra-ui/react";
-import { Playlist as PlaylistType } from "util/Playlist";
+import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
 import { FaPlay } from "react-icons/fa";
 import { HiVolumeUp } from "react-icons/hi";
 
@@ -26,6 +26,12 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
   const onPlay = () => {
     dispatch(playTrack(playlist.uri));
   };
+
+  const imgCheck = (images: SpotifyImage[]): string => {
+    if (images && images.length > 0) return images[0].url;
+    return "";
+  };
+
   return (
     <Flex
       alignItems="center"
@@ -37,7 +43,7 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
     >
       <Box pr="3">
         {playlistContext === playlist.uri ? (
-          <Icon fontSize="lg" size="lg" color="teal.400">
+          <Icon fontSize="xl" size="lg" color="teal.400">
             <HiVolumeUp />
           </Icon>
         ) : (
@@ -47,7 +53,7 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
         )}
       </Box>
       <Flex overflow="hidden" alignItems="center">
-        <Avatar src={playlist.images[0].url} size="md" borderRadius="lg" />
+        <Avatar src={imgCheck(playlist.images)} size="md" borderRadius="lg" />
         <Box overflow="hidden" pl="3">
           <Heading isTruncated fontSize="sm" fontWeight="500">
             {playlist.name}
@@ -62,13 +68,34 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
 };
 
 export const Playlist: FunctionComponent<Props> = ({ playlists }): JSX.Element => {
-  return (
-    <VStack spacing={4}>
-      {playlists.map(
-        (playlist: PlaylistType, i: number): JSX.Element => (
-          <PlaylistItem playlist={playlist} index={i} key={playlist.id} />
-        ),
-      )}
-    </VStack>
+  const { playlistLoading } = useSelector((state: State) => state.room);
+
+  const NoPlaylists: FunctionComponent = () => {
+    return (
+      <Box textAlign="center" h="100%" display="flex" justifyContent="center" flexDir="column">
+        <Text fontSize="lg" color="gray.50" fontWeight="600">
+          No playlists found..
+        </Text>
+        <Text color="gray.200">Head over to your Spotify account and add a playlist!</Text>
+      </Box>
+    );
+  };
+
+  return !playlistLoading ? (
+    playlists.length > 0 ? (
+      <VStack spacing={4}>
+        {playlists.map(
+          (playlist: PlaylistType, i: number): JSX.Element => (
+            <PlaylistItem playlist={playlist} index={i} key={playlist.id} />
+          ),
+        )}
+      </VStack>
+    ) : (
+      <NoPlaylists />
+    )
+  ) : (
+    <Text textAlign="center" color="gray.200" fontSize="sm">
+      Playlist loading...
+    </Text>
   );
 };

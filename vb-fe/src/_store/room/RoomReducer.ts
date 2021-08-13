@@ -6,6 +6,7 @@ export interface RoomState {
   roomsList: Room[];
   currentRoom: Room | null;
   playlists: Playlist[];
+  playlistLoading: boolean;
 }
 
 /**
@@ -15,6 +16,7 @@ const initialState: RoomState = {
   roomsList: [],
   currentRoom: null,
   playlists: [],
+  playlistLoading: true,
 };
 
 export const roomReducer = (state: RoomState = initialState, action: RoomActionTypes): RoomState => {
@@ -29,6 +31,12 @@ export const roomReducer = (state: RoomState = initialState, action: RoomActionT
       return {
         ...state,
         playlists: [...state.playlists, ...action.payload],
+      };
+    }
+    case RoomConstants.PLAYLIST_LOADING: {
+      return {
+        ...state,
+        playlistLoading: action.payload,
       };
     }
     default:

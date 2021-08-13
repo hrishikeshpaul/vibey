@@ -39,16 +39,19 @@ export const createRoomAction =
 export const getUserPlaylistsAction =
   (offset: number) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes>): Promise<void> => {
+    dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: true });
     try {
       const response = await getUserPlaylists(offset);
       dispatch({
         type: RoomConstants.ADD_TO_PLAYLIST,
         payload: response.data.items,
       });
+      dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: false });
     } catch (err) {
       dispatch({
         type: SystemConstants.FAILURE,
         payload: err,
       });
+      dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: false });
     }
   };

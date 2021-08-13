@@ -5,6 +5,7 @@ export enum RoomConstants {
   CREATE = "CREATE",
   JOIN = "JOIN",
   ADD_TO_PLAYLIST = "ADD_TO_PLAYLIST",
+  PLAYLIST_LOADING = "PLAYLIST_LOADING",
 }
 
 export interface CreateRoom {
@@ -22,4 +23,9 @@ export interface AddToPlaylist {
   payload: Playlist[];
 }
 
-export type RoomActionTypes = CreateRoom | JoinRoom | AddToPlaylist;
+export interface PlaylistLoading {
+  type: typeof RoomConstants.PLAYLIST_LOADING;
+  payload: boolean;
+}
+
+export type RoomActionTypes = CreateRoom | JoinRoom | AddToPlaylist | PlaylistLoading;
