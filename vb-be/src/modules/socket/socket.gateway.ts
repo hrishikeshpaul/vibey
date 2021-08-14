@@ -8,14 +8,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { UseGuards } from '@nestjs/common';
 
-import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
-import { HttpStatus } from 'src/util/http';
-
 import { RoomService } from '@modules/room/room.service';
-import { AuthService } from '@modules/auth/auth.service';
-import { TokenTypes } from '@modules/auth/auth.constants';
-import { RedisService } from '@db/redis.module';
-import { UserService } from '@modules/user/user.service';
 import { WsGuard } from '@modules/socket/socket.middleware';
 
 @UseGuards(WsGuard)
@@ -24,12 +17,7 @@ export class EventsGateway {
   @WebSocketServer()
   server: Server;
 
-  constructor(
-    private readonly roomService: RoomService,
-    private readonly authService: AuthService,
-    private readonly redis: RedisService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly roomService: RoomService) {}
 
   @SubscribeMessage('join-room')
   async createRoom(
