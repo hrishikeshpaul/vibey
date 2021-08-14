@@ -1,24 +1,28 @@
+import { Injectable, CanActivate } from '@nestjs/common';
+import { WsException } from '@nestjs/websockets';
+
 import { TokenTypes } from '@modules/auth/auth.constants';
 import { AuthService } from '@modules/auth/auth.service';
-import { Injectable, CanActivate } from '@nestjs/common';
-import { Observable } from 'rxjs';
-
+import { ErrorText } from 'src/util/error';
 @Injectable()
 export class WsGuard implements CanActivate {
   constructor(private readonly authService: AuthService) {}
 
-  canActivate(
-    context: any,
-  ): boolean | any | Promise<boolean | any> | Observable<boolean | any> {
+  async canActivate(context: any): Promise<any> {
     const token: string = context.args[0].handshake.headers['v-at'];
+
     try {
-      const decoded = this.authService.verifyToken(token, TokenTypes.Access);
-      return new Promise((resolve, reject) => {
-        resolve(decoded);
-      });
-    } catch (ex) {
-      console.log(ex);
-      return false;
+      const decoded: string = await this.authService.verifyToken(
+        token,
+        TokenTypes.Access,
+      );
+      // can be accessed via [socket/client].data.decoded
+      context.args[0].data.decoded = decoded;
+      return true;
+    } catch (err) {
+      console.log(err);
+      // returns to FE as socket.on('exception', (data: { err: string, message: string })
+      throw new WsException(ErrorText.Unauthorized);
     }
   }
 }

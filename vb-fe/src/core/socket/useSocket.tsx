@@ -3,7 +3,7 @@ import socketIOClient, { Socket } from "socket.io-client";
 import { SOCKET_ENDPOINT } from "util/Socket";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { TokenStorageKeys } from "util/Http";
-import { Room } from "util/Room";
+import { ErrorText } from "util/Error";
 
 export const useSocket = () => {
   const dispatch = useDispatch();
@@ -33,6 +33,12 @@ export const useSocket = () => {
       socket.on("socket-err", (data) => {
         // TODO general error handling for socket-err - error toast or alike
         console.error("Error: ", data);
+      });
+
+      socket.on("exception", (err: { status: string; message: string }) => {
+        if (err.message === ErrorText.Unauthorized) {
+          // handle refresh
+        }
       });
 
       dispatch({
