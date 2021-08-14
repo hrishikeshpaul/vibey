@@ -1,9 +1,11 @@
 import { Injectable, CanActivate } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
 
+import { ErrorText } from 'src/util/error';
+
 import { TokenTypes } from '@modules/auth/auth.constants';
 import { AuthService } from '@modules/auth/auth.service';
-import { ErrorText } from 'src/util/error';
+
 @Injectable()
 export class WsGuard implements CanActivate {
   constructor(private readonly authService: AuthService) {}
