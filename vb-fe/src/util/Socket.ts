@@ -11,12 +11,13 @@ export enum SocketEvents {
   Exception = "exception",
 }
 
-export interface SocketError {
-  status: string;
-  message: string;
-}
-
 export interface SocketMessage {
   message: string;
   roomId: string;
+}
+
+export interface SocketException {
+  text: string;
+  event: SocketEvents;
+  data?: unknown;
 }

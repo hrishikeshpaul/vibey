@@ -1,8 +1,12 @@
 import socketIOClient from "socket.io-client";
 
-import { TokenStorageKeys } from "util/Http";
+import { setHeaders, TokenStorageKeys } from "util/Http";
 import { Room } from "util/Room";
-import { SOCKET_ENDPOINT, SocketError, SocketMessage, SocketEvents } from "util/Socket";
+import { refreshTokens } from "services/Auth";
+import { store } from "_store/store";
+import { SystemConstants } from "_store/system/SystemTypes";
+import { push, CallHistoryMethodAction } from "connected-react-router";
+import { SOCKET_ENDPOINT, SocketException, SocketMessage, SocketEvents } from "util/Socket";
 
 export const socket = socketIOClient(SOCKET_ENDPOINT, {
   transportOptions: {
@@ -31,8 +35,8 @@ export const subscribeTo = {
     socket.on(SocketEvents.Message, (message: string) => cb(message));
   },
 
-  exception: (cb: (data: SocketError) => unknown): void => {
-    socket.on(SocketEvents.Exception, (data: SocketError) => cb(data));
+  exception: (cb: (data: SocketException) => unknown): void => {
+    socket.on(SocketEvents.Exception, (data: SocketException) => cb(data));
   },
 };
 
@@ -48,8 +52,24 @@ export const emit = {
 export const connection = () => {
   return new Promise((resolve, reject) => {
     subscribeTo.connect(() => resolve("Connection successful"));
-    subscribeTo.exception((data: SocketError) => reject(data));
+    subscribeTo.exception((data: SocketException) => reject(data));
   });
 };
 
-// const handleException = () => {};
+export const refreshFromSocket = async (eventName: SocketEvents, data: unknown): Promise<void> => {
+  try {
+    const res = await refreshTokens();
+    const { accessToken, refreshToken, spotifyAccessToken } = res.data;
+
+    localStorage.setItem(TokenStorageKeys.AT, accessToken);
+    localStorage.setItem(TokenStorageKeys.RT, refreshToken);
+    localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
+    setHeaders();
+    console.log(eventName, data);
+    socket.emit(eventName, data);
+  } catch (error: any) {
+    console.error(error);
+    store.dispatch({ type: SystemConstants.FAILURE, payload: false });
+    store.dispatch(push("/"));
+  }
+};
