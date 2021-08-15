@@ -1,7 +1,6 @@
-import { AxiosError } from "axios";
 import { Socket } from "socket.io-client";
+
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
-// import { Error } from "app/models/system.model";
 
 export interface SystemState {
   isLoading: boolean;
