@@ -1,11 +1,11 @@
 import socketIOClient from "socket.io-client";
+import { push, CallHistoryMethodAction } from "connected-react-router";
 
-import { setHeaders, TokenStorageKeys } from "util/Http";
-import { Room } from "util/Room";
 import { refreshTokens } from "services/Auth";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { push, CallHistoryMethodAction } from "connected-react-router";
+import { setHeaders, TokenStorageKeys } from "util/Http";
+import { Room } from "util/Room";
 import { SOCKET_ENDPOINT, SocketException, SocketMessage, SocketEvents } from "util/Socket";
 
 export const socket = socketIOClient(SOCKET_ENDPOINT, {
