@@ -2,8 +2,11 @@ import { useDispatch } from "react-redux";
 import socketIOClient, { Socket } from "socket.io-client";
 import { SOCKET_ENDPOINT } from "util/Socket";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { TokenStorageKeys } from "util/Http";
+import { setHeaders, TokenStorageKeys } from "util/Http";
 import { ErrorText } from "util/Error";
+import { refreshTokens } from "services/Auth";
+import { store } from "_store/store";
+import { push, CallHistoryMethodAction } from "connected-react-router";
 
 export const useSocket = () => {
   const dispatch = useDispatch();
@@ -35,9 +38,22 @@ export const useSocket = () => {
         console.error("Error: ", data);
       });
 
-      socket.on("exception", (err: { status: string; message: string }) => {
+      socket.on("exception", async (err: { status: string; message: string }) => {
         if (err.message === ErrorText.Unauthorized) {
-          // handle refresh
+          console.log("it be here");
+          try {
+            const res = await refreshTokens();
+            const { accessToken, refreshToken, spotifyAccessToken } = res.data;
+
+            localStorage.setItem(TokenStorageKeys.AT, accessToken);
+            localStorage.setItem(TokenStorageKeys.RT, refreshToken);
+            localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
+            setHeaders();
+            // retry old event
+          } catch (error: any) {
+            store.dispatch({ type: SystemConstants.LOGIN, payload: false });
+            dispatch(push("/"));
+          }
         }
       });
 
