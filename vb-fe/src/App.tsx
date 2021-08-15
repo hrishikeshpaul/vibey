@@ -15,7 +15,7 @@ import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
 import "App.scss";
 import { initPipeline } from "util/System";
-import { subscribeTo } from "services/Socket";
+import { refreshFromSocket, subscribeTo } from "services/Socket";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -48,7 +48,11 @@ export const App = (): JSX.Element => {
     useEffect(() => {
       initHttp();
       initPipeline();
-      subscribeTo.exception((data) => console.error(data));
+      subscribeTo.exception((data) => {
+        if (data.text === "Unauthorized") {
+          refreshFromSocket(data.event, data.data);
+        }
+      });
     }, []);
 
     useEffect(() => {

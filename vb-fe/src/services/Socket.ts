@@ -65,7 +65,7 @@ export const refreshFromSocket = async (eventName: SocketEvents, data: unknown):
     localStorage.setItem(TokenStorageKeys.RT, refreshToken);
     localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
     setHeaders();
-    console.log(eventName, data);
+    console.log(eventName, data); // TODO currently getting two calls, second one is undefined.
     socket.emit(eventName, data);
   } catch (error: any) {
     console.error(error);
