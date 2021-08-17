@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, ReactElement } from "react";
-import { useLocation } from "react-router-dom";
-import { Input } from "@chakra-ui/react";
-
-import { emit, subscribeTo } from "services/Socket";
-import { Navbar } from "components";
-import { Layout } from "layout/Layout";
-
-export const Room = (): ReactElement => {
-=======
 import React, { useEffect, useState, FunctionComponent } from "react";
 
 import moment from "moment";
@@ -25,6 +14,7 @@ import { RoomConstants } from "_store/room/RoomTypes";
 import { Room as RoomType } from "util/Room";
 import { Tag } from "util/Tags";
 import { User } from "util/User";
+import { emit, subscribeTo } from "services/Socket";
 
 interface RoomInfoProps {
   name: string;
@@ -34,37 +24,33 @@ interface RoomInfoProps {
 }
 
 export const Room: FunctionComponent = (): JSX.Element => {
->>>>>>> develop
   const location = useLocation();
   const dispatch = useDispatch();
-  const socket = useSelector((state: State) => state.system.socket);
+  // const socket = useSelector((state: State) => state.system.socket);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
   const [room, setRoom] = useState<RoomType | null>(null);
   const [isHost, setIsHost] = useState<boolean>(false);
 
   useEffect(() => {
-<<<<<<< HEAD
     const roomId = location.pathname.split("/")[2];
     if (roomId) {
       emit.joinRoom(roomId);
       subscribeTo.joinSuccess((data) => console.log("here, ", data));
     }
   }, [location.pathname]);
-=======
+
+  useEffect(() => {
     let isMounted = true;
 
-    dispatch({ type: SystemConstants.LOADING });
     dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: true });
 
-    if (isMounted && socket) {
+    if (isMounted) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
-        socket?.emit("join-room", roomId);
+        emit.joinRoom(roomId);
       }
-
-      socket?.on("join-room-success", (data: RoomType) => {
-        dispatch({ type: SystemConstants.SUCCESS });
+      subscribeTo.joinSuccess((data: RoomType) => {
         setIsHost(data.host._id === currentUser?._id);
         setRoom(data);
       });
@@ -74,8 +60,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
       isMounted = false;
       dispatch({ type: RoomConstants.ADD_TO_PLAYLIST, payload: [] });
     };
-  }, [socket]); //eslint-disable-line
->>>>>>> develop
+  }, []); //eslint-disable-line
 
   const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name, description, tags }): JSX.Element => {
     return (
@@ -103,18 +88,6 @@ export const Room: FunctionComponent = (): JSX.Element => {
           <Navbar isAuth isHost={isHost} />
           {room && currentUser ? <RoomToolbar room={room} isHost={isHost} /> : <></>}
         </Layout.Header>
-<<<<<<< HEAD
-        <Layout.Body>
-          <Layout.Content flex="1">
-            <Input
-              variant="filled"
-              onChange={(e: any) => {
-                emit.message({ message: e.target.value, roomId: location.pathname.split("/")[2] });
-              }}
-            />
-          </Layout.Content>
-        </Layout.Body>
-=======
         {room ? (
           <>
             <Layout.Body>
@@ -135,7 +108,6 @@ export const Room: FunctionComponent = (): JSX.Element => {
         ) : (
           <Text>Room Loading..</Text>
         )}
->>>>>>> develop
       </Layout.Wrapper>
     </>
   );

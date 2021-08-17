@@ -25,40 +25,80 @@ class Player {
 
   private deviceId = "";
 
-  constructor() {
-    handleScriptLoad();
-    window.onSpotifyWebPlaybackSDKReady = async () => {
-      this.player = new window.Spotify.Player({
-        name: "Vibey",
-        getOAuthToken: (callback: any) => {
-          callback(localStorage.getItem("v-s-at"));
-        },
-        volume: DEFAULT_VOLUME / 100,
-      });
+  // constructor() {
+  //   handleScriptLoad();
+  //   window.onSpotifyWebPlaybackSDKReady = async () => {
+  //     this.player = new window.Spotify.Player({
+  //       name: "Vibey",
+  //       getOAuthToken: (callback: any) => {
+  //         callback(localStorage.getItem("v-s-at"));
+  //       },
+  //       volume: DEFAULT_VOLUME / 100,
+  //     });
 
-      this.player.addListener("ready", (data: any) => {
-        console.log("Ready with Device ID", data);
-        this.setDeviceId(data.device_id);
-      });
+  //     this.player.addListener("ready", (data: any) => {
+  //       console.log("Ready with Device ID", data);
+  //       this.setDeviceId(data.device_id);
+  //     });
 
-      this.player.addListener("player_state_changed", (data: any) => {
-        if (data) {
-          store.dispatch({
-            type: PlayerConstants.UPDATE_TRACK,
-            payload: data.track_window.current_track,
-          });
-          store.dispatch({
-            type: data.paused ? PlayerConstants.PAUSE : PlayerConstants.PLAY,
-          });
-          store.dispatch({
-            type: PlayerConstants.UPDATE_POSITION,
-            payload: data.position,
-          });
-          store.dispatch({ type: PlayerConstants.SET_SHUFFLE, payload: data.shuffle });
-        }
-      });
-      this.player.connect();
-    };
+  //     this.player.addListener("player_state_changed", (data: any) => {
+  //       if (data) {
+  //         store.dispatch({
+  //           type: PlayerConstants.UPDATE_TRACK,
+  //           payload: data.track_window.current_track,
+  //         });
+  //         store.dispatch({
+  //           type: data.paused ? PlayerConstants.PAUSE : PlayerConstants.PLAY,
+  //         });
+  //         store.dispatch({
+  //           type: PlayerConstants.UPDATE_POSITION,
+  //           payload: data.position,
+  //         });
+  //         store.dispatch({ type: PlayerConstants.SET_SHUFFLE, payload: data.shuffle });
+  //       }
+  //     });
+  //     this.player.connect();
+  //   };
+  // }
+
+  async init() {
+    return new Promise((resolve, reject) => {
+      handleScriptLoad();
+      window.onSpotifyWebPlaybackSDKReady = async () => {
+        this.player = new window.Spotify.Player({
+          name: "Vibey",
+          getOAuthToken: (callback: any) => {
+            callback(localStorage.getItem("v-s-at"));
+          },
+          volume: DEFAULT_VOLUME / 100,
+        });
+
+        this.player.addListener("ready", (data: any) => {
+          console.log("Ready with Device ID", data);
+          this.setDeviceId(data.device_id);
+          resolve("Player ready");
+        });
+
+        this.player.addListener("player_state_changed", (data: any) => {
+          if (data) {
+            store.dispatch({
+              type: PlayerConstants.UPDATE_TRACK,
+              payload: data.track_window.current_track,
+            });
+            store.dispatch({
+              type: data.paused ? PlayerConstants.PAUSE : PlayerConstants.PLAY,
+            });
+            store.dispatch({
+              type: PlayerConstants.UPDATE_POSITION,
+              payload: data.position,
+            });
+            store.dispatch({ type: PlayerConstants.SET_SHUFFLE, payload: data.shuffle });
+          }
+        });
+
+        this.player.connect();
+      };
+    });
   }
 
   getPlayer(): any {
