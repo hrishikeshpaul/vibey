@@ -15,6 +15,7 @@ export const initPipeline = async () => {
     store.dispatch({ type: SystemConstants.LOADING, payload: "Initializing player..." });
     const playerConnection = await WebPlayer.init();
     store.dispatch({ type: SystemConstants.LOADING, payload: playerConnection });
+    store.dispatch({ type: SystemConstants.INITIALIZED, payload: true });
     store.dispatch({ type: SystemConstants.SUCCESS });
   } catch (err) {
     store.dispatch({ type: SystemConstants.FAILURE });

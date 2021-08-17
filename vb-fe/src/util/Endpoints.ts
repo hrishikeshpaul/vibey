@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:8080";
+export const BASE_URL = "http://localhost:8082";
 
 export enum AuthEndpoints {
   LOGIN = "/api/auth/login",

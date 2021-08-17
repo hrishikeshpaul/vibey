@@ -5,15 +5,20 @@ export const HEROKU_SOCKET_ENDPOINT = "https://vibey-be--qa.herokuapp.com/";
 
 export enum SocketEvents {
   Connect = "connect",
+  ConnectError = "connect_error",
   JoinRoom = "join-room",
   JoinSuccess = "join-room-success",
   Message = "message",
   Error = "socket-err",
+  Exception = "exception",
+  PauseTrack = "pause-track",
 }
 
 export interface SocketError {
   code: number;
   message: string;
+  data: any;
+  event: SocketEvents;
 }
 
 export interface SocketMessage {

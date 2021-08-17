@@ -8,6 +8,7 @@ export interface ITokenUser {
 export interface IDecodedToken {
   email: string;
   role: string;
+  id: Types.ObjectId;
   subject: string;
 }
 

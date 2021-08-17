@@ -40,8 +40,13 @@ export const Room: FunctionComponent = (): JSX.Element => {
         emit.joinRoom(roomId);
       }
       subscribeTo.joinSuccess((data: RoomType) => {
-        setIsHost(data.host._id === currentUser?._id);
-        setRoom(data);
+        if (data) {
+          setIsHost(data.host._id === currentUser?._id);
+          setRoom(data);
+        }
+      });
+      subscribeTo.message((message: string) => {
+        console.log("IN THE ROOM ---> ", message);
       });
     }
 

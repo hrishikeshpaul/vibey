@@ -8,6 +8,7 @@ export enum SystemConstants {
   EXPAND_BOTTOM_SHEET = "EXPAND_BOTTOM_SHEET",
   SOCKET = "SOCKET",
   RETRY = "RETRY",
+  INITIALIZED = "INITIALIZED",
 }
 
 export interface ResetSystem {
@@ -63,6 +64,11 @@ export interface SetRetry {
   payload: boolean;
 }
 
+export interface SetSystemInitialize {
+  type: typeof SystemConstants.INITIALIZED;
+  payload: boolean;
+}
+
 export type SystemActionTypes =
   | ResetSystem
   | GetApiStart
@@ -71,4 +77,5 @@ export type SystemActionTypes =
   | SetUserLogin
   | SetCreateRoomModal
   | SetExpandBottomSheet
-  | SetRetry;
+  | SetRetry
+  | SetSystemInitialize;

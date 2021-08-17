@@ -5,21 +5,22 @@ import {
   WebSocketServer,
   ConnectedSocket,
 } from '@nestjs/websockets';
+import { UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
 import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import {
-  SocketMessageData,
   SocketEvents,
+  SocketMessageBody,
 } from '@modules/socket/socket.constants';
 import { RoomService } from '@modules/room/room.service';
-import { ISocketCreateRoomData } from '@modules/socket/socket.constants';
 import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 
+@UseGuards(WsGuard)
 @WebSocketGateway({ cors: true })
 export class EventsGateway {
   @WebSocketServer()
@@ -32,11 +33,12 @@ export class EventsGateway {
 
   @SubscribeMessage(SocketEvents.JoinRoom)
   async createRoom(
-    @MessageBody() roomId: string,
+    @MessageBody() data: SocketMessageBody,
     @ConnectedSocket() client: Socket,
   ) {
     try {
-      const AT: string = client.handshake.headers['v-at'] as string;
+      const roomId = data.data.roomId;
+      const AT: string = data.headers['v-at'] as string;
       const { id } = await this.authService.verifyToken(AT, TokenTypes.Access);
 
       if (!id)
@@ -47,7 +49,6 @@ export class EventsGateway {
 
       await this.roomService.addUserToRoom(roomId, id);
       const updatedRoom = await this.roomService.getOneRoom(roomId);
-
       await client.join(roomId);
 
       client.emit(SocketEvents.JoinSuccess, updatedRoom);
@@ -57,8 +58,8 @@ export class EventsGateway {
   }
 
   @SubscribeMessage(SocketEvents.Message)
-  async message(@MessageBody() data: SocketMessageData) {
-    const { message, roomId } = data;
+  async message(@MessageBody() data: SocketMessageBody) {
+    const { roomId, message } = data.data;
     this.server.to(roomId).emit(SocketEvents.Message, message);
   }
 }

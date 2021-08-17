@@ -46,6 +46,7 @@ export const App = (): JSX.Element => {
   };
 
   const AuthenticatedApp = (): JSX.Element => {
+    const { isSystemInit } = useSelector((state: State) => state.system);
     useEffect(() => {
       initHttp();
       initPipeline();
@@ -55,7 +56,7 @@ export const App = (): JSX.Element => {
       if (!isAuthenticated) resetApp();
     }, [isAuthenticated]); // eslint-disable-line
 
-    return (
+    return isSystemInit ? (
       <Switch>
         <Route exact path="/">
           <Home />
@@ -64,6 +65,8 @@ export const App = (): JSX.Element => {
           <Room />
         </Route>
       </Switch>
+    ) : (
+      <></>
     );
   };
 

@@ -18,6 +18,7 @@ export interface SystemState {
    */
   bottomSheetExpanded: boolean;
   retry: boolean;
+  isSystemInit: boolean;
 }
 
 /**
@@ -31,12 +32,18 @@ const initialState: SystemState = {
   bottomSheetExpanded: false,
   retry: false,
   loadingText: "Loading...",
+  isSystemInit: false,
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
   switch (action.type) {
     case SystemConstants.RESET:
       return { ...initialState };
+    case SystemConstants.INITIALIZED:
+      return {
+        ...state,
+        isSystemInit: action.payload,
+      };
     case SystemConstants.LOADING:
       return {
         ...state,

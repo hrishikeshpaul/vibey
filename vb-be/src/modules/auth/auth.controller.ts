@@ -129,7 +129,7 @@ export class AuthController {
     @Response() res: Res,
   ) {
     try {
-      const user = { email: decoded.email };
+      const user = { email: decoded.email, id: decoded.id };
       const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
         accessToken,
         user,
@@ -138,6 +138,8 @@ export class AuthController {
         this.spotify.refreshAccessToken(spotifyRefreshToken),
       );
       const refreshedSpotifyAT = response.data.access_token;
+
+      console.log('refreshing tokens....');
 
       return res.status(HttpStatus.OK).json({
         accessToken: refreshedAT,
