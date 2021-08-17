@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FunctionComponent } from "react";
+import React, { useEffect, FunctionComponent } from "react";
 
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,10 +9,8 @@ import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
 import { RoomConstants } from "_store/room/RoomTypes";
-import { Room as RoomType } from "util/Room";
 import { Tag } from "util/Tags";
 import { User } from "util/User";
-import { emit, subscribeTo } from "services/Socket";
 import { joinRoom } from "_store/room/RoomActions";
 import { State } from "_store/rootReducer";
 

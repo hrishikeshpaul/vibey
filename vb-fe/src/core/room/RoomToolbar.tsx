@@ -8,7 +8,6 @@ import { FaInfo } from "react-icons/fa";
 import { ReactComponent as Back } from "assets/icons/back.svg";
 import { Room } from "util/Room";
 import { useHistory } from "react-router-dom";
-import { emit } from "services/Socket";
 
 interface Props {
   room: Room;
@@ -47,15 +46,7 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Ele
       </Flex>
 
       <HStack spacing={3}>
-        <IconButton
-          icon={<FaInfo />}
-          aria-label="room-back"
-          bg="primaryDark"
-          fontSize="xl"
-          onClick={() => {
-            emit.message(room._id, "HELLO FROM ROOM");
-          }}
-        />
+        <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" fontSize="xl" />
 
         {isHost && <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />}
         <IconButton icon={<HiShare />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
