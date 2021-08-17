@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse as A } from 'axios';
+import { Observable } from 'rxjs';
 
 import { getQueryString, scopes } from '@modules/spotify/spotify';
 import {
@@ -9,10 +9,11 @@ import {
   SpotifyAuthResponse,
   SpotifyPublicUser,
   SpotifyGrantType,
+  Playlist,
 } from '@modules/spotify/spotify.constants';
 
 const AUTH_BASE_URL = 'https://accounts.spotify.com';
-const BASE_URL = 'https://api.spotify.com/v1';
+export const BASE_URL = 'https://api.spotify.com/v1';
 
 @Injectable()
 export class SpotifyService {
@@ -98,5 +99,101 @@ export class SpotifyService {
         Authorization: `Bearer ${this.getAccessToken()}`,
       },
     });
+  }
+
+  getUserPlaylists(
+    spotifyAccessToken?: string,
+    offset?: string,
+    limit = 10,
+  ): Observable<A<Playlist>> {
+    return this.http.get(`${BASE_URL}/me/playlists`, {
+      params: {
+        offset,
+        limit,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${spotifyAccessToken}`,
+      },
+    });
+  }
+
+  play(deviceId: string, contextUri: string, accessToken: string) {
+    return this.http.put(
+      `${BASE_URL}/me/player/play`,
+      {
+        context_uri: contextUri,
+      },
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  playNext(deviceId: string, accessToken: string) {
+    return this.http.post(
+      `${BASE_URL}/me/player/next`,
+      {},
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  playPrevious(deviceId: string, accessToken: string) {
+    return this.http.post(
+      `${BASE_URL}/me/player/previous`,
+      {},
+      {
+        params: {
+          device_id: deviceId,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  }
+
+  getPlaylistTracks(
+    playlistId: string,
+    accessToken: string,
+  ): Observable<A<void>> {
+    const pid = playlistId.split(':')[2];
+    return this.http.get(`${BASE_URL}/playlists/${pid}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+
+  setShuffle(
+    state: boolean,
+    deviceId: string,
+    accessToken: string,
+  ): Observable<A<void>> {
+    return this.http.put(
+      `${BASE_URL}/me/player/shuffle`,
+      {},
+      {
+        params: {
+          device_id: deviceId,
+          state,
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   }
 }

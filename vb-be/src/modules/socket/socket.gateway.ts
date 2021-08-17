@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { socketError, ErrorText } from 'src/util/error';
+import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import {
@@ -15,6 +15,8 @@ import {
   SocketEvents,
 } from '@modules/socket/socket.constants';
 import { RoomService } from '@modules/room/room.service';
+import { ISocketCreateRoomData } from '@modules/socket/socket.constants';
+import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 
@@ -37,8 +39,15 @@ export class EventsGateway {
       const AT: string = client.handshake.headers['v-at'] as string;
       const { id } = await this.authService.verifyToken(AT, TokenTypes.Access);
 
+      if (!id)
+        throw new ErrorHandler(
+          HttpStatus.Unauthorized,
+          ErrorText.InvalidTokenPair,
+        );
+
       await this.roomService.addUserToRoom(roomId, id);
       const updatedRoom = await this.roomService.getOneRoom(roomId);
+
       await client.join(roomId);
 
       client.emit(SocketEvents.JoinSuccess, updatedRoom);

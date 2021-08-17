@@ -2,13 +2,14 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 
 import { Box, Flex } from "@chakra-ui/react";
 
-import { MIN_SHEET_HEIGHT } from "util/Variables";
-
 interface GenericLayoutProps {
   children?: ReactElement | ReactElement[];
+  style?: any;
   className?: string;
   flex?: string;
   show?: boolean;
+  mx?: number;
+  calcSidebarHeight?: boolean;
 }
 
 interface LayoutWrapperProps extends Omit<GenericLayoutProps, "children"> {
@@ -58,12 +59,10 @@ export const LayoutFooterOverlay: FunctionComponent<GenericLayoutProps> = (): JS
  * The footer will also be expanded so that it can reveal the room details and the people
  * that are in the room and the other information that has been discussed in the spec.
  */
-export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = true, children, className }) => {
+export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ children, className }) => {
   return (
     <Box
-      display={show ? "block" : "none"}
-      position="sticky"
-      minH={MIN_SHEET_HEIGHT}
+      position="fixed"
       bottom="0"
       w="100%"
       className={`container ${className}`}
@@ -79,9 +78,13 @@ export const LayoutFooter: FunctionComponent<GenericLayoutProps> = ({ show = tru
 /**
  * This content is scroll-able and will have the different room cards
  */
-export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.5" }): JSX.Element => {
+export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({
+  children,
+  flex = "0.5",
+  mx = 10,
+}): JSX.Element => {
   return (
-    <Box mx={{ lg: 10, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
+    <Box mx={{ lg: mx, base: 0 }} flex={{ lg: flex, base: 1 }} overflow="hidden">
       {children}
     </Box>
   );
@@ -92,12 +95,23 @@ export const LayoutContent: FunctionComponent<GenericLayoutProps> = ({ children,
  * width based on the flex value.
  * The Y position of the sidebar depends on the height of the header which is dynamically calculated here.
  */
-export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children, flex = "0.25" }): JSX.Element => {
+export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({
+  children,
+  flex = "0.25",
+  calcSidebarHeight,
+}): JSX.Element => {
   const [topPosition, setTopPosition] = useState<number>(0); // randomly set initial value
+  const [sidebarHeight, setSidebarHeight] = useState<number>(0);
 
   useEffect(() => {
     const header: HTMLElement | null = document.getElementById("vb-header");
-    const headerHeight: number = header!.clientHeight;
+    const footer: HTMLElement | null = document.getElementById("vb-footer");
+    const main: HTMLElement | null = document.getElementById("vb-main");
+    const headerHeight: number = header?.clientHeight || 0;
+    const footerHeight: number = footer?.clientHeight || 0;
+    const mainHeight: number = main?.clientHeight || 0;
+
+    setSidebarHeight(mainHeight - headerHeight - footerHeight - 100);
     setTopPosition(headerHeight);
   }, []);
 
@@ -106,8 +120,9 @@ export const LayoutSidebar: FunctionComponent<GenericLayoutProps> = ({ children,
       position="sticky"
       top={`${topPosition}px`}
       flex={flex}
-      height="fit-content"
+      height={calcSidebarHeight ? `${sidebarHeight}px` : "fit-content"}
       display={{ lg: "block", base: "none" }}
+      bottom="20px"
     >
       {children}
     </Box>

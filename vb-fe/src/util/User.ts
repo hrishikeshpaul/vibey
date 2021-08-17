@@ -9,4 +9,5 @@ export interface User {
   image: string;
   username: string;
   __v: number;
+  display_name?: string;
 }

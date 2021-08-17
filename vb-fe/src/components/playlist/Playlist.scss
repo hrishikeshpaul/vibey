@@ -1,0 +1,36 @@
+.vb-playlist {
+  &-item {
+    width: 100%;
+
+    .image-overlay {
+      opacity: 0;
+
+      .playing-icon {
+        opacity: 1;
+      }
+
+      .pause-icon {
+        display: none;
+      }
+    }
+
+    .is-playing {
+      opacity: 1;
+    }
+
+    &:hover {
+      cursor: pointer;
+      .image-overlay {
+        opacity: 1;
+      }
+
+      .playing-icon {
+        display: none;
+      }
+
+      .pause-icon {
+        display: block;
+      }
+    }
+  }
+}

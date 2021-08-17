@@ -14,4 +14,14 @@ export enum TagEndpoints {
 
 export enum RoomEndpoints {
   GENERAL = "api/room/",
+  PLAYLIST = "api/room/playlists",
+}
+
+export enum PlayerEndpoints {
+  PLAY = "/api/player/play",
+  NEXT = "/api/player/next",
+  PREVIOUS = "/api/player/previous",
+  PAUSE = "/api/player/pause",
+  RESUME = "/api/player/resume",
+  SHUFFLE = "/api/player/shuffle",
 }

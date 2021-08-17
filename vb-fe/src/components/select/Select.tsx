@@ -1,6 +1,6 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, FunctionComponent } from "react";
 
 import CreatableSelect from "react-select/creatable";
 
@@ -14,16 +14,20 @@ import "components/select/Select.scss";
 /**
  * @function updateTags function emitted that contains the updated tags
  */
-interface State {
-  updateTags: (tag: Tag) => void;
+interface Props {
+  onChange: (tag: Tag[]) => void;
   presentTags: Tag[];
   handleError: (error: any) => void;
 }
 
-export const Select = (props: State) => {
-  const { updateTags, presentTags, handleError } = props;
+export const Select: FunctionComponent<Props> = ({ onChange, presentTags, handleError }) => {
   const [tags, setTags] = useState<Tag[]>([]);
+  const [selected, setSelected] = useState<Tag[]>(presentTags);
   const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    setSelected(presentTags);
+  }, [presentTags]);
 
   /**
    * Function to get the tags based on the typed letters
@@ -59,11 +63,9 @@ export const Select = (props: State) => {
    * @param tags list of tags from the select
    */
   const handleSelectionChange = (inputTags: any) => {
-    if (inputTags.length) {
-      updateTags(inputTags);
-      setInputValue("");
-      setTags([]);
-    }
+    onChange(inputTags as Tag[]);
+    setInputValue("");
+    setTags([]);
   };
 
   /**
@@ -83,7 +85,7 @@ export const Select = (props: State) => {
         isMulti
         inputValue={inputValue}
         classNamePrefix="select"
-        defaultValue={presentTags}
+        value={selected}
         onChange={handleSelectionChange}
         options={tags}
         components={{ Option: SelectOption, NoOptionsMessage: NoSelectOption }}
