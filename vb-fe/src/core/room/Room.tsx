@@ -8,8 +8,6 @@ import { Heading, Box, Text, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
-import { State } from "_store/rootReducer";
-import { SystemConstants } from "_store/system/SystemTypes";
 import { RoomConstants } from "_store/room/RoomTypes";
 import { Room as RoomType } from "util/Room";
 import { Tag } from "util/Tags";
@@ -26,19 +24,10 @@ interface RoomInfoProps {
 export const Room: FunctionComponent = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useDispatch();
-  // const socket = useSelector((state: State) => state.system.socket);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
   const [room, setRoom] = useState<RoomType | null>(null);
   const [isHost, setIsHost] = useState<boolean>(false);
-
-  useEffect(() => {
-    const roomId = location.pathname.split("/")[2];
-    if (roomId) {
-      emit.joinRoom(roomId);
-      subscribeTo.joinSuccess((data) => console.log("here, ", data));
-    }
-  }, [location.pathname]);
 
   useEffect(() => {
     let isMounted = true;

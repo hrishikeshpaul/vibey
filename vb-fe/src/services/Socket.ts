@@ -49,7 +49,9 @@ export const emit = {
 
 export const connection = () => {
   return new Promise((resolve, reject) => {
-    subscribeTo.connect(() => resolve("Connection successful"));
-    subscribeTo.error((data: SocketError) => reject(data));
+    subscribeTo.connect(() => {
+      subscribeTo.error((data: SocketError) => reject(data));
+      resolve("Connection successful");
+    });
   });
 };
