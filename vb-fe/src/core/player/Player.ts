@@ -1,5 +1,9 @@
+import { push } from "connected-react-router";
+import { TokenStorageKeys } from "util/Http";
+
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { store } from "_store/store";
+import { SystemConstants } from "_store/system/SystemTypes";
 
 const DEFAULT_VOLUME = 50;
 
@@ -32,7 +36,7 @@ class Player {
         this.player = new window.Spotify.Player({
           name: "Vibey",
           getOAuthToken: (callback: any) => {
-            callback(localStorage.getItem("v-s-at"));
+            callback(localStorage.getItem(TokenStorageKeys.SpotifyAT) || "");
           },
           volume: DEFAULT_VOLUME / 100,
         });
@@ -48,6 +52,13 @@ class Player {
           store.dispatch({
             type: PlayerConstants.SET_INITIAL,
           });
+        });
+
+        this.player.on("authentication_error", (data: any) => {
+          reject(new Error(data.message));
+          store.dispatch({ type: PlayerConstants.SET_INITIAL });
+          store.dispatch(push("/"));
+          store.dispatch({ type: SystemConstants.RESET });
         });
 
         this.player.on("playback_error", (data: any) => {
