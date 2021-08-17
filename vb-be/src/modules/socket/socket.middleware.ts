@@ -11,7 +11,7 @@ export class WsGuard implements CanActivate {
   async canActivate(context: any): Promise<any> {
     const { event, data, headers } = context.args[1];
     const token: string = headers['v-at'];
-    
+
     try {
       await this.authService.verifyToken(token, TokenTypes.Access);
       return true;

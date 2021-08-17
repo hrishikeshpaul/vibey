@@ -16,6 +16,7 @@
   "rules": {
     "react/prop-types": "off",
     "no-unused-vars": "off",
+    "max-classes-per-file": 10,
     "consistent-return": "off",
     "no-nested-ternary": "warn", // need to remove this in the future
     "@typescript-eslint/no-explicit-any": "off",

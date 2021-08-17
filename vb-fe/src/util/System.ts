@@ -1,5 +1,5 @@
 import { WebPlayer } from "core/player/Player";
-import { connection } from "services/Socket";
+import { VS } from "services/Socket";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
 
@@ -10,7 +10,7 @@ import { SystemConstants } from "_store/system/SystemTypes";
 export const initPipeline = async () => {
   try {
     store.dispatch({ type: SystemConstants.LOADING, payload: "Initializing sockets..." });
-    const socketConnection = await connection();
+    const socketConnection = await VS.init();
     console.log(socketConnection);
     store.dispatch({ type: SystemConstants.LOADING, payload: "Initializing player..." });
     const playerConnection = await WebPlayer.init();
@@ -19,6 +19,8 @@ export const initPipeline = async () => {
     store.dispatch({ type: SystemConstants.SUCCESS });
   } catch (err) {
     store.dispatch({ type: SystemConstants.FAILURE });
+    store.dispatch({ type: SystemConstants.LOGIN, payload: false });
+    store.dispatch({ type: SystemConstants.RESET });
     console.log(err);
   }
 };

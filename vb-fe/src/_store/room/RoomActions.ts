@@ -2,10 +2,22 @@ import { Dispatch } from "redux";
 import { push, CallHistoryMethodAction } from "connected-react-router";
 
 import { createRoom, getUserPlaylists } from "services/Room";
-import { RoomForm } from "util/Room";
+import { Room, RoomForm } from "util/Room";
 import { User } from "util/User";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
-import { RoomActionTypes, RoomConstants } from "./RoomTypes";
+
+import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
+import { VS } from "services/Socket";
+import { store } from "_store/store";
+
+export const updateCurrentRoom = (room: Room) => {
+  if (room) {
+    const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
+
+    store.dispatch({ type: RoomConstants.SET_ROOM, payload: room });
+    store.dispatch({ type: RoomConstants.SET_HOST, payload: currentUser?._id === room.host._id });
+  }
+};
 
 export const createRoomAction =
   (room: RoomForm) =>
@@ -35,6 +47,11 @@ export const createRoomAction =
       });
     }
   };
+
+export const joinRoom = (roomId: string) => async (): Promise<void> => {
+  VS.getPublisher().joinRoom(roomId);
+  VS.getSubscriber().joinSuccess(updateCurrentRoom);
+};
 
 export const getUserPlaylistsAction =
   (offset: number) =>

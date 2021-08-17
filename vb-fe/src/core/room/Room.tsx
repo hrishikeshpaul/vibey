@@ -13,6 +13,8 @@ import { Room as RoomType } from "util/Room";
 import { Tag } from "util/Tags";
 import { User } from "util/User";
 import { emit, subscribeTo } from "services/Socket";
+import { joinRoom } from "_store/room/RoomActions";
+import { State } from "_store/rootReducer";
 
 interface RoomInfoProps {
   name: string;
@@ -26,8 +28,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
-  const [room, setRoom] = useState<RoomType | null>(null);
-  const [isHost, setIsHost] = useState<boolean>(false);
+  const { currentRoom, isHost } = useSelector((state: State) => state.room);
 
   useEffect(() => {
     let isMounted = true;
@@ -37,17 +38,8 @@ export const Room: FunctionComponent = (): JSX.Element => {
     if (isMounted) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
-        emit.joinRoom(roomId);
+        dispatch(joinRoom(roomId));
       }
-      subscribeTo.joinSuccess((data: RoomType) => {
-        if (data) {
-          setIsHost(data.host._id === currentUser?._id);
-          setRoom(data);
-        }
-      });
-      subscribeTo.message((message: string) => {
-        console.log("IN THE ROOM ---> ", message);
-      });
     }
 
     return () => {
@@ -80,17 +72,17 @@ export const Room: FunctionComponent = (): JSX.Element => {
       <Layout.Wrapper>
         <Layout.Header>
           <Navbar isAuth isHost={isHost} />
-          {room && currentUser ? <RoomToolbar room={room} isHost={isHost} /> : <></>}
+          {currentRoom && currentUser ? <RoomToolbar room={currentRoom} isHost={isHost} /> : <></>}
         </Layout.Header>
-        {room ? (
+        {currentRoom ? (
           <>
             <Layout.Body>
               <Layout.Sidebar flex="0.2">
-                <RoomInfo {...room} />
+                <RoomInfo {...currentRoom} />
               </Layout.Sidebar>
               <Layout.Content flex="0.5">{isHost ? <Playlist /> : <></>}</Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
-                <CurrentUsers users={room.currentUsers} />
+                <CurrentUsers users={currentRoom.currentUsers} />
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>
