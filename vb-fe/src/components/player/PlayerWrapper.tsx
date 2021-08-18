@@ -25,6 +25,10 @@ export const PlayerWrapper: FunctionComponent = () => {
         case "authentication_error":
           resetApp();
           dispatch({ type: SystemConstants.LOGIN, payload: false });
+          break;
+        default:
+          resetApp();
+          dispatch({ type: SystemConstants.LOGIN, payload: false });
       }
       dispatch({ type: SystemConstants.FAILURE });
     }
