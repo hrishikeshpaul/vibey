@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { usePlayerDevice, useErrorState, usePlaybackState } from "core/player/index";
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { resetApp } from "util/Logout";
 
 export const PlayerWrapper: FunctionComponent = () => {
   const device = usePlayerDevice();
@@ -20,6 +21,11 @@ export const PlayerWrapper: FunctionComponent = () => {
 
   useEffect(() => {
     if (error) {
+      switch (error.type) {
+        case "authentication_error":
+          resetApp();
+          dispatch({ type: SystemConstants.LOGIN, payload: false });
+      }
       dispatch({ type: SystemConstants.FAILURE });
     }
   }, [error, dispatch]);
