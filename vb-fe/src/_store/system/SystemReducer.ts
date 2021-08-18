@@ -19,6 +19,7 @@ export interface SystemState {
   bottomSheetExpanded: boolean;
   retry: boolean;
   isSystemInit: boolean;
+  socketsConnected: boolean;
 }
 
 /**
@@ -33,6 +34,7 @@ const initialState: SystemState = {
   retry: false,
   loadingText: "Loading...",
   isSystemInit: false,
+  socketsConnected: false,
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
@@ -44,6 +46,12 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
         ...state,
         isSystemInit: action.payload,
       };
+    case SystemConstants.SOCKETS_CONNECTED: {
+      return {
+        ...state,
+        socketsConnected: action.payload,
+      };
+    }
     case SystemConstants.LOADING:
       return {
         ...state,

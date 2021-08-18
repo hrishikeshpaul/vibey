@@ -27,13 +27,14 @@ export const Room: FunctionComponent = (): JSX.Element => {
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
   const { currentRoom, isHost } = useSelector((state: State) => state.room);
+  const { socketsConnected } = useSelector((state: State) => state.system);
 
   useEffect(() => {
     let isMounted = true;
 
     dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: true });
 
-    if (isMounted) {
+    if (isMounted && socketsConnected) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
         dispatch(joinRoom(roomId));
@@ -44,7 +45,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
       isMounted = false;
       dispatch({ type: RoomConstants.ADD_TO_PLAYLIST, payload: [] });
     };
-  }, []); //eslint-disable-line
+  }, [socketsConnected]); //eslint-disable-line
 
   const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name, description, tags }): JSX.Element => {
     return (

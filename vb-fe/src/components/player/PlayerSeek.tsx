@@ -1,17 +1,18 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Slider, SliderTrack, SliderFilledTrack, Flex, Text } from "@chakra-ui/react";
+import { useSpotifyPlayer } from "core/player/index";
 
 import { useSelector } from "react-redux";
 import { State } from "_store/rootReducer";
 import { PlayerStates } from "_store/player/PlayerTypes";
 import { useInterval } from "util/Interval";
-import { WebPlayer } from "core/player/Player";
 import { useDebounce } from "util/Input";
 
 export const PlayerSeeker: FunctionComponent = () => {
   const { track, state, trackPosition } = useSelector((states: State) => states.player);
   const [position, setPosition] = useState<number>(0);
   const [debounce] = useDebounce();
+  const player = useSpotifyPlayer();
 
   const formatMilliseconds = (milliseconds: number, padStart: boolean): string => {
     function pad(num: number) {
@@ -48,7 +49,7 @@ export const PlayerSeeker: FunctionComponent = () => {
 
   const onSeek = (value: number) => {
     debounce(value, (pos: number) => {
-      WebPlayer.getPlayer().seek(pos);
+      player?.seek(pos);
       setPosition(pos);
     });
   };

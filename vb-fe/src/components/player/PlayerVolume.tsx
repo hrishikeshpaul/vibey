@@ -14,25 +14,27 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { HiVolumeOff, HiVolumeUp } from "react-icons/hi";
+import { useSpotifyPlayer } from "core/player/index";
+
 import { useDebounce } from "util/Input";
-import { WebPlayer } from "core/player/Player";
 
 export const PlayerVolume: FunctionComponent = (): JSX.Element => {
+  const player = useSpotifyPlayer();
   const [debounce] = useDebounce();
-  const [volume, setVolume] = useState<number | null>(null);
+  const [vol, setVolume] = useState<number | null>(null);
 
   useEffect(() => {
-    WebPlayer.getPlayer()
-      .getVolume()
-      .then((vol: number) => {
-        setVolume(vol * 100);
+    if (player) {
+      player.getVolume().then((v: number) => {
+        setVolume(v * 100);
       });
-  }, []);
+    }
+  }, [player]);
 
   const onVolumeChange = (value: number) => {
-    debounce(value, (vol: any) => {
-      setVolume(vol);
-      WebPlayer.getPlayer().setVolume(vol / 100);
+    debounce(value, (v: any) => {
+      setVolume(v);
+      if (player) player.setVolume(v / 100);
     });
   };
 
@@ -40,15 +42,15 @@ export const PlayerVolume: FunctionComponent = (): JSX.Element => {
     <Box>
       <Popover>
         <PopoverTrigger>
-          <IconButton icon={volume && volume > 0 ? <HiVolumeUp /> : <HiVolumeOff />} aria-label="track-volume" />
+          <IconButton icon={vol && vol > 0 ? <HiVolumeUp /> : <HiVolumeOff />} aria-label="track-vol" />
         </PopoverTrigger>
         <PopoverContent>
           <PopoverArrow />
           <PopoverBody>
-            {volume !== null && (
+            {vol !== null && (
               <Slider
                 onChange={onVolumeChange}
-                aria-label="vb-volume-slider"
+                aria-label="vb-vol-slider"
                 defaultValue={50}
                 max={100}
                 min={0}

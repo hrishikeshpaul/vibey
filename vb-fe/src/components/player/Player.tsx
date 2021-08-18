@@ -13,7 +13,6 @@ import { PlayerStates } from "_store/player/PlayerTypes";
 
 import { PlayerVolume } from "components/player/PlayerVolume";
 import { PlayerSeeker } from "components/player/PlayerSeek";
-import { WebPlayer } from "core/player/Player";
 import { SimplifiedArtist } from "util/Playlist";
 
 export { PlayerVolume } from "components/player/PlayerVolume";
@@ -58,14 +57,14 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
             icon={<TiMediaPause />}
             fontSize="3xl"
             aria-label="track-pause"
-            onClick={() => WebPlayer.getPlayer().pause()}
+            // onClick={() => WebPlayer.getPlayer().pause()}
             disabled={state === PlayerStates.INITIAL}
           />
         ) : (
           <IconButton
             icon={<FaPlay />}
             aria-label="track-play"
-            onClick={() => WebPlayer.getPlayer().resume()}
+            // onClick={() => WebPlayer.getPlayer().resume()}
             disabled={state === PlayerStates.INITIAL}
           />
         )}
@@ -85,6 +84,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
 
 export const Player: FunctionComponent = (): JSX.Element => {
   const track = useSelector((state: State) => state.player.track);
+  console.log(track);
   return (
     <>
       {track ? (

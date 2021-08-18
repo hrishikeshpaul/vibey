@@ -14,7 +14,6 @@ import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
 
 import "components/playlist/Playlist.scss";
 import { PlayerStates } from "_store/player/PlayerTypes";
-import { WebPlayer } from "core/player/Player";
 
 interface PlaylistItemProps {
   playlist: PlaylistType;
@@ -30,9 +29,9 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
 
   const onPlay = () => {
     if (isCurrent && state === PlayerStates.PLAYING) {
-      WebPlayer.getPlayer().pause();
+      // WebPlayer.getPlayer().pause();
     } else if (isCurrent && state === PlayerStates.PAUSED) {
-      WebPlayer.getPlayer().resume();
+      // WebPlayer.getPlayer().resume();
     } else if (!isCurrent) {
       dispatch(playTrack(playlist.uri));
     }

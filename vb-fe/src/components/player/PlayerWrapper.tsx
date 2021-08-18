@@ -1,16 +1,17 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { usePlayerDevice, useErrorState } from "react-spotify-web-playback-sdk";
+import { usePlayerDevice, useErrorState, usePlaybackState } from "core/player/index";
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { SystemConstants } from "_store/system/SystemTypes";
 
 export const PlayerWrapper: FunctionComponent = () => {
   const device = usePlayerDevice();
   const error = useErrorState();
+  const playbackState = usePlaybackState();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: SystemConstants.LOADING, payload: "Initializing Player...." });
+    dispatch({ type: SystemConstants.LOADING, payload: "Initializing Player..." });
     if (device) {
       dispatch({ type: PlayerConstants.SET_DEVICE_ID, payload: device.device_id });
       dispatch({ type: SystemConstants.SUCCESS });
@@ -22,5 +23,24 @@ export const PlayerWrapper: FunctionComponent = () => {
       dispatch({ type: SystemConstants.FAILURE });
     }
   }, [error, dispatch]);
+
+  useEffect(() => {
+    if (playbackState) {
+      console.log(playbackState);
+      dispatch({
+        type: PlayerConstants.UPDATE_TRACK,
+        payload: playbackState.track_window.current_track,
+      });
+      dispatch({
+        type: playbackState.paused ? PlayerConstants.PAUSE : PlayerConstants.PLAY,
+      });
+      dispatch({
+        type: PlayerConstants.UPDATE_POSITION,
+        payload: playbackState.position,
+      });
+      dispatch({ type: PlayerConstants.SET_SHUFFLE, payload: playbackState.shuffle });
+    }
+  }, [playbackState, dispatch]);
+
   return <></>;
 };

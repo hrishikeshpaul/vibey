@@ -9,6 +9,7 @@ export enum SystemConstants {
   SOCKET = "SOCKET",
   RETRY = "RETRY",
   INITIALIZED = "INITIALIZED",
+  SOCKETS_CONNECTED = "SOCKETS_CONNECTED",
 }
 
 export interface ResetSystem {
@@ -69,6 +70,11 @@ export interface SetSystemInitialize {
   payload: boolean;
 }
 
+export interface SetSocketsConnected {
+  type: typeof SystemConstants.SOCKETS_CONNECTED;
+  payload: boolean;
+}
+
 export type SystemActionTypes =
   | ResetSystem
   | GetApiStart
@@ -78,4 +84,5 @@ export type SystemActionTypes =
   | SetCreateRoomModal
   | SetExpandBottomSheet
   | SetRetry
-  | SetSystemInitialize;
+  | SetSystemInitialize
+  | SetSocketsConnected;

@@ -1,4 +1,4 @@
-import { WebPlayer } from "core/player/Player";
+// import { WebPlayer } from "core/player/Player";
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { RoomConstants } from "_store/room/RoomTypes";
 import { store } from "_store/store";
@@ -8,7 +8,7 @@ import { resetLocalStorage } from "util/System";
 import { VS } from "services/Socket";
 
 export const resetApp = (): void => {
-  WebPlayer.getPlayer().disconnect();
+  // WebPlayer.getPlayer().disconnect();
   VS.disconnect();
   resetLocalStorage();
   store.dispatch({ type: SystemConstants.RESET });

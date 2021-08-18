@@ -10,6 +10,7 @@ export interface PlayerState {
   playlistContext: string;
   shuffle: boolean;
   deviceId: string;
+  volume: number;
 }
 
 /**
@@ -22,6 +23,7 @@ const initialState: PlayerState = {
   playlistContext: "",
   shuffle: false,
   deviceId: "",
+  volume: 0.5,
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -75,6 +77,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         shuffle: action.payload,
+      };
+    }
+    case PlayerConstants.SET_VOLUME: {
+      return {
+        ...state,
+        volume: action.payload,
       };
     }
     default:

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, Redirect as RouterRedirect } from "react-router-dom";
-import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
+import { WebPlaybackSDK } from "core/player/index";
 
 import { Home, Landing, Redirect, Room } from "core/index";
 import { Loading, CreateRoom } from "components/index";
@@ -18,9 +18,10 @@ import "App.scss";
 import { PlayerWrapper } from "components/player/PlayerWrapper";
 
 export const App = (): JSX.Element => {
-  const isLoading = useSelector((state: State) => state.system.isLoading);
+  const { isLoading, isAuthenticated } = useSelector((state: State) => state.system);
   const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
-  const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
+  const { volume } = useSelector((state: State) => state.player);
+  console.log(volume);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,7 +58,7 @@ export const App = (): JSX.Element => {
     const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);
 
     return (
-      <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={0.5}>
+      <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={volume}>
         <PlayerWrapper />
         <Switch>
           <Route exact path="/">
