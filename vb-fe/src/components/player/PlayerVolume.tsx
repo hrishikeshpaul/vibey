@@ -14,8 +14,8 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { HiVolumeOff, HiVolumeUp } from "react-icons/hi";
-import { useSpotifyPlayer } from "core/player/index";
 
+import { useSpotifyPlayer } from "core/player";
 import { useDebounce } from "util/Input";
 
 export const PlayerVolume: FunctionComponent = (): JSX.Element => {

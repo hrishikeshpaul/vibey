@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { usePlayerDevice, useErrorState, usePlaybackState } from "core/player/index";
+
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { usePlayerDevice, useErrorState, usePlaybackState } from "core/player";
 import { resetApp } from "util/Logout";
 
 export const PlayerWrapper: FunctionComponent = () => {

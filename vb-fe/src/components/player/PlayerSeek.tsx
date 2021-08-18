@@ -1,10 +1,10 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Slider, SliderTrack, SliderFilledTrack, Flex, Text } from "@chakra-ui/react";
-import { useSpotifyPlayer } from "core/player/index";
-
 import { useSelector } from "react-redux";
+
 import { State } from "_store/rootReducer";
 import { PlayerStates } from "_store/player/PlayerTypes";
+import { useSpotifyPlayer } from "core/player";
 import { useInterval } from "util/Interval";
 import { useDebounce } from "util/Input";
 
