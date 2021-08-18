@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import { useDispatch } from "react-redux";
 
@@ -11,7 +11,7 @@ import { Icon, Heading, Text, Button } from "@chakra-ui/react";
 import "./Landing.scss";
 import { Navbar } from "components";
 
-export const Landing = () => {
+export const Landing: FunctionComponent = () => {
   const dispatch = useDispatch();
 
   /**

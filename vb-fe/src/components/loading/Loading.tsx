@@ -14,13 +14,10 @@ interface Props {
 
 export const Loading: FunctionComponent<Props> = ({ show }) => {
   const loadingText = useSelector((state: State) => state.system.loadingText);
-  const onClose = () => {
-    console.log("Loading closed");
-  };
 
   return (
     <div>
-      <Modal isOpen={show} onClose={onClose} size="xs" autoFocus={false} closeOnOverlayClick={false} isCentered>
+      <Modal isOpen={show} onClose={Function} size="xs" autoFocus={false} closeOnOverlayClick={false} isCentered>
         <ModalOverlay />
         <ModalContent className="bg-secondary text-white">
           <ModalHeader className="text-center">Getting reading to vibe!</ModalHeader>

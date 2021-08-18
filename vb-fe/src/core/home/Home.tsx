@@ -1,18 +1,18 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 
-import { useSelector } from "react-redux";
 import { Flex, VStack } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
-import { Navbar, Sheet, Profile, Search, Filters, Card } from "components";
-import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
+import { Navbar, Profile, Search, Filters, Card } from "components";
+import { Layout } from "layout/Layout";
 
 import "core/home/Home.scss";
 
 /**
  * The prop type is a placeholder
  */
-export const Home: FunctionComponent<any> = () => {
+export const Home: FunctionComponent = () => {
   const userData = useSelector((state: State) => state.user.user);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
 

@@ -128,7 +128,7 @@ export const Playlist: FunctionComponent = (): JSX.Element => {
     );
   };
 
-  return !playlistLoading ? (
+  return !playlistLoading ? ( // eslint-disable-line
     playlists.length > 0 ? (
       <VStack spacing={4}>
         {playlists.map(

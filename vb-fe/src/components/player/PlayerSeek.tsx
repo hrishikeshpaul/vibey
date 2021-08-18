@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { Slider, SliderTrack, SliderFilledTrack, Flex, Text } from "@chakra-ui/react";
 
 import { useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { useInterval } from "util/Interval";
 import { WebPlayer } from "core/player/Player";
 import { useDebounce } from "util/Input";
 
-export const PlayerSeeker = () => {
+export const PlayerSeeker: FunctionComponent = () => {
   const { track, state, trackPosition } = useSelector((states: State) => states.player);
   const [position, setPosition] = useState<number>(0);
   const [debounce] = useDebounce();

@@ -1,19 +1,20 @@
 import React, { FunctionComponent } from "react";
 
-import { Flex, Avatar, Box, Text, IconButton, HStack, Divider, Icon } from "@chakra-ui/react";
+import { Flex, Avatar, Box, Text, IconButton, HStack, Divider } from "@chakra-ui/react";
+import { BsMusicNote } from "react-icons/bs";
 import { FaStepBackward, FaStepForward, FaPlay } from "react-icons/fa";
 import { RiShuffleFill } from "react-icons/ri";
 import { TiMediaPause } from "react-icons/ti";
-import { BsMusicNote } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+
+import { State } from "_store/rootReducer";
+import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
+import { PlayerStates } from "_store/player/PlayerTypes";
 
 import { PlayerVolume } from "components/player/PlayerVolume";
 import { PlayerSeeker } from "components/player/PlayerSeek";
-import { State } from "_store/rootReducer";
-import { SimplifiedArtist } from "util/Playlist";
-import { PlayerStates } from "_store/player/PlayerTypes";
-import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
 import { WebPlayer } from "core/player/Player";
+import { SimplifiedArtist } from "util/Playlist";
 
 export { PlayerVolume } from "components/player/PlayerVolume";
 

@@ -7,7 +7,7 @@ import { SystemConstants } from "_store/system/SystemTypes";
  * This is a pipeline to initialize the sockets, player and other async
  * modules
  */
-export const initPipeline = async () => {
+export const initPipeline = async (): Promise<void> => {
   try {
     store.dispatch({ type: SystemConstants.LOADING, payload: "Initializing sockets..." });
     const socketConnection = await VS.init();
