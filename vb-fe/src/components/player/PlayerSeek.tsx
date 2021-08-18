@@ -49,7 +49,7 @@ export const PlayerSeeker: FunctionComponent = () => {
 
   const onSeek = (value: number) => {
     debounce(value, (pos: number) => {
-      player?.seek(pos);
+      player!.seek(pos);
       setPosition(pos);
     });
   };

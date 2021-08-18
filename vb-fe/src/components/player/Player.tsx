@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "_store/rootReducer";
 import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
 import { PlayerStates } from "_store/player/PlayerTypes";
-
+import { useSpotifyPlayer } from "core/player";
 import { PlayerVolume } from "components/player/PlayerVolume";
 import { PlayerSeeker } from "components/player/PlayerSeek";
 import { SimplifiedArtist } from "util/Playlist";
@@ -27,6 +27,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   showShuffle = true,
 }): JSX.Element => {
   const dispatch = useDispatch();
+  const player = useSpotifyPlayer();
   const { shuffle, state } = useSelector((states: State) => states.player);
   const trackState = useSelector((states: State) => states.player.state);
 
@@ -57,14 +58,14 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
             icon={<TiMediaPause />}
             fontSize="3xl"
             aria-label="track-pause"
-            // onClick={() => WebPlayer.getPlayer().pause()}
+            onClick={() => player!.pause()}
             disabled={state === PlayerStates.INITIAL}
           />
         ) : (
           <IconButton
             icon={<FaPlay />}
             aria-label="track-play"
-            // onClick={() => WebPlayer.getPlayer().resume()}
+            onClick={() => player!.resume()}
             disabled={state === PlayerStates.INITIAL}
           />
         )}
@@ -84,7 +85,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
 
 export const Player: FunctionComponent = (): JSX.Element => {
   const track = useSelector((state: State) => state.player.track);
-  console.log(track);
+
   return (
     <>
       {track ? (

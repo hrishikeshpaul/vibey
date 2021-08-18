@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, Route, Redirect as RouterRedirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { WebPlaybackSDK } from "core/player/index";
 
 import { Home, Landing, Redirect, Room } from "core/index";
@@ -20,8 +20,6 @@ import { PlayerWrapper } from "components/player/PlayerWrapper";
 export const App = (): JSX.Element => {
   const { isLoading, isAuthenticated } = useSelector((state: State) => state.system);
   const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
-  const { volume } = useSelector((state: State) => state.player);
-  console.log(volume);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -58,7 +56,7 @@ export const App = (): JSX.Element => {
     const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);
 
     return (
-      <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={volume}>
+      <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={0.5}>
         <PlayerWrapper />
         <Switch>
           <Route exact path="/">
