@@ -14,6 +14,7 @@ import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
 
 import "components/playlist/Playlist.scss";
 import { PlayerStates } from "_store/player/PlayerTypes";
+import { useSpotifyPlayer } from "core/player";
 
 interface PlaylistItemProps {
   playlist: PlaylistType;
@@ -27,11 +28,13 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
   playlist.owner.displayName = playlist.owner.display_name || "Spotify User"; //eslint-disable-line
   const isCurrent = playlistContext === playlist.uri;
 
+  const player = useSpotifyPlayer();
+
   const onPlay = () => {
     if (isCurrent && state === PlayerStates.PLAYING) {
-      // WebPlayer.getPlayer().pause();
+      player!.pause();
     } else if (isCurrent && state === PlayerStates.PAUSED) {
-      // WebPlayer.getPlayer().resume();
+      player!.resume();
     } else if (!isCurrent) {
       dispatch(playTrack(playlist.uri));
     }
@@ -77,7 +80,7 @@ export const PlaylistItem: FunctionComponent<PlaylistItemProps> = ({ playlist })
                   <HiVolumeUp />
                 </Icon>
                 <Icon fontSize="2xl" size="lg" className="pause-icon">
-                  <TiMediaPause />
+                  {state === PlayerStates.PLAYING ? <TiMediaPause /> : <BsPlayFill />}
                 </Icon>
               </>
             ) : (
