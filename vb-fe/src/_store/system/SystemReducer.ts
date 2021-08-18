@@ -1,4 +1,3 @@
-import { resetLocalStorage } from "util/System";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 
 export interface SystemState {

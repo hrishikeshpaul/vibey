@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect as RouterRedirect } from "react-router-dom";
 
-import { Home } from "core/home/Home";
-import { Landing } from "core/landing/Landing";
-import { Redirect } from "core/redirect/Redirect";
-import { Room } from "core/room/Room";
+import { Home, Landing, Redirect, Room } from "core/index";
 import { Loading, CreateRoom } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
@@ -40,6 +37,9 @@ export const App = (): JSX.Element => {
         </Route>
         <Route path="/login">
           <Redirect />
+        </Route>
+        <Route>
+          <RouterRedirect to="/" />
         </Route>
       </Switch>
     );

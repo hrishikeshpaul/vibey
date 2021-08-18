@@ -29,7 +29,7 @@ export const initPipeline = async (): Promise<void> => {
 /**
  * On logout remove contents of local storage
  */
-export const resetLocalStorage = () => {
+export const resetLocalStorage = (): void => {
   localStorage.removeItem(TokenStorageKeys.AT);
   localStorage.removeItem(TokenStorageKeys.RT);
   localStorage.removeItem(TokenStorageKeys.SpotifyRT);
