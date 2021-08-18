@@ -30,9 +30,11 @@ class Player {
   private deviceId = "";
 
   async init() {
+    handleScriptLoad();
     return new Promise((resolve, reject) => {
-      handleScriptLoad();
-      window.onSpotifyWebPlaybackSDKReady = async () => {
+      console.log("called");
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
         this.player = new window.Spotify.Player({
           name: "Vibey",
           getOAuthToken: (callback: any) => {
@@ -85,6 +87,7 @@ class Player {
 
         this.player.connect();
       };
+      window.onSpotifyWebPlaybackSDKReady();
     });
   }
 
