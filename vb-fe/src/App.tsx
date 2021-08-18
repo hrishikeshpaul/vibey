@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, Redirect as RouterRedirect } from "react-router-dom";
+import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
 
 import { Home, Landing, Redirect, Room } from "core/index";
 import { Loading, CreateRoom } from "components/index";
@@ -14,6 +15,7 @@ import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
 
 import "App.scss";
+import { PlayerWrapper } from "components/player/PlayerWrapper";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
@@ -38,15 +40,11 @@ export const App = (): JSX.Element => {
         <Route path="/login">
           <Redirect />
         </Route>
-        <Route>
-          <RouterRedirect to="/" />
-        </Route>
       </Switch>
     );
   };
 
   const AuthenticatedApp = (): JSX.Element => {
-    const { isSystemInit } = useSelector((state: State) => state.system);
     useEffect(() => {
       initHttp();
       initPipeline();
@@ -56,17 +54,20 @@ export const App = (): JSX.Element => {
       if (!isAuthenticated) resetApp();
     }, [isAuthenticated]); // eslint-disable-line
 
-    return isSystemInit ? (
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/room/:id">
-          <Room />
-        </Route>
-      </Switch>
-    ) : (
-      <></>
+    const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);
+
+    return (
+      <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={0.5}>
+        <PlayerWrapper />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/room/:id">
+            <Room />
+          </Route>
+        </Switch>
+      </WebPlaybackSDK>
     );
   };
 

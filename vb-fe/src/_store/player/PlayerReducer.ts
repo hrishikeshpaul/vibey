@@ -9,6 +9,7 @@ export interface PlayerState {
   trackPosition: number;
   playlistContext: string;
   shuffle: boolean;
+  deviceId: string;
 }
 
 /**
@@ -20,6 +21,7 @@ const initialState: PlayerState = {
   trackPosition: 0,
   playlistContext: "",
   shuffle: false,
+  deviceId: "",
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -37,6 +39,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         track: action.payload,
+      };
+    }
+    case PlayerConstants.SET_DEVICE_ID: {
+      return {
+        ...state,
+        deviceId: action.payload,
       };
     }
     case PlayerConstants.PLAY: {

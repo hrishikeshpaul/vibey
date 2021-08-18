@@ -14,10 +14,10 @@ export const initPipeline = async (): Promise<void> => {
     const socketConnection = await VS.init();
     console.log(socketConnection);
     store.dispatch({ type: SystemConstants.LOADING, payload: "Initializing player..." });
-    const playerConnection = await WebPlayer.init();
-    store.dispatch({ type: SystemConstants.LOADING, payload: playerConnection });
-    store.dispatch({ type: SystemConstants.INITIALIZED, payload: true });
-    store.dispatch({ type: SystemConstants.SUCCESS });
+    // const playerConnection = await WebPlayer.init();
+    // store.dispatch({ type: SystemConstants.LOADING, payload: playerConnection });
+    // store.dispatch({ type: SystemConstants.INITIALIZED, payload: true });
+    // store.dispatch({ type: SystemConstants.SUCCESS });
   } catch (err) {
     store.dispatch({ type: SystemConstants.FAILURE });
     store.dispatch({ type: SystemConstants.LOGIN, payload: false });

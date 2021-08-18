@@ -7,13 +7,6 @@ import { SystemConstants } from "_store/system/SystemTypes";
 
 const DEFAULT_VOLUME = 50;
 
-declare global {
-  interface Window {
-    onSpotifyWebPlaybackSDKReady: () => void;
-    Spotify: any;
-  }
-}
-
 const handleScriptLoad = () => {
   return new Promise((resolve: any) => {
     if (window.Spotify) {
@@ -87,7 +80,7 @@ class Player {
 
         this.player.connect();
       };
-      window.onSpotifyWebPlaybackSDKReady();
+      // window.onSpotifyWebPlaybackSDKReady();
     });
   }
 
