@@ -46,7 +46,7 @@ export const Landing: FunctionComponent = () => {
             </Text>
             <div className="mt-5">
               <Button colorScheme="primary" leftIcon={<SpotifyIcon />} type="button" size="lg" onClick={handleSignIn}>
-                <Text>Sign in via Spotify</Text>
+                <Text pl="3">Sign in via Spotify</Text>
               </Button>
             </div>
           </div>
