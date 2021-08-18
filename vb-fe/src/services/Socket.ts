@@ -1,13 +1,16 @@
 import socketIOClient, { Socket } from "socket.io-client";
 import { push } from "connected-react-router";
 
-import { setHeaders, TokenStorageKeys } from "util/Http";
+import { HttpStatus, setHeaders, TokenStorageKeys } from "util/Http";
 import { Room } from "util/Room";
 import { SOCKET_ENDPOINT, SocketError, SocketEvents } from "util/Socket";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { refreshTokens } from "services/Auth";
 
+/**
+ * Class for all the publishers that emit events
+ */
 class Publisher {
   constructor(private readonly socket: Socket) {} //eslint-disable-line
 
@@ -24,13 +27,24 @@ class Publisher {
   joinRoom(roomId: string): void {
     this.emit(SocketEvents.JoinRoom, { roomId });
   }
+
+  healthCheck(): void {
+    this.emit(SocketEvents.Health, "");
+  }
 }
 
+/**
+ * Class for all the subscribers that listen to events
+ */
 class Subscriber {
   constructor(private readonly socket: Socket) {} //eslint-disable-line
 
   joinSuccess(cb: (data: Room) => unknown): void {
     this.socket.on(SocketEvents.JoinSuccess, (data: Room) => cb(data));
+  }
+
+  healthCheck(cb: (status: HttpStatus) => void): void {
+    this.socket.on(SocketEvents.HealthSuccess, (status: HttpStatus) => cb(status));
   }
 }
 
@@ -46,9 +60,20 @@ class VibeySocket {
 
     return new Promise((resolve, reject) => {
       this.connect(() => {
-        resolve("Sockets connected!");
-        this.pub = new Publisher(this.socket);
-        this.sub = new Subscriber(this.socket);
+        this.pub = new Publisher(this.socket) as Publisher;
+        this.sub = new Subscriber(this.socket) as Subscriber;
+
+        /**
+         * After connection a health check signal is emitted to check if the provided tokens
+         * are valid
+         */
+        this.pub.healthCheck();
+        this.sub.healthCheck((status: HttpStatus) => {
+          if (status === HttpStatus.OK) {
+            resolve("Sockets connected!");
+          }
+        });
+
         this.exception((data: SocketError) => {
           this.refreshFromSocket(data.event, data.data);
         });

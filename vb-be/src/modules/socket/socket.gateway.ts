@@ -31,6 +31,11 @@ export class EventsGateway {
     private readonly authService: AuthService,
   ) {}
 
+  @SubscribeMessage(SocketEvents.Health)
+  healthCheck(@ConnectedSocket() client: Socket) {
+    client.emit(SocketEvents.HealthSuccess, HttpStatus.OK);
+  }
+
   @SubscribeMessage(SocketEvents.JoinRoom)
   async createRoom(
     @MessageBody() data: SocketMessageBody,

@@ -1,6 +1,8 @@
 import { IRedisRoom } from '@modules/room/room.constants';
 
 export enum SocketEvents {
+  Health = 'health',
+  HealthSuccess = 'health-success',
   JoinRoom = 'join-room',
   JoinSuccess = 'join-room-success',
   Message = 'message',

@@ -4,6 +4,8 @@ export const SOCKET_ENDPOINT = `${BASE_URL}`;
 export const HEROKU_SOCKET_ENDPOINT = "https://vibey-be--qa.herokuapp.com/";
 
 export enum SocketEvents {
+  Health = "health",
+  HealthSuccess = "health-success",
   Connect = "connect",
   ConnectError = "connect_error",
   JoinRoom = "join-room",
