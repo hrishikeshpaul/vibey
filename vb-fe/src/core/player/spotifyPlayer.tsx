@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { MUST_BE_WRAPPED_MESSAGE } from "./constant";
 import { useEffectTimeout } from "./useEffectTimeout";
-import { useWebPlaybackSDKReady } from "./webPlaybackSDKReady";
+import { useWebPlaybackSDKReady } from "./WebPlaybackSDKReady";
 
 const PlayerContext = createContext<Spotify.Player | null | undefined>(undefined);
 

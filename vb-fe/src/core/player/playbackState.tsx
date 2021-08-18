@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { MUST_BE_WRAPPED_MESSAGE } from "./constant";
-import { useSpotifyPlayerRawInstance } from "./spotifyPlayer";
+import { useSpotifyPlayerRawInstance } from "./SpotifyPlayer";
 
 const PlaybackStateContext = createContext<Spotify.PlaybackState | null | undefined>(undefined);
 

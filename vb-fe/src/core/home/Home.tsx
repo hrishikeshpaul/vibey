@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
 
-import { Flex, VStack } from "@chakra-ui/react";
+import { Flex, VStack, Box } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 import { State } from "_store/rootReducer";
-import { Navbar, Profile, Search, Filters, Card } from "components";
+import { Navbar, Profile, Search, Filters, Card, Player } from "components";
 import { Layout } from "layout/Layout";
 
 import "core/home/Home.scss";
@@ -48,9 +48,11 @@ export const Home: FunctionComponent = () => {
             <Profile profile={profile} />
           </Layout.Sidebar>
         </Layout.Body>
-        {/* <Layout.Footer>
-          <Sheet />
-        </Layout.Footer> */}
+        <Layout.Footer>
+          <Box bg="gray.800" borderTopRightRadius="lg" borderTopLeftRadius="lg">
+            <Player />
+          </Box>
+        </Layout.Footer>
       </Layout.Wrapper>
     </>
   );
