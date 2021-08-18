@@ -19,6 +19,7 @@
     "max-classes-per-file": 0,
     "consistent-return": "off",
     "no-console": "off",
+    "@typescript-eslint/no-non-null-assertion":"off",
     "no-nested-ternary": "warn", // need to remove this in the future
     "@typescript-eslint/no-explicit-any": "off",
     "no-use-before-define": "off",
