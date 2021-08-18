@@ -2,6 +2,7 @@ import { Playlist } from "util/Playlist";
 import { Room } from "util/Room";
 
 export enum RoomConstants {
+  RESET = "RESET",
   CREATE = "CREATE",
   JOIN = "JOIN",
   SET_ROOM = "SET_ROOM",
@@ -40,4 +41,8 @@ export interface SetHost {
   payload: boolean;
 }
 
-export type RoomActionTypes = CreateRoom | JoinRoom | AddToPlaylist | PlaylistLoading | SetRoom | SetHost;
+export interface Reset {
+  type: typeof RoomConstants.RESET;
+}
+
+export type RoomActionTypes = CreateRoom | JoinRoom | AddToPlaylist | PlaylistLoading | SetRoom | SetHost | Reset;

@@ -24,6 +24,9 @@ const initialState: PlayerState = {
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
   switch (action.type) {
+    case PlayerConstants.RESET: {
+      return { ...initialState };
+    }
     case PlayerConstants.SET_CURRENT_PLAYLIST: {
       return {
         ...state,

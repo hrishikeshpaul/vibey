@@ -2,6 +2,7 @@ import { WebPlayer } from "core/player/Player";
 import { VS } from "services/Socket";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { TokenStorageKeys } from "./Http";
 
 /**
  * This is a pipeline to initialize the sockets, player and other async
@@ -23,4 +24,15 @@ export const initPipeline = async (): Promise<void> => {
     store.dispatch({ type: SystemConstants.RESET });
     console.log(err);
   }
+};
+
+/**
+ * On logout remove contents of local storage
+ */
+export const resetLocalStorage = () => {
+  localStorage.removeItem(TokenStorageKeys.AT);
+  localStorage.removeItem(TokenStorageKeys.RT);
+  localStorage.removeItem(TokenStorageKeys.SpotifyRT);
+  localStorage.removeItem(TokenStorageKeys.SpotifyAT);
+  localStorage.removeItem("v-user");
 };

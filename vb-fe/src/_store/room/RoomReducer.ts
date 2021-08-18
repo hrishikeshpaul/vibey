@@ -23,6 +23,9 @@ const initialState: RoomState = {
 
 export const roomReducer = (state: RoomState = initialState, action: RoomActionTypes): RoomState => {
   switch (action.type) {
+    case RoomConstants.RESET: {
+      return { ...initialState };
+    }
     case RoomConstants.CREATE: {
       return {
         ...state,

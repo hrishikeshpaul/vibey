@@ -99,6 +99,10 @@ class VibeySocket {
     return this.sub as Subscriber;
   }
 
+  disconnect() {
+    this.socket.disconnect();
+  }
+
   connect(cb: () => Promise<string> | void) {
     this.socket.on(SocketEvents.Connect, cb);
   }
