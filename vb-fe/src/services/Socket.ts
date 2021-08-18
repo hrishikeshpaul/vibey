@@ -51,8 +51,10 @@ class Subscriber {
 class VibeySocket {
   socket: any;
 
+  /** Instance of the publisher */
   pub: any;
 
+  /** Instance of the subscriber */
   sub: any;
 
   init() {
@@ -120,7 +122,6 @@ class VibeySocket {
       setHeaders();
       this.sub.emitEvent(eventName, data);
     } catch (error: any) {
-      console.error(error);
       store.dispatch({ type: SystemConstants.LOGIN, payload: false });
       store.dispatch({ type: SystemConstants.RESET });
     }

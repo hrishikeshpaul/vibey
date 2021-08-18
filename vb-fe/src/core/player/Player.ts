@@ -42,7 +42,6 @@ class Player {
         });
 
         this.player.addListener("ready", (data: any) => {
-          console.log("Ready with Device ID", data);
           this.setDeviceId(data.device_id);
           resolve("Player ready");
         });
@@ -61,7 +60,7 @@ class Player {
           store.dispatch({ type: SystemConstants.RESET });
         });
 
-        this.player.on("playback_error", (data: any) => {
+        this.player.on("playback_error", () => {
           store.dispatch({
             type: PlayerConstants.SET_INITIAL,
           });

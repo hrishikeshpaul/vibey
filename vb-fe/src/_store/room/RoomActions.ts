@@ -10,7 +10,7 @@ import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
 import { VS } from "services/Socket";
 import { store } from "_store/store";
 
-export const updateCurrentRoom = (room: Room) => {
+export const updateCurrentRoom = (room: Room): void => {
   if (room) {
     const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 

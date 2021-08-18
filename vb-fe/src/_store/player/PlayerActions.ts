@@ -27,7 +27,7 @@ export const playTrack =
 
 export const playNext =
   () =>
-  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>): Promise<void> => {
     const deviceId = WebPlayer.getDeviceId();
 
     dispatch({ type: PlayerConstants.PAUSE });
@@ -46,7 +46,7 @@ export const playNext =
 
 export const playPrevious =
   () =>
-  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>): Promise<void> => {
     const deviceId = WebPlayer.getDeviceId();
     dispatch({ type: SystemConstants.LOADING });
     dispatch({ type: PlayerConstants.PAUSE });
