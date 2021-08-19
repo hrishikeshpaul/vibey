@@ -1,17 +1,10 @@
 import { Track } from "util/Playlist";
 
-export enum PlayerStates {
-  PLAYING = "PLAYING",
-  PAUSED = "PAUSED",
-  INITIAL = "INITIAL",
-}
-
 export enum PlayerConstants {
   RESET = "RESET",
   SET_CURRENT_PLAYLIST = "SET_CURRENT_PLAYLIST",
   PLAY = "PLAY",
   PAUSE = "PAUSE",
-  SET_INITIAL = "SET_INITIAL",
   UPDATE_TRACK = "UPDATE_TRACK",
   UPDATE_POSITION = "UPDATE_POSITION",
   CONTROLS_DISABLED = "CONTROLS_DISABLED",
@@ -52,10 +45,6 @@ export interface SetShuffle {
   payload: boolean;
 }
 
-export interface SetInitial {
-  type: typeof PlayerConstants.SET_INITIAL;
-}
-
 export interface Reset {
   type: typeof PlayerConstants.RESET;
 }
@@ -73,6 +62,5 @@ export type PlayerActionTypes =
   | SetCurrentPlaylist
   | SetControlsDisabled
   | SetShuffle
-  | SetInitial
   | Reset
   | SetDeviceId;

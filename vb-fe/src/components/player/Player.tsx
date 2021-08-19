@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { State } from "_store/rootReducer";
 import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
-import { PlayerConstants, PlayerStates } from "_store/player/PlayerTypes";
+import { PlayerConstants } from "_store/player/PlayerTypes";
 import { useSpotifyPlayer, usePlaybackState } from "core/player";
 import { PlayerVolume } from "components/player/PlayerVolume";
 import { PlayerSeeker } from "components/player/PlayerSeek";
@@ -34,7 +34,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   const dispatch = useDispatch();
   const player = useSpotifyPlayer();
   const playbackState = usePlaybackState(true, 1000);
-  const { shuffle, state } = useSelector((states: State) => states.player);
+  const { shuffle, paused } = useSelector((states: State) => states.player);
   const [playerState, setPlayerState] = useState<PlayerControlsState>({
     shuffle: false,
     position: 0,
@@ -42,11 +42,11 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
 
   useEffect(() => {
     if (playbackState) {
-      if (playbackState.paused && (state === PlayerStates.PLAYING || state === PlayerStates.INITIAL)) {
-        dispatch({ type: PlayerConstants.PAUSE });
-      } else if (!playbackState.paused && (state === PlayerStates.PAUSED || state === PlayerStates.INITIAL)) {
-        dispatch({ type: PlayerConstants.PAUSE });
-      }
+      // if (playbackState.paused && (state === PlayerStates.PLAYING || state === PlayerStates.INITIAL)) {
+      //   dispatch({ type: PlayerConstants.PAUSE });
+      // } else if (!playbackState.paused && (state === PlayerStates.PAUSED || state === PlayerStates.INITIAL)) {
+      //   dispatch({ type: PlayerConstants.PAUSE });
+      // }
       setPlayerState({
         shuffle: playbackState.shuffle,
         position: playbackState.position,
@@ -74,31 +74,26 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
     dispatch(playNext());
   };
 
+  const pause = () => {
+    player!.pause();
+    dispatch({ type: PlayerConstants.PAUSE });
+  };
+
+  const resume = () => {
+    player!.resume();
+    dispatch({ type: PlayerConstants.PLAY });
+  };
+
   return (
     <Flex>
       <HStack spacing="3">
-        <IconButton
-          icon={<FaStepBackward />}
-          aria-label="track-prev"
-          onClick={previous}
-          disabled={state === PlayerStates.INITIAL}
-        />
-        {state === PlayerStates.PLAYING ? (
-          <IconButton icon={<TiMediaPause />} fontSize="3xl" aria-label="track-pause" onClick={() => player!.pause()} />
+        <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={previous} />
+        {!paused ? (
+          <IconButton icon={<TiMediaPause />} fontSize="3xl" aria-label="track-pause" onClick={pause} />
         ) : (
-          <IconButton
-            icon={<FaPlay />}
-            aria-label="track-play"
-            onClick={() => player!.resume()}
-            disabled={state === PlayerStates.INITIAL}
-          />
+          <IconButton icon={<FaPlay />} aria-label="track-play" onClick={resume} />
         )}
-        <IconButton
-          icon={<FaStepForward />}
-          aria-label="track-next"
-          onClick={next}
-          disabled={state === PlayerStates.INITIAL}
-        />
+        <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={next} />
         <Divider />
         {showShuffle && <Shuffle />}
         {showVolume && <PlayerVolume />}
@@ -115,7 +110,6 @@ export const Player: FunctionComponent = (): JSX.Element => {
   useEffect(() => {
     if (playbackState) {
       if (track !== null && playbackState.track_window.current_track.id !== track.id) {
-        console.log("here");
         dispatch({
           type: PlayerConstants.UPDATE_TRACK,
           payload: playbackState.track_window.current_track,
@@ -127,6 +121,7 @@ export const Player: FunctionComponent = (): JSX.Element => {
           type: PlayerConstants.UPDATE_TRACK,
           payload: playbackState.track_window.current_track,
         });
+        dispatch({ type: PlayerConstants.PLAY });
       }
     }
   }, [playbackState, track, dispatch]);

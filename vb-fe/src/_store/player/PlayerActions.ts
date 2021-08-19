@@ -30,7 +30,6 @@ export const playNext =
     const { deviceId } = getState().player;
 
     dispatch({ type: PlayerConstants.PAUSE });
-    dispatch({ type: PlayerConstants.SET_INITIAL });
     try {
       await next(deviceId);
       dispatch({ type: SystemConstants.SUCCESS });
