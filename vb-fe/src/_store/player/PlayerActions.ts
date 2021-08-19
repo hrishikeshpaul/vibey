@@ -4,12 +4,11 @@ import { play, next, previous, shuffle as setShuffle } from "services/Player";
 import { State } from "_store/rootReducer";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { PlayerActionTypes, PlayerConstants } from "_store/player/PlayerTypes";
-import { WebPlayer } from "core/player/Player";
 
 export const playTrack =
   (contextUri: string) =>
-  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>): Promise<void> => {
-    const deviceId = WebPlayer.getDeviceId();
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+    const { deviceId } = getState().player;
 
     dispatch({ type: SystemConstants.LOADING });
 
@@ -28,7 +27,7 @@ export const playTrack =
 export const playNext =
   () =>
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
-    const deviceId = WebPlayer.getDeviceId();
+    const { deviceId } = getState().player;
 
     dispatch({ type: PlayerConstants.PAUSE });
     dispatch({ type: PlayerConstants.SET_INITIAL });
@@ -47,7 +46,8 @@ export const playNext =
 export const playPrevious =
   () =>
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
-    const deviceId = WebPlayer.getDeviceId();
+    const { deviceId } = getState().player;
+
     dispatch({ type: SystemConstants.LOADING });
     dispatch({ type: PlayerConstants.PAUSE });
     try {
@@ -65,7 +65,7 @@ export const playPrevious =
 export const shuffleAction =
   () =>
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
-    const deviceId = WebPlayer.getDeviceId();
+    const { deviceId } = getState().player;
     const { shuffle } = getState().player;
 
     dispatch({ type: SystemConstants.LOADING });

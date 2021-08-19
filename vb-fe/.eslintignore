@@ -3,3 +3,4 @@ functions/
 dist/
 hooks/
 reportWebVitals.ts
+src/core/player

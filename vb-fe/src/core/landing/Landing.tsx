@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import { useDispatch } from "react-redux";
 
@@ -11,7 +11,7 @@ import { Icon, Heading, Text, Button } from "@chakra-ui/react";
 import "./Landing.scss";
 import { Navbar } from "components";
 
-export const Landing = () => {
+export const Landing: FunctionComponent = () => {
   const dispatch = useDispatch();
 
   /**
@@ -46,7 +46,7 @@ export const Landing = () => {
             </Text>
             <div className="mt-5">
               <Button colorScheme="primary" leftIcon={<SpotifyIcon />} type="button" size="lg" onClick={handleSignIn}>
-                <Text>Sign in via Spotify</Text>
+                <Text pl="3">Sign in via Spotify</Text>
               </Button>
             </div>
           </div>

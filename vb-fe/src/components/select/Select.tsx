@@ -41,7 +41,6 @@ export const Select: FunctionComponent<Props> = ({ onChange, presentTags, handle
         const response = await searchTags(substr);
         setTags(response.data);
       } catch (err) {
-        console.log(err);
         handleError(err);
       }
     },

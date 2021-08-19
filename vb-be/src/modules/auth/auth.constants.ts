@@ -1,11 +1,14 @@
+import { Types } from 'mongoose';
+
 export interface ITokenUser {
-  id?: string;
+  id?: Types.ObjectId;
   email: string;
 }
 
 export interface IDecodedToken {
   email: string;
   role: string;
+  id: Types.ObjectId;
   subject: string;
 }
 

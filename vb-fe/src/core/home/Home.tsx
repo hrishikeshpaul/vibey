@@ -1,18 +1,18 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 
+import { Flex, VStack, Box } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { Flex, VStack } from "@chakra-ui/react";
 
-import { Navbar, Sheet, Profile, Search, Filters, Card } from "components";
-import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
+import { Navbar, Profile, Search, Filters, Card, Player } from "components";
+import { Layout } from "layout/Layout";
 
 import "core/home/Home.scss";
 
 /**
  * The prop type is a placeholder
  */
-export const Home: FunctionComponent<any> = () => {
+export const Home: FunctionComponent = () => {
   const userData = useSelector((state: State) => state.user.user);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
 
@@ -48,9 +48,11 @@ export const Home: FunctionComponent<any> = () => {
             <Profile profile={profile} />
           </Layout.Sidebar>
         </Layout.Body>
-        {/* <Layout.Footer>
-          <Sheet />
-        </Layout.Footer> */}
+        <Layout.Footer>
+          <Box bg="gray.800" borderTopRightRadius="lg" borderTopLeftRadius="lg">
+            <Player />
+          </Box>
+        </Layout.Footer>
       </Layout.Wrapper>
     </>
   );

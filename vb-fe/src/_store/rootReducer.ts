@@ -1,5 +1,6 @@
-import { combineReducers } from "redux";
-import { connectRouter } from "connected-react-router";
+import { combineReducers, Reducer, CombinedState } from "redux";
+import { connectRouter, RouterState } from "connected-react-router";
+import { History } from "history";
 
 import { systemReducer, SystemState } from "_store/system/SystemReducer";
 import { userReducer, UserState } from "_store/user/UserReducer";
@@ -11,9 +12,10 @@ export interface State {
   user: UserState;
   room: RoomState;
   player: PlayerState;
+  router: RouterState<unknown>;
 }
 
-export const rootReducer = (history: any) =>
+export const rootReducer = (history: History): Reducer<CombinedState<State>> =>
   combineReducers({
     system: systemReducer,
     user: userReducer,
