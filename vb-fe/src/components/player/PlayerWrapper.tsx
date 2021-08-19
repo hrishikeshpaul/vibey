@@ -37,7 +37,6 @@ export const PlayerWrapper: FunctionComponent = () => {
 
   useEffect(() => {
     if (playbackState) {
-      console.log(playbackState);
       dispatch({
         type: PlayerConstants.UPDATE_TRACK,
         payload: playbackState.track_window.current_track,

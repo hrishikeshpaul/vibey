@@ -139,8 +139,6 @@ export class AuthController {
       );
       const refreshedSpotifyAT = response.data.access_token;
 
-      console.log('refreshing tokens....');
-
       return res.status(HttpStatus.OK).json({
         accessToken: refreshedAT,
         refreshToken: refreshedRT,
