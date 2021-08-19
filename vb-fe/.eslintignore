@@ -4,3 +4,4 @@ dist/
 hooks/
 reportWebVitals.ts
 src/core/player
+src/util/Spotify.ts

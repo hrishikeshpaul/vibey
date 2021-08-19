@@ -65,6 +65,7 @@ export type Track = {
   type: "track";
   uri: string;
   is_local: boolean;
+  media_type: "audio" | "video";
 };
 
 export type PlaylistDetails = {
