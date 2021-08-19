@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { MUST_BE_WRAPPED_MESSAGE } from "./constant";
+import { MUST_BE_WRAPPED_MESSAGE } from "core/player/constant";
 
 const WebPlaybackSDKReadyContext = createContext<boolean | undefined>(undefined);
 

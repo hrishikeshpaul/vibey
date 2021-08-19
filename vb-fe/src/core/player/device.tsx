@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { MUST_BE_WRAPPED_MESSAGE } from "./constant";
-import { useSpotifyPlayerRawInstance } from "./SpotifyPlayer";
+import { MUST_BE_WRAPPED_MESSAGE } from "core/player/constant";
+import { useSpotifyPlayerRawInstance } from "core/player/SpotifyPlayer";
 
 export type PlayerDevice = Spotify.WebPlaybackInstance & {
   status: "ready" | "not_ready";
