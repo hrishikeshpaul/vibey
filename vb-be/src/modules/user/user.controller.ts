@@ -38,6 +38,9 @@ export class UserController {
     @Response() res: Res,
   ) {
     try {
+      // TODO: has to be decoded.id
+      // currently refreshed tokens don't have id. Fixed in the ref/hp/player branch
+      // Need to update IDecodedToken to have id as well
       const user = await this.userService.findOne(decoded.email);
 
       if (!user)
