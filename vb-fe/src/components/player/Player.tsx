@@ -34,7 +34,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   const dispatch = useDispatch();
   const player = useSpotifyPlayer();
   const playbackState = usePlaybackState(true, 1000);
-  const { shuffle, paused } = useSelector((states: State) => states.player);
+  const { paused } = useSelector((states: State) => states.player);
   const [playerState, setPlayerState] = useState<PlayerControlsState>({
     shuffle: false,
     position: 0,
@@ -42,11 +42,12 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
 
   useEffect(() => {
     if (playbackState) {
-      // if (playbackState.paused && (state === PlayerStates.PLAYING || state === PlayerStates.INITIAL)) {
-      //   dispatch({ type: PlayerConstants.PAUSE });
-      // } else if (!playbackState.paused && (state === PlayerStates.PAUSED || state === PlayerStates.INITIAL)) {
-      //   dispatch({ type: PlayerConstants.PAUSE });
-      // }
+      if (playbackState.paused && !paused) {
+        dispatch({ type: PlayerConstants.PAUSE });
+      } else if (!playbackState.paused && paused) {
+        dispatch({ type: PlayerConstants.PLAY });
+      }
+
       setPlayerState({
         shuffle: playbackState.shuffle,
         position: playbackState.position,
