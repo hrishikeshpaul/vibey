@@ -16,9 +16,8 @@ export class UserController {
       const user = await this.userService.findOneById(userId);
       return res.status(HttpStatus.OK).json(user);
     } catch (err) {
-      return res
-        .status(HttpStatus.InternalError)
-        .send(new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic));
+      console.log(err);
+      return res.status(HttpStatus.InternalError).send(err);
     }
   }
 
@@ -31,9 +30,8 @@ export class UserController {
       const user = await this.userService.findOne(decoded.email);
       return res.status(HttpStatus.OK).json(user);
     } catch (err) {
-      return res
-        .status(HttpStatus.InternalError)
-        .send(new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic));
+      console.log(err);
+      return res.status(HttpStatus.InternalError).send(err);
     }
   }
 }
