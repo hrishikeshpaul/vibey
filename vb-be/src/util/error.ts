@@ -1,6 +1,7 @@
 import { HttpException } from '@nestjs/common';
 
 export enum ErrorText {
+  UserNotFound = 'User not found',
   InvalidAuthState = 'Invalid authentication state',
   InvalidRTArg = 'Invalid argument for refresh token',
   InvalidTokenPair = 'Invalid token pair',

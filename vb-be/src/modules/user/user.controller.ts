@@ -1,4 +1,11 @@
-import { Controller, Get, Response, Headers, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Response,
+  Headers,
+  Param,
+  Logger,
+} from '@nestjs/common';
 import { Response as Res } from 'express';
 
 import { UserService } from '@modules/user/user.service';
@@ -14,10 +21,14 @@ export class UserController {
   async getUser(@Param('id') userId: string, @Response() res: Res) {
     try {
       const user = await this.userService.findOneById(userId);
+
+      if (!user)
+        throw new ErrorHandler(HttpStatus.NotFound, ErrorText.UserNotFound);
+
       return res.status(HttpStatus.OK).json(user);
     } catch (err) {
-      console.log(err);
-      return res.status(HttpStatus.InternalError).send(err);
+      Logger.error(err);
+      return res.status(err.statusCode || HttpStatus.InternalError).send(err);
     }
   }
 
@@ -28,10 +39,14 @@ export class UserController {
   ) {
     try {
       const user = await this.userService.findOne(decoded.email);
+
+      if (!user)
+        throw new ErrorHandler(HttpStatus.NotFound, ErrorText.UserNotFound);
+
       return res.status(HttpStatus.OK).json(user);
     } catch (err) {
-      console.log(err);
-      return res.status(HttpStatus.InternalError).send(err);
+      Logger.error(err);
+      return res.status(err.statusCode || HttpStatus.InternalError).send(err);
     }
   }
 }

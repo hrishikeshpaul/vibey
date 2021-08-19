@@ -1,9 +1,9 @@
 import * as mongoose from 'mongoose';
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 
 export class MongoDBService {
   constructor() {
-    this.connect().then(() => console.log('MongoDB connected'));
+    this.connect().then(() => Logger.log('MongoDB connected'));
   }
 
   private async connect() {
