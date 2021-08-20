@@ -11,6 +11,7 @@ export enum ErrorText {
   InvalidDataSet = 'Invalid dataset',
   Forbidden = 'Forbidden',
   Unauthorized = 'Unauthorized',
+  UserNotFound = 'User Not Found',
 }
 
 // https://docs.nestjs.com/exception-filters

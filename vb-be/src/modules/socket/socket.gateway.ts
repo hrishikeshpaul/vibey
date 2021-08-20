@@ -20,6 +20,8 @@ import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 import { RedisService } from '@db/redis.module';
+import { RedisRoom } from '@modules/room/room.constants';
+import { RoomType } from '@modules/room/room.schema';
 
 @UseGuards(WsGuard)
 @WebSocketGateway({ cors: true })
@@ -54,11 +56,18 @@ export class EventsGateway {
           ErrorText.InvalidTokenPair,
         );
 
-      await this.roomService.addUserToRoom(roomId, id);
-      const updatedRoom = await this.roomService.getOneRoom(roomId);
+      const updatedRoom = (await this.roomService.addUserToRoom(
+        roomId,
+        id,
+      )) as RedisRoom;
+      const currentRoom = await this.roomService.getOneRoom(roomId);
+
       await client.join(roomId);
 
-      client.emit(SocketEvents.JoinSuccess, updatedRoom);
+      client.emit(SocketEvents.JoinSuccess, {
+        ...updatedRoom,
+        ...currentRoom.toObject(),
+      });
     } catch (err) {
       socketError(client, HttpStatus.InternalError, ErrorText.Generic);
     }

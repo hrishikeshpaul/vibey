@@ -22,6 +22,10 @@ export interface RedisRoom {
     uri: string;
     paused: boolean;
   };
-  users: Array<string>;
+  users: Array<{
+    _id: string;
+    username: string;
+    image: string;
+  }>;
   host: string;
 }

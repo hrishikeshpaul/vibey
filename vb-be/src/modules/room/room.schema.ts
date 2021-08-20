@@ -10,7 +10,6 @@ export interface RoomType {
   start?: Date;
   end?: Date;
   maxUsers?: number;
-  currentUsers?: UserType[];
 }
 
 export interface IRoom extends RoomType, Document {
@@ -47,12 +46,6 @@ const RoomSchema: Schema = new Schema({
     type: Number,
     default: 1,
   },
-  currentUsers: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    },
-  ],
 });
 
 export const RoomModel: Model<IRoom> = model('room', RoomSchema);

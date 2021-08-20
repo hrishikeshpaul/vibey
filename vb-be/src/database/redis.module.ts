@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import * as fastJson from 'fast-json-stringify';
+import * as JSONSchema from 'fast-json-stringify';
 import { RedisClient, createClient } from 'redis';
 
 import { RedisRoom } from '@modules/room/room.constants';
@@ -58,8 +58,8 @@ export class RedisService {
     });
   }
 
-  parse(roomData: RedisRoom) {
-    const stringify = fastJson({
+  stringify(roomData: RedisRoom) {
+    const stringify = JSONSchema({
       type: 'object',
       definitions: {
         name: { type: 'string' },
@@ -77,6 +77,16 @@ export class RedisService {
     });
 
     return new Promise((resolve) => resolve(stringify(roomData)));
+  }
+
+  parse(roomData: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        resolve(JSON.parse(roomData));
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 }
 
