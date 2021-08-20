@@ -1,18 +1,17 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
 import { Box, Flex, Text, Icon, Badge, Avatar, Heading, Link } from "@chakra-ui/react";
 import { IoPeople } from "react-icons/io5";
+import { BsMusicNote } from "react-icons/bs";
+import moment from "moment";
 
 import { Tag } from "util/Tags";
 
 import "components/card/Card.scss";
+import { Room } from "util/Room";
 
 interface Props {
-  name: string;
-  tags: Tag[];
-  profile: any;
-  startTime: string;
-  track: any;
+  room: Room;
 }
 
 /** Placeholder */
@@ -34,7 +33,7 @@ const tags: Tag[] = [
   // },
 ];
 
-export const Card = (): JSX.Element => {
+export const Card: FunctionComponent<Props> = ({ room }): JSX.Element => {
   return (
     <Box
       tabIndex={0}
@@ -49,27 +48,27 @@ export const Card = (): JSX.Element => {
       <Flex justifyContent="space-between" alignItems="center">
         <Box flex="0.9" overflow="hidden" pr={3}>
           <Heading fontSize="lg" fontWeight="600" isTruncated>
-            This is a cool room name
+            {room.name}
           </Heading>
         </Box>
         <Badge bg="transparent" color="white">
           <Flex flex="0.1" justifyContent="center" alignItems="center">
             <Icon as={IoPeople} w={5} h={5} />
             <Text pl="1" fontSize="sm">
-              12
+              {room.users.length}
             </Text>
           </Flex>
         </Badge>
       </Flex>
       <Flex>
         <Text fontSize="sm" color="gray.100">
-          username
+          {room.host.username}
         </Text>
         <Text fontSize="sm" color="gray.100" px="1">
           •
         </Text>
         <Text fontSize="sm" color="gray.100">
-          29 minutes ago
+          {moment(room.start).format("HH:ss A")}
         </Text>
       </Flex>
       <Flex mt="1" flexWrap="wrap" overflow="hidden" maxH="25px">
@@ -82,19 +81,23 @@ export const Card = (): JSX.Element => {
         </Box>
       </Flex>
       <Flex mt="5" alignItems="center">
-        <Avatar src="https://i.scdn.co/image/ab67616d00004851a7354aa08bc3e76f416f194e" size="md" borderRadius="lg" />
-        <Box overflow="hidden">
-          <Text fontSize="sm" isTruncated lineHeight="1.2" pl="3">
-            <Link isExternal href="https://open.spotify.com/track/5RScucFoUuNzhLWwGWy05b">
-              Name of song that gets truncates if too long
-            </Link>
-          </Text>
-          <Text fontSize="xs" isTruncated pl="3">
-            <Link isExternal href="https://open.spotify.com/artist/0SfsnGyD8FpIN4U4WCkBZ5" variant="secondary">
-              Artist name
-            </Link>
-          </Text>
-        </Box>
+        <Avatar src={room.track.image} size="md" borderRadius="lg" icon={<BsMusicNote />} />
+        {room.track.name ? (
+          <Box overflow="hidden">
+            <Text fontSize="sm" isTruncated lineHeight="1.2" pl="3">
+              <Link isExternal href="https://open.spotify.com/track/5RScucFoUuNzhLWwGWy05b">
+                Name of song that gets truncates if too long
+              </Link>
+            </Text>
+            <Text fontSize="xs" isTruncated pl="3">
+              <Link isExternal href="https://open.spotify.com/artist/0SfsnGyD8FpIN4U4WCkBZ5" variant="secondary">
+                Artist name
+              </Link>
+            </Text>
+          </Box>
+        ) : (
+          <Text pl="3">Not vibing yet</Text>
+        )}
       </Flex>
       <Box position="absolute" className="vb-room-join">
         <Badge colorScheme="gray" variant="solid" borderRadius="lg" px="2" py="1">

@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { push, CallHistoryMethodAction } from "connected-react-router";
 
-import { createRoom, getUserPlaylists } from "services/Room";
+import { createRoom, getAllRooms, getUserPlaylists } from "services/Room";
 import { Room, RoomForm } from "util/Room";
 import { User } from "util/User";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
@@ -70,5 +70,19 @@ export const getUserPlaylistsAction =
         payload: err,
       });
       dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: false });
+    }
+  };
+
+export const getAllRoomsAction =
+  (offset: number, limit: number) =>
+  async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes>): Promise<void> => {
+    try {
+      const response = await getAllRooms(offset, limit);
+      dispatch({ type: RoomConstants.ADD_ROOMS, payload: response.data });
+    } catch (err) {
+      dispatch({
+        type: SystemConstants.FAILURE,
+        payload: err,
+      });
     }
   };

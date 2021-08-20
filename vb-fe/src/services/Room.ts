@@ -1,6 +1,6 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import { Http } from "util/Http";
+import { Http, TokenStorageKeys } from "util/Http";
 import { RoomForm } from "util/Room";
 import { RoomEndpoints } from "util/Endpoints";
 
@@ -13,5 +13,11 @@ export const getUserPlaylists = (offset: number): Promise<any> => {
     params: {
       offset,
     },
+  });
+};
+
+export const getAllRooms = (offset: number, limit: number): Promise<any> => {
+  return Http.get(RoomEndpoints.ALL, {
+    params: { offset, limit },
   });
 };

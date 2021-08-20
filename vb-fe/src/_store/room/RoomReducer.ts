@@ -56,6 +56,12 @@ export const roomReducer = (state: RoomState = initialState, action: RoomActionT
         playlistLoading: action.payload,
       };
     }
+    case RoomConstants.ADD_ROOMS: {
+      return {
+        ...state,
+        roomsList: [...state.roomsList, ...action.payload],
+      };
+    }
     default:
       return state;
   }

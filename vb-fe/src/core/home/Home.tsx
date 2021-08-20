@@ -1,31 +1,38 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
 import { Flex, VStack, Box } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { State } from "_store/rootReducer";
 import { Navbar, Profile, Search, Filters, Card, Player } from "components";
 import { Layout } from "layout/Layout";
 
 import "core/home/Home.scss";
+import { Room } from "util/Room";
+import { getAllRoomsAction } from "_store/room/RoomActions";
+import { Http } from "util/Http";
 
 /**
  * The prop type is a placeholder
  */
 export const Home: FunctionComponent = () => {
   const userData = useSelector((state: State) => state.user.user);
+  const { httpConnected } = useSelector((state: State) => state.system);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
+  const { roomsList } = useSelector((state: State) => state.room);
+  const dispatch = useDispatch();
 
   const profile = JSON.parse(localStorage.getItem("v-user") || "");
-
-  const data = [];
-  for (let i = 0; i < 10; i += 1) {
-    data.push(<Card key={i} />);
-  }
 
   const onSearch = (str: string): void => {
     console.log("Search value: ", str);
   };
+
+  useEffect(() => {
+    if (httpConnected) {
+      dispatch(getAllRoomsAction(0, 5));
+    }
+  }, [dispatch, httpConnected]); // eslint-disable-line
 
   return (
     <>
@@ -42,7 +49,11 @@ export const Home: FunctionComponent = () => {
             <Filters />
           </Layout.Sidebar>
           <Layout.Content flex="0.55">
-            <VStack spacing="8">{data.map((i) => i)}</VStack>
+            <VStack spacing="8">
+              {roomsList.map((room: Room) => (
+                <Card room={room} key={room._id} />
+              ))}
+            </VStack>
           </Layout.Content>
           <Layout.Sidebar flex="0.2">
             <Profile profile={profile} />
