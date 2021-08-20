@@ -81,7 +81,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
               </Layout.Sidebar>
               <Layout.Content flex="0.5">{isHost ? <Playlist /> : <></>}</Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
-                <CurrentUsers users={currentRoom.currentUsers} />
+                <CurrentUsers users={currentRoom.users} />
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>

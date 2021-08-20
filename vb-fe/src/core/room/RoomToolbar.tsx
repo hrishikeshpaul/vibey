@@ -53,7 +53,7 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Ele
         <Flex justifyContent="center" alignItems="center">
           <IconButton icon={<IoPeople />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
           <Text pl="1" fontSize="sm">
-            {room?.currentUsers.length}
+            {room?.users.length}
           </Text>
         </Flex>
       </HStack>

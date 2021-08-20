@@ -9,7 +9,7 @@ export interface Room {
   tags: Tag[];
   _id: string;
   maxUsers?: number;
-  currentUsers: User[];
+  users: User[];
 }
 
 export interface RoomForm {
