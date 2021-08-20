@@ -19,6 +19,7 @@ import { RoomService } from '@modules/room/room.service';
 import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
+import { RedisService } from '@db/redis.module';
 
 @UseGuards(WsGuard)
 @WebSocketGateway({ cors: true })
@@ -29,6 +30,7 @@ export class EventsGateway {
   constructor(
     private readonly roomService: RoomService,
     private readonly authService: AuthService,
+    private readonly redisService: RedisService,
   ) {}
 
   @SubscribeMessage(SocketEvents.Health)

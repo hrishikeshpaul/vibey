@@ -13,13 +13,15 @@ export interface ICreateRoom extends RoomForm {
   host: string;
 }
 
-export interface IRedisRoom {
-  _id: Types.ObjectId;
-  name: string;
-  description?: string;
-  tags?: string[];
-  host: {
-    _id: Types.ObjectId;
-    username: string;
+export interface RedisRoom {
+  track: {
+    name: string;
+    position: number;
+    image: string;
+    artist: string;
+    uri: string;
+    paused: boolean;
   };
+  users: Array<string>;
+  host: string;
 }

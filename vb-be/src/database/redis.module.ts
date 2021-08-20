@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
+import * as fastJson from 'fast-json-stringify';
 import { RedisClient, createClient } from 'redis';
+
+import { RedisRoom } from '@modules/room/room.constants';
 import { ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 import { promisify } from 'util';
@@ -49,10 +52,31 @@ export class RedisService {
     this.redisSocketClient.on('error', (err) => {
       throw new ErrorHandler(HttpStatus.InternalError, err);
     });
-    
+
     this.redisJWTClient.on('error', (err) => {
       throw new ErrorHandler(HttpStatus.InternalError, err);
     });
+  }
+
+  parse(roomData: RedisRoom) {
+    const stringify = fastJson({
+      type: 'object',
+      definitions: {
+        name: { type: 'string' },
+        uri: { type: 'string' },
+        image: { type: 'string' },
+        artist: { type: 'string' },
+        position: { type: 'number' },
+        paused: { type: 'boolean' },
+      },
+      properties: {
+        track: { $ref: '#/definitions' },
+        users: { type: 'array' },
+        host: { type: 'string' },
+      },
+    });
+
+    return new Promise((resolve) => resolve(stringify(roomData)));
   }
 }
 
