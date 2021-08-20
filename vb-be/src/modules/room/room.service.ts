@@ -24,6 +24,34 @@ export class RoomService {
     return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
   }
 
+  async getAllRooms(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const keys = (await this.redis.keysAsyncSocketClient('*')) as string[];
+        const values = (await this.redis.mGetAsyncSocketClient(
+          keys,
+        )) as string[];
+        const parsedValues = [];
+
+        const data = (await Promise.all([
+          ...values.map((v) => this.redis.parse(v)),
+          ...keys.map((k) => this.getOneRoom(k)),
+        ])) as any[];
+
+        for (let i = 0; i < data.length / 2; i++) {
+          parsedValues.push({
+            ...data[i],
+            ...data[i + data.length / 2].toObject(),
+          });
+        }
+
+        resolve(parsedValues);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   async addUserToRoom(
     roomId: Types.ObjectId | string,
     userId: Types.ObjectId | string,

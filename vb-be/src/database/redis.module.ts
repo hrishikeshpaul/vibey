@@ -16,6 +16,8 @@ export class RedisService {
   public setAsyncSocketClient: any;
   public getAsyncSocketClient: any;
   public delAsyncSocketClient: any;
+  public keysAsyncSocketClient: any;
+  public mGetAsyncSocketClient: any;
 
   constructor() {
     this.redisJWTClient = createClient();
@@ -45,6 +47,12 @@ export class RedisService {
         this.redisSocketClient,
       );
       this.delAsyncSocketClient = promisify(this.redisSocketClient.del).bind(
+        this.redisSocketClient,
+      );
+      this.keysAsyncSocketClient = promisify(this.redisSocketClient.keys).bind(
+        this.redisSocketClient,
+      );
+      this.mGetAsyncSocketClient = promisify(this.redisSocketClient.mget).bind(
         this.redisSocketClient,
       );
     });

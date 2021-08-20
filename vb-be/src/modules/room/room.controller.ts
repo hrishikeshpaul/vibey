@@ -53,6 +53,17 @@ export class RoomController {
     }
   }
 
+  @Get('/all')
+  async getAllRooms(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+    @Response() res: Res,
+  ) {
+    const rooms = await this.roomService.getAllRooms();
+    console.log('room', []);
+    res.status(200).send(rooms);
+  }
+
   @Get('/playlists')
   async getPlaylists(
     @Request() req: Req,
