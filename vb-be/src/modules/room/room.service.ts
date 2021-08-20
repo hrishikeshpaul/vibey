@@ -24,7 +24,7 @@ export class RoomService {
     return RoomModel.findOne({ _id: roomId }).populate('tags').populate('host');
   }
 
-  async getAllRooms(): Promise<any> {
+  async getAllRooms(offset: number, limit: number): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         const keys = (await this.redis.keysAsyncSocketClient('*')) as string[];
@@ -45,7 +45,8 @@ export class RoomService {
           });
         }
 
-        resolve(parsedValues);
+        const paginatedValues = parsedValues.slice(offset, offset + limit);
+        resolve(paginatedValues);
       } catch (err) {
         reject(err);
       }

@@ -47,7 +47,13 @@ export class RoomController {
 
       await this.roomService.addRoomToRedis(room._id, room.host);
 
-      return res.status(HttpStatus.NewResource).json(populatedRoom);
+      /**
+       * Need to pass an empty users array to not throw an error
+       * as the frontend expects users
+       */
+      return res
+        .status(HttpStatus.NewResource)
+        .json({ ...populatedRoom.toObject(), users: [] });
     } catch (err) {
       throw new ErrorHandler(HttpStatus.InternalError, err.toString());
     }
@@ -59,9 +65,12 @@ export class RoomController {
     @Query('offset') offset: number,
     @Response() res: Res,
   ) {
-    const rooms = await this.roomService.getAllRooms();
-    console.log('room', []);
-    res.status(200).send(rooms);
+    try {
+      const rooms = await this.roomService.getAllRooms(offset, limit);
+      return res.status(200).send(rooms);
+    } catch (err) {
+      return res.status(HttpStatus.Error).send(err);
+    }
   }
 
   @Get('/playlists')
