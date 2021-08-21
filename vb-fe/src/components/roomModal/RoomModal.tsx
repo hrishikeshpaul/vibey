@@ -1,5 +1,3 @@
-/* Copyright (C) 2021 Vibey - All Rights Reserved */
-
 import React, { useState, FunctionComponent } from "react";
 import { TiWarning } from "react-icons/ti";
 import {
@@ -22,7 +20,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import "components/create/CreateRoom.scss";
 import { Select } from "components/select/Select";
 import { RoomForm } from "util/Room";
 import { Tag } from "util/Tags";
@@ -35,26 +32,26 @@ const MAX_NAME_LENGTH = 40;
 type Props = {
   open: boolean;
   handleError: (error: any) => void;
+  roomName?: string;
+  roomTags?: Tag[];
+  roomDescription?: string;
 };
 
 interface RoomType extends RoomForm {
   error: boolean;
 }
 
-const initialRoomValues: RoomType = {
-  name: "",
-  description: "",
-  tags: [],
-  error: false,
-};
+export const RoomModal: FunctionComponent<Props> = ({ open, handleError, roomName, roomTags, roomDescription }) => {
+  const initialRoomValues: RoomType = {
+    name: roomName || "",
+    description: roomDescription || "",
+    tags: roomTags || [],
+    error: false,
+  };
 
-export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
   const dispatch = useDispatch();
   const [room, setRoom] = useState(initialRoomValues);
 
-  /**
-   * Validates the form to see if the room name is present
-   */
   const validateForm = () => {
     if (!room.name.trim()) {
       setRoom({ ...room, error: true });
@@ -63,12 +60,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
     return true;
   };
 
-  /**
-   * Submits the rom that emits an event with the room details
-   * and closes the modal
-   * @param e form data - has all the details of a room
-   */
-  const onSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       dispatch(createRoomAction(room));
@@ -76,50 +68,38 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
     }
   };
 
-  /**
-   * Updates the room name and description on change
-   *
-   * @param e event to update name and description
-   */
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     if (name === "name" && value) setRoom({ ...room, error: false });
-
     setRoom({ ...room, [name]: value });
   };
 
-  /**
-   * Adds a tag emitted from the Select component to the
-   * room state
-   *
-   * @param tag tag that has been added
-   */
   const handleUpdateTags = (tags: Tag[]) => {
     setRoom({ ...room, tags });
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: false });
   };
 
   return (
-    <Modal isOpen={open} onClose={onClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
+    <Modal isOpen={open} onClose={handleClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
       <ModalOverlay bgColor="blackAlpha.800" />
-      <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} py="2">
+      <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} p2="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
           <Heading size="lg">Create a room</Heading>
           <ModalCloseButton position="relative" top="none" right="none" />
         </ModalHeader>
         <ModalBody mt={4}>
-          <form id="create-form" onSubmit={onSubmit}>
+          <form id="create-form" onSubmit={handleSubmit}>
             <FormControl>
               <FormLabel htmlFor="name">Room name</FormLabel>
               <InputGroup display="flex" flexDir="column">
                 <Input
                   isInvalid={room.error}
                   placeholder="Enter a catchy room name!"
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e)}
                   type="text"
                   variant="filled"
                   name="name"
@@ -155,7 +135,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
                 type="text"
                 placeholder="What type of music will you be playing in the room?"
                 size="sm"
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 name="description"
                 value={room.description}
                 borderRadius="md"

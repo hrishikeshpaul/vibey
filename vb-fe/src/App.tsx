@@ -8,7 +8,7 @@ import { Landing } from "core/landing/Landing";
 import { Redirect } from "core/redirect/Redirect";
 import { Room } from "core/room/Room";
 import { useSocket } from "core/socket/useSocket";
-import { Loading, CreateRoom } from "components/index";
+import { Loading, RoomModal } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { createRoomAction } from "_store/room/RoomActions";
@@ -21,8 +21,9 @@ import "App.scss";
 
 export const App = (): JSX.Element => {
   const isLoading = useSelector((state: State) => state.system.isLoading);
-  const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
+  const isRoomModalOpen = useSelector((state: State) => state.system.roomModalOpen);
   const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
+  const currentRoom = useSelector((state: State) => state.room.currentRoom);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -77,12 +78,15 @@ export const App = (): JSX.Element => {
   return (
     <div className="h-100 w-100 px-3" id="vb-main">
       {isLoading && <Loading show />}
-      {isCreateRoomModalOpen && (
-        <CreateRoom
-          open={isCreateRoomModalOpen}
+      {isRoomModalOpen && (
+        <RoomModal
+          open={isRoomModalOpen}
           handleError={(e) => {
             console.log(e);
           }}
+          roomName={currentRoom?.name}
+          roomTags={currentRoom?.tags}
+          roomDescription={currentRoom?.description}
         />
       )}
       {render}

@@ -12,9 +12,9 @@ export interface SystemState {
   error: any;
   isAuthenticated: boolean;
   /**
-   * Denotes if the create room modal is open
+   * Denotes if the room modal is open
    */
-  createRoomOpen: boolean;
+  roomModalOpen: boolean;
   /**
    * Tracks expanding of bottom sheet
    */
@@ -30,7 +30,7 @@ const initialState: SystemState = {
   isLoading: false,
   error: {},
   isAuthenticated: false,
-  createRoomOpen: false,
+  roomModalOpen: false,
   bottomSheetExpanded: false,
   socket: null,
   retry: false,
@@ -64,7 +64,7 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
     case SystemConstants.CREATE_ROOM_MODAL:
       return {
         ...state,
-        createRoomOpen: action.payload,
+        roomModalOpen: action.payload,
       };
     case SystemConstants.EXPAND_BOTTOM_SHEET:
       return {

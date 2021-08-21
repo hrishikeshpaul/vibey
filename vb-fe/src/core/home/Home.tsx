@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 
 import { useSelector } from "react-redux";
 import { Flex, VStack } from "@chakra-ui/react";
 
-import { Navbar, Sheet, Profile, Search, Filters, Card } from "components";
+import { Navbar, Profile, Search, Filters, Card } from "components";
 import { Layout } from "layout/Layout";
 import { State } from "_store/rootReducer";
 
@@ -42,7 +42,7 @@ export const Home: FunctionComponent<any> = () => {
             <Filters />
           </Layout.Sidebar>
           <Layout.Content flex="0.55">
-            <VStack spacing="8">{data.map((i) => i)}</VStack>
+            <VStack spacing="8">{data.map((card) => card)}</VStack>
           </Layout.Content>
           <Layout.Sidebar flex="0.2">
             <Profile profile={profile} />

@@ -4,10 +4,12 @@ import { Flex, IconButton, HStack, Text, Icon, Heading } from "@chakra-ui/react"
 import { HiPencil, HiShare } from "react-icons/hi";
 import { IoPeople } from "react-icons/io5";
 import { FaInfo } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
+import { SystemConstants } from "_store/system/SystemTypes";
 import { ReactComponent as Back } from "assets/icons/back.svg";
 import { Room } from "util/Room";
-import { useHistory } from "react-router-dom";
 
 interface Props {
   room: Room;
@@ -16,6 +18,7 @@ interface Props {
 
 export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Element => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const BackIcon = (): JSX.Element => {
     return (
@@ -46,12 +49,20 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Ele
       </Flex>
 
       <HStack spacing={3}>
-        <IconButton icon={<FaInfo />} aria-label="room-back" bg="primaryDark" fontSize="xl" />
+        <IconButton icon={<FaInfo />} aria-label="room-info" bg="primaryDark" fontSize="xl" />
 
-        {isHost && <IconButton icon={<HiPencil />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />}
-        <IconButton icon={<HiShare />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
+        {isHost && (
+          <IconButton
+            icon={<HiPencil />}
+            aria-label="room-edit"
+            bg="primaryDark"
+            fontSize="2xl"
+            onClick={() => dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: true })}
+          />
+        )}
+        <IconButton icon={<HiShare />} aria-label="room-share" bg="primaryDark" fontSize="2xl" />
         <Flex justifyContent="center" alignItems="center">
-          <IconButton icon={<IoPeople />} aria-label="room-back" bg="primaryDark" fontSize="2xl" />
+          <IconButton icon={<IoPeople />} aria-label="room-people" bg="primaryDark" fontSize="2xl" />
           <Text pl="1" fontSize="sm">
             {room?.currentUsers.length}
           </Text>
