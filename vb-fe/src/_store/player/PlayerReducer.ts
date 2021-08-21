@@ -10,6 +10,7 @@ export interface PlayerState {
   playlistContext: string;
   shuffle: boolean;
   deviceId: string;
+  contextUri: string;
 }
 
 /**
@@ -22,6 +23,7 @@ const initialState: PlayerState = {
   playlistContext: "",
   shuffle: false,
   deviceId: "",
+  contextUri: "",
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -69,6 +71,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         shuffle: action.payload,
+      };
+    }
+    case PlayerConstants.SET_CONTEXT_URI: {
+      return {
+        ...state,
+        contextUri: action.payload,
       };
     }
     default:

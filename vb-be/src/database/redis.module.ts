@@ -76,6 +76,7 @@ export class RedisService {
         artist: { type: 'string' },
         position: { type: 'number' },
         paused: { type: 'boolean' },
+        contextUri: { type: 'string' },
       },
       properties: {
         track: { $ref: '#/definitions' },

@@ -10,6 +10,7 @@ export enum PlayerConstants {
   CONTROLS_DISABLED = "CONTROLS_DISABLED",
   SET_SHUFFLE = "SET_SHUFFLE",
   SET_DEVICE_ID = "SET_DEVICE_ID",
+  SET_CONTEXT_URI = "SET_CONTEXT_URI",
 }
 
 export interface PlayTrack {
@@ -54,6 +55,11 @@ export interface SetDeviceId {
   payload: string;
 }
 
+export interface SetContextUri {
+  type: typeof PlayerConstants.SET_CONTEXT_URI;
+  payload: string;
+}
+
 export type PlayerActionTypes =
   | PlayTrack
   | PauseTrack
@@ -63,4 +69,5 @@ export type PlayerActionTypes =
   | SetControlsDisabled
   | SetShuffle
   | Reset
-  | SetDeviceId;
+  | SetDeviceId
+  | SetContextUri;

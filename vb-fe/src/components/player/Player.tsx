@@ -8,7 +8,7 @@ import { TiMediaPause } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 
 import { State } from "_store/rootReducer";
-import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
+import { playNext, playPrevious, shuffleAction, updateTrackInRoom } from "_store/player/PlayerActions";
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { useSpotifyPlayer, usePlaybackState } from "core/player";
 import { PlayerVolume } from "components/player/PlayerVolume";
@@ -33,7 +33,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
 }): JSX.Element => {
   const dispatch = useDispatch();
   const player = useSpotifyPlayer();
-  const playbackState = usePlaybackState(true, 1000);
+  const playbackState = usePlaybackState(true, 5000);
   const { paused } = useSelector((states: State) => states.player);
   const { isHost } = useSelector((state: State) => state.room);
   const [playerState, setPlayerState] = useState<PlayerControlsState>({
@@ -53,6 +53,8 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
         shuffle: playbackState.shuffle,
         position: playbackState.position,
       });
+
+      if (playbackState.position !== playerState.position) dispatch(updateTrackInRoom(playerState.position));
     }
   }, [playbackState]); // eslint-disable-line
 

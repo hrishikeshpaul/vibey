@@ -35,6 +35,10 @@ class Publisher {
   emitTrackPlay(contextUri: string, roomId: string, hostId: string) {
     this.emit(SocketEvents.EmitPlayTrack, { contextUri, roomId, hostId });
   }
+
+  updateTrackInRoom(track: RoomTrack, roomId: string) {
+    this.emit(SocketEvents.UpdateTrackInRoom, { track, roomId });
+  }
 }
 
 /**

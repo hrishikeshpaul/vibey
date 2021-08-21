@@ -3,9 +3,14 @@ import { Query, Types } from 'mongoose';
 
 import { RedisService } from '@db/redis.module';
 import { RoomModel, IRoom } from '@modules/room/room.schema';
-import { RedisRoom, RoomForm } from '@modules/room/room.constants';
+import {
+  RedisRoom,
+  RedisRoomTrack,
+  RoomForm,
+} from '@modules/room/room.constants';
 import { UserService } from '@modules/user/user.service';
-import { ErrorText } from 'src/util/error';
+import { ErrorHandler, ErrorText } from 'src/util/error';
+import { HttpStatus } from 'src/util/http';
 
 @Injectable()
 export class RoomService {
@@ -99,6 +104,7 @@ export class RoomService {
         uri: '',
         image: '',
         artist: '',
+        contextUri: '',
         position: 0,
         paused: false,
       },
@@ -108,5 +114,36 @@ export class RoomService {
     const roomString = await this.redis.stringify(roomData);
 
     return this.redis.setAsyncSocketClient(roomId.toString(), roomString);
+  }
+
+  async updateTrackInRoom(
+    roomId: string,
+    hostId: string,
+    data: RedisRoomTrack,
+  ): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // get the room string from redis
+        const roomString = await this.redis.getAsyncSocketClient(roomId);
+
+        // parse the room string into the object
+        const roomObj = (await this.redis.parse(roomString)) as RedisRoom;
+
+        const updatedRoom = {
+          ...roomObj,
+          track: { ...data },
+        };
+
+        // stringify the updated room object
+        const newRoomString = await this.redis.stringify(updatedRoom);
+
+        // add the room object to redis
+        await this.redis.setAsyncSocketClient(roomId, newRoomString);
+
+        resolve(updatedRoom);
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 }

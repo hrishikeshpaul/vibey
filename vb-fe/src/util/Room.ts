@@ -8,6 +8,7 @@ export interface RoomTrack {
   position: number;
   paused: boolean;
   artist: string;
+  contextUri: string;
 }
 export interface Room {
   description: string;

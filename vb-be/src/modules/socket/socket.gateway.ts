@@ -42,8 +42,21 @@ export class EventsGateway {
     @ConnectedSocket() client: Socket,
     @MessageBody() body: SocketMessageBody,
   ) {
-    const { contextUri, roomId, hostId } = body.data;
+    const { contextUri, roomId } = body.data;
     this.server.to(roomId).emit(SocketEvents.OnPlayTrack, contextUri);
+  }
+
+  @SubscribeMessage(SocketEvents.UpdateTrackInRoom)
+  async updateTrackInRoom(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() body: SocketMessageBody,
+  ) {
+    try {
+      const { track, roomId } = body.data;
+      await this.roomService.updateTrackInRoom(roomId, '', track);
+    } catch (err) {
+      socketError(client, HttpStatus.InternalError, ErrorText.Generic);
+    }
   }
 
   @SubscribeMessage(SocketEvents.JoinRoom)
