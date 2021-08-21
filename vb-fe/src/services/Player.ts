@@ -3,6 +3,7 @@
 import { Http } from "util/Http";
 import { PlayerEndpoints } from "util/Endpoints";
 import { AxiosResponse } from "axios";
+import { Socket } from "dgram";
 
 export const play = (contextUri: string, deviceId: string): Promise<AxiosResponse<void>> => {
   return Http.put(

@@ -2,7 +2,7 @@ import socketIOClient, { Socket } from "socket.io-client";
 import { push } from "connected-react-router";
 
 import { HttpStatus, setHeaders, TokenStorageKeys } from "util/Http";
-import { Room } from "util/Room";
+import { Room, RoomTrack } from "util/Room";
 import { SOCKET_ENDPOINT, SocketError, SocketEvents } from "util/Socket";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
@@ -31,6 +31,10 @@ class Publisher {
   healthCheck(): void {
     this.emit(SocketEvents.Health, "");
   }
+
+  emitTrackPlay(contextUri: string, roomId: string, hostId: string) {
+    this.emit(SocketEvents.EmitPlayTrack, { contextUri, roomId, hostId });
+  }
 }
 
 /**
@@ -41,6 +45,10 @@ class Subscriber {
 
   joinSuccess(cb: (data: Room) => unknown): void {
     this.socket.on(SocketEvents.JoinSuccess, (data: Room) => cb(data));
+  }
+
+  onTrackPlay(cb: (contextUri: string) => unknown): void {
+    this.socket.on(SocketEvents.OnPlayTrack, (contextUri: string) => cb(contextUri));
   }
 
   healthCheck(cb: (status: HttpStatus) => void): void {
@@ -89,6 +97,10 @@ class VibeySocket {
         store.dispatch(push("/"));
       });
     });
+  }
+
+  getSocket() {
+    return this.socket;
   }
 
   getPublisher() {

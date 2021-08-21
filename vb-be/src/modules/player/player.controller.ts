@@ -4,11 +4,11 @@ import {
   Response,
   Query,
   Headers,
-  Get,
   Post,
 } from '@nestjs/common';
 import { Response as Res } from 'express';
 import { firstValueFrom } from 'rxjs';
+import { Socket } from 'socket.io';
 
 import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';

@@ -35,6 +35,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   const player = useSpotifyPlayer();
   const playbackState = usePlaybackState(true, 1000);
   const { paused } = useSelector((states: State) => states.player);
+  const { isHost } = useSelector((state: State) => state.room);
   const [playerState, setPlayerState] = useState<PlayerControlsState>({
     shuffle: false,
     position: 0,
@@ -63,6 +64,7 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
         icon={<RiShuffleFill />}
         aria-label="track-shuffle"
         onClick={() => dispatch(shuffleAction())}
+        disabled={!isHost}
       />
     );
   };
@@ -88,13 +90,19 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   return (
     <Flex>
       <HStack spacing="3">
-        <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={previous} />
+        <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={previous} disabled={!isHost} />
         {!paused ? (
-          <IconButton icon={<TiMediaPause />} fontSize="3xl" aria-label="track-pause" onClick={pause} />
+          <IconButton
+            icon={<TiMediaPause />}
+            fontSize="3xl"
+            aria-label="track-pause"
+            onClick={pause}
+            disabled={!isHost}
+          />
         ) : (
-          <IconButton icon={<FaPlay />} aria-label="track-play" onClick={resume} />
+          <IconButton icon={<FaPlay />} aria-label="track-play" onClick={resume} disabled={!isHost} />
         )}
-        <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={next} />
+        <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={next} disabled={!isHost} />
         <Divider />
         {showShuffle && <Shuffle />}
         {showVolume && <PlayerVolume />}

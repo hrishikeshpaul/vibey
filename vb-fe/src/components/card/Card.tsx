@@ -9,31 +9,20 @@ import { Tag } from "util/Tags";
 
 import "components/card/Card.scss";
 import { Room } from "util/Room";
+import { useDispatch } from "react-redux";
+import { push } from "connected-react-router";
 
 interface Props {
   room: Room;
 }
 
-/** Placeholder */
-const tags: Tag[] = [
-  // {
-  //   label: "#edm",
-  //   value: "#edm",
-  //   score: 2,
-  // },
-  // {
-  //   label: "#trance",
-  //   value: "#trance",
-  //   score: 3,
-  // },
-  // {
-  //   label: "#future-bass",
-  //   value: "#future-bass",
-  //   score: 10,
-  // },
-];
-
 export const Card: FunctionComponent<Props> = ({ room }): JSX.Element => {
+  const dispatch = useDispatch();
+
+  const joinRoom = () => {
+    dispatch(push(`/room/${room._id}`));
+  };
+
   return (
     <Box
       tabIndex={0}
@@ -44,6 +33,7 @@ export const Card: FunctionComponent<Props> = ({ room }): JSX.Element => {
       className="vb-card"
       borderColor="dark"
       _hover={{ cursor: "pointer", border: "2px solid teal" }}
+      onClick={joinRoom}
     >
       <Flex justifyContent="space-between" alignItems="center">
         <Box flex="0.9" overflow="hidden" pr={3}>
@@ -73,8 +63,8 @@ export const Card: FunctionComponent<Props> = ({ room }): JSX.Element => {
       </Flex>
       <Flex mt="1" flexWrap="wrap" overflow="hidden" maxH="25px">
         <Box id="vb-card-badge-box">
-          {tags.map((tag: Tag, i: number) => (
-            <Badge colorScheme="teal" mr={2} borderRadius="md" key={tag.label}>
+          {room.tags.map((tag: Tag, i: number) => (
+            <Badge colorScheme="teal" mr={2} borderRadius="md" key={tag._id}>
               {tag.label}
             </Badge>
           ))}

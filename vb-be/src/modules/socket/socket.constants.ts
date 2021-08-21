@@ -6,6 +6,8 @@ export enum SocketEvents {
   Message = 'message',
   Error = 'socket-err',
   PauseTrack = 'pause-track',
+  OnPlayTrack = 'on-play-track',
+  EmitPlayTrack = 'emit-play-track',
 }
 
 export interface SocketMessageBody {

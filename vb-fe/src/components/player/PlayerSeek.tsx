@@ -9,6 +9,7 @@ import { useDebounce } from "util/Input";
 
 export const PlayerSeeker: FunctionComponent = () => {
   const { track, paused, trackPosition } = useSelector((states: State) => states.player);
+  const { isHost } = useSelector((state: State) => state.room);
   const [position, setPosition] = useState<number>(0);
   const [debounce] = useDebounce();
   const player = useSpotifyPlayer();
@@ -59,6 +60,7 @@ export const PlayerSeeker: FunctionComponent = () => {
         {formatMilliseconds(position, false)}
       </Text>
       <Slider
+        isDisabled={!isHost}
         aria-label="vb-seek-slider"
         colorScheme="teal"
         w="100%"

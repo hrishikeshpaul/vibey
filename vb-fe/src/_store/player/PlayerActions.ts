@@ -4,8 +4,9 @@ import { play, next, previous, shuffle as setShuffle } from "services/Player";
 import { State } from "_store/rootReducer";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { PlayerActionTypes, PlayerConstants } from "_store/player/PlayerTypes";
+import { VS } from "services/Socket";
 
-export const playTrack =
+export const subscribersPlay =
   (contextUri: string) =>
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
     const { deviceId } = getState().player;
@@ -14,6 +15,26 @@ export const playTrack =
 
     try {
       await play(contextUri, deviceId);
+      dispatch({ type: SystemConstants.SUCCESS });
+    } catch (err) {
+      dispatch({
+        type: SystemConstants.FAILURE,
+        payload: err,
+      });
+    }
+  };
+
+export const playTrack =
+  (contextUri: string) =>
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+    const { deviceId } = getState().player;
+    const { currentRoom } = getState().room;
+
+    dispatch({ type: SystemConstants.LOADING });
+
+    try {
+      await play(contextUri, deviceId);
+      VS.getPublisher().emitTrackPlay(contextUri, currentRoom!._id, currentRoom!.host._id);
       dispatch({ type: PlayerConstants.SET_CURRENT_PLAYLIST, payload: contextUri });
       dispatch({ type: SystemConstants.SUCCESS });
     } catch (err) {
