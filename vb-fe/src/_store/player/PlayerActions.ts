@@ -107,7 +107,7 @@ export const shuffleAction =
 
 export const updateTrackInRoom =
   (position: number) =>
-  async (getState: () => State): Promise<void> => {
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
     const { track, paused, contextUri } = getState().player;
     const { currentRoom } = getState().room;
 

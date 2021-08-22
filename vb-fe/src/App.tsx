@@ -50,7 +50,7 @@ export const App = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-      if (!isAuthenticated) resetApp();
+      if (!isAuthenticated) resetApp("App.tsx");
     }, [isAuthenticated]); // eslint-disable-line
 
     const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);

@@ -6,11 +6,12 @@ import { UserConstants } from "_store/user/UserTypes";
 import { resetLocalStorage } from "util/System";
 import { VS } from "services/Socket";
 
-export const resetApp = (): void => {
-  // VS.disconnect();
-  // resetLocalStorage();
-  // store.dispatch({ type: SystemConstants.RESET });
-  // store.dispatch({ type: UserConstants.RESET });
-  // store.dispatch({ type: RoomConstants.RESET });
-  // store.dispatch({ type: PlayerConstants.RESET });
+export const resetApp = (msg?: string): void => {
+  console.log("Resetting app from -> ", msg);
+  VS.disconnect();
+  resetLocalStorage();
+  store.dispatch({ type: SystemConstants.RESET });
+  store.dispatch({ type: UserConstants.RESET });
+  store.dispatch({ type: RoomConstants.RESET });
+  store.dispatch({ type: PlayerConstants.RESET });
 };

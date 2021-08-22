@@ -33,7 +33,7 @@ export const PlayerWrapper: FunctionComponent = () => {
     if (error) {
       dispatch({ type: SystemConstants.LOGIN, payload: false });
       dispatch({ type: SystemConstants.FAILURE });
-      resetApp();
+      resetApp("PlayerWrapper.tsx");
     }
   }, [error, dispatch]);
 
