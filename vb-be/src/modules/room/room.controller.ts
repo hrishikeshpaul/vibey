@@ -6,7 +6,10 @@ import {
   Body,
   Get,
   Query,
+  Put,
+  Param,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 
@@ -50,6 +53,43 @@ export class RoomController {
       return res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {
       throw new ErrorHandler(HttpStatus.InternalError, err.toString());
+    }
+  }
+
+  @Put('/:id')
+  async updateRoom(
+    @Body() body: { roomObj: ICreateRoom; userId: Types.ObjectId },
+    @Param() params: { id: string },
+    @Response() res: Res,
+  ) {
+    const { roomObj, userId } = body;
+    const { id } = params;
+
+    try {
+      if (!roomObj) {
+        throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
+      }
+
+      // search for room and validate the current user is the host
+      const foundRoom = await this.roomService.getOneRoom(id);
+      if (!foundRoom) {
+        throw new ErrorHandler(HttpStatus.NotFound, ErrorText.NotFound);
+      }
+      if (!foundRoom.host._id.equals(userId)) {
+        throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Forbidden);
+      }
+
+      const updatedRoom = await this.roomService.updateRoomAndReturn(
+        id,
+        roomObj,
+      );
+      if (!updatedRoom) {
+        throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
+      }
+      // TODO add score to new tags and socket emit updated
+      return res.status(HttpStatus.OK).json({ room: updatedRoom });
+    } catch (err) {
+      return res.status(err.statusCode || 500).send(err.message);
     }
   }
 

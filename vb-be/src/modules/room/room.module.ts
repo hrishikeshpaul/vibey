@@ -26,6 +26,9 @@ export class RoomModule implements NestModule {
       .forRoutes({ path: '/api/room', method: RequestMethod.POST });
     consumer
       .apply(ValidateRoomRequestBody)
-      .forRoutes({ path: '/api/room', method: RequestMethod.POST });
+      .forRoutes(
+        { path: '/api/room', method: RequestMethod.POST },
+        { path: '/api/room/:id', method: RequestMethod.PUT },
+      );
   }
 }
