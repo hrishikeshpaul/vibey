@@ -88,8 +88,11 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
 
     const onCreateRoomOpen = () => {
       dispatch({
-        type: SystemConstants.CREATE_ROOM_MODAL,
-        payload: true,
+        type: SystemConstants.SET_ROOM_MODAL,
+        payload: {
+          isOpen: true,
+          type: SystemConstants.CREATE,
+        },
       });
     };
 

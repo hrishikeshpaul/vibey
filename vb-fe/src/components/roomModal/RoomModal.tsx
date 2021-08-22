@@ -23,9 +23,10 @@ import {
 import { Select } from "components/select/Select";
 import { RoomForm } from "util/Room";
 import { Tag } from "util/Tags";
-import { useDispatch } from "react-redux";
-import { createRoomAction } from "_store/room/RoomActions";
+import { useDispatch, useSelector } from "react-redux";
+import { createRoomAction, updateRoomAction } from "_store/room/RoomActions";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { State } from "_store/rootReducer";
 
 const MAX_NAME_LENGTH = 40;
 
@@ -50,6 +51,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, roomNam
   };
 
   const dispatch = useDispatch();
+  const modalType = useSelector((state: State) => state.system.roomModal.type);
   const [room, setRoom] = useState(initialRoomValues);
 
   const validateForm = () => {
@@ -63,7 +65,8 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, roomNam
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      dispatch(createRoomAction(room));
+      if (modalType === SystemConstants.CREATE) dispatch(createRoomAction(room));
+      else if (modalType === SystemConstants.EDIT) dispatch(updateRoomAction(room));
       setRoom(initialRoomValues);
     }
   };
@@ -80,7 +83,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, roomNam
   };
 
   const handleClose = () => {
-    dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: false });
+    dispatch({ type: SystemConstants.SET_ROOM_MODAL, payload: { isOpen: false, type: null } });
   };
 
   return (

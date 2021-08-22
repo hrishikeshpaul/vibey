@@ -57,7 +57,15 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Ele
             aria-label="room-edit"
             bg="primaryDark"
             fontSize="2xl"
-            onClick={() => dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: true })}
+            onClick={() =>
+              dispatch({
+                type: SystemConstants.SET_ROOM_MODAL,
+                payload: {
+                  isOpen: true,
+                  type: SystemConstants.EDIT,
+                },
+              })
+            }
           />
         )}
         <IconButton icon={<HiShare />} aria-label="room-share" bg="primaryDark" fontSize="2xl" />
