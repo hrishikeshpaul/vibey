@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Query, Types } from 'mongoose';
 
 import { RedisService } from '@db/redis.module';
-import { RoomModel, RoomType, IRoom } from '@modules/room/room.schema';
-import { IRedisRoom, RoomForm } from './room.constants';
+import { RoomModel, IRoom } from '@modules/room/room.schema';
+import { RoomForm } from './room.constants';
 
 @Injectable()
 export class RoomService {
@@ -20,6 +20,17 @@ export class RoomService {
       .populate('tags')
       .populate('host')
       .populate('currentUsers');
+  }
+
+  updateRoomAndReturn(roomId: Types.ObjectId | string, room: RoomForm) {
+    return RoomModel.findByIdAndUpdate({ _id: roomId }, room, {
+      new: true,
+      upsert: true,
+    })
+      .populate('tags')
+      .populate('host')
+      .populate('currentUsers')
+      .exec();
   }
 
   addUserToRoom(
