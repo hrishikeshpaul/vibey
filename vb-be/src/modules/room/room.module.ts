@@ -3,6 +3,7 @@ import {
   NestModule,
   MiddlewareConsumer,
   RequestMethod,
+  forwardRef,
 } from '@nestjs/common';
 
 import { RoomController } from '@modules/room/room.controller';
@@ -12,9 +13,10 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { ValidateRoomRequestBody } from '@modules/room/room.middleware';
 import { TagModule } from '@modules/tag/tag.module';
 import { RedisModule } from '@db/redis.module';
+import { SocketModule } from '@modules/socket/socket.module';
 
 @Module({
-  imports: [AuthModule, TagModule, RedisModule],
+  imports: [AuthModule, TagModule, RedisModule, forwardRef(() => SocketModule)],
   controllers: [RoomController],
   providers: [RoomService],
   exports: [RoomService],

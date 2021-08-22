@@ -8,6 +8,8 @@ import {
   Query,
   Put,
   Param,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { Response as Res, Request as Req } from 'express';
@@ -19,10 +21,13 @@ import { TagService } from '@modules/tag/tag.service';
 import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
+import { EventsGateway } from '@modules/socket/socket.gateway';
 
 @Controller('/api/room')
 export class RoomController {
   constructor(
+    @Inject(forwardRef(() => EventsGateway))
+    private readonly eventsGateway: EventsGateway,
     private readonly roomService: RoomService,
     private readonly tagService: TagService,
     private readonly spotify: SpotifyService,
@@ -86,6 +91,9 @@ export class RoomController {
       if (!updatedRoom) {
         throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
       }
+
+      const socketRoom = updatedRoom._id.toString();
+      this.eventsGateway.server.to(socketRoom).emit('update-room', updatedRoom);
       // TODO add score to new tags and socket emit updated
       return res.status(HttpStatus.OK).json({ room: updatedRoom });
     } catch (err) {

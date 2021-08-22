@@ -7,17 +7,12 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
+import { ErrorText, ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import { RoomService } from '@modules/room/room.service';
-import { ISocketCreateRoomData } from '@modules/socket/socket.constants';
-import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
-import { RedisService } from '@db/redis.module';
-import { RoomModel } from '@modules/room/room.schema';
-import { UserService } from '@modules/user/user.service';
 
 @WebSocketGateway({ cors: true })
 export class EventsGateway {
@@ -27,8 +22,6 @@ export class EventsGateway {
   constructor(
     private readonly roomService: RoomService,
     private readonly authService: AuthService,
-    private readonly redis: RedisService,
-    private readonly userService: UserService,
   ) {}
 
   @SubscribeMessage('join-room')
