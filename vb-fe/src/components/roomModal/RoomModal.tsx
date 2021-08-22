@@ -57,6 +57,18 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
   const modalType = useSelector((state: State) => state.system.roomModal.type);
   const [room, setRoom] = useState(initialRoomValues);
 
+  let buttonText;
+  switch (modalType) {
+    case SystemConstants.CREATE:
+      buttonText = "Create";
+      break;
+    case SystemConstants.EDIT:
+      buttonText = "Edit";
+      break;
+    default:
+      break;
+  }
+
   const validateForm = () => {
     if (!room.name.trim()) {
       setRoom({ ...room, error: true });
@@ -155,7 +167,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
 
         <ModalFooter mt={4}>
           <Button type="submit" form="create-form" colorScheme="primary" w="100%">
-            Create
+            {buttonText}
           </Button>
         </ModalFooter>
       </ModalContent>

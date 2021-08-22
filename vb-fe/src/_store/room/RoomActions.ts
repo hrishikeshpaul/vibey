@@ -42,12 +42,12 @@ export const updateRoomAction =
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
       const res = await updateRoom(room, user._id, roomId);
-      console.log({ res }, "*****************");
+      const { data } = res;
 
-      // dispatch({
-      //   type: RoomConstants.UPDATE,
-      //   payload: res.data,
-      // });
+      dispatch({
+        type: RoomConstants.UPDATE,
+        payload: data.room,
+      });
       dispatch({
         type: SystemConstants.SET_ROOM_MODAL,
         payload: {
