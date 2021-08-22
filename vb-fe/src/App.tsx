@@ -81,9 +81,7 @@ export const App = (): JSX.Element => {
           handleError={(e) => {
             console.log(e);
           }}
-          roomName={currentRoom?.name}
-          roomTags={currentRoom?.tags}
-          roomDescription={currentRoom?.description}
+          currentRoom={currentRoom !== null ? currentRoom : undefined}
         />
       )}
       {render}

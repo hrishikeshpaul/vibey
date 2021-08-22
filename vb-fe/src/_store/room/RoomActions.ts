@@ -36,12 +36,12 @@ export const createRoomAction =
   };
 
 export const updateRoomAction =
-  (room: RoomForm) =>
+  (room: RoomForm, roomId: string) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
-      const res = await updateRoom(room, user._id);
+      const res = await updateRoom(room, user._id, roomId);
       console.log({ res }, "*****************");
 
       // dispatch({

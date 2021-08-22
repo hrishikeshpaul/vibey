@@ -33,20 +33,23 @@ const MAX_NAME_LENGTH = 40;
 type Props = {
   open: boolean;
   handleError: (error: any) => void;
-  roomName?: string;
-  roomTags?: Tag[];
-  roomDescription?: string;
+  currentRoom?: {
+    _id: string;
+    name: string;
+    description: string;
+    tags: Tag[];
+  };
 };
 
 interface RoomType extends RoomForm {
   error: boolean;
 }
 
-export const RoomModal: FunctionComponent<Props> = ({ open, handleError, roomName, roomTags, roomDescription }) => {
+export const RoomModal: FunctionComponent<Props> = ({ open, handleError, currentRoom }) => {
   const initialRoomValues: RoomType = {
-    name: roomName || "",
-    description: roomDescription || "",
-    tags: roomTags || [],
+    name: currentRoom?.name || "",
+    description: currentRoom?.description || "",
+    tags: currentRoom?.tags || [],
     error: false,
   };
 
@@ -65,8 +68,11 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, roomNam
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      if (modalType === SystemConstants.CREATE) dispatch(createRoomAction(room));
-      else if (modalType === SystemConstants.EDIT) dispatch(updateRoomAction(room));
+      if (modalType === SystemConstants.CREATE) {
+        dispatch(createRoomAction(room));
+      } else if (modalType === SystemConstants.EDIT && currentRoom) {
+        dispatch(updateRoomAction(room, currentRoom._id));
+      }
       setRoom(initialRoomValues);
     }
   };
