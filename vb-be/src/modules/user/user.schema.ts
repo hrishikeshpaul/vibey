@@ -1,8 +1,8 @@
 import { TagType } from '@modules/tag/tag.schema';
-import { model, Schema, Model, Document } from 'mongoose';
+import { model, Schema, Model, Document, Types } from 'mongoose';
 
 export interface UserType {
-  id?: string;
+  _id?: Types.ObjectId;
   displayName: string;
   username: string;
   email: string;
@@ -13,7 +13,7 @@ export interface UserType {
 }
 
 export interface IUser extends Document {
-  id?: string;
+  _id?: Types.ObjectId;
   displayName: string;
   username: string;
   email: string;
