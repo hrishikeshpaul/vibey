@@ -50,10 +50,7 @@ export const updateRoomAction =
       });
       dispatch({
         type: SystemConstants.SET_ROOM_MODAL,
-        payload: {
-          isOpen: false,
-          type: null,
-        },
+        payload: { isOpen: false, type: null },
       });
       dispatch({ type: SystemConstants.SUCCESS });
     } catch (err) {

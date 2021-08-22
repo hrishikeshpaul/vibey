@@ -23,13 +23,19 @@ interface RoomInfoProps {
 }
 
 export const Room: FunctionComponent = (): JSX.Element => {
-  const location = useLocation();
   const dispatch = useDispatch();
+  const location = useLocation();
   const socket = useSelector((state: State) => state.system.socket);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
   const [room, setRoom] = useState<RoomType | null>(null);
   const [isHost, setIsHost] = useState<boolean>(false);
+
+  const handleUpdateRoom = (data: RoomType) => {
+    dispatch({ type: SystemConstants.SUCCESS });
+    setIsHost(data.host._id === currentUser?._id);
+    setRoom(data);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -43,10 +49,12 @@ export const Room: FunctionComponent = (): JSX.Element => {
         socket?.emit("join-room", roomId);
       }
 
+      socket?.on("update-room", (data: RoomType) => {
+        handleUpdateRoom(data);
+      });
+
       socket?.on("join-room-success", (data: RoomType) => {
-        dispatch({ type: SystemConstants.SUCCESS });
-        setIsHost(data.host._id === currentUser?._id);
-        setRoom(data);
+        handleUpdateRoom(data);
       });
     }
 
