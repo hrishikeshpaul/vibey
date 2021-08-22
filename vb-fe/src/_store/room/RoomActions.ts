@@ -11,7 +11,6 @@ export const createRoomAction =
   (room: RoomForm) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
-
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
       const res = await createRoom(room, user._id);
@@ -21,8 +20,8 @@ export const createRoomAction =
         payload: res.data,
       });
       dispatch({
-        type: SystemConstants.CREATE_ROOM_MODAL,
-        payload: false,
+        type: SystemConstants.SET_ROOM_MODAL,
+        payload: { isOpen: false, type: null },
       });
       dispatch({
         type: SystemConstants.SUCCESS,
@@ -40,7 +39,6 @@ export const updateRoomAction =
   (room: RoomForm) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
-
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
       const res = await updateRoom(room, user._id);
@@ -51,8 +49,11 @@ export const updateRoomAction =
       //   payload: res.data,
       // });
       dispatch({
-        type: SystemConstants.CREATE_ROOM_MODAL,
-        payload: false,
+        type: SystemConstants.SET_ROOM_MODAL,
+        payload: {
+          isOpen: false,
+          type: null,
+        },
       });
       dispatch({ type: SystemConstants.SUCCESS });
     } catch (err) {
