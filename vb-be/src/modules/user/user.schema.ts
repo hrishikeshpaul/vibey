@@ -1,4 +1,3 @@
-import { TagType } from '@modules/tag/tag.schema';
 import { Types, model, Schema, Model, Document } from 'mongoose';
 
 export interface UserType {

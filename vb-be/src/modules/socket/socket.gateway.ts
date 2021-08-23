@@ -8,7 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
-import { ErrorText, ErrorHandler } from 'src/util/error';
+import { ErrorText, ErrorHandler, socketError } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import {
@@ -16,10 +16,7 @@ import {
   SocketMessageBody,
 } from '@modules/socket/socket.constants';
 import { RoomService } from '@modules/room/room.service';
-<<<<<<< HEAD
-=======
 import { WsGuard } from '@modules/socket/socket.middleware';
->>>>>>> develop
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 

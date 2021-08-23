@@ -10,15 +10,6 @@ import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
 import { VS } from "services/Socket";
 import { store } from "_store/store";
 
-export const updateCurrentRoom = (room: Room): void => {
-  if (room) {
-    const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
-
-    store.dispatch({ type: RoomConstants.SET_ROOM, payload: room });
-    store.dispatch({ type: RoomConstants.SET_HOST, payload: currentUser?._id === room.host._id });
-  }
-};
-
 export const createRoomAction =
   (room: RoomForm) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
@@ -53,13 +44,8 @@ export const updateRoomAction =
     dispatch({ type: SystemConstants.LOADING });
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
-      const res = await updateRoom(room, user._id, roomId);
-      const { data } = res;
+      await updateRoom(room, user._id, roomId);
 
-      dispatch({
-        type: RoomConstants.UPDATE,
-        payload: data.room,
-      });
       dispatch({
         type: SystemConstants.SET_ROOM_MODAL,
         payload: { isOpen: false, type: null },
@@ -72,9 +58,27 @@ export const updateRoomAction =
       });
     }
   };
+
+export const setRoom = (room: Room): void => {
+  if (room) {
+    const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
+
+    store.dispatch({ type: RoomConstants.SET_ROOM, payload: room });
+    store.dispatch({ type: RoomConstants.SET_HOST, payload: currentUser?._id === room.host._id });
+  }
+};
+
+export const updateCurrentRoom = (room: Room): any => {
+  store.dispatch({
+    type: RoomConstants.UPDATE,
+    payload: room,
+  });
+};
+
 export const joinRoom = (roomId: string) => async (): Promise<void> => {
   VS.getPublisher().joinRoom(roomId);
-  VS.getSubscriber().joinSuccess(updateCurrentRoom);
+  VS.getSubscriber().joinSuccess(setRoom);
+  VS.getSubscriber().updateRoom(updateCurrentRoom);
 };
 
 export const getUserPlaylistsAction =

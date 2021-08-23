@@ -22,7 +22,6 @@ import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 import { EventsGateway } from '@modules/socket/socket.gateway';
-import { ITag, TagType } from '@modules/tag/tag.schema';
 
 @Controller('/api/room')
 export class RoomController {
@@ -83,7 +82,7 @@ export class RoomController {
         throw new ErrorHandler(HttpStatus.NotFound, ErrorText.NotFound);
       }
       // validate the current user is the host
-      if (!foundRoom.host._id.equals(userId)) {
+      if (foundRoom.host.id != userId) {
         throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Forbidden);
       }
 

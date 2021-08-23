@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { TiWarning } from "react-icons/ti";
 import {
   Modal,
@@ -88,7 +88,6 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
       } else if (modalType === SystemConstants.EDIT && currentRoom) {
         dispatch(updateRoomAction(room, currentRoom._id));
       }
-      setRoom(initialRoomValues);
     }
   };
 

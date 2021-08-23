@@ -14,6 +14,7 @@ export enum SocketEvents {
   Error = "socket-err",
   Exception = "exception",
   PauseTrack = "pause-track",
+  UpdateRoom = "update-room",
 }
 
 export interface SocketError {

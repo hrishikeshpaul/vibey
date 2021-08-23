@@ -46,6 +46,10 @@ class Subscriber {
   healthCheck(cb: (status: HttpStatus) => void): void {
     this.socket.on(SocketEvents.HealthSuccess, (status: HttpStatus) => cb(status));
   }
+
+  updateRoom(cb: (data: Room) => unknown): void {
+    this.socket.on(SocketEvents.UpdateRoom, (data: Room) => cb(data));
+  }
 }
 
 class VibeySocket {

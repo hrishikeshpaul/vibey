@@ -21,7 +21,6 @@ export const App = (): JSX.Element => {
   const isRoomModalOpen = useSelector((state: State) => state.system.roomModal.isOpen);
   const currentRoom = useSelector((state: State) => state.room.currentRoom);
   const { isLoading, isAuthenticated } = useSelector((state: State) => state.system);
-  const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const dispatch = useDispatch();
 
   useEffect(() => {

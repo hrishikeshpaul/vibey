@@ -45,6 +45,7 @@ export const roomReducer = (state: RoomState = initialState, action: RoomActionT
         };
       }
       return { ...state };
+    }
     case RoomConstants.SET_ROOM: {
       return {
         ...state,
