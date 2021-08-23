@@ -34,7 +34,7 @@ export const authorize = async (code: string | undefined, state: string | undefi
  * valid or not
  * @param jwt jwt from the local storage
  */
-export const checkLogin = async (): Promise<any> => {
+export const validateTokens = async (): Promise<any> => {
   return Http.get(AuthEndpoints.VALIDATE, {
     headers: buildHeaders(),
   });

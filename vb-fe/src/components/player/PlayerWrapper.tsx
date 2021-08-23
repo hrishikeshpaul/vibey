@@ -23,7 +23,11 @@ export const PlayerWrapper: FunctionComponent = () => {
 
       VS.getSubscriber().onTrackPlay((contextUri: string) => {
         if (contextUri) {
-          if (!isHost) dispatch(subscribersPlay(contextUri));
+          if (!isHost) {
+            console.log("is host but still calling");
+
+            dispatch(subscribersPlay(contextUri));
+          }
         }
       });
     }
@@ -31,6 +35,7 @@ export const PlayerWrapper: FunctionComponent = () => {
 
   useEffect(() => {
     if (error) {
+      console.log("error in player wrapper.tsx");
       dispatch({ type: SystemConstants.LOGIN, payload: false });
       dispatch({ type: SystemConstants.FAILURE });
       resetApp("PlayerWrapper.tsx");

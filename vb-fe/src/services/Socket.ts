@@ -7,6 +7,7 @@ import { refreshTokens } from "services/Auth";
 import { HttpStatus, setHeaders, TokenStorageKeys } from "util/Http";
 import { Room, RoomTrack } from "util/Room";
 import { SOCKET_ENDPOINT, SocketError, SocketEvents } from "util/Socket";
+import { resetApp } from "util/Logout";
 
 /**
  * Class for all the publishers that emit events
@@ -20,8 +21,15 @@ class Publisher {
       data,
       headers: {
         [TokenStorageKeys.AT]: localStorage.getItem(TokenStorageKeys.AT),
+        [TokenStorageKeys.RT]: localStorage.getItem(TokenStorageKeys.RT),
+        [TokenStorageKeys.SpotifyAT]: localStorage.getItem(TokenStorageKeys.SpotifyAT),
+        [TokenStorageKeys.SpotifyRT]: localStorage.getItem(TokenStorageKeys.SpotifyRT),
       },
     });
+  }
+
+  refreshTokens(): void {
+    this.emit(SocketEvents.Refresh, {});
   }
 
   joinRoom(roomId: string): void {
@@ -47,6 +55,10 @@ class Publisher {
 class Subscriber {
   constructor(private readonly socket: Socket) {} //eslint-disable-line
 
+  refreshTokens(cb: (tokens: any) => unknown): void {
+    this.socket.on(SocketEvents.RefreshSuccess, (tokens: any) => cb(tokens));
+  }
+
   joinSuccess(cb: (data: Room) => unknown): void {
     this.socket.on(SocketEvents.JoinSuccess, (data: Room) => cb(data));
   }
@@ -70,6 +82,7 @@ class VibeySocket {
   sub: any;
 
   init() {
+    console.log("Initializing Sockets...");
     this.socket = socketIOClient(SOCKET_ENDPOINT);
 
     return new Promise((resolve, reject) => {
@@ -94,10 +107,9 @@ class VibeySocket {
       });
 
       this.connectError(() => {
-        reject(new Error("socket connection error form class"));
+        reject(new Error("socket connection error from class"));
         // TODO: show tooltip here that something went wrong
-        store.dispatch({ type: SystemConstants.LOGIN, payload: false });
-        store.dispatch({ type: SystemConstants.RESET });
+        resetApp("Reset from socket connect error");
         store.dispatch(push("/"));
       });
     });
@@ -132,16 +144,20 @@ class VibeySocket {
   }
 
   async refreshFromSocket(eventName: SocketEvents, data: any): Promise<void> {
+    console.log(eventName, data);
     try {
-      const res = await refreshTokens();
-      const { accessToken, refreshToken, spotifyAccessToken } = res.data;
-
-      localStorage.setItem(TokenStorageKeys.AT, accessToken);
-      localStorage.setItem(TokenStorageKeys.RT, refreshToken);
-      localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
-      setHeaders();
-      this.sub.emitEvent(eventName, data);
+      this.getPublisher().refreshTokens();
+      this.getSubscriber().refreshTokens((tokens) => {
+        const { accessToken, refreshToken, spotifyAccessToken } = tokens;
+        localStorage.setItem(TokenStorageKeys.AT, accessToken);
+        localStorage.setItem(TokenStorageKeys.RT, refreshToken);
+        localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
+        setHeaders();
+        console.log("calling this");
+        this.getPublisher().emit(eventName, data);
+      });
     } catch (error: any) {
+      console.log("socket refresh error");
       store.dispatch({ type: SystemConstants.LOGIN, payload: false });
       store.dispatch({ type: SystemConstants.RESET });
     }

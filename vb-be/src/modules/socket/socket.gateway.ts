@@ -5,7 +5,7 @@ import {
   WebSocketServer,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
 import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
@@ -16,12 +16,13 @@ import {
   SocketMessageBody,
 } from '@modules/socket/socket.constants';
 import { RoomService } from '@modules/room/room.service';
-import { WsGuard } from '@modules/socket/socket.middleware';
+import { WsGuard, RsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 import { RedisRoom } from '@modules/room/room.constants';
+import { SpotifyService } from '@modules/spotify/spotify.service';
+import { firstValueFrom } from 'rxjs';
 
-@UseGuards(WsGuard)
 @WebSocketGateway({ cors: true })
 export class EventsGateway {
   @WebSocketServer()
@@ -30,13 +31,45 @@ export class EventsGateway {
   constructor(
     private readonly roomService: RoomService,
     private readonly authService: AuthService,
+    private readonly spotifyService: SpotifyService,
   ) {}
 
+  @UseGuards(WsGuard)
   @SubscribeMessage(SocketEvents.Health)
   healthCheck(@ConnectedSocket() client: Socket) {
     client.emit(SocketEvents.HealthSuccess, HttpStatus.OK);
   }
 
+  @UseGuards(RsGuard)
+  @SubscribeMessage(SocketEvents.Refresh)
+  async refreshTokens(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() body: SocketMessageBody,
+  ) {
+    Logger.log('Refreshing tokens from socket..');
+    try {
+      const user = { email: body.decoded.email, id: body.decoded.id };
+      const accessToken = body.headers['v-at'];
+      const spotifyRefreshToken = body.headers['v-s-rt'];
+      const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
+        accessToken,
+        user,
+      );
+      const response = await firstValueFrom(
+        this.spotifyService.refreshAccessToken(spotifyRefreshToken),
+      );
+      const refreshedSpotifyAT = response.data.access_token;
+      client.emit(SocketEvents.RefreshSuccess, {
+        accessToken: refreshedAT,
+        refreshToken: refreshedRT,
+        spotifyAccessToken: refreshedSpotifyAT,
+      });
+    } catch (err) {
+      socketError(client, HttpStatus.Unauthorized, ErrorText.Unauthorized);
+    }
+  }
+
+  @UseGuards(WsGuard)
   @SubscribeMessage(SocketEvents.EmitPlayTrack)
   playTrack(
     @ConnectedSocket() client: Socket,
@@ -46,6 +79,7 @@ export class EventsGateway {
     this.server.to(roomId).emit(SocketEvents.OnPlayTrack, contextUri);
   }
 
+  @UseGuards(WsGuard)
   @SubscribeMessage(SocketEvents.UpdateTrackInRoom)
   async updateTrackInRoom(
     @ConnectedSocket() client: Socket,
@@ -59,6 +93,7 @@ export class EventsGateway {
     }
   }
 
+  @UseGuards(WsGuard)
   @SubscribeMessage(SocketEvents.JoinRoom)
   async createRoom(
     @MessageBody() data: SocketMessageBody,
@@ -92,6 +127,7 @@ export class EventsGateway {
     }
   }
 
+  @UseGuards(WsGuard)
   @SubscribeMessage(SocketEvents.Message)
   async message(@MessageBody() data: SocketMessageBody) {
     const { roomId, message } = data.data;

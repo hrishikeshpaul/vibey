@@ -14,6 +14,7 @@ import { Playlist as PlaylistType, SpotifyImage } from "util/Playlist";
 
 import "components/playlist/Playlist.scss";
 import { useSpotifyPlayer } from "core/player";
+import { RoomConstants } from "_store/room/RoomTypes";
 
 interface PlaylistItemProps {
   playlist: PlaylistType;
@@ -111,6 +112,11 @@ export const Playlist: FunctionComponent = (): JSX.Element => {
   useEffect(() => {
     dispatch(getUserPlaylistsAction(playlistOffset));
     setPlaylistOffset(playlistOffset + 10);
+
+    return () => {
+      dispatch({ type: RoomConstants.ADD_TO_PLAYLIST, payload: [] });
+      setPlaylistOffset(0);
+    };
   }, []); //eslint-disable-line
 
   usePagination(() => {

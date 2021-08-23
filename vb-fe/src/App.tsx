@@ -20,13 +20,16 @@ export const App = (): JSX.Element => {
   const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   if (localStorage.getItem(TokenStorageKeys.AT)) {
+  //     dispatch({ type: SystemConstants.LOGIN, payload: true });
+  //   } else {
+  //     dispatch({ type: SystemConstants.LOGIN, payload: false });
+  //   }
+  // }, []); //eslint-disable-line
   useEffect(() => {
-    if (localStorage.getItem(TokenStorageKeys.AT)) {
-      dispatch({ type: SystemConstants.LOGIN, payload: true });
-    } else {
-      dispatch({ type: SystemConstants.LOGIN, payload: false });
-    }
-  }, []); //eslint-disable-line
+    initPipeline();
+  }, []);
 
   const UnauthenticatedApp = (): JSX.Element => {
     return (
@@ -43,11 +46,7 @@ export const App = (): JSX.Element => {
 
   const AuthenticatedApp = (): JSX.Element => {
     useEffect(() => {
-      initPipeline();
-    }, []);
-
-    useEffect(() => {
-      if (!isAuthenticated) resetApp("App.tsx");
+      if (isAuthenticated) initPipeline();
     }, [isAuthenticated]); // eslint-disable-line
 
     const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);
