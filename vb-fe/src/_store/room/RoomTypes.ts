@@ -1,5 +1,5 @@
 import { Playlist } from "util/Playlist";
-import { Room } from "util/Room";
+import { Room, UpdateRoom as UpdateRoomType } from "util/Room";
 
 export enum RoomConstants {
   CREATE = "CREATE",
@@ -16,7 +16,7 @@ export interface CreateRoom {
 
 export interface UpdateRoom {
   type: typeof RoomConstants.UPDATE;
-  payload: Room;
+  payload: UpdateRoomType;
 }
 
 export interface JoinRoom {

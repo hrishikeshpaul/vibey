@@ -3,7 +3,7 @@ import { Query, Types } from 'mongoose';
 
 import { RedisService } from '@db/redis.module';
 import { RoomModel, IRoom } from '@modules/room/room.schema';
-import { RoomForm } from './room.constants';
+import { IUpdateRoom, RoomForm } from '@modules/room/room.constants';
 
 @Injectable()
 export class RoomService {
@@ -22,14 +22,12 @@ export class RoomService {
       .populate('currentUsers');
   }
 
-  updateRoomAndReturn(roomId: Types.ObjectId | string, room: RoomForm) {
-    return RoomModel.findByIdAndUpdate({ _id: roomId }, room, {
+  updateRoomAndReturn(room: IUpdateRoom) {
+    console.log(room.tags);
+    return RoomModel.findByIdAndUpdate({ _id: room._id }, room, {
       new: true,
-      upsert: true,
     })
       .populate('tags')
-      .populate('host')
-      .populate('currentUsers')
       .exec();
   }
 

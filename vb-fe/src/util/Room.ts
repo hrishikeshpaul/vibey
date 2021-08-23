@@ -11,6 +11,12 @@ export interface Room {
   currentUsers: User[];
 }
 
+export interface UpdateRoom {
+  description: string;
+  name: string;
+  tags: Tag[];
+}
+
 export interface RoomForm {
   name: string;
   description: string;

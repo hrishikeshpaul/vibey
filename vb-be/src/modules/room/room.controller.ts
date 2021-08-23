@@ -16,12 +16,13 @@ import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 
 import { RoomService } from '@modules/room/room.service';
-import { ICreateRoom } from '@modules/room/room.constants';
+import { ICreateRoom, IUpdateRoom } from '@modules/room/room.constants';
 import { TagService } from '@modules/tag/tag.service';
 import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 import { EventsGateway } from '@modules/socket/socket.gateway';
+import { ITag, TagType } from '@modules/tag/tag.schema';
 
 @Controller('/api/room')
 export class RoomController {
@@ -57,13 +58,14 @@ export class RoomController {
 
       return res.status(HttpStatus.NewResource).json(populatedRoom);
     } catch (err) {
+      console.log(err);
       throw new ErrorHandler(HttpStatus.InternalError, err.toString());
     }
   }
 
   @Put('/:id')
   async updateRoom(
-    @Body() body: { roomObj: ICreateRoom; userId: Types.ObjectId },
+    @Body() body: { roomObj: IUpdateRoom; userId: Types.ObjectId },
     @Param() params: { id: string },
     @Response() res: Res,
   ) {
@@ -75,28 +77,40 @@ export class RoomController {
         throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
       }
 
-      // search for room and validate the current user is the host
+      // search for room
       const foundRoom = await this.roomService.getOneRoom(id);
       if (!foundRoom) {
         throw new ErrorHandler(HttpStatus.NotFound, ErrorText.NotFound);
       }
+      // validate the current user is the host
       if (!foundRoom.host._id.equals(userId)) {
         throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Forbidden);
       }
 
+      const newTags = [];
+      for (const tag of roomObj.tags) {
+        const newTag = await this.tagService.insertNew(tag);
+        await this.tagService.updateScore(newTag._id);
+        newTags.push(newTag);
+      }
+
+      const parsedRoomObj = {
+        ...roomObj,
+        _id: Types.ObjectId(id),
+        tags: newTags,
+      };
+
       const updatedRoom = await this.roomService.updateRoomAndReturn(
-        id,
-        roomObj,
+        parsedRoomObj,
       );
       if (!updatedRoom) {
         throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
       }
 
-      const socketRoom = updatedRoom._id.toString();
-      this.eventsGateway.server.to(socketRoom).emit('update-room', updatedRoom);
-      // TODO add score to new tags and socket emit updated
+      this.eventsGateway.server.to(id).emit('update-room', updatedRoom);
       return res.status(HttpStatus.OK).json({ room: updatedRoom });
     } catch (err) {
+      console.log(err);
       return res.status(err.statusCode || 500).send(err.message);
     }
   }

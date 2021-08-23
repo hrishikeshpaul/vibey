@@ -58,12 +58,15 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
   const [room, setRoom] = useState(initialRoomValues);
 
   let buttonText;
+  let headerText;
   switch (modalType) {
     case SystemConstants.CREATE:
       buttonText = "Create";
+      headerText = "Create a room";
       break;
     case SystemConstants.EDIT:
       buttonText = "Edit";
+      headerText = "Edit room";
       break;
     default:
       break;
@@ -109,7 +112,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
       <ModalOverlay bgColor="blackAlpha.800" />
       <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} p2="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
-          <Heading size="lg">Create a room</Heading>
+          <Heading size="lg">{headerText}</Heading>
           <ModalCloseButton position="relative" top="none" right="none" />
         </ModalHeader>
         <ModalBody mt={4}>
