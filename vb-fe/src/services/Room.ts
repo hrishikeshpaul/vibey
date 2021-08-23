@@ -1,6 +1,6 @@
 /* Copyright (C) 2021 Vibey - All Rights Reserved */
 
-import { Http, TokenStorageKeys } from "util/Http";
+import { Http } from "util/Http";
 import { RoomForm } from "util/Room";
 import { RoomEndpoints } from "util/Endpoints";
 

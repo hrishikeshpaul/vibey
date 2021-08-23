@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from "react";
 
 import { Box, Flex, Text, Icon, Badge, Avatar, Heading, Link } from "@chakra-ui/react";
+import { push } from "connected-react-router";
+import moment from "moment";
+import { useDispatch } from "react-redux";
 import { IoPeople } from "react-icons/io5";
 import { BsMusicNote } from "react-icons/bs";
-import moment from "moment";
 
+import { Room } from "util/Room";
 import { Tag } from "util/Tags";
 
 import "components/card/Card.scss";
-import { Room } from "util/Room";
-import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
 
 interface Props {
   room: Room;
@@ -76,12 +76,12 @@ export const Card: FunctionComponent<Props> = ({ room }): JSX.Element => {
           <Box overflow="hidden">
             <Text fontSize="sm" isTruncated lineHeight="1.2" pl="3">
               <Link isExternal href="https://open.spotify.com/track/5RScucFoUuNzhLWwGWy05b">
-                Name of song that gets truncates if too long
+                {room.track.name}
               </Link>
             </Text>
             <Text fontSize="xs" isTruncated pl="3">
               <Link isExternal href="https://open.spotify.com/artist/0SfsnGyD8FpIN4U4WCkBZ5" variant="secondary">
-                Artist name
+                {room.track.artist}
               </Link>
             </Text>
           </Box>

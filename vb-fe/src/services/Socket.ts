@@ -1,12 +1,12 @@
 import socketIOClient, { Socket } from "socket.io-client";
 import { push } from "connected-react-router";
 
-import { HttpStatus, setHeaders, TokenStorageKeys } from "util/Http";
-import { Room, RoomTrack } from "util/Room";
-import { SOCKET_ENDPOINT, SocketError, SocketEvents } from "util/Socket";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { refreshTokens } from "services/Auth";
+import { HttpStatus, setHeaders, TokenStorageKeys } from "util/Http";
+import { Room, RoomTrack } from "util/Room";
+import { SOCKET_ENDPOINT, SocketError, SocketEvents } from "util/Socket";
 
 /**
  * Class for all the publishers that emit events

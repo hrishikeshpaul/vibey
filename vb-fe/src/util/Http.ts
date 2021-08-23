@@ -3,6 +3,8 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AuthEndpoints, BASE_URL } from "util/Endpoints";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
+/** Was getting a circular dependency error here */
+import { resetApp } from "util/Logout"; // eslint-disable-line
 
 export enum HttpStatus {
   OK = 200,
@@ -91,7 +93,7 @@ export const initHttp = async (): Promise<void> => {
             });
             resolve(response);
           } else if (err.response?.status === HttpStatus.Unauthorized && retry) {
-            store.dispatch({ type: SystemConstants.LOGIN, payload: false });
+            resetApp("Http.tsx");
           }
           return reject(err);
         });
