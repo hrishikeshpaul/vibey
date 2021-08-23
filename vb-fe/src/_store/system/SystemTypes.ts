@@ -1,6 +1,3 @@
-import { AxiosError } from "axios";
-import { Socket } from "socket.io-client";
-
 export enum SystemConstants {
   RESET = "RESET",
   LOADING = "LOADING",
@@ -13,6 +10,8 @@ export enum SystemConstants {
   RETRY = "RETRY",
   EDIT = "EDIT",
   CREATE = "CREATE",
+  INITIALIZED = "INITIALIZED",
+  SOCKETS_CONNECTED = "SOCKETS_CONNECTED",
 }
 
 export type RoomModalType =
@@ -28,6 +27,7 @@ export interface ResetSystem {
  */
 export interface GetApiStart {
   type: typeof SystemConstants.LOADING;
+  payload?: string;
 }
 
 /**
@@ -66,13 +66,18 @@ export interface SetExpandBottomSheet {
   payload: boolean;
 }
 
-export interface SetSocketConnection {
-  type: typeof SystemConstants.SOCKET;
-  payload: Socket | null;
-}
-
 export interface SetRetry {
   type: typeof SystemConstants.RETRY;
+  payload: boolean;
+}
+
+export interface SetSystemInitialize {
+  type: typeof SystemConstants.INITIALIZED;
+  payload: boolean;
+}
+
+export interface SetSocketsConnected {
+  type: typeof SystemConstants.SOCKETS_CONNECTED;
   payload: boolean;
 }
 
@@ -84,5 +89,6 @@ export type SystemActionTypes =
   | SetUserLogin
   | SetCreateRoomModal
   | SetExpandBottomSheet
-  | SetSocketConnection
-  | SetRetry;
+  | SetRetry
+  | SetSystemInitialize
+  | SetSocketsConnected;

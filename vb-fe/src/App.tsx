@@ -1,26 +1,27 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 
-import { Home } from "core/home/Home";
-import { Landing } from "core/landing/Landing";
-import { Redirect } from "core/redirect/Redirect";
-import { Room } from "core/room/Room";
-import { useSocket } from "core/socket/useSocket";
-import { Loading, RoomModal } from "components/index";
+import { WebPlaybackSDK } from "core/player";
+import { Home, Landing, Redirect, Room } from "core";
+import { Loading, RoomModal } from "components";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
 
+import { initPipeline } from "util/System";
+
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
+
 import "App.scss";
+import { PlayerWrapper } from "components/player/PlayerWrapper";
 
 export const App = (): JSX.Element => {
-  const isLoading = useSelector((state: State) => state.system.isLoading);
   const isRoomModalOpen = useSelector((state: State) => state.system.roomModal.isOpen);
-  const isAuthenticated = useSelector((state: State) => state.system.isAuthenticated);
   const currentRoom = useSelector((state: State) => state.room.currentRoom);
+  const { isLoading, isAuthenticated } = useSelector((state: State) => state.system);
+  const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,26 +46,29 @@ export const App = (): JSX.Element => {
   };
 
   const AuthenticatedApp = (): JSX.Element => {
-    const { connect } = useSocket();
-
     useEffect(() => {
-      connect();
       initHttp();
-    }, [connect]);
+      initPipeline();
+    }, []);
 
     useEffect(() => {
       if (!isAuthenticated) resetApp();
     }, [isAuthenticated]); // eslint-disable-line
 
+    const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);
+
     return (
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/room/:id">
-          <Room />
-        </Route>
-      </Switch>
+      <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={0.5}>
+        <PlayerWrapper />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/room/:id">
+            <Room />
+          </Route>
+        </Switch>
+      </WebPlaybackSDK>
     );
   };
 

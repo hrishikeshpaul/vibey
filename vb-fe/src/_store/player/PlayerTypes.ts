@@ -7,6 +7,7 @@ export enum PlayerStates {
 }
 
 export enum PlayerConstants {
+  RESET = "RESET",
   SET_CURRENT_PLAYLIST = "SET_CURRENT_PLAYLIST",
   PLAY = "PLAY",
   PAUSE = "PAUSE",
@@ -15,6 +16,7 @@ export enum PlayerConstants {
   UPDATE_POSITION = "UPDATE_POSITION",
   CONTROLS_DISABLED = "CONTROLS_DISABLED",
   SET_SHUFFLE = "SET_SHUFFLE",
+  SET_DEVICE_ID = "SET_DEVICE_ID",
 }
 
 export interface PlayTrack {
@@ -54,6 +56,15 @@ export interface SetInitial {
   type: typeof PlayerConstants.SET_INITIAL;
 }
 
+export interface Reset {
+  type: typeof PlayerConstants.RESET;
+}
+
+export interface SetDeviceId {
+  type: typeof PlayerConstants.SET_DEVICE_ID;
+  payload: string;
+}
+
 export type PlayerActionTypes =
   | PlayTrack
   | PauseTrack
@@ -62,4 +73,6 @@ export type PlayerActionTypes =
   | SetCurrentPlaylist
   | SetControlsDisabled
   | SetShuffle
-  | SetInitial;
+  | SetInitial
+  | Reset
+  | SetDeviceId;

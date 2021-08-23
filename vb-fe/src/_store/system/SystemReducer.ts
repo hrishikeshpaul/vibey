@@ -1,10 +1,9 @@
-import { AxiosError } from "axios";
-import { Socket } from "socket.io-client";
 import { SystemConstants, SystemActionTypes, RoomModalType } from "_store/system/SystemTypes";
 // import { Error } from "app/models/system.model";
 
 export interface SystemState {
   isLoading: boolean;
+  loadingText: string;
   /**
    * Stores the error
    * Will need to change this to store the status code and message
@@ -19,8 +18,9 @@ export interface SystemState {
    * Tracks expanding of bottom sheet
    */
   bottomSheetExpanded: boolean;
-  socket: Socket | null;
   retry: boolean;
+  isSystemInit: boolean;
+  socketsConnected: boolean;
 }
 
 /**
@@ -35,18 +35,32 @@ const initialState: SystemState = {
     type: null,
   },
   bottomSheetExpanded: false,
-  socket: null,
   retry: false,
+  loadingText: "Loading...",
+  isSystemInit: false,
+  socketsConnected: false,
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
   switch (action.type) {
     case SystemConstants.RESET:
       return { ...initialState };
+    case SystemConstants.INITIALIZED:
+      return {
+        ...state,
+        isSystemInit: action.payload,
+      };
+    case SystemConstants.SOCKETS_CONNECTED: {
+      return {
+        ...state,
+        socketsConnected: action.payload,
+      };
+    }
     case SystemConstants.LOADING:
       return {
         ...state,
         isLoading: true,
+        loadingText: action.payload ? action.payload : "Loading...",
       };
     case SystemConstants.SUCCESS:
       return {
@@ -73,11 +87,6 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
       return {
         ...state,
         bottomSheetExpanded: action.payload,
-      };
-    case SystemConstants.SOCKET:
-      return {
-        ...state,
-        socket: action.payload,
       };
     case SystemConstants.RETRY:
       return {

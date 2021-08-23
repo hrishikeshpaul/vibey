@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FunctionComponent } from "react";
+import React, { useEffect, FunctionComponent } from "react";
 
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,12 +8,11 @@ import { Heading, Box, Text, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
-import { State } from "_store/rootReducer";
-import { SystemConstants } from "_store/system/SystemTypes";
 import { RoomConstants } from "_store/room/RoomTypes";
-import { Room as RoomType } from "util/Room";
 import { Tag } from "util/Tags";
 import { User } from "util/User";
+import { joinRoom } from "_store/room/RoomActions";
+import { State } from "_store/rootReducer";
 
 interface RoomInfoProps {
   name: string;
@@ -25,44 +24,42 @@ interface RoomInfoProps {
 export const Room: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const socket = useSelector((state: State) => state.system.socket);
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
-  const [room, setRoom] = useState<RoomType | null>(null);
-  const [isHost, setIsHost] = useState<boolean>(false);
+  const { currentRoom, isHost } = useSelector((state: State) => state.room);
+  const { socketsConnected } = useSelector((state: State) => state.system);
 
-  const handleUpdateRoom = (data: RoomType) => {
-    dispatch({ type: SystemConstants.SUCCESS });
-    setIsHost(data.host._id === currentUser?._id);
-    setRoom(data);
-  };
+  // const handleUpdateRoom = (data: RoomType) => {
+  //   dispatch({ type: SystemConstants.SUCCESS });
+  //   setIsHost(data.host._id === currentUser?._id);
+  //   setRoom(data);
+  // };
 
   useEffect(() => {
     let isMounted = true;
 
-    dispatch({ type: SystemConstants.LOADING });
     dispatch({ type: RoomConstants.PLAYLIST_LOADING, payload: true });
 
-    if (isMounted && socket) {
+    if (isMounted && socketsConnected) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
-        socket?.emit("join-room", roomId);
+        dispatch(joinRoom(roomId));
       }
 
-      socket?.on("update-room", (data: RoomType) => {
-        handleUpdateRoom(data);
-      });
+      // socket?.on("update-room", (data: RoomType) => {
+      //   handleUpdateRoom(data);
+      // });
 
-      socket?.on("join-room-success", (data: RoomType) => {
-        handleUpdateRoom(data);
-      });
+      // socket?.on("join-room-success", (data: RoomType) => {
+      //   handleUpdateRoom(data);
+      // });
     }
 
     return () => {
       isMounted = false;
       dispatch({ type: RoomConstants.ADD_TO_PLAYLIST, payload: [] });
     };
-  }, [socket]); //eslint-disable-line
+  }, [socketsConnected]); //eslint-disable-line
 
   const RoomInfo: FunctionComponent<RoomInfoProps> = ({ start, name, description, tags }): JSX.Element => {
     return (
@@ -88,17 +85,17 @@ export const Room: FunctionComponent = (): JSX.Element => {
       <Layout.Wrapper>
         <Layout.Header>
           <Navbar isAuth isHost={isHost} />
-          {room && currentUser ? <RoomToolbar room={room} isHost={isHost} /> : <></>}
+          {currentRoom && currentUser ? <RoomToolbar room={currentRoom} isHost={isHost} /> : <></>}
         </Layout.Header>
-        {room ? (
+        {currentRoom ? (
           <>
             <Layout.Body>
               <Layout.Sidebar flex="0.2">
-                <RoomInfo {...room} />
+                <RoomInfo {...currentRoom} />
               </Layout.Sidebar>
               <Layout.Content flex="0.5">{isHost ? <Playlist /> : <></>}</Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
-                <CurrentUsers users={room.currentUsers} />
+                <CurrentUsers users={currentRoom.currentUsers} />
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>

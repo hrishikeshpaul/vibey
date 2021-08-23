@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware } from "redux";
 
-import thunk from "redux-thunk";
+import { routerMiddleware } from "connected-react-router";
 import { composeWithDevTools } from "redux-devtools-extension";
+import thunk from "redux-thunk";
 import logger from "redux-logger";
 
 import { rootReducer } from "_store/rootReducer";
 import { history } from "util/History";
-import { routerMiddleware } from "connected-react-router";
 
 export const store = createStore(
   rootReducer(history),

@@ -29,6 +29,7 @@ export class ValidateAccessTokenMiddleware implements NestMiddleware {
       accessToken,
       TokenTypes.Access,
     );
+
     // check white-list for token existence
     const cacheResult = await this.authService.getAsyncJwtClient(accessToken);
 

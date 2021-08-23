@@ -5,15 +5,25 @@ import {
   WebSocketServer,
   ConnectedSocket,
 } from '@nestjs/websockets';
+import { UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
 import { ErrorText, ErrorHandler } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
+import {
+  SocketEvents,
+  SocketMessageBody,
+} from '@modules/socket/socket.constants';
 import { RoomService } from '@modules/room/room.service';
+<<<<<<< HEAD
+=======
+import { WsGuard } from '@modules/socket/socket.middleware';
+>>>>>>> develop
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
 
+@UseGuards(WsGuard)
 @WebSocketGateway({ cors: true })
 export class EventsGateway {
   @WebSocketServer()
@@ -24,13 +34,19 @@ export class EventsGateway {
     private readonly authService: AuthService,
   ) {}
 
-  @SubscribeMessage('join-room')
+  @SubscribeMessage(SocketEvents.Health)
+  healthCheck(@ConnectedSocket() client: Socket) {
+    client.emit(SocketEvents.HealthSuccess, HttpStatus.OK);
+  }
+
+  @SubscribeMessage(SocketEvents.JoinRoom)
   async createRoom(
-    @MessageBody() roomId: string,
+    @MessageBody() data: SocketMessageBody,
     @ConnectedSocket() client: Socket,
   ) {
     try {
-      const AT: string = client.handshake.headers['v-at'] as string;
+      const roomId = data.data.roomId;
+      const AT: string = data.headers['v-at'] as string;
       const { id } = await this.authService.verifyToken(AT, TokenTypes.Access);
 
       if (!id)
@@ -41,20 +57,17 @@ export class EventsGateway {
 
       await this.roomService.addUserToRoom(roomId, id);
       const updatedRoom = await this.roomService.getOneRoom(roomId);
-
       await client.join(roomId);
 
-      client.emit('join-room-success', updatedRoom);
+      client.emit(SocketEvents.JoinSuccess, updatedRoom);
     } catch (err) {
-      client.emit('socket-err', err);
+      socketError(client, HttpStatus.InternalError, ErrorText.Generic);
     }
   }
 
-  @SubscribeMessage('message')
-  async message(@MessageBody() data: any, @ConnectedSocket() client: Socket) {
-    const { value, roomId } = data;
-
-    console.log(data);
-    this.server.to(roomId).emit('message', value);
+  @SubscribeMessage(SocketEvents.Message)
+  async message(@MessageBody() data: SocketMessageBody) {
+    const { roomId, message } = data.data;
+    this.server.to(roomId).emit(SocketEvents.Message, message);
   }
 }

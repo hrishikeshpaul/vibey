@@ -1,4 +1,6 @@
+import { SocketEvents } from '@modules/socket/socket.constants';
 import { HttpException } from '@nestjs/common';
+import { Socket } from 'socket.io';
 
 export enum ErrorText {
   InvalidAuthState = 'Invalid authentication state',
@@ -34,6 +36,6 @@ export const handleError = (err: any, res: any) => {
   });
 };
 
-export const socketError = (client: any, code: number, message: string) => {
-  return client.emit('socket-err', { code, message });
+export const socketError = (client: Socket, code: number, message: string) => {
+  return client.emit(SocketEvents.Error, { code, message });
 };

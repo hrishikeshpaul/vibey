@@ -129,7 +129,7 @@ export class AuthController {
     @Response() res: Res,
   ) {
     try {
-      const user = { email: decoded.email };
+      const user = { email: decoded.email, id: decoded.id };
       const [refreshedAT, refreshedRT] = await this.authService.refreshTokens(
         accessToken,
         user,

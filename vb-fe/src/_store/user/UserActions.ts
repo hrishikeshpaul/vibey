@@ -1,10 +1,9 @@
 import { Dispatch } from "redux";
-
 import { push, CallHistoryMethodAction } from "connected-react-router";
 
 import { UserActionTypes, UserConstants } from "_store/user/UserTypes";
 import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
-import { login, authorize, logout, refreshTokens } from "services/Auth";
+import { login, authorize, logout } from "services/Auth";
 import { HttpStatus, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
 
@@ -65,7 +64,6 @@ export const getAuthorization =
       dispatch({ type: SystemConstants.SUCCESS });
     } catch (err) {
       // should go to login page
-      console.log(err);
       dispatch({
         type: SystemConstants.FAILURE,
         payload: err.data,
@@ -91,7 +89,6 @@ export const onLogout =
         }
       }, 2000);
     } catch (err) {
-      console.log(err);
       dispatch({
         type: SystemConstants.FAILURE,
         payload: err.data,
