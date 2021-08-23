@@ -11,8 +11,6 @@ import { VS } from "services/Socket";
 import { store } from "_store/store";
 
 export const updateCurrentRoom = (room: Room): void => {
-  console.log(room);
-
   if (room) {
     const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
     store.dispatch({ type: RoomConstants.SET_ROOM, payload: room });
@@ -79,6 +77,7 @@ export const getAllRoomsAction =
     try {
       const response = await getAllRooms(offset, limit);
       dispatch({ type: RoomConstants.ADD_ROOMS, payload: response.data });
+      dispatch({ type: RoomConstants.UPDATE_OFFSET_LIMIT, payload: { limit, offset: offset + 1 } });
     } catch (err) {
       dispatch({
         type: SystemConstants.FAILURE,

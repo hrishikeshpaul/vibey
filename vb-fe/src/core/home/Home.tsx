@@ -10,7 +10,7 @@ import { Layout } from "layout/Layout";
 import "core/home/Home.scss";
 import { Room } from "util/Room";
 import { getAllRoomsAction } from "_store/room/RoomActions";
-import { Http } from "util/Http";
+import { usePagination } from "util/Input";
 
 /**
  * The prop type is a placeholder
@@ -19,7 +19,7 @@ export const Home: FunctionComponent = () => {
   const userData = useSelector((state: State) => state.user.user);
   const { httpConnected } = useSelector((state: State) => state.system);
   const { bottomSheetExpanded } = useSelector((state: State) => state.system);
-  const { roomsList } = useSelector((state: State) => state.room);
+  const { roomsList, offsetLimit } = useSelector((state: State) => state.room);
   const dispatch = useDispatch();
 
   const profile = JSON.parse(localStorage.getItem("v-user") || "");
@@ -30,9 +30,13 @@ export const Home: FunctionComponent = () => {
 
   useEffect(() => {
     if (httpConnected) {
-      dispatch(getAllRoomsAction(0, 5));
+      dispatch(getAllRoomsAction(offsetLimit.offset, offsetLimit.limit));
     }
   }, [dispatch, httpConnected]); // eslint-disable-line
+
+  usePagination(() => {
+    dispatch(getAllRoomsAction(offsetLimit.offset, offsetLimit.limit));
+  });
 
   return (
     <>

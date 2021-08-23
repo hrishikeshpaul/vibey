@@ -50,7 +50,11 @@ export class RoomService {
           });
         }
 
-        const paginatedValues = parsedValues.slice(offset, offset + limit);
+        const paginatedValues = parsedValues.slice(
+          (offset - 1) * limit,
+          offset * limit,
+        );
+        
         resolve(paginatedValues);
       } catch (err) {
         reject(err);
@@ -122,6 +126,10 @@ export class RoomService {
     data: RedisRoomTrack,
   ): Promise<any> {
     return new Promise(async (resolve, reject) => {
+      /**
+       * TODO: hostId will be used later to check if its the HOST that is actually
+       * making the request.
+       */
       try {
         // get the room string from redis
         const roomString = await this.redis.getAsyncSocketClient(roomId);
