@@ -33,6 +33,9 @@ export class RoomService {
     return new Promise(async (resolve, reject) => {
       try {
         const keys = (await this.redis.keysAsyncSocketClient('*')) as string[];
+        if (!keys.length) {
+          resolve([]);
+        }
         const values = (await this.redis.mGetAsyncSocketClient(
           keys,
         )) as string[];
@@ -54,7 +57,7 @@ export class RoomService {
           (offset - 1) * limit,
           offset * limit,
         );
-        
+
         resolve(paginatedValues);
       } catch (err) {
         reject(err);

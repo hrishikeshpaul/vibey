@@ -1,7 +1,7 @@
-import { VS } from "services/Socket";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { TokenStorageKeys } from "./Http";
+import { VS } from "services/Socket";
+import { TokenStorageKeys, initHttp } from "util/Http";
 
 /**
  * This is a pipeline to initialize the sockets, player and other async
@@ -10,6 +10,7 @@ import { TokenStorageKeys } from "./Http";
 export const initPipeline = async (): Promise<void> => {
   try {
     store.dispatch({ type: SystemConstants.LOADING, payload: "Initializing connections..." });
+    await initHttp();
     await VS.init();
     const { deviceId } = store.getState().player;
     store.dispatch({ type: SystemConstants.SOCKETS_CONNECTED, payload: true });

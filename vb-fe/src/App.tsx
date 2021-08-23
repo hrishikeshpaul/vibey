@@ -43,7 +43,6 @@ export const App = (): JSX.Element => {
 
   const AuthenticatedApp = (): JSX.Element => {
     useEffect(() => {
-      initHttp();
       initPipeline();
     }, []);
 
