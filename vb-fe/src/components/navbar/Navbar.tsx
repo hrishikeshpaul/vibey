@@ -72,7 +72,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
         ))}
         <Box display={{ base: "none", md: "block" }}>
           <Button colorScheme="primary" leftIcon={<HeadphonesIcon />} type="button">
-            <Text>Start Listening</Text>
+            <Text pl="2">Start Listening</Text>
           </Button>
         </Box>
         <Box display={{ base: "block", md: "none" }}>

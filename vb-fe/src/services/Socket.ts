@@ -63,7 +63,7 @@ class Subscriber {
     this.socket.on(SocketEvents.JoinSuccess, (data: Room) => cb(data));
   }
 
-  onTrackPlay(cb: (contextUri: string) => unknown): void {
+  onSubscribersPlay(cb: (contextUri: string) => unknown): void {
     this.socket.on(SocketEvents.OnPlayTrack, (contextUri: string) => cb(contextUri));
   }
 
@@ -102,15 +102,17 @@ class VibeySocket {
         });
 
         this.exception((data: SocketError) => {
-          this.refreshFromSocket(data.event, data.data);
+          console.log("exception data", data);
+          if (data.message !== "Forbidden resource") this.refreshFromSocket(data.event, data.data);
+          else console.log("FORBIDDEN");
         });
       });
 
       this.connectError(() => {
         reject(new Error("socket connection error from class"));
         // TODO: show tooltip here that something went wrong
-        resetApp("Reset from socket connect error");
-        store.dispatch(push("/"));
+        // resetApp("Reset from socket connect error");
+        // store.dispatch(push("/"));
       });
     });
   }
@@ -153,7 +155,6 @@ class VibeySocket {
         localStorage.setItem(TokenStorageKeys.RT, refreshToken);
         localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
         setHeaders();
-        console.log("calling this");
         this.getPublisher().emit(eventName, data);
       });
     } catch (error: any) {

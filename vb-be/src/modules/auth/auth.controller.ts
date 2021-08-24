@@ -145,7 +145,7 @@ export class AuthController {
         spotifyAccessToken: refreshedSpotifyAT,
       });
     } catch (err) {
-      return res.status(err.statusCode).send(err);
+      return res.send(err);
     }
   }
 

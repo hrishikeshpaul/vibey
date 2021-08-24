@@ -37,6 +37,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
     if (isMounted && socketsConnected) {
       const roomId = location.pathname.split("/")[2];
       if (roomId) {
+        console.log(currentRoom, roomId);
         dispatch(joinRoom(roomId));
       }
     }

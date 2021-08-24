@@ -76,7 +76,7 @@ export class EventsGateway {
     @MessageBody() body: SocketMessageBody,
   ) {
     const { contextUri, roomId } = body.data;
-    this.server.to(roomId).emit(SocketEvents.OnPlayTrack, contextUri);
+    this.server.to(roomId).emit(SocketEvents.SubscribersPlay, contextUri);
   }
 
   @UseGuards(WsGuard)

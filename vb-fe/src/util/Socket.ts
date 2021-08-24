@@ -19,6 +19,7 @@ export enum SocketEvents {
   UpdateTrackInRoom = "update-track-in-room",
   Refresh = "socket-refresh",
   RefreshSuccess = "socket-refresh-success",
+  SubscribersPlay = "subscribers-play",
 }
 
 export interface SocketError {

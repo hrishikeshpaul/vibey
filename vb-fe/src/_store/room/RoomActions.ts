@@ -9,8 +9,10 @@ import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
 import { VS } from "services/Socket";
 import { store } from "_store/store";
+import { subscribersPlay } from "_store/player/PlayerActions";
 
 export const updateCurrentRoom = (room: Room): void => {
+  console.log("update current room is called");
   if (room) {
     const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
     store.dispatch({ type: RoomConstants.SET_ROOM, payload: room });
@@ -50,6 +52,7 @@ export const createRoomAction =
 export const joinRoom = (roomId: string) => async (): Promise<void> => {
   VS.getPublisher().joinRoom(roomId);
   VS.getSubscriber().joinSuccess(updateCurrentRoom);
+  VS.getSubscriber().onSubscribersPlay(subscribersPlay);
 };
 
 export const getUserPlaylistsAction =

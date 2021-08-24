@@ -5,6 +5,7 @@ import { SystemConstants } from "_store/system/SystemTypes";
 import { UserConstants } from "_store/user/UserTypes";
 import { resetLocalStorage } from "util/System";
 import { VS } from "services/Socket";
+import { push } from "connected-react-router";
 
 export const resetApp = (msg?: string): void => {
   console.log("Resetting app from -> ", msg);
@@ -14,4 +15,5 @@ export const resetApp = (msg?: string): void => {
   store.dispatch({ type: UserConstants.RESET });
   store.dispatch({ type: RoomConstants.RESET });
   store.dispatch({ type: PlayerConstants.RESET });
+  store.dispatch(push("/"));
 };

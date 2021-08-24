@@ -16,6 +16,7 @@ export class WsGuard implements CanActivate {
       await this.authService.verifyToken(token, TokenTypes.Access);
       return true;
     } catch (ex) {
+      console.log('Guard Exception');
       throw new WsException({
         text: ErrorText.Unauthorized,
         event: event,
@@ -51,6 +52,7 @@ export class RsGuard implements CanActivate {
       context.args[1]['decoded'] = decoded;
       return true;
     } catch (ex) {
+      console.log('Refresh Exception');
       throw new WsException({
         text: ErrorText.Unauthorized,
         event: event,
