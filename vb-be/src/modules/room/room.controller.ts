@@ -22,6 +22,7 @@ import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 import { EventsGateway } from '@modules/socket/socket.gateway';
+import { SocketEvents } from '@modules/socket/socket.constants';
 
 @Controller('/api/room')
 export class RoomController {
@@ -106,7 +107,9 @@ export class RoomController {
         throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
       }
 
-      this.eventsGateway.server.to(id).emit('update-room', updatedRoom);
+      this.eventsGateway.server
+        .to(id)
+        .emit(SocketEvents.UpdateRoom, updatedRoom);
       return res.status(HttpStatus.OK).json({ room: updatedRoom });
     } catch (err) {
       console.log(err);

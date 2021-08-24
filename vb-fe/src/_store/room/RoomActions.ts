@@ -1,14 +1,15 @@
 import { Dispatch } from "redux";
 import { push, CallHistoryMethodAction } from "connected-react-router";
 
-import { createRoom, getUserPlaylists, updateRoom } from "services/Room";
-import { Room, RoomForm } from "util/Room";
-import { User } from "util/User";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
-
 import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
-import { VS } from "services/Socket";
 import { store } from "_store/store";
+
+import { createRoom, getUserPlaylists, updateRoom } from "services/Room";
+import { VS } from "services/Socket";
+
+import { Room, RoomForm, RoomType } from "util/Room";
+import { User } from "util/User";
 
 export const createRoomAction =
   (room: RoomForm) =>
@@ -39,12 +40,12 @@ export const createRoomAction =
   };
 
 export const updateRoomAction =
-  (room: RoomForm, roomId: string) =>
+  (room: RoomType) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
     try {
       const user: User = JSON.parse(localStorage.getItem("v-user") || "");
-      await updateRoom(room, user._id, roomId);
+      await updateRoom(room, user._id);
 
       dispatch({
         type: SystemConstants.SET_ROOM_MODAL,

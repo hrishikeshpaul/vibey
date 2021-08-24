@@ -1,18 +1,18 @@
 import React, { useEffect, FunctionComponent } from "react";
-
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Heading, Box, Text, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 
+import { RoomConstants } from "_store/room/RoomTypes";
+import { joinRoom } from "_store/room/RoomActions";
+import { State } from "_store/rootReducer";
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
-import { RoomConstants } from "_store/room/RoomTypes";
+
 import { Tag } from "util/Tags";
 import { User } from "util/User";
-import { joinRoom } from "_store/room/RoomActions";
-import { State } from "_store/rootReducer";
 
 interface RoomInfoProps {
   name: string;
@@ -29,12 +29,6 @@ export const Room: FunctionComponent = (): JSX.Element => {
   const { currentRoom, isHost } = useSelector((state: State) => state.room);
   const { socketsConnected } = useSelector((state: State) => state.system);
 
-  // const handleUpdateRoom = (data: RoomType) => {
-  //   dispatch({ type: SystemConstants.SUCCESS });
-  //   setIsHost(data.host._id === currentUser?._id);
-  //   setRoom(data);
-  // };
-
   useEffect(() => {
     let isMounted = true;
 
@@ -45,14 +39,6 @@ export const Room: FunctionComponent = (): JSX.Element => {
       if (roomId) {
         dispatch(joinRoom(roomId));
       }
-
-      // socket?.on("update-room", (data: RoomType) => {
-      //   handleUpdateRoom(data);
-      // });
-
-      // socket?.on("join-room-success", (data: RoomType) => {
-      //   handleUpdateRoom(data);
-      // });
     }
 
     return () => {

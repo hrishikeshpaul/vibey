@@ -8,6 +8,7 @@ export enum SocketEvents {
   Message = 'message',
   Error = 'socket-err',
   PauseTrack = 'pause-track',
+  UpdateRoom = 'update-room',
 }
 
 export interface SocketMessageBody {

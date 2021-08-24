@@ -32,6 +32,16 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Ele
     history.push("/");
   };
 
+  const handleEdit = () => {
+    dispatch({
+      type: SystemConstants.SET_ROOM_MODAL,
+      payload: {
+        isOpen: true,
+        type: SystemConstants.EDIT,
+      },
+    });
+  };
+
   return (
     <Flex alignItems="center" justifyContent="space-between" pt="5" pb="6" bg="primaryDark">
       <Flex alignItems="center" overflow="hidden">
@@ -52,21 +62,7 @@ export const RoomToolbar: FunctionComponent<Props> = ({ room, isHost }): JSX.Ele
         <IconButton icon={<FaInfo />} aria-label="room-info" bg="primaryDark" fontSize="xl" />
 
         {isHost && (
-          <IconButton
-            icon={<HiPencil />}
-            aria-label="room-edit"
-            bg="primaryDark"
-            fontSize="2xl"
-            onClick={() =>
-              dispatch({
-                type: SystemConstants.SET_ROOM_MODAL,
-                payload: {
-                  isOpen: true,
-                  type: SystemConstants.EDIT,
-                },
-              })
-            }
-          />
+          <IconButton icon={<HiPencil />} aria-label="room-edit" bg="primaryDark" fontSize="2xl" onClick={handleEdit} />
         )}
         <IconButton icon={<HiShare />} aria-label="room-share" bg="primaryDark" fontSize="2xl" />
         <Flex justifyContent="center" alignItems="center">

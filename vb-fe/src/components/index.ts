@@ -8,5 +8,6 @@ export { Select } from "components/select/Select";
 export { Card } from "components/card/Card";
 export { CurrentUsers } from "components/current-users/CurrentUsers";
 export { Player, PlayerControls, PlayerVolume } from "components/player/Player";
+export { PlayerWrapper } from "components/player/PlayerWrapper";
 export { Playlist } from "components/playlist/Playlist";
 export { RoomModal } from "components/roomModal/RoomModal";

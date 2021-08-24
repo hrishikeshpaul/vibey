@@ -15,13 +15,6 @@ export interface RoomType {
 
 export interface IRoom extends RoomType, Document {
   _id?: Types.ObjectId;
-  tags?: TagType[];
-  start: Date;
-  maxUsers: number;
-  currentUsers: UserType[];
-  name: string;
-  description?: string;
-  host: UserType;
 }
 
 const RoomSchema: Schema = new Schema({

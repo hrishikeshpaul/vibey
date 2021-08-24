@@ -3,19 +3,17 @@ import React, { useEffect, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 
-import { WebPlaybackSDK } from "core/player";
-import { Home, Landing, Redirect, Room } from "core";
-import { Loading, RoomModal } from "components";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { WebPlaybackSDK } from "core/player";
+import { Home, Landing, Redirect, Room } from "core";
+import { Loading, RoomModal, PlayerWrapper } from "components";
 
 import { initPipeline } from "util/System";
-
 import { initHttp, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
 
 import "App.scss";
-import { PlayerWrapper } from "components/player/PlayerWrapper";
 
 export const App = (): JSX.Element => {
   const isRoomModalOpen = useSelector((state: State) => state.system.roomModal.isOpen);
@@ -84,7 +82,7 @@ export const App = (): JSX.Element => {
           handleError={(e) => {
             console.log(e);
           }}
-          currentRoom={currentRoom !== null ? currentRoom : undefined}
+          currentRoom={currentRoom}
         />
       )}
       {render}

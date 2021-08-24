@@ -18,6 +18,11 @@ export interface UpdateRoom {
   tags: Tag[];
 }
 
+export interface RoomType extends RoomForm {
+  _id?: string;
+  error: boolean;
+}
+
 export interface RoomForm {
   name: string;
   description: string;

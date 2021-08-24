@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TiWarning } from "react-icons/ti";
 import {
   Modal,
@@ -20,33 +21,35 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { Select } from "components/select/Select";
-import { RoomForm } from "util/Room";
-import { Tag } from "util/Tags";
-import { useDispatch, useSelector } from "react-redux";
 import { createRoomAction, updateRoomAction } from "_store/room/RoomActions";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { State } from "_store/rootReducer";
+import { Select } from "components/select/Select";
+
+import { RoomType } from "util/Room";
+import { Tag } from "util/Tags";
 
 const MAX_NAME_LENGTH = 40;
 
 type Props = {
   open: boolean;
   handleError: (error: any) => void;
-  currentRoom?: {
+  currentRoom: {
     _id: string;
     name: string;
     description: string;
     tags: Tag[];
-  };
+  } | null;
 };
 
-interface RoomType extends RoomForm {
-  error: boolean;
-}
+const initialModalText = {
+  button: "",
+  header: "",
+};
 
 export const RoomModal: FunctionComponent<Props> = ({ open, handleError, currentRoom }) => {
   const initialRoomValues: RoomType = {
+    _id: currentRoom?._id,
     name: currentRoom?.name || "",
     description: currentRoom?.description || "",
     tags: currentRoom?.tags || [],
@@ -56,21 +59,20 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
   const dispatch = useDispatch();
   const modalType = useSelector((state: State) => state.system.roomModal.type);
   const [room, setRoom] = useState(initialRoomValues);
+  const [modalText, setModalText] = useState(initialModalText);
 
-  let buttonText;
-  let headerText;
-  switch (modalType) {
-    case SystemConstants.CREATE:
-      buttonText = "Create";
-      headerText = "Create a room";
-      break;
-    case SystemConstants.EDIT:
-      buttonText = "Edit";
-      headerText = "Edit room";
-      break;
-    default:
-      break;
-  }
+  useEffect(() => {
+    switch (modalType) {
+      case SystemConstants.CREATE:
+        setModalText({ button: "Create", header: "Create a room" });
+        break;
+      case SystemConstants.EDIT:
+        setModalText({ button: "Edit", header: "Edit a room" });
+        break;
+      default:
+        break;
+    }
+  }, [modalType]);
 
   const validateForm = () => {
     if (!room.name.trim()) {
@@ -81,12 +83,13 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log({ room });
     e.preventDefault();
     if (validateForm()) {
       if (modalType === SystemConstants.CREATE) {
         dispatch(createRoomAction(room));
       } else if (modalType === SystemConstants.EDIT && currentRoom) {
-        dispatch(updateRoomAction(room, currentRoom._id));
+        dispatch(updateRoomAction(room));
       }
     }
   };
@@ -111,7 +114,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
       <ModalOverlay bgColor="blackAlpha.800" />
       <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} p2="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
-          <Heading size="lg">{headerText}</Heading>
+          <Heading size="lg">{modalText.header}</Heading>
           <ModalCloseButton position="relative" top="none" right="none" />
         </ModalHeader>
         <ModalBody mt={4}>
@@ -122,7 +125,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
                 <Input
                   isInvalid={room.error}
                   placeholder="Enter a catchy room name!"
-                  onChange={(e) => handleChange(e)}
+                  onChange={handleChange}
                   type="text"
                   variant="filled"
                   name="name"
@@ -158,7 +161,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
                 type="text"
                 placeholder="What type of music will you be playing in the room?"
                 size="sm"
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
                 name="description"
                 value={room.description}
                 borderRadius="md"
@@ -169,7 +172,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
 
         <ModalFooter mt={4}>
           <Button type="submit" form="create-form" colorScheme="primary" w="100%">
-            {buttonText}
+            {modalText.button}
           </Button>
         </ModalFooter>
       </ModalContent>
