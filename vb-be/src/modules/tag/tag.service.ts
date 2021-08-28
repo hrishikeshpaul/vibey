@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { TagModel, ITag } from '@modules/tag/tag.schema';
+import { TagModel, ITag, TagType } from '@modules/tag/tag.schema';
 import { Types } from 'mongoose';
-import { ICreateTag } from '@modules/tag/tag.constants';
 import { ErrorHandler, ErrorText } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
@@ -16,7 +15,7 @@ export class TagService {
     });
   }
 
-  private updateScore(id: Types.ObjectId): Promise<ITag> {
+  async updateScore(id: Types.ObjectId): Promise<ITag> {
     return TagModel.findByIdAndUpdate(
       { _id: id },
       { $inc: { score: 1 } },
@@ -24,13 +23,21 @@ export class TagService {
     ).exec();
   }
 
-  async updateOrInsert(tag: ICreateTag) {
+  async updateOrInsert(tag: TagType) {
     if (tag._id) {
-      return await this.updateScore(Types.ObjectId(tag._id));
+      return await this.updateScore(tag._id);
     } else if (tag.__isNew__) {
       return this.create(tag.label);
     } else {
       throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
+    }
+  }
+
+  async insertNew(tag: TagType) {
+    if (tag.__isNew__) {
+      return this.create(tag.label);
+    } else {
+      return tag;
     }
   }
 
@@ -44,5 +51,9 @@ export class TagService {
         if (doc) return doc;
       },
     );
+  }
+
+  getOneById(id: Types.ObjectId) {
+    return TagModel.findById(id);
   }
 }

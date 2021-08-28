@@ -16,19 +16,19 @@ import {
   HStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 import { CgMenuMotion } from "react-icons/cg";
 import { BiLogOut } from "react-icons/bi";
+import { useHistory } from "react-router-dom";
 
 import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { ReactComponent as Close } from "assets/icons/cross.svg";
-import { BASE_NAV_LINKS } from "util/Navbar";
-
-import "components/navbar/Navbar.scss";
-import { useDispatch } from "react-redux";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { onLogout } from "_store/user/UserActions";
-import { useHistory } from "react-router-dom";
+
+import { BASE_NAV_LINKS } from "util/Navbar";
+import "components/navbar/Navbar.scss";
 
 export interface Props {
   isAuth: boolean;
@@ -88,8 +88,11 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
 
     const onCreateRoomOpen = () => {
       dispatch({
-        type: SystemConstants.CREATE_ROOM_MODAL,
-        payload: true,
+        type: SystemConstants.SET_ROOM_MODAL,
+        payload: {
+          isOpen: true,
+          type: SystemConstants.CREATE,
+        },
       });
     };
 

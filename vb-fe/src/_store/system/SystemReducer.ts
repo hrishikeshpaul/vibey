@@ -1,4 +1,5 @@
-import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
+import { SystemConstants, SystemActionTypes, RoomModalType } from "_store/system/SystemTypes";
+// import { Error } from "app/models/system.model";
 
 export interface SystemState {
   isLoading: boolean;
@@ -10,9 +11,9 @@ export interface SystemState {
   error: any;
   isAuthenticated: boolean;
   /**
-   * Denotes if the create room modal is open
+   * Denotes if the room modal is open
    */
-  createRoomOpen: boolean;
+  roomModal: RoomModalType;
   /**
    * Tracks expanding of bottom sheet
    */
@@ -30,7 +31,10 @@ const initialState: SystemState = {
   isLoading: false,
   error: {},
   isAuthenticated: false,
-  createRoomOpen: false,
+  roomModal: {
+    isOpen: false,
+    type: null,
+  },
   bottomSheetExpanded: false,
   retry: false,
   loadingText: "Loading...",
@@ -76,10 +80,10 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
         ...state,
         isAuthenticated: action.payload,
       };
-    case SystemConstants.CREATE_ROOM_MODAL:
+    case SystemConstants.SET_ROOM_MODAL:
       return {
         ...state,
-        createRoomOpen: action.payload,
+        roomModal: action.payload,
       };
     case SystemConstants.EXPAND_BOTTOM_SHEET:
       return {

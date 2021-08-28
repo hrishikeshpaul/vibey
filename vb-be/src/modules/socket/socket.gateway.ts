@@ -8,7 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 
-import { socketError, ErrorText, ErrorHandler } from 'src/util/error';
+import { ErrorText, ErrorHandler, socketError } from 'src/util/error';
 import { HttpStatus } from 'src/util/http';
 
 import {

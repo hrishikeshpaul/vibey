@@ -12,6 +12,7 @@ export enum ErrorText {
   Forbidden = 'Forbidden',
   Unauthorized = 'Unauthorized',
   UserNotFound = 'User Not Found',
+  NotFound = 'Not found',
 }
 
 // https://docs.nestjs.com/exception-filters

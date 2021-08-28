@@ -6,7 +6,7 @@ export interface RoomType {
   name: string;
   description?: string;
   tags?: TagType[];
-  host: string;
+  host: UserType;
   start?: Date;
   end?: Date;
   maxUsers?: number;

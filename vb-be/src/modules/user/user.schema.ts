@@ -12,7 +12,7 @@ export interface UserType {
 }
 
 export interface IUser extends Document {
-  id?: Types.ObjectId;
+  _id?: Types.ObjectId;
   displayName: string;
   username: string;
   email: string;

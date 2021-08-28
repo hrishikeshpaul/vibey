@@ -6,20 +6,29 @@ import {
   Body,
   Get,
   Query,
+  Put,
+  Param,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { Response as Res, Request as Req } from 'express';
 import { firstValueFrom } from 'rxjs';
 
 import { RoomService } from '@modules/room/room.service';
-import { ICreateRoom } from '@modules/room/room.constants';
+import { ICreateRoom, IUpdateRoom } from '@modules/room/room.constants';
 import { TagService } from '@modules/tag/tag.service';
 import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';
 import { ErrorHandler, ErrorText } from 'src/util/error';
+import { EventsGateway } from '@modules/socket/socket.gateway';
+import { SocketEvents } from '@modules/socket/socket.constants';
 
 @Controller('/api/room')
 export class RoomController {
   constructor(
+    @Inject(forwardRef(() => EventsGateway))
+    private readonly eventsGateway: EventsGateway,
     private readonly roomService: RoomService,
     private readonly tagService: TagService,
     private readonly spotify: SpotifyService,
@@ -55,6 +64,7 @@ export class RoomController {
         .status(HttpStatus.NewResource)
         .json({ ...populatedRoom.toObject(), users: [] });
     } catch (err) {
+      console.log(err);
       throw new ErrorHandler(HttpStatus.InternalError, err.toString());
     }
   }
@@ -70,6 +80,60 @@ export class RoomController {
       return res.status(200).send(rooms);
     } catch (err) {
       return res.status(HttpStatus.Error).send(err);
+    }
+  }
+
+  @Put('/:id')
+  async updateRoom(
+    @Body() body: { roomObj: IUpdateRoom; userId: Types.ObjectId },
+    @Param() params: { id: string },
+    @Response() res: Res,
+  ) {
+    const { roomObj, userId } = body;
+    const { id } = params;
+
+    try {
+      if (!roomObj) {
+        throw new ErrorHandler(HttpStatus.Error, ErrorText.InvalidDataSet);
+      }
+
+      // search for room
+      const foundRoom = await this.roomService.getOneRoom(id);
+      if (!foundRoom) {
+        throw new ErrorHandler(HttpStatus.NotFound, ErrorText.NotFound);
+      }
+      // validate the current user is the host
+      if (foundRoom.host.id != userId) {
+        throw new ErrorHandler(HttpStatus.Forbidden, ErrorText.Forbidden);
+      }
+
+      const newTags = [];
+      for (const tag of roomObj.tags) {
+        const newTag = await this.tagService.insertNew(tag);
+        await this.tagService.updateScore(newTag._id);
+        newTags.push(newTag);
+      }
+
+      const parsedRoomObj = {
+        ...roomObj,
+        _id: Types.ObjectId(id),
+        tags: newTags,
+      };
+
+      const updatedRoom = await this.roomService.updateRoomAndReturn(
+        parsedRoomObj,
+      );
+      if (!updatedRoom) {
+        throw new ErrorHandler(HttpStatus.InternalError, ErrorText.Generic);
+      }
+
+      this.eventsGateway.server
+        .to(id)
+        .emit(SocketEvents.UpdateRoom, updatedRoom);
+      return res.status(HttpStatus.OK).json({ room: updatedRoom });
+    } catch (err) {
+      console.log(err);
+      return res.status(err.statusCode || 500).send(err.message);
     }
   }
 

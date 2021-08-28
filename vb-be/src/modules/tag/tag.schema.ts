@@ -1,13 +1,14 @@
 import { model, Schema, Model, Document, Types } from 'mongoose';
-import { ICreateTag } from './tag.constants';
 
 export interface TagType {
+  _id: Types.ObjectId;
   label: string;
   value: string;
   score: number;
+  __isNew__?: boolean;
 }
 
-export interface ITag extends TagType, Document {
+export interface ITag extends Document {
   _id?: Types.ObjectId;
 }
 

@@ -2,22 +2,23 @@ import React, { useEffect, useMemo, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route } from "react-router-dom";
-import { WebPlaybackSDK } from "core/player/index";
 
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { Loading, CreateRoom } from "components";
-import { PlayerWrapper } from "components/player/PlayerWrapper";
-import { Home, Landing, Redirect, Room } from "core/index";
+import { Loading, RoomModal, PlayerWrapper } from "components";
+import { Home, Landing, Redirect, Room } from "core";
 import { TokenStorageKeys } from "util/Http";
-import { resetApp } from "util/Logout";
+import { WebPlaybackSDK } from "core/player";
+
 import { initPipeline } from "util/System";
+import { resetApp } from "util/Logout";
 
 import "App.scss";
 
 export const App = (): JSX.Element => {
+  const isRoomModalOpen = useSelector((state: State) => state.system.roomModal.isOpen);
+  const currentRoom = useSelector((state: State) => state.room.currentRoom);
   const { isLoading, isAuthenticated } = useSelector((state: State) => state.system);
-  const isCreateRoomModalOpen = useSelector((state: State) => state.system.createRoomOpen);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -74,12 +75,13 @@ export const App = (): JSX.Element => {
   return (
     <div className="h-100 w-100 px-3" id="vb-main">
       {isLoading && <Loading show />}
-      {isCreateRoomModalOpen && (
-        <CreateRoom
-          open={isCreateRoomModalOpen}
+      {isRoomModalOpen && (
+        <RoomModal
+          open={isRoomModalOpen}
           handleError={(e) => {
             console.log(e);
           }}
+          currentRoom={currentRoom}
         />
       )}
       {render}

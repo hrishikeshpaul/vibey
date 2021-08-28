@@ -13,7 +13,7 @@ export enum TagEndpoints {
 }
 
 export enum RoomEndpoints {
-  GENERAL = "api/room/",
+  GENERAL = "api/room",
   PLAYLIST = "api/room/playlists",
   ALL = "api/room/all",
 }

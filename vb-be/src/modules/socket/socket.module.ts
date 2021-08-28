@@ -10,6 +10,6 @@ import { UserModule } from '@modules/user/user.module';
 @Module({
   imports: [AuthModule, RedisModule, RoomModule, UserModule],
   providers: [EventsGateway, SocketService],
-  exports: [SocketService],
+  exports: [EventsGateway],
 })
 export class SocketModule {}

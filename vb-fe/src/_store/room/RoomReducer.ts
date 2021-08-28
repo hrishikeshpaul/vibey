@@ -37,6 +37,20 @@ export const roomReducer = (state: RoomState = initialState, action: RoomActionT
         currentRoom: action.payload,
       };
     }
+    case RoomConstants.UPDATE: {
+      if (state.currentRoom) {
+        return {
+          ...state,
+          currentRoom: {
+            ...state.currentRoom,
+            name: action.payload.name,
+            description: action.payload.description,
+            tags: action.payload.tags,
+          },
+        };
+      }
+      return { ...state };
+    }
     case RoomConstants.SET_ROOM: {
       return {
         ...state,

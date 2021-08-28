@@ -9,6 +9,7 @@ export enum SocketEvents {
   OnPlayTrack = 'on-play-track',
   EmitPlayTrack = 'emit-play-track',
   UpdateTrackInRoom = 'update-track-in-room',
+  UpdateRoom = 'update-room',
 }
 
 export interface SocketMessageBody {

@@ -4,14 +4,20 @@ export enum SystemConstants {
   SUCCESS = "SUCCESS",
   FAILURE = "FAILURE",
   LOGIN = "LOGIN",
-  CREATE_ROOM_MODAL = "CREATE_ROOM_MODAL",
+  SET_ROOM_MODAL = "SET_ROOM_MODAL",
   EXPAND_BOTTOM_SHEET = "EXPAND_BOTTOM_SHEET",
   SOCKET = "SOCKET",
   RETRY = "RETRY",
+  EDIT = "EDIT",
+  CREATE = "CREATE",
   INITIALIZED = "INITIALIZED",
   SOCKETS_CONNECTED = "SOCKETS_CONNECTED",
   HTTP_CONNECTED = "HTTP_CONNECTED",
 }
+
+export type RoomModalType =
+  | { isOpen: true; type: SystemConstants.EDIT | SystemConstants.CREATE }
+  | { isOpen: false; type: null };
 
 export interface ResetSystem {
   type: typeof SystemConstants.RESET;
@@ -52,8 +58,8 @@ export interface SetUserLogin {
  * Open or close create room modal
  */
 export interface SetCreateRoomModal {
-  type: typeof SystemConstants.CREATE_ROOM_MODAL;
-  payload: boolean;
+  type: typeof SystemConstants.SET_ROOM_MODAL;
+  payload: RoomModalType;
 }
 
 export interface SetExpandBottomSheet {

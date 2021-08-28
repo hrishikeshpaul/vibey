@@ -1,6 +1,5 @@
-/* Copyright (C) 2021 Vibey - All Rights Reserved */
-
-import React, { useState, FunctionComponent } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TiWarning } from "react-icons/ti";
 import {
   Modal,
@@ -22,39 +21,59 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import "components/create/CreateRoom.scss";
-import { Select } from "components/select/Select";
-import { RoomForm } from "util/Room";
-import { Tag } from "util/Tags";
-import { useDispatch } from "react-redux";
-import { createRoomAction } from "_store/room/RoomActions";
+import { createRoomAction, updateRoomAction } from "_store/room/RoomActions";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { State } from "_store/rootReducer";
+import { Select } from "components/select/Select";
+
+import { RoomType } from "util/Room";
+import { Tag } from "util/Tags";
 
 const MAX_NAME_LENGTH = 40;
 
 type Props = {
   open: boolean;
   handleError: (error: any) => void;
+  currentRoom: {
+    _id: string;
+    name: string;
+    description: string;
+    tags: Tag[];
+  } | null;
 };
 
-interface RoomType extends RoomForm {
-  error: boolean;
-}
-
-const initialRoomValues: RoomType = {
-  name: "",
-  description: "",
-  tags: [],
-  error: false,
+const initialModalText = {
+  button: "",
+  header: "",
 };
 
-export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
+export const RoomModal: FunctionComponent<Props> = ({ open, handleError, currentRoom }) => {
+  const initialRoomValues: RoomType = {
+    _id: currentRoom?._id,
+    name: currentRoom?.name || "",
+    description: currentRoom?.description || "",
+    tags: currentRoom?.tags || [],
+    error: false,
+  };
+
   const dispatch = useDispatch();
+  const modalType = useSelector((state: State) => state.system.roomModal.type);
   const [room, setRoom] = useState(initialRoomValues);
+  const [modalText, setModalText] = useState(initialModalText);
 
-  /**
-   * Validates the form to see if the room name is present
-   */
+  useEffect(() => {
+    switch (modalType) {
+      case SystemConstants.CREATE:
+        setModalText({ button: "Create", header: "Create a room" });
+        break;
+      case SystemConstants.EDIT:
+        setModalText({ button: "Edit", header: "Edit a room" });
+        break;
+      default:
+        break;
+    }
+  }, [modalType]);
+
   const validateForm = () => {
     if (!room.name.trim()) {
       setRoom({ ...room, error: true });
@@ -63,56 +82,42 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
     return true;
   };
 
-  /**
-   * Submits the rom that emits an event with the room details
-   * and closes the modal
-   * @param e form data - has all the details of a room
-   */
-  const onSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      dispatch(createRoomAction(room));
-      setRoom(initialRoomValues);
+      if (modalType === SystemConstants.CREATE) {
+        dispatch(createRoomAction(room));
+      } else if (modalType === SystemConstants.EDIT && currentRoom) {
+        dispatch(updateRoomAction(room));
+      }
     }
   };
 
-  /**
-   * Updates the room name and description on change
-   *
-   * @param e event to update name and description
-   */
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     if (name === "name" && value) setRoom({ ...room, error: false });
-
     setRoom({ ...room, [name]: value });
   };
 
-  /**
-   * Adds a tag emitted from the Select component to the
-   * room state
-   *
-   * @param tag tag that has been added
-   */
   const handleUpdateTags = (tags: Tag[]) => {
     setRoom({ ...room, tags });
   };
 
-  const onClose = () => {
-    dispatch({ type: SystemConstants.CREATE_ROOM_MODAL, payload: false });
+  const handleClose = () => {
+    dispatch({ type: SystemConstants.SET_ROOM_MODAL, payload: { isOpen: false, type: null } });
   };
 
   return (
-    <Modal isOpen={open} onClose={onClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
+    <Modal isOpen={open} onClose={handleClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
       <ModalOverlay bgColor="blackAlpha.800" />
       <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} py="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
-          <Heading size="lg">Create a room</Heading>
+          <Heading size="lg">{modalText.header}</Heading>
           <ModalCloseButton position="relative" top="none" right="none" />
         </ModalHeader>
         <ModalBody mt={4}>
-          <form id="create-form" onSubmit={onSubmit}>
+          <form id="create-form" onSubmit={handleSubmit}>
             <FormControl>
               <FormLabel htmlFor="name">Room name</FormLabel>
               <InputGroup display="flex" flexDir="column">
@@ -166,7 +171,7 @@ export const CreateRoom: FunctionComponent<Props> = ({ open, handleError }) => {
 
         <ModalFooter mt={4}>
           <Button type="submit" form="create-form" colorScheme="primary" w="100%">
-            Create
+            {modalText.button}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -6,6 +6,7 @@ import { RoomModel, IRoom } from '@modules/room/room.schema';
 import {
   RedisRoom,
   RedisRoomTrack,
+  IUpdateRoom,
   RoomForm,
 } from '@modules/room/room.constants';
 import { UserService } from '@modules/user/user.service';
@@ -64,7 +65,16 @@ export class RoomService {
     });
   }
 
-  async addUserToRoom(
+  updateRoomAndReturn(room: IUpdateRoom) {
+    console.log(room.tags);
+    return RoomModel.findByIdAndUpdate({ _id: room._id }, room, {
+      new: true,
+    })
+      .populate('tags')
+      .exec();
+  }
+
+  addUserToRoom(
     roomId: Types.ObjectId | string,
     userId: Types.ObjectId | string,
   ) {
@@ -103,7 +113,7 @@ export class RoomService {
     });
   }
 
-  async addRoomToRedis(roomId: Types.ObjectId, hostId: string): Promise<any> {
+  async addRoomToRedis(roomId: Types.ObjectId, hostId: any): Promise<any> {
     const roomData: RedisRoom = {
       track: {
         name: '',

@@ -1,11 +1,12 @@
 import { Types } from 'mongoose';
 
-import { ICreateTag } from '@modules/tag/tag.constants';
+import { TagType } from '@modules/tag/tag.schema';
+import { UserType } from '@modules/user/user.schema';
 
 export interface RoomForm {
   name: string;
   description?: string;
-  tags?: ICreateTag[];
+  tags?: TagType[];
 }
 
 export interface ICreateRoom extends RoomForm {
@@ -14,6 +15,26 @@ export interface ICreateRoom extends RoomForm {
 }
 
 export interface RedisRoomTrack {
+  name: string;
+  position: number;
+  image: string;
+  artist: string;
+  uri: string;
+  paused: boolean;
+  contextUri: string;
+}
+
+export interface IUpdateRoom {
+  _id: Types.ObjectId;
+  tags?: TagType[];
+  maxUsers?: number;
+  currentUsers?: UserType[];
+  name?: string;
+  description?: string;
+  host?: UserType;
+}
+export interface IRedisRoom {
+  _id: Types.ObjectId;
   name: string;
   position: number;
   image: string;

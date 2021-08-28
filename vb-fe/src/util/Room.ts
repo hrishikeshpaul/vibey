@@ -22,6 +22,17 @@ export interface Room {
   track: RoomTrack;
 }
 
+export interface UpdateRoom {
+  description: string;
+  name: string;
+  tags: Tag[];
+}
+
+export interface RoomType extends RoomForm {
+  _id?: string;
+  error: boolean;
+}
+
 export interface RoomForm {
   name: string;
   description: string;

@@ -1,18 +1,18 @@
 import React, { useEffect, FunctionComponent } from "react";
-
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Heading, Box, Text, Badge, Wrap, WrapItem } from "@chakra-ui/react";
 
+import { RoomConstants } from "_store/room/RoomTypes";
+import { joinRoom } from "_store/room/RoomActions";
+import { State } from "_store/rootReducer";
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
-import { RoomConstants } from "_store/room/RoomTypes";
+
 import { Tag } from "util/Tags";
 import { User } from "util/User";
-import { joinRoom } from "_store/room/RoomActions";
-import { State } from "_store/rootReducer";
 
 interface RoomInfoProps {
   name: string;
@@ -22,8 +22,8 @@ interface RoomInfoProps {
 }
 
 export const Room: FunctionComponent = (): JSX.Element => {
-  const location = useLocation();
   const dispatch = useDispatch();
+  const location = useLocation();
   const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
 
   const { currentRoom, isHost } = useSelector((state: State) => state.room);

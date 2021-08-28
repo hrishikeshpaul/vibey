@@ -1,5 +1,5 @@
 import { Playlist } from "util/Playlist";
-import { Room } from "util/Room";
+import { Room, UpdateRoom as UpdateRoomType } from "util/Room";
 
 export interface OffsetLimit {
   offset: number;
@@ -9,6 +9,7 @@ export interface OffsetLimit {
 export enum RoomConstants {
   RESET = "RESET",
   CREATE = "CREATE",
+  UPDATE = "UPDATE",
   JOIN = "JOIN",
   SET_ROOM = "SET_ROOM",
   SET_HOST = "SET_HOST",
@@ -21,6 +22,11 @@ export enum RoomConstants {
 export interface CreateRoom {
   type: typeof RoomConstants.CREATE;
   payload: Room;
+}
+
+export interface UpdateRoom {
+  type: typeof RoomConstants.UPDATE;
+  payload: UpdateRoomType;
 }
 
 export interface JoinRoom {
@@ -71,4 +77,5 @@ export type RoomActionTypes =
   | SetHost
   | Reset
   | AddRooms
-  | UpdateOffsetLimit;
+  | UpdateOffsetLimit
+  | UpdateRoom;
