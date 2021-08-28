@@ -3,6 +3,8 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AuthEndpoints, BASE_URL } from "util/Endpoints";
 import { store } from "_store/store";
 import { SystemConstants } from "_store/system/SystemTypes";
+/** Was getting a circular dependency error here */
+import { resetApp } from "util/Logout"; // eslint-disable-line
 
 export enum HttpStatus {
   OK = 200,
@@ -55,47 +57,51 @@ export const setHeaders = (): void => {
   Http.defaults.headers.common = buildHeaders();
 };
 
-export const initHttp = (): void => {
-  setHeaders();
+export const initHttp = async (): Promise<void> => {
+  await new Promise((r) => {
+    Http.interceptors.request.use((value: AxiosRequestConfig) => {
+      const request = { ...value };
+      request.headers = buildHeaders();
+      return request;
+    });
 
-  Http.interceptors.request.use((value: AxiosRequestConfig) => {
-    const request = { ...value };
-    request.headers = buildHeaders();
-    return request;
+    Http.interceptors.response.use(
+      (value: AxiosResponse): AxiosResponse<any> | Promise<AxiosResponse<any>> => {
+        return value;
+      },
+      (err: AxiosError): Promise<any> => {
+        return new Promise((resolve, reject) => {
+          const originalRequest = err.config;
+          const { retry } = store.getState().system;
+
+          if (err.response?.status === HttpStatus.Unauthorized && !retry) {
+            store.dispatch({ type: SystemConstants.RETRY, payload: true });
+            const response = Http.get<RTResponse>(AuthEndpoints.REFRESH).then((res) => {
+              const { accessToken, refreshToken, spotifyAccessToken } = res.data;
+
+              setHeadersToLocalStorage(
+                accessToken,
+                refreshToken,
+                spotifyAccessToken,
+                originalRequest.headers[TokenStorageKeys.SpotifyRT],
+              );
+              setHeaders();
+              originalRequest.headers = buildHeaders();
+              store.dispatch({ type: SystemConstants.RETRY, payload: false });
+
+              return Http.request(originalRequest);
+            });
+            resolve(response);
+          } else if (err.response?.status === HttpStatus.Unauthorized && retry) {
+            resetApp("Http.tsx");
+          }
+          return reject(err);
+        });
+      },
+    );
+
+    r("");
   });
 
-  Http.interceptors.response.use(
-    (value: AxiosResponse): AxiosResponse<any> | Promise<AxiosResponse<any>> => {
-      return value;
-    },
-    (err: AxiosError): Promise<any> => {
-      return new Promise((resolve, reject) => {
-        const originalRequest = err.config;
-        const { retry } = store.getState().system;
-
-        if (err.response?.status === HttpStatus.Unauthorized && !retry) {
-          store.dispatch({ type: SystemConstants.RETRY, payload: true });
-          const response = Http.get<RTResponse>(AuthEndpoints.REFRESH).then((res) => {
-            const { accessToken, refreshToken, spotifyAccessToken } = res.data;
-
-            setHeadersToLocalStorage(
-              accessToken,
-              refreshToken,
-              spotifyAccessToken,
-              originalRequest.headers[TokenStorageKeys.SpotifyRT],
-            );
-            setHeaders();
-            originalRequest.headers = buildHeaders();
-            store.dispatch({ type: SystemConstants.RETRY, payload: false });
-
-            return Http.request(originalRequest);
-          });
-          resolve(response);
-        } else if (err.response?.status === HttpStatus.Unauthorized && retry) {
-          store.dispatch({ type: SystemConstants.LOGIN, payload: false });
-        }
-        return reject(err);
-      });
-    },
-  );
+  store.dispatch({ type: SystemConstants.HTTP_CONNECTED, payload: true });
 };

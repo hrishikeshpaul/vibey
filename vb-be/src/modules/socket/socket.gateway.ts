@@ -19,6 +19,7 @@ import { RoomService } from '@modules/room/room.service';
 import { WsGuard } from '@modules/socket/socket.middleware';
 import { AuthService } from '@modules/auth/auth.service';
 import { TokenTypes } from '@modules/auth/auth.constants';
+import { RedisRoom } from '@modules/room/room.constants';
 
 @UseGuards(WsGuard)
 @WebSocketGateway({ cors: true })
@@ -34,6 +35,28 @@ export class EventsGateway {
   @SubscribeMessage(SocketEvents.Health)
   healthCheck(@ConnectedSocket() client: Socket) {
     client.emit(SocketEvents.HealthSuccess, HttpStatus.OK);
+  }
+
+  @SubscribeMessage(SocketEvents.EmitPlayTrack)
+  playTrack(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() body: SocketMessageBody,
+  ) {
+    const { contextUri, roomId } = body.data;
+    this.server.to(roomId).emit(SocketEvents.OnPlayTrack, contextUri);
+  }
+
+  @SubscribeMessage(SocketEvents.UpdateTrackInRoom)
+  async updateTrackInRoom(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() body: SocketMessageBody,
+  ) {
+    try {
+      const { track, roomId } = body.data;
+      await this.roomService.updateTrackInRoom(roomId, '', track);
+    } catch (err) {
+      socketError(client, HttpStatus.InternalError, ErrorText.Generic);
+    }
   }
 
   @SubscribeMessage(SocketEvents.JoinRoom)
@@ -52,11 +75,18 @@ export class EventsGateway {
           ErrorText.InvalidTokenPair,
         );
 
-      await this.roomService.addUserToRoom(roomId, id);
-      const updatedRoom = await this.roomService.getOneRoom(roomId);
+      const updatedRoom = (await this.roomService.addUserToRoom(
+        roomId,
+        id,
+      )) as RedisRoom;
+      const currentRoom = await this.roomService.getOneRoom(roomId);
+
       await client.join(roomId);
 
-      client.emit(SocketEvents.JoinSuccess, updatedRoom);
+      client.emit(SocketEvents.JoinSuccess, {
+        ...updatedRoom,
+        ...currentRoom.toObject(),
+      });
     } catch (err) {
       socketError(client, HttpStatus.InternalError, ErrorText.Generic);
     }

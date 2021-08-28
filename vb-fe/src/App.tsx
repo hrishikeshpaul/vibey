@@ -4,18 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import { WebPlaybackSDK } from "core/player/index";
 
-import { Home, Landing, Redirect, Room } from "core/index";
-import { Loading, CreateRoom } from "components/index";
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
-
+import { Loading, CreateRoom } from "components";
+import { PlayerWrapper } from "components/player/PlayerWrapper";
+import { Home, Landing, Redirect, Room } from "core/index";
+import { TokenStorageKeys } from "util/Http";
+import { resetApp } from "util/Logout";
 import { initPipeline } from "util/System";
 
-import { initHttp, TokenStorageKeys } from "util/Http";
-import { resetApp } from "util/Logout";
-
 import "App.scss";
-import { PlayerWrapper } from "components/player/PlayerWrapper";
 
 export const App = (): JSX.Element => {
   const { isLoading, isAuthenticated } = useSelector((state: State) => state.system);
@@ -45,12 +43,11 @@ export const App = (): JSX.Element => {
 
   const AuthenticatedApp = (): JSX.Element => {
     useEffect(() => {
-      initHttp();
       initPipeline();
     }, []);
 
     useEffect(() => {
-      if (!isAuthenticated) resetApp();
+      if (!isAuthenticated) resetApp("App.tsx");
     }, [isAuthenticated]); // eslint-disable-line
 
     const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);

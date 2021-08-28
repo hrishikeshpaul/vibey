@@ -4,17 +4,44 @@ import { play, next, previous, shuffle as setShuffle } from "services/Player";
 import { State } from "_store/rootReducer";
 import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
 import { PlayerActionTypes, PlayerConstants } from "_store/player/PlayerTypes";
+import { VS } from "services/Socket";
+import { RoomTrack } from "util/Room";
+import { SimplifiedArtist } from "util/Playlist";
+import { store } from "_store/store";
+
+export const subscribersPlay = async (contextUri: string): Promise<void> => {
+  const { deviceId } = store.getState().player;
+  const { isHost } = store.getState().room;
+
+  if (!isHost) {
+    store.dispatch({ type: SystemConstants.LOADING });
+
+    try {
+      await play(contextUri, deviceId);
+      store.dispatch({ type: PlayerConstants.SET_CONTEXT_URI, payload: contextUri });
+      store.dispatch({ type: SystemConstants.SUCCESS });
+    } catch (err) {
+      store.dispatch({
+        type: SystemConstants.FAILURE,
+        payload: err,
+      });
+    }
+  }
+};
 
 export const playTrack =
   (contextUri: string) =>
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
     const { deviceId } = getState().player;
+    const { currentRoom } = getState().room;
 
     dispatch({ type: SystemConstants.LOADING });
 
     try {
       await play(contextUri, deviceId);
+      VS.getPublisher().emitTrackPlay(contextUri, currentRoom!._id, currentRoom!.host._id);
       dispatch({ type: PlayerConstants.SET_CURRENT_PLAYLIST, payload: contextUri });
+      dispatch({ type: PlayerConstants.SET_CONTEXT_URI, payload: contextUri });
       dispatch({ type: SystemConstants.SUCCESS });
     } catch (err) {
       dispatch({
@@ -30,7 +57,6 @@ export const playNext =
     const { deviceId } = getState().player;
 
     dispatch({ type: PlayerConstants.PAUSE });
-    dispatch({ type: PlayerConstants.SET_INITIAL });
     try {
       await next(deviceId);
       dispatch({ type: SystemConstants.SUCCESS });
@@ -65,8 +91,7 @@ export const playPrevious =
 export const shuffleAction =
   () =>
   async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
-    const { deviceId } = getState().player;
-    const { shuffle } = getState().player;
+    const { deviceId, shuffle } = getState().player;
 
     dispatch({ type: SystemConstants.LOADING });
     dispatch({ type: PlayerConstants.PAUSE });
@@ -81,3 +106,26 @@ export const shuffleAction =
       });
     }
   };
+
+export const updateTrackInRoom =
+  (position: number) =>
+  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
+    const { track, paused, contextUri } = getState().player;
+    const { currentRoom } = getState().room;
+
+    const roomTrack: RoomTrack = {
+      name: track!.name,
+      uri: track!.uri,
+      artist: track!.artists.map((artist: SimplifiedArtist) => artist.name).join(", "),
+      image: track!.album.images[0].url,
+      contextUri,
+      paused,
+      position,
+    };
+
+    VS.getPublisher().updateTrackInRoom(roomTrack, currentRoom!._id);
+  };
+
+export const onTrackPlayAction = () => async (): Promise<void> => {
+  VS.getSubscriber().onTrackPlay(subscribersPlay);
+};

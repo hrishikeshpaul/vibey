@@ -10,6 +10,7 @@ export enum SystemConstants {
   RETRY = "RETRY",
   INITIALIZED = "INITIALIZED",
   SOCKETS_CONNECTED = "SOCKETS_CONNECTED",
+  HTTP_CONNECTED = "HTTP_CONNECTED",
 }
 
 export interface ResetSystem {
@@ -75,6 +76,11 @@ export interface SetSocketsConnected {
   payload: boolean;
 }
 
+export interface SetHTTPConnected {
+  type: typeof SystemConstants.HTTP_CONNECTED;
+  payload: boolean;
+}
+
 export type SystemActionTypes =
   | ResetSystem
   | GetApiStart
@@ -85,4 +91,5 @@ export type SystemActionTypes =
   | SetExpandBottomSheet
   | SetRetry
   | SetSystemInitialize
-  | SetSocketsConnected;
+  | SetSocketsConnected
+  | SetHTTPConnected;

@@ -1,15 +1,16 @@
 import { Track } from "util/Playlist";
-import { PlayerConstants, PlayerActionTypes, PlayerStates } from "_store/player/PlayerTypes";
+import { PlayerConstants, PlayerActionTypes } from "_store/player/PlayerTypes";
 
 // import { Error } from "app/models/system.model";
 
 export interface PlayerState {
   track: Track | null;
-  state: PlayerStates;
+  paused: boolean;
   trackPosition: number;
   playlistContext: string;
   shuffle: boolean;
   deviceId: string;
+  contextUri: string;
 }
 
 /**
@@ -17,11 +18,12 @@ export interface PlayerState {
  */
 const initialState: PlayerState = {
   track: null,
-  state: PlayerStates.INITIAL,
+  paused: true,
   trackPosition: 0,
   playlistContext: "",
   shuffle: false,
   deviceId: "",
+  contextUri: "",
 };
 
 export const playerReducer = (state: PlayerState = initialState, action: PlayerActionTypes): PlayerState => {
@@ -50,19 +52,13 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
     case PlayerConstants.PLAY: {
       return {
         ...state,
-        state: PlayerStates.PLAYING,
+        paused: false,
       };
     }
     case PlayerConstants.PAUSE: {
       return {
         ...state,
-        state: PlayerStates.PAUSED,
-      };
-    }
-    case PlayerConstants.SET_INITIAL: {
-      return {
-        ...state,
-        state: PlayerStates.INITIAL,
+        paused: true,
       };
     }
     case PlayerConstants.UPDATE_POSITION: {
@@ -75,6 +71,12 @@ export const playerReducer = (state: PlayerState = initialState, action: PlayerA
       return {
         ...state,
         shuffle: action.payload,
+      };
+    }
+    case PlayerConstants.SET_CONTEXT_URI: {
+      return {
+        ...state,
+        contextUri: action.payload,
       };
     }
     default:

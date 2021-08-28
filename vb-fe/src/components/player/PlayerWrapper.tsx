@@ -1,56 +1,35 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { PlayerConstants } from "_store/player/PlayerTypes";
 import { SystemConstants } from "_store/system/SystemTypes";
-import { usePlayerDevice, useErrorState, usePlaybackState } from "core/player";
+import { usePlayerDevice, useErrorState } from "core/player";
 import { resetApp } from "util/Logout";
+import { onTrackPlayAction } from "_store/player/PlayerActions";
+import { State } from "_store/rootReducer";
 
 export const PlayerWrapper: FunctionComponent = () => {
   const device = usePlayerDevice();
   const error = useErrorState();
-  const playbackState = usePlaybackState();
   const dispatch = useDispatch();
+  const { isHost } = useSelector((state: State) => state.room);
 
   useEffect(() => {
     dispatch({ type: SystemConstants.LOADING, payload: "Initializing Player..." });
     if (device) {
       dispatch({ type: PlayerConstants.SET_DEVICE_ID, payload: device.device_id });
       dispatch({ type: SystemConstants.SUCCESS });
+      dispatch(onTrackPlayAction());
     }
-  }, [device, dispatch]);
+  }, [device, dispatch, isHost]);
 
   useEffect(() => {
     if (error) {
-      switch (error.type) {
-        case "authentication_error":
-          resetApp();
-          dispatch({ type: SystemConstants.LOGIN, payload: false });
-          break;
-        default:
-          resetApp();
-          dispatch({ type: SystemConstants.LOGIN, payload: false });
-      }
+      dispatch({ type: SystemConstants.LOGIN, payload: false });
       dispatch({ type: SystemConstants.FAILURE });
+      resetApp("PlayerWrapper.tsx");
     }
   }, [error, dispatch]);
-
-  useEffect(() => {
-    if (playbackState) {
-      dispatch({
-        type: PlayerConstants.UPDATE_TRACK,
-        payload: playbackState.track_window.current_track,
-      });
-      dispatch({
-        type: playbackState.paused ? PlayerConstants.PAUSE : PlayerConstants.PLAY,
-      });
-      dispatch({
-        type: PlayerConstants.UPDATE_POSITION,
-        payload: playbackState.position,
-      });
-      dispatch({ type: PlayerConstants.SET_SHUFFLE, payload: playbackState.shuffle });
-    }
-  }, [playbackState, dispatch]);
 
   return <></>;
 };

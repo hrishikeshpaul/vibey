@@ -1,5 +1,3 @@
-import { IRedisRoom } from '@modules/room/room.constants';
-
 export enum SocketEvents {
   Health = 'health',
   HealthSuccess = 'health-success',
@@ -8,16 +6,15 @@ export enum SocketEvents {
   Message = 'message',
   Error = 'socket-err',
   PauseTrack = 'pause-track',
+  OnPlayTrack = 'on-play-track',
+  EmitPlayTrack = 'emit-play-track',
+  UpdateTrackInRoom = 'update-track-in-room',
 }
 
 export interface SocketMessageBody {
   event: string;
   data: any;
   headers: any;
-}
-
-export interface ISocketCreateRoomData {
-  room: IRedisRoom;
 }
 
 export interface SocketMessageData {

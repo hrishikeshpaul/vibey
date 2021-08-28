@@ -20,6 +20,7 @@ export interface SystemState {
   retry: boolean;
   isSystemInit: boolean;
   socketsConnected: boolean;
+  httpConnected: boolean;
 }
 
 /**
@@ -35,6 +36,7 @@ const initialState: SystemState = {
   loadingText: "Loading...",
   isSystemInit: false,
   socketsConnected: false,
+  httpConnected: false,
 };
 
 export const systemReducer = (state: SystemState = initialState, action: SystemActionTypes): SystemState => {
@@ -88,6 +90,11 @@ export const systemReducer = (state: SystemState = initialState, action: SystemA
       return {
         ...state,
         retry: action.payload,
+      };
+    case SystemConstants.HTTP_CONNECTED:
+      return {
+        ...state,
+        httpConnected: action.payload,
       };
     default:
       return state;

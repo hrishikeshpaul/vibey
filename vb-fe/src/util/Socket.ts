@@ -14,6 +14,9 @@ export enum SocketEvents {
   Error = "socket-err",
   Exception = "exception",
   PauseTrack = "pause-track",
+  OnPlayTrack = "on-play-track",
+  EmitPlayTrack = "emit-play-track",
+  UpdateTrackInRoom = "update-track-in-room",
 }
 
 export interface SocketError {

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
 import { Flex, Avatar, Box, Text, IconButton, HStack, Divider } from "@chakra-ui/react";
 import { BsMusicNote } from "react-icons/bs";
@@ -8,9 +8,9 @@ import { TiMediaPause } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 
 import { State } from "_store/rootReducer";
-import { playNext, playPrevious, shuffleAction } from "_store/player/PlayerActions";
-import { PlayerStates } from "_store/player/PlayerTypes";
-import { useSpotifyPlayer } from "core/player";
+import { playNext, playPrevious, shuffleAction, updateTrackInRoom } from "_store/player/PlayerActions";
+import { PlayerConstants } from "_store/player/PlayerTypes";
+import { useSpotifyPlayer, usePlaybackState } from "core/player";
 import { PlayerVolume } from "components/player/PlayerVolume";
 import { PlayerSeeker } from "components/player/PlayerSeek";
 import { SimplifiedArtist } from "util/Playlist";
@@ -22,61 +22,91 @@ interface PlayerControlProps {
   showShuffle?: boolean;
 }
 
+interface PlayerControlsState {
+  shuffle: boolean;
+  position: number;
+}
+
 export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
   showVolume = true,
   showShuffle = true,
 }): JSX.Element => {
   const dispatch = useDispatch();
   const player = useSpotifyPlayer();
-  const { shuffle, state } = useSelector((states: State) => states.player);
-  const trackState = useSelector((states: State) => states.player.state);
+  const playbackState = usePlaybackState(true, 5000);
+  const { paused } = useSelector((states: State) => states.player);
+  const { isHost } = useSelector((state: State) => state.room);
+  const [playerState, setPlayerState] = useState<PlayerControlsState>({
+    shuffle: false,
+    position: 0,
+  });
 
-  const Seek: FunctionComponent = (): JSX.Element => {
+  useEffect(() => {
+    if (playbackState) {
+      if (playbackState.paused && !paused) {
+        dispatch({ type: PlayerConstants.PAUSE });
+      } else if (!playbackState.paused && paused) {
+        dispatch({ type: PlayerConstants.PLAY });
+      }
+
+      setPlayerState({
+        shuffle: playbackState.shuffle,
+        position: playbackState.position,
+      });
+
+      if (playbackState.position !== playerState.position) dispatch(updateTrackInRoom(playerState.position));
+    }
+  }, [playbackState]); // eslint-disable-line
+
+  const Shuffle: FunctionComponent = (): JSX.Element => {
     return (
       <IconButton
         fontWeight="bold"
-        color={shuffle ? "teal.300" : "white"}
+        color={playerState.shuffle ? "teal.300" : "white"}
         icon={<RiShuffleFill />}
         aria-label="track-shuffle"
         onClick={() => dispatch(shuffleAction())}
-        disabled={state === PlayerStates.INITIAL}
+        disabled={!isHost}
       />
     );
+  };
+
+  const previous = () => {
+    dispatch(playPrevious());
+  };
+
+  const next = () => {
+    dispatch(playNext());
+  };
+
+  const pause = () => {
+    player!.pause();
+    dispatch({ type: PlayerConstants.PAUSE });
+  };
+
+  const resume = () => {
+    player!.resume();
+    dispatch({ type: PlayerConstants.PLAY });
   };
 
   return (
     <Flex>
       <HStack spacing="3">
-        <IconButton
-          icon={<FaStepBackward />}
-          aria-label="track-prev"
-          onClick={() => dispatch(playPrevious())}
-          disabled={state === PlayerStates.INITIAL}
-        />
-        {trackState && trackState === PlayerStates.PLAYING ? (
+        <IconButton icon={<FaStepBackward />} aria-label="track-prev" onClick={previous} disabled={!isHost} />
+        {!paused ? (
           <IconButton
             icon={<TiMediaPause />}
             fontSize="3xl"
             aria-label="track-pause"
-            onClick={() => player!.pause()}
-            disabled={state === PlayerStates.INITIAL}
+            onClick={pause}
+            disabled={!isHost}
           />
         ) : (
-          <IconButton
-            icon={<FaPlay />}
-            aria-label="track-play"
-            onClick={() => player!.resume()}
-            disabled={state === PlayerStates.INITIAL}
-          />
+          <IconButton icon={<FaPlay />} aria-label="track-play" onClick={resume} disabled={!isHost} />
         )}
-        <IconButton
-          icon={<FaStepForward />}
-          aria-label="track-next"
-          onClick={() => dispatch(playNext())}
-          disabled={state === PlayerStates.INITIAL}
-        />
+        <IconButton icon={<FaStepForward />} aria-label="track-next" onClick={next} disabled={!isHost} />
         <Divider />
-        {showShuffle && <Seek />}
+        {showShuffle && <Shuffle />}
         {showVolume && <PlayerVolume />}
       </HStack>
     </Flex>
@@ -84,7 +114,28 @@ export const PlayerControls: FunctionComponent<PlayerControlProps> = ({
 };
 
 export const Player: FunctionComponent = (): JSX.Element => {
-  const track = useSelector((state: State) => state.player.track);
+  const { track } = useSelector((state: State) => state.player);
+  const dispatch = useDispatch();
+  const playbackState = usePlaybackState(true, 1000);
+
+  useEffect(() => {
+    if (playbackState) {
+      if (track !== null && playbackState.track_window.current_track.id !== track.id) {
+        dispatch({
+          type: PlayerConstants.UPDATE_TRACK,
+          payload: playbackState.track_window.current_track,
+        });
+      }
+
+      if (track === null) {
+        dispatch({
+          type: PlayerConstants.UPDATE_TRACK,
+          payload: playbackState.track_window.current_track,
+        });
+        dispatch({ type: PlayerConstants.PLAY });
+      }
+    }
+  }, [playbackState, track, dispatch]);
 
   return (
     <>

@@ -45,11 +45,31 @@ export class RoomController {
       const room = await this.roomService.create(roomData);
       const populatedRoom = await this.roomService.getOneRoom(room._id);
 
-      await this.roomService.addRoomToRedis(room._id);
+      await this.roomService.addRoomToRedis(room._id, room.host);
 
-      return res.status(HttpStatus.NewResource).json(populatedRoom);
+      /**
+       * Need to pass an empty users array to not throw an error
+       * as the frontend expects users
+       */
+      return res
+        .status(HttpStatus.NewResource)
+        .json({ ...populatedRoom.toObject(), users: [] });
     } catch (err) {
       throw new ErrorHandler(HttpStatus.InternalError, err.toString());
+    }
+  }
+
+  @Get('/all')
+  async getAllRooms(
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+    @Response() res: Res,
+  ) {
+    try {
+      const rooms = await this.roomService.getAllRooms(offset, limit);
+      return res.status(200).send(rooms);
+    } catch (err) {
+      return res.status(HttpStatus.Error).send(err);
     }
   }
 

@@ -84,7 +84,7 @@ export const onLogout =
       setTimeout(async () => {
         const res = await logout();
         if (res.status === HttpStatus.NoContent) {
-          resetApp();
+          resetApp("UserAction.ts");
           dispatch(push("/"));
         }
       }, 2000);

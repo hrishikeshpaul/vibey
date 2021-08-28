@@ -15,3 +15,9 @@ export const getUserPlaylists = (offset: number): Promise<any> => {
     },
   });
 };
+
+export const getAllRooms = (offset: number, limit: number): Promise<any> => {
+  return Http.get(RoomEndpoints.ALL, {
+    params: { offset, limit },
+  });
+};

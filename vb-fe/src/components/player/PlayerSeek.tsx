@@ -3,13 +3,13 @@ import { Slider, SliderTrack, SliderFilledTrack, Flex, Text } from "@chakra-ui/r
 import { useSelector } from "react-redux";
 
 import { State } from "_store/rootReducer";
-import { PlayerStates } from "_store/player/PlayerTypes";
 import { useSpotifyPlayer } from "core/player";
 import { useInterval } from "util/Interval";
 import { useDebounce } from "util/Input";
 
 export const PlayerSeeker: FunctionComponent = () => {
-  const { track, state, trackPosition } = useSelector((states: State) => states.player);
+  const { track, paused, trackPosition } = useSelector((states: State) => states.player);
+  const { isHost } = useSelector((state: State) => state.room);
   const [position, setPosition] = useState<number>(0);
   const [debounce] = useDebounce();
   const player = useSpotifyPlayer();
@@ -44,7 +44,7 @@ export const PlayerSeeker: FunctionComponent = () => {
         setPosition(position + 1000);
       }, 500);
     },
-    state === PlayerStates.PLAYING ? 1000 : null,
+    !paused ? 1000 : null,
   );
 
   const onSeek = (value: number) => {
@@ -60,6 +60,7 @@ export const PlayerSeeker: FunctionComponent = () => {
         {formatMilliseconds(position, false)}
       </Text>
       <Slider
+        isDisabled={!isHost}
         aria-label="vb-seek-slider"
         colorScheme="teal"
         w="100%"
@@ -68,7 +69,6 @@ export const PlayerSeeker: FunctionComponent = () => {
         value={position}
         focusThumbOnChange={false}
         onChange={onSeek}
-        isDisabled={state === PlayerStates.INITIAL}
       >
         <SliderTrack>
           <SliderFilledTrack />

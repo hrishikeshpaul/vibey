@@ -1,6 +1,6 @@
 import { Playlist } from "util/Playlist";
 import { Room } from "util/Room";
-import { RoomConstants, RoomActionTypes } from "./RoomTypes";
+import { RoomConstants, RoomActionTypes, OffsetLimit } from "./RoomTypes";
 
 export interface RoomState {
   roomsList: Room[];
@@ -8,6 +8,7 @@ export interface RoomState {
   playlists: Playlist[];
   playlistLoading: boolean;
   isHost: boolean;
+  offsetLimit: OffsetLimit;
 }
 
 /**
@@ -19,6 +20,10 @@ const initialState: RoomState = {
   playlists: [],
   playlistLoading: true,
   isHost: false,
+  offsetLimit: {
+    offset: 1,
+    limit: 2,
+  },
 };
 
 export const roomReducer = (state: RoomState = initialState, action: RoomActionTypes): RoomState => {
@@ -54,6 +59,18 @@ export const roomReducer = (state: RoomState = initialState, action: RoomActionT
       return {
         ...state,
         playlistLoading: action.payload,
+      };
+    }
+    case RoomConstants.ADD_ROOMS: {
+      return {
+        ...state,
+        roomsList: [...state.roomsList, ...action.payload],
+      };
+    }
+    case RoomConstants.UPDATE_OFFSET_LIMIT: {
+      return {
+        ...state,
+        offsetLimit: { ...action.payload },
       };
     }
     default:

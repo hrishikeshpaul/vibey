@@ -6,7 +6,8 @@ import { UserConstants } from "_store/user/UserTypes";
 import { resetLocalStorage } from "util/System";
 import { VS } from "services/Socket";
 
-export const resetApp = (): void => {
+export const resetApp = (msg?: string): void => {
+  console.log("Resetting app from -> ", msg);
   VS.disconnect();
   resetLocalStorage();
   store.dispatch({ type: SystemConstants.RESET });
