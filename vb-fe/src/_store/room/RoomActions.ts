@@ -9,7 +9,6 @@ import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
 import { store } from "_store/store";
 import { VS } from "services/Socket";
 
-
 export const createRoomAction =
   (room: RoomForm) =>
   async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {

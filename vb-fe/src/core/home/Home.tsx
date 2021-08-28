@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 
 import { Flex, VStack, Box } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
