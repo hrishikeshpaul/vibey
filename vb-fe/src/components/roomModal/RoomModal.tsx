@@ -83,7 +83,6 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log({ room });
     e.preventDefault();
     if (validateForm()) {
       if (modalType === SystemConstants.CREATE) {
