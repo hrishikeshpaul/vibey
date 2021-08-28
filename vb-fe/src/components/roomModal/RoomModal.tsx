@@ -111,7 +111,7 @@ export const RoomModal: FunctionComponent<Props> = ({ open, handleError, current
   return (
     <Modal isOpen={open} onClose={handleClose} size="2xl" isCentered autoFocus={false} closeOnOverlayClick={false}>
       <ModalOverlay bgColor="blackAlpha.800" />
-      <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} p2="2">
+      <ModalContent bg="gray.800" p={{ base: "0", md: "3" }} py="2">
         <ModalHeader display="flex" alignItems="center" w="100%" justifyContent="space-between">
           <Heading size="lg">{modalText.header}</Heading>
           <ModalCloseButton position="relative" top="none" right="none" />
