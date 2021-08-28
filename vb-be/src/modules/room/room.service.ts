@@ -66,7 +66,6 @@ export class RoomService {
   }
 
   updateRoomAndReturn(room: IUpdateRoom) {
-    console.log(room.tags);
     return RoomModel.findByIdAndUpdate({ _id: room._id }, room, {
       new: true,
     })

@@ -10,6 +10,7 @@ import {
   Param,
   Inject,
   forwardRef,
+  Logger,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { Response as Res, Request as Req } from 'express';
@@ -17,12 +18,12 @@ import { firstValueFrom } from 'rxjs';
 
 import { RoomService } from '@modules/room/room.service';
 import { ICreateRoom, IUpdateRoom } from '@modules/room/room.constants';
-import { TagService } from '@modules/tag/tag.service';
-import { SpotifyService } from '@modules/spotify/spotify.service';
-import { HttpStatus } from 'src/util/http';
-import { ErrorHandler, ErrorText } from 'src/util/error';
 import { EventsGateway } from '@modules/socket/socket.gateway';
+import { SpotifyService } from '@modules/spotify/spotify.service';
+import { TagService } from '@modules/tag/tag.service';
 import { SocketEvents } from '@modules/socket/socket.constants';
+import { ErrorHandler, ErrorText } from 'src/util/error';
+import { HttpStatus } from 'src/util/http';
 
 @Controller('/api/room')
 export class RoomController {
@@ -64,7 +65,7 @@ export class RoomController {
         .status(HttpStatus.NewResource)
         .json({ ...populatedRoom.toObject(), users: [] });
     } catch (err) {
-      console.log(err);
+      Logger.log(err);
       throw new ErrorHandler(HttpStatus.InternalError, err.toString());
     }
   }
@@ -132,7 +133,7 @@ export class RoomController {
         .emit(SocketEvents.UpdateRoom, updatedRoom);
       return res.status(HttpStatus.OK).json({ room: updatedRoom });
     } catch (err) {
-      console.log(err);
+      Logger.log(err);
       return res.status(err.statusCode || 500).send(err.message);
     }
   }

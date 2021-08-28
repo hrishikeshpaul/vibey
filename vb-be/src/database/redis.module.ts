@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import * as JSONSchema from 'fast-json-stringify';
 import { RedisClient, createClient } from 'redis';
 
@@ -26,7 +26,7 @@ export class RedisService {
     });
 
     this.redisJWTClient.on('connect', () => {
-      console.log('Redis JWT connected');
+      Logger.log('Redis JWT connected');
       this.setAsyncJwtClient = promisify(this.redisJWTClient.set).bind(
         this.redisJWTClient,
       );
@@ -39,7 +39,7 @@ export class RedisService {
     });
 
     this.redisSocketClient.on('connect', () => {
-      console.log('Redis Socket connected');
+      Logger.log('Redis Socket connected');
       this.setAsyncSocketClient = promisify(this.redisSocketClient.set).bind(
         this.redisSocketClient,
       );

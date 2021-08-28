@@ -1,6 +1,6 @@
 import { Playlist } from "util/Playlist";
 import { Room } from "util/Room";
-import { RoomConstants, RoomActionTypes, OffsetLimit } from "./RoomTypes";
+import { RoomConstants, RoomActionTypes, OffsetLimit } from "_store/room/RoomTypes";
 
 export interface RoomState {
   roomsList: Room[];

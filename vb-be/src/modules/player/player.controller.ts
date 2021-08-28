@@ -5,10 +5,10 @@ import {
   Query,
   Headers,
   Post,
+  Logger,
 } from '@nestjs/common';
 import { Response as Res } from 'express';
 import { firstValueFrom } from 'rxjs';
-import { Socket } from 'socket.io';
 
 import { SpotifyService } from '@modules/spotify/spotify.service';
 import { HttpStatus } from 'src/util/http';
@@ -30,7 +30,7 @@ export class PlayerController {
       );
       return res.status(HttpStatus.NoContent).send();
     } catch (err) {
-      console.log(err);
+      Logger.log(err);
       return res.status(HttpStatus.Error).send(err);
     }
   }
@@ -45,7 +45,7 @@ export class PlayerController {
       await firstValueFrom(this.spotifyService.playNext(deviceId, accessToken));
       return res.status(HttpStatus.NoContent).send();
     } catch (err) {
-      console.log(err);
+      Logger.log(err);
       return res.status(HttpStatus.Error).send(err);
     }
   }
@@ -62,7 +62,7 @@ export class PlayerController {
       );
       return res.status(HttpStatus.NoContent).send();
     } catch (err) {
-      console.log(err);
+      Logger.log(err);
       return res.status(HttpStatus.Error).send(err);
     }
   }
@@ -80,7 +80,7 @@ export class PlayerController {
       );
       return res.status(HttpStatus.NoContent).send();
     } catch (err) {
-      console.log(err);
+      Logger.log(err);
       return res.status(HttpStatus.Error).send(err);
     }
   }
