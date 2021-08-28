@@ -9,7 +9,7 @@ import { SystemConstants } from "_store/system/SystemTypes";
 import { Loading, CreateRoom } from "components";
 import { PlayerWrapper } from "components/player/PlayerWrapper";
 import { Home, Landing, Redirect, Room } from "core/index";
-import { initHttp, TokenStorageKeys } from "util/Http";
+import { TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
 import { initPipeline } from "util/System";
 

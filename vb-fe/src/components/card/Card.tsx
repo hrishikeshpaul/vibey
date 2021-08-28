@@ -63,7 +63,7 @@ export const Card: FunctionComponent<Props> = ({ room }): JSX.Element => {
       </Flex>
       <Flex mt="1" flexWrap="wrap" overflow="hidden" maxH="25px">
         <Box id="vb-card-badge-box">
-          {room.tags.map((tag: Tag, i: number) => (
+          {room.tags.map((tag: Tag) => (
             <Badge colorScheme="teal" mr={2} borderRadius="md" key={tag._id}>
               {tag.label}
             </Badge>

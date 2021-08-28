@@ -7,25 +7,27 @@ import { PlayerActionTypes, PlayerConstants } from "_store/player/PlayerTypes";
 import { VS } from "services/Socket";
 import { RoomTrack } from "util/Room";
 import { SimplifiedArtist } from "util/Playlist";
+import { store } from "_store/store";
 
-export const subscribersPlay =
-  (contextUri: string) =>
-  async (dispatch: Dispatch<PlayerActionTypes | SystemActionTypes>, getState: () => State): Promise<void> => {
-    const { deviceId } = getState().player;
+export const subscribersPlay = async (contextUri: string): Promise<void> => {
+  const { deviceId } = store.getState().player;
+  const { isHost } = store.getState().room;
 
-    dispatch({ type: SystemConstants.LOADING });
+  if (!isHost) {
+    store.dispatch({ type: SystemConstants.LOADING });
 
     try {
       await play(contextUri, deviceId);
-      dispatch({ type: PlayerConstants.SET_CONTEXT_URI, payload: contextUri });
-      dispatch({ type: SystemConstants.SUCCESS });
+      store.dispatch({ type: PlayerConstants.SET_CONTEXT_URI, payload: contextUri });
+      store.dispatch({ type: SystemConstants.SUCCESS });
     } catch (err) {
-      dispatch({
+      store.dispatch({
         type: SystemConstants.FAILURE,
         payload: err,
       });
     }
-  };
+  }
+};
 
 export const playTrack =
   (contextUri: string) =>
@@ -123,3 +125,7 @@ export const updateTrackInRoom =
 
     VS.getPublisher().updateTrackInRoom(roomTrack, currentRoom!._id);
   };
+
+export const onTrackPlayAction = () => async (): Promise<void> => {
+  VS.getSubscriber().onTrackPlay(subscribersPlay);
+};

@@ -9,8 +9,7 @@ import {
   RoomForm,
 } from '@modules/room/room.constants';
 import { UserService } from '@modules/user/user.service';
-import { ErrorHandler, ErrorText } from 'src/util/error';
-import { HttpStatus } from 'src/util/http';
+import { ErrorText } from 'src/util/error';
 
 @Injectable()
 export class RoomService {
