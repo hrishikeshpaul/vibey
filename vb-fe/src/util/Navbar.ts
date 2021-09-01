@@ -1,10 +1,10 @@
 export const BASE_NAV_LINKS = [
   {
-    name: "about us",
+    name: "About",
     link: "/about",
   },
   {
-    name: "contact",
+    name: "Contact",
     link: "/contact",
   },
 ];

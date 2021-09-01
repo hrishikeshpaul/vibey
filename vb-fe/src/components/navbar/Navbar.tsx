@@ -15,6 +15,7 @@ import {
   Flex,
   HStack,
   useBreakpointValue,
+  Avatar,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { CgMenuMotion } from "react-icons/cg";
@@ -24,6 +25,7 @@ import { useHistory } from "react-router-dom";
 import { ReactComponent as Headphones } from "assets/icons/headphones.svg";
 import { ReactComponent as Plus } from "assets/icons/plus.svg";
 import { ReactComponent as Close } from "assets/icons/cross.svg";
+import { ReactComponent as Logo } from "assets/icons/logotype.svg";
 import { SystemConstants } from "_store/system/SystemTypes";
 import { onLogout } from "_store/user/UserActions";
 
@@ -72,7 +74,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
         ))}
         <Box display={{ base: "none", md: "block" }}>
           <Button colorScheme="primary" leftIcon={<HeadphonesIcon />} type="button">
-            <Text>Start Listening</Text>
+            <Text pl="2">Start Listening</Text>
           </Button>
         </Box>
         <Box display={{ base: "block", md: "none" }}>
@@ -157,7 +159,7 @@ export const Navbar: FunctionComponent<Props> = ({ isAuth, isInRoom, isHost }): 
       <Box width="100%" py={4} bgColor="primaryDark">
         <Flex justifyContent="space-between" alignItems="center">
           <Heading size="md" fontFamily="'Playfair Display', serif">
-            vibey
+            <Avatar icon={<Logo />} bg="transparent" borderRadius="none" size="lg" h="100%" />
           </Heading>
           <HStack spacing={6}>{isAuth ? <AuthenticatedNavbar /> : <UnauthenticatedNavbar />}</HStack>
         </Flex>

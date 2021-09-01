@@ -11,7 +11,7 @@ const breakpoints = createBreakpoints({
 
 const fonts = {
   ...ChakraTheme.fonts,
-  body: "'Source Sans Pro', sans-serif",
+  body: "'Urbanist', sans-serif",
   heading: "'Poppins', sans-serif",
 };
 
