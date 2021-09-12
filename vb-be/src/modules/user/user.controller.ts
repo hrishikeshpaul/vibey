@@ -17,7 +17,7 @@ import { ErrorHandler, ErrorText } from 'src/util/error';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/:id')
+  @Get('/specific/:id')
   async getUser(@Param('id') userId: string, @Response() res: Res) {
     try {
       const user = await this.userService.findOneById(userId);

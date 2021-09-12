@@ -93,7 +93,8 @@ class VibeySocket {
         });
 
         this.exception((data: SocketError) => {
-          this.refreshFromSocket(data.event, data.data);
+          console.log("should refresh from socket");
+          // this.refreshFromSocket(data.event, data.data);
         });
       });
 
@@ -146,8 +147,9 @@ class VibeySocket {
       setHeaders();
       this.sub.emitEvent(eventName, data);
     } catch (error: any) {
-      store.dispatch({ type: SystemConstants.LOGIN, payload: false });
-      store.dispatch({ type: SystemConstants.RESET });
+      console.log("Reset from socket");
+      // store.dispatch({ type: SystemConstants.LOGIN, payload: false });
+      // store.dispatch({ type: SystemConstants.RESET });
     }
   }
 }

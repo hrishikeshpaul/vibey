@@ -6,6 +6,21 @@ import { SystemConstants, SystemActionTypes } from "_store/system/SystemTypes";
 import { login, authorize, logout } from "services/Auth";
 import { HttpStatus, TokenStorageKeys } from "util/Http";
 import { resetApp } from "util/Logout";
+import { getMe } from "services/User";
+
+export const getMeAction =
+  () =>
+  async (dispatch: Dispatch<UserActionTypes | SystemActionTypes>): Promise<void> => {
+    try {
+      const response = await getMe();
+      dispatch({ type: UserConstants.SET, payload: response.data });
+    } catch (err) {
+      dispatch({
+        type: SystemConstants.FAILURE,
+        payload: err,
+      });
+    }
+  };
 
 /*
  * Called from Home.tsx

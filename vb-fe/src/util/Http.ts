@@ -102,6 +102,4 @@ export const initHttp = async (): Promise<void> => {
 
     r("");
   });
-
-  store.dispatch({ type: SystemConstants.HTTP_CONNECTED, payload: true });
 };

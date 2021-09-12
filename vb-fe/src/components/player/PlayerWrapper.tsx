@@ -25,8 +25,6 @@ export const PlayerWrapper: FunctionComponent = () => {
 
   useEffect(() => {
     if (error) {
-      dispatch({ type: SystemConstants.LOGIN, payload: false });
-      dispatch({ type: SystemConstants.FAILURE });
       resetApp("PlayerWrapper.tsx");
     }
   }, [error, dispatch]);

@@ -5,11 +5,11 @@ import { Switch, Route } from "react-router-dom";
 
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
+import { getMeAction } from "_store/user/UserActions";
 import { Loading, RoomModal, PlayerWrapper } from "components";
 import { Home, Landing, Redirect, Room } from "core";
-import { TokenStorageKeys } from "util/Http";
 import { WebPlaybackSDK } from "core/player";
-
+import { TokenStorageKeys } from "util/Http";
 import { initPipeline } from "util/System";
 import { resetApp } from "util/Logout";
 
@@ -50,14 +50,13 @@ export const App = (): JSX.Element => {
     useEffect(() => {
       (async () => {
         await initPipeline();
+        dispatch(getMeAction());
       })();
     }, []);
 
     useEffect(() => {
-      if (socketsConnected && httpConnected && deviceId) {
+      if (httpConnected && deviceId) {
         setSystem(true);
-      } else {
-        setSystem(false);
       }
     }, [socketsConnected, httpConnected, deviceId]);
 

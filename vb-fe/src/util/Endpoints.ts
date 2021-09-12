@@ -26,3 +26,7 @@ export enum PlayerEndpoints {
   RESUME = "/api/player/resume",
   SHUFFLE = "/api/player/shuffle",
 }
+
+export enum UserEndpoints {
+  ME = "/api/user/me",
+}
