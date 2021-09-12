@@ -57,7 +57,7 @@ export const App = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-      if (httpConnected && deviceId) {
+      if (socketsConnected && httpConnected && deviceId) {
         setSystem(true);
       }
     }, [socketsConnected, httpConnected, deviceId]);
