@@ -1,20 +1,23 @@
 import { Dispatch } from "redux";
 import { push, CallHistoryMethodAction } from "connected-react-router";
 
-import { createRoom, getAllRooms, getUserPlaylists, updateRoom } from "services/Room";
-import { Room, RoomForm, RoomType } from "util/Room";
-import { User } from "util/User";
-import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
+import { State } from "_store/rootReducer";
 import { RoomActionTypes, RoomConstants } from "_store/room/RoomTypes";
 import { store } from "_store/store";
+import { SystemActionTypes, SystemConstants } from "_store/system/SystemTypes";
+import { createRoom, getAllRooms, getUserPlaylists, updateRoom } from "services/Room";
 import { VS } from "services/Socket";
+import { Room, RoomForm, RoomType } from "util/Room";
 
 export const createRoomAction =
   (room: RoomForm) =>
-  async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
+  async (
+    dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>,
+    getState: () => State,
+  ): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
     try {
-      const user: User = JSON.parse(localStorage.getItem("v-user") || "");
+      const { user } = getState().user;
       const res = await createRoom(room, user._id);
 
       dispatch({
@@ -39,10 +42,13 @@ export const createRoomAction =
 
 export const updateRoomAction =
   (room: RoomType) =>
-  async (dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>): Promise<void> => {
+  async (
+    dispatch: Dispatch<RoomActionTypes | SystemActionTypes | CallHistoryMethodAction>,
+    getState: () => State,
+  ): Promise<void> => {
     dispatch({ type: SystemConstants.LOADING });
     try {
-      const user: User = JSON.parse(localStorage.getItem("v-user") || "");
+      const { user } = getState().user;
       await updateRoom(room, user._id);
 
       dispatch({
@@ -60,10 +66,10 @@ export const updateRoomAction =
 
 export const setRoom = (room: Room): void => {
   if (room) {
-    const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
+    const { user } = store.getState().user;
 
     store.dispatch({ type: RoomConstants.SET_ROOM, payload: room });
-    store.dispatch({ type: RoomConstants.SET_HOST, payload: currentUser?._id === room.host._id });
+    store.dispatch({ type: RoomConstants.SET_HOST, payload: user?._id === room.host._id });
   }
 };
 

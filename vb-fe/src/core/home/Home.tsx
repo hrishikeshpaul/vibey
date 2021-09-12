@@ -22,8 +22,6 @@ export const Home: FunctionComponent = () => {
   const { roomsList, offsetLimit } = useSelector((state: State) => state.room);
   const dispatch = useDispatch();
 
-  const profile = JSON.parse(localStorage.getItem("v-user") || "");
-
   const onSearch = (str: string): void => {
     console.log("Search value: ", str);
   };
@@ -60,7 +58,7 @@ export const Home: FunctionComponent = () => {
             </VStack>
           </Layout.Content>
           <Layout.Sidebar flex="0.2">
-            <Profile profile={profile} />
+            <Profile />
           </Layout.Sidebar>
         </Layout.Body>
         <Layout.Footer>

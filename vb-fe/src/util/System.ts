@@ -29,5 +29,4 @@ export const resetLocalStorage = (): void => {
   localStorage.removeItem(TokenStorageKeys.RT);
   localStorage.removeItem(TokenStorageKeys.SpotifyRT);
   localStorage.removeItem(TokenStorageKeys.SpotifyAT);
-  localStorage.removeItem("v-user");
 };

@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from "react";
 
 import { Heading, Avatar, Box, Center, Flex, Text, Stack } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { State } from "_store/rootReducer";
 
 export interface Profile {
   displayName: string;
@@ -9,11 +11,9 @@ export interface Profile {
   href: string;
 }
 
-export interface Props {
-  profile: Profile;
-}
+export const Profile: FunctionComponent = (): JSX.Element => {
+  const { user } = useSelector((state: State) => state.user);
 
-export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
   return (
     <Center textAlign="center">
       <Box w="full" bg="dark" rounded="lg" overflow="hidden">
@@ -21,7 +21,7 @@ export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
         <Flex justify="center" mt="-9">
           <Avatar
             size="lg"
-            src={profile.image}
+            src={user.image}
             alt="User"
             css={{
               border: "2px solid white",
@@ -32,9 +32,9 @@ export const Profile: FunctionComponent<Props> = ({ profile }): JSX.Element => {
         <Box p={6}>
           <Stack spacing={0} align="center" mb={5}>
             <Heading fontSize="md" fontWeight="500">
-              {profile.displayName}
+              {user.displayName}
             </Heading>
-            <Text color="gray.500">{profile.username}</Text>
+            <Text color="gray.500">{user.username}</Text>
           </Stack>
 
           <Stack direction="row" justify="center" spacing={10}>
