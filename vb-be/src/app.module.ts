@@ -16,6 +16,7 @@ import { SocketModule } from '@modules/socket/socket.module';
 import { RoomModule } from '@modules/room/room.module';
 import { ValidateAccessTokenMiddleware } from '@modules/auth/auth.middleware';
 import { PlayerModule } from '@modules/player/player.module';
+import { UserModule } from '@modules/user/user.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PlayerModule } from '@modules/player/player.module';
     RoomModule,
     SocketModule,
     PlayerModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,6 +3,7 @@ import { HttpException } from '@nestjs/common';
 import { Socket } from 'socket.io';
 
 export enum ErrorText {
+  UserNotFound = 'User not found',
   InvalidAuthState = 'Invalid authentication state',
   InvalidRTArg = 'Invalid argument for refresh token',
   InvalidTokenPair = 'Invalid token pair',
@@ -11,7 +12,6 @@ export enum ErrorText {
   InvalidDataSet = 'Invalid dataset',
   Forbidden = 'Forbidden',
   Unauthorized = 'Unauthorized',
-  UserNotFound = 'User Not Found',
   NotFound = 'Not found',
 }
 
