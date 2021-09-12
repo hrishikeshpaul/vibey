@@ -151,8 +151,6 @@ class VibeySocket {
     } catch (error: any) {
       console.log(error);
       resetApp("Sockets.ts");
-      // store.dispatch({ type: SystemConstants.LOGIN, payload: false });
-      // store.dispatch({ type: SystemConstants.RESET });
     }
   }
 }

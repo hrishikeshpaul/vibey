@@ -60,13 +60,12 @@ export const getAuthorization =
 
     try {
       const res = await authorize(code, state);
-      const { accessToken, refreshToken, user, spotifyAccessToken, spotifyRefreshToken } = res.data;
+      const { accessToken, refreshToken, spotifyAccessToken, spotifyRefreshToken } = res.data;
 
       localStorage.setItem(TokenStorageKeys.AT, accessToken);
       localStorage.setItem(TokenStorageKeys.RT, refreshToken);
       localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
       localStorage.setItem(TokenStorageKeys.SpotifyRT, spotifyRefreshToken);
-      localStorage.setItem("v-user", JSON.stringify(user));
 
       dispatch({
         type: SystemConstants.LOGIN,

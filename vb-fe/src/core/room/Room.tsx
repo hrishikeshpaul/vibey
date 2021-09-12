@@ -10,9 +10,7 @@ import { State } from "_store/rootReducer";
 import { Navbar, CurrentUsers, Player, Playlist } from "components";
 import { RoomToolbar } from "core/room/RoomToolbar";
 import { Layout } from "layout/Layout";
-
 import { Tag } from "util/Tags";
-import { User } from "util/User";
 
 interface RoomInfoProps {
   name: string;
@@ -24,7 +22,7 @@ interface RoomInfoProps {
 export const Room: FunctionComponent = (): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const currentUser: User | null = JSON.parse(localStorage.getItem("v-user") || "");
+  const { user } = useSelector((state: State) => state.user);
 
   const { currentRoom, isHost } = useSelector((state: State) => state.room);
   const { socketsConnected } = useSelector((state: State) => state.system);
@@ -71,7 +69,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
       <Layout.Wrapper>
         <Layout.Header>
           <Navbar isAuth isHost={isHost} />
-          {currentRoom && currentUser ? <RoomToolbar room={currentRoom} isHost={isHost} /> : <></>}
+          {currentRoom && user ? <RoomToolbar room={currentRoom} isHost={isHost} /> : <></>}
         </Layout.Header>
         {currentRoom ? (
           <>
@@ -81,7 +79,7 @@ export const Room: FunctionComponent = (): JSX.Element => {
               </Layout.Sidebar>
               <Layout.Content flex="0.5">{isHost ? <Playlist /> : <></>}</Layout.Content>
               <Layout.Sidebar flex="0.3" calcSidebarHeight>
-                <CurrentUsers users={currentRoom.users} />
+                <CurrentUsers users={currentRoom.users} host={currentRoom.host} />
               </Layout.Sidebar>
             </Layout.Body>
             <Layout.Footer>

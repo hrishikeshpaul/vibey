@@ -5,9 +5,10 @@ import { User } from "util/User";
 
 interface Props {
   users: User[];
+  host: User;
 }
 
-export const CurrentUsers: FunctionComponent<Props> = ({ users }): JSX.Element => {
+export const CurrentUsers: FunctionComponent<Props> = ({ users, host }): JSX.Element => {
   return (
     <>
       {users && users.length > 0 ? (
@@ -20,7 +21,7 @@ export const CurrentUsers: FunctionComponent<Props> = ({ users }): JSX.Element =
               {users.map((user) => (
                 <WrapItem m="2" key={user._id}>
                   <Flex flexDir="column" textAlign="center">
-                    <Avatar src={user.image} border="3px solid teal" />
+                    <Avatar src={user.image} border={host._id === user._id ? "3px solid teal" : ""} />
                     <Text fontSize="xs" pt="2">
                       {user.username}
                     </Text>

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect as RouterRedirect } from "react-router-dom";
 
 import { State } from "_store/rootReducer";
 import { SystemConstants } from "_store/system/SystemTypes";
@@ -36,6 +36,9 @@ export const App = (): JSX.Element => {
         </Route>
         <Route path="/login">
           <Redirect />
+        </Route>
+        <Route path="/room/:id">
+          <RouterRedirect to="/" />
         </Route>
       </Switch>
     );
