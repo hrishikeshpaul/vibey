@@ -52,7 +52,7 @@ export const Select: FunctionComponent<Props> = ({ onChange, presentTags, handle
    */
   useEffect(() => {
     getTagsFromSubstring();
-  }, [getTagsFromSubstring]);
+  }, []); // eslint-disable-line
 
   /**
    * When a tag is selected or created this function is called
