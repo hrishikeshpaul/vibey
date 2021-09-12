@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route } from "react-router-dom";
@@ -43,9 +43,23 @@ export const App = (): JSX.Element => {
   };
 
   const AuthenticatedApp = (): JSX.Element => {
+    const { socketsConnected, httpConnected } = useSelector((state: State) => state.system);
+    const { deviceId } = useSelector((state: State) => state.player);
+    const [system, setSystem] = useState<boolean>(false);
+
     useEffect(() => {
-      initPipeline();
+      (async () => {
+        await initPipeline();
+      })();
     }, []);
+
+    useEffect(() => {
+      if (socketsConnected && httpConnected && deviceId) {
+        setSystem(true);
+      } else {
+        setSystem(false);
+      }
+    }, [socketsConnected, httpConnected, deviceId]);
 
     useEffect(() => {
       if (!isAuthenticated) resetApp("App.tsx");
@@ -56,14 +70,18 @@ export const App = (): JSX.Element => {
     return (
       <WebPlaybackSDK deviceName="Vibey Player" getOAuthToken={getOAuthToken} volume={0.5}>
         <PlayerWrapper />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/room/:id">
-            <Room />
-          </Route>
-        </Switch>
+        {system ? (
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/room/:id">
+              <Room />
+            </Route>
+          </Switch>
+        ) : (
+          <></>
+        )}
       </WebPlaybackSDK>
     );
   };
