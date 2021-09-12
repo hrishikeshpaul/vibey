@@ -11,7 +11,6 @@ import { Home, Landing, Redirect, Room } from "core";
 import { WebPlaybackSDK } from "core/player";
 import { TokenStorageKeys } from "util/Http";
 import { initPipeline } from "util/System";
-import { resetApp } from "util/Logout";
 
 import "App.scss";
 
@@ -59,10 +58,6 @@ export const App = (): JSX.Element => {
         setSystem(true);
       }
     }, [socketsConnected, httpConnected, deviceId]);
-
-    useEffect(() => {
-      if (!isAuthenticated) resetApp("App.tsx");
-    }, [isAuthenticated]); // eslint-disable-line
 
     const getOAuthToken = useCallback((callback) => callback(localStorage.getItem(TokenStorageKeys.SpotifyAT)), []);
 

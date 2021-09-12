@@ -7,6 +7,7 @@ import { refreshTokens } from "services/Auth";
 import { HttpStatus, setHeaders, TokenStorageKeys } from "util/Http";
 import { Room, RoomTrack } from "util/Room";
 import { SOCKET_ENDPOINT, SocketError, SocketEvents } from "util/Socket";
+import { resetApp } from "util/Logout";
 
 /**
  * Class for all the publishers that emit events
@@ -93,8 +94,8 @@ class VibeySocket {
         });
 
         this.exception((data: SocketError) => {
-          console.log("should refresh from socket");
-          // this.refreshFromSocket(data.event, data.data);
+          console.log("Refreshing from sockets...");
+          this.refreshFromSocket(data.event, data.data);
         });
       });
 
@@ -145,9 +146,11 @@ class VibeySocket {
       localStorage.setItem(TokenStorageKeys.RT, refreshToken);
       localStorage.setItem(TokenStorageKeys.SpotifyAT, spotifyAccessToken);
       setHeaders();
-      this.sub.emitEvent(eventName, data);
+      this.pub.emit(eventName, data);
+      console.log("Refresh from sockets successful");
     } catch (error: any) {
-      console.log("Reset from socket");
+      console.log(error);
+      resetApp("Sockets.ts");
       // store.dispatch({ type: SystemConstants.LOGIN, payload: false });
       // store.dispatch({ type: SystemConstants.RESET });
     }

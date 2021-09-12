@@ -1,3 +1,9 @@
+export enum RETRY_TYPES {
+  NONE,
+  TRYING,
+  FAIL,
+}
+
 export enum SystemConstants {
   RESET = "RESET",
   LOADING = "LOADING",
@@ -69,7 +75,7 @@ export interface SetExpandBottomSheet {
 
 export interface SetRetry {
   type: typeof SystemConstants.RETRY;
-  payload: boolean;
+  payload: RETRY_TYPES;
 }
 
 export interface SetSystemInitialize {

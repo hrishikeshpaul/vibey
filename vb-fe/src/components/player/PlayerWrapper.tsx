@@ -16,7 +16,7 @@ export const PlayerWrapper: FunctionComponent = () => {
 
   useEffect(() => {
     dispatch({ type: SystemConstants.LOADING, payload: "Initializing Player..." });
-    if (device) {
+    if (device && device.status === "ready") {
       dispatch({ type: PlayerConstants.SET_DEVICE_ID, payload: device.device_id });
       dispatch({ type: SystemConstants.SUCCESS });
       dispatch(onTrackPlayAction());

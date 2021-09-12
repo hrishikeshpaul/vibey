@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 import { AuthEndpoints, BASE_URL } from "util/Endpoints";
 import { store } from "_store/store";
-import { SystemConstants } from "_store/system/SystemTypes";
+import { RETRY_TYPES, SystemConstants } from "_store/system/SystemTypes";
 /** Was getting a circular dependency error here */
 import { resetApp } from "util/Logout"; // eslint-disable-line
 
@@ -74,27 +74,34 @@ export const initHttp = async (): Promise<void> => {
           const originalRequest = err.config;
           const { retry } = store.getState().system;
 
-          if (err.response?.status === HttpStatus.Unauthorized && !retry) {
-            store.dispatch({ type: SystemConstants.RETRY, payload: true });
-            const response = Http.get<RTResponse>(AuthEndpoints.REFRESH).then((res) => {
-              const { accessToken, refreshToken, spotifyAccessToken } = res.data;
+          if (err.response?.status === HttpStatus.Unauthorized && retry === RETRY_TYPES.TRYING) {
+            console.log("Still trying to refresh");
+          } else if (err.response?.status === HttpStatus.Unauthorized && retry === RETRY_TYPES.NONE) {
+            store.dispatch({ type: SystemConstants.RETRY, payload: RETRY_TYPES.TRYING });
 
-              setHeadersToLocalStorage(
-                accessToken,
-                refreshToken,
-                spotifyAccessToken,
-                originalRequest.headers[TokenStorageKeys.SpotifyRT],
-              );
-              setHeaders();
-              originalRequest.headers = buildHeaders();
-              store.dispatch({ type: SystemConstants.RETRY, payload: false });
+            const response = Http.get<RTResponse>(AuthEndpoints.REFRESH)
+              .then((res) => {
+                const { accessToken, refreshToken, spotifyAccessToken } = res.data;
 
-              return Http.request(originalRequest);
-            });
+                setHeadersToLocalStorage(
+                  accessToken,
+                  refreshToken,
+                  spotifyAccessToken,
+                  originalRequest.headers[TokenStorageKeys.SpotifyRT],
+                );
+                setHeaders();
+                originalRequest.headers = buildHeaders();
+                store.dispatch({ type: SystemConstants.RETRY, payload: false });
+
+                return Http.request(originalRequest);
+              })
+              .catch((e) => {
+                console.log(e);
+                resetApp("Http.tsx");
+              });
             resolve(response);
-          } else if (err.response?.status === HttpStatus.Unauthorized && retry) {
-            resetApp("Http.tsx");
           }
+
           return reject(err);
         });
       },

@@ -1,4 +1,4 @@
-import { SystemConstants, SystemActionTypes, RoomModalType } from "_store/system/SystemTypes";
+import { SystemConstants, SystemActionTypes, RoomModalType, RETRY_TYPES } from "_store/system/SystemTypes";
 // import { Error } from "app/models/system.model";
 
 export interface SystemState {
@@ -18,7 +18,7 @@ export interface SystemState {
    * Tracks expanding of bottom sheet
    */
   bottomSheetExpanded: boolean;
-  retry: boolean;
+  retry: RETRY_TYPES;
   isSystemInit: boolean;
   socketsConnected: boolean;
   httpConnected: boolean;
@@ -36,7 +36,7 @@ const initialState: SystemState = {
     type: null,
   },
   bottomSheetExpanded: false,
-  retry: false,
+  retry: RETRY_TYPES.NONE,
   loadingText: "Loading...",
   isSystemInit: false,
   socketsConnected: false,
